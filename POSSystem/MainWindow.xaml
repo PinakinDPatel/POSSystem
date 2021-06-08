@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:POSSystem"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <UniformGrid x:Name="grid">
+
+    </UniformGrid>
+
 </Window>
