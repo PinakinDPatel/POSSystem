@@ -11,7 +11,7 @@ namespace POSSystem
     /// </summary>
     public partial class Login : Window
     {
-        string conString = "";
+        string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
         public Login()
         {
             InitializeComponent();
