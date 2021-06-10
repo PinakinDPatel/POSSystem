@@ -44,13 +44,14 @@
                 <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFD7C9F3"/>
             </TextBox.Effect>
         </TextBox>
+        <Label Name="lblAccountId" Visibility="Hidden"></Label>
         <Label Content="Email :-" HorizontalAlignment="Left" Margin="520,149,0,0" VerticalAlignment="Top" Foreground="#FF6549C7" FontFamily="Arial Black" FontSize="14"/>
         <TextBox Name="txtEmail" HorizontalAlignment="Left" Height="28" Margin="587,152,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="192" FontSize="14">
             <TextBox.Effect>
                 <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFD7C9F3"/>
             </TextBox.Effect>
         </TextBox>
-        <Button Content="Save" HorizontalAlignment="Left" Margin="482,197,0,0" VerticalAlignment="Top" Width="297" Height="28" Foreground="White" Click="Button_Click">
+        <Button Content="Save" Name="btnSave" HorizontalAlignment="Left" Margin="482,197,0,0" VerticalAlignment="Top" Width="297" Height="28" Foreground="White" Click="Button_Click">
             <Button.Effect>
                 <DropShadowEffect Color="#FFF6E5FF"/>
             </Button.Effect>
@@ -64,18 +65,21 @@
         <DataGrid Name="dgAccount" HorizontalAlignment="Left"  AutoGenerateColumns="False"  Height="262" Margin="69,268,0,0" VerticalAlignment="Top"  Width="710" Background="#FFE8E8E8" FontSize="14">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Width="100" Binding="{Binding Name}"/>
-               
+                <DataGridTextColumn Header="Head" Width="100" Binding="{Binding Head}"/>
+                <DataGridTextColumn Header="Address" Width="100" Binding="{Binding Address}"/>
+                <DataGridTextColumn Header="Mobile" Width="100" Binding="{Binding Mobile}"/>
+                <DataGridTextColumn Header="Email" Width="100" Binding="{Binding Email}"/>
                 <DataGridTemplateColumn Header="Edit" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Edit"/>
+                            <Button Content="Edit" Click="onEdit"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="Delete" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Delete"/>
+                            <Button Content="Delete" Click="onDelete"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
