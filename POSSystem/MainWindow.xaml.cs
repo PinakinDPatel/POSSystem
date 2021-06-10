@@ -6,6 +6,7 @@ using System.Data;
 using System.Windows.Media.Effects;
 using System.Data.SqlClient;
 using System.Windows.Input;
+using System.Collections.Generic;
 
 namespace POSSystem
 {
@@ -28,81 +29,107 @@ namespace POSSystem
 
             cmd.Parameters.AddWithValue("@password", textBox1.Text);
             SqlDataAdapter sda = new SqlDataAdapter(cmd);
-           
+
             con.Open();
             sda.Fill(dt);
-            dt.Columns.Add("Total");
+            dt.Columns.Add("quantity");
+            dt.Columns.Add("Amount");
+           
             con.Close();
             textBox1.Focus();
 
-            //DropShadowEffect newDropShadowEffect = new DropShadowEffect();
-            //newDropShadowEffect.BlurRadius = 7;
-            //newDropShadowEffect.Direction = 180;
-            //newDropShadowEffect.Opacity = 95;
-            //newDropShadowEffect.ShadowDepth = 8;
-            //for (int i = 0; i < 10; ++i)
-            //{
-            //    Button button = new Button()
-            //    {
-            //        Content = string.Format("Button for {0}", i),
+            string queryS = "Select Department from Department";
+            SqlCommand cmd1 = new SqlCommand(queryS, con);
+            SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
+            DataTable dtdep = new DataTable();
+            sda1.Fill(dtdep);
+            con.Open();
+            cmd1.ExecuteNonQuery();
+            con.Close();
 
-            //        Tag = i
-            //    };
-            //    button.Foreground = new SolidColorBrush(Colors.LightGray);
-            //    button.Background = new SolidColorBrush(Colors.Blue);
-            //   button.Effect = new DropShadowEffect()
-            //   { BlurRadius = 3, ShadowDepth = 10 };
-            //    // button.Effect.add
-            //    button.Click += new RoutedEventHandler(button_Click);
+            DropShadowEffect newDropShadowEffect = new DropShadowEffect();
+            newDropShadowEffect.BlurRadius = 5;
+            newDropShadowEffect.Direction = 100;
+            newDropShadowEffect.Opacity = 95;
+            newDropShadowEffect.ShadowDepth = 2;
 
-            //    this.grid.Children.Add(button);
+            for (int i = 0; i < dtdep.Rows.Count; ++i)
+            {
+                Button button = new Button()
+                {
+                    Content = dtdep.Rows[i].ItemArray[0],
+                    Tag = i
+                };
+                button.Foreground = new SolidColorBrush(Colors.White);
+                button.Background = new SolidColorBrush(Colors.DarkRed);
+                button.Effect = new DropShadowEffect()
+                { BlurRadius = 5, ShadowDepth = 2, Color = Colors.BlueViolet };
+                button.Margin = new Thickness(5, 5, 5, 5);
+                // button.Effect.add
+                button.Click += new RoutedEventHandler(button_Click);
 
-            //}
+                this.sp21.Children.Add(button);
+
+
+            }
         }
+        void button_Click(object sender, RoutedEventArgs e)
+        {
+            //Console.WriteLine(string.Format("You clicked on the {0}. button.", (sender as Button).Tag));
+            //MessageBox.Show(e.ToString());
+            var btnContent = sender as Button;
+            lblDepartment.Content = btnContent.Content;
+            TxtBxStackPanel2.Visibility = Visibility.Visible;
+            sp21.Visibility = Visibility.Hidden;
+        }
+        private void Button_Click_Go_Back(object sender, RoutedEventArgs e)
+        {
+            sp21.Visibility = Visibility.Visible;
+            TxtBxStackPanel2.Visibility = Visibility.Hidden;
+        }
+        private void Button_Click_Sale_Save(object sender, RoutedEventArgs e)
+        {
+            DataRow dr = dt.NewRow();
+            dr[0] = 0;
+            dr[1] = lblDepartment.Content.ToString();
+            dr[2] = txtDeptAmt.Text;
+            dr[3] = 1;
+            dr[4] = (int.Parse(txtDeptAmt.Text) * 1).ToString();
+            dt.Rows.Add(dr);
+           
+            JRDGrid.ItemsSource = dt.DefaultView;
+            JRDGrid.Items.Refresh();
+            txtDeptAmt.Text = "";
 
-
-
-        //private void EnterClicked(object sender, System.Windows.Input.KeyEventArgs e)
-        //{
-        //    if (e.Key == Key.Return)
-        //    {
-        //        Txtbarcode.Text = "You Entered: " + Txtbarcode.Text;
-        //    }
-        //    SqlConnection con = new SqlConnection(conString);
-        //    string query = "select * from item where Scancode=@password ";
-        //    SqlCommand cmd = new SqlCommand(query, con);
-
-        //    cmd.Parameters.AddWithValue("@password", Txtbarcode.Text);
-        //    SqlDataAdapter sda = new SqlDataAdapter(cmd);
-        //    DataTable dt = new DataTable();
-        //    sda.Fill(dt);
-
-        //    JRDGrid.ItemsSource = dt.DefaultView;
-        //}
+            sp21.Visibility = Visibility.Visible;
+            TxtBxStackPanel2.Visibility = Visibility.Hidden;
+        }
 
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
                 SqlConnection con = new SqlConnection(conString);
-                   string query = "select Scancode,description,unitretail from item where Scancode=@password ";
-                   SqlCommand cmd = new SqlCommand(query, con);
+                string query = "select Scancode,Description,UnitRetail from item where Scancode=@password ";
+                SqlCommand cmd = new SqlCommand(query, con);
 
                 cmd.Parameters.AddWithValue("@password", textBox1.Text);
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                //DataTable dt = new DataTable();
                 con.Open();
                 sda.Fill(dt);
                 con.Close();
-                int i = Int32.Parse(dt.Rows[0]["unitretail"].ToString());
-
-                dt.Rows[0]["Total"] = i * 10;
-                JRDGrid.Items.Add(dt);
-                //   JRDGrid.ItemsSource = dt.DefaultView;
+                JRDGrid.ItemsSource = dt.DefaultView;
+                JRDGrid.Items.Refresh();
                 textBox1.Text = "";
-                
-                
+
+
             }
+        }
+
+        private void Cash_Click(object sender, RoutedEventArgs e)
+        {
+            cashTxtPanel.Visibility = Visibility.Visible;
+            sp02.Visibility = Visibility.Hidden;
         }
         //void button_Click(object sender, RoutedEventArgs e)
         //{
@@ -118,10 +145,15 @@ namespace POSSystem
         //}
         //void insert(int i)
         //{
-
-
         //}
-
     }
 
+}
+public class Author
+{
+    public int Scancode { get; set; }
+    public string Description { get; set; }
+    public string Quantity { get; set; }
+    public string UnitRetail { get; set; }
+    public string Amount { get; set; }
 }
