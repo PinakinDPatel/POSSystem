@@ -37,6 +37,7 @@ namespace POSSystem
             cmd.ExecuteNonQuery();
             con.Close();
 
+
             DropShadowEffect newDropShadowEffect = new DropShadowEffect();
             newDropShadowEffect.BlurRadius = 7;
             newDropShadowEffect.Direction = 100;
@@ -52,7 +53,6 @@ namespace POSSystem
                 };
                 button.Foreground = new SolidColorBrush(Colors.White);
                 button.Background = new SolidColorBrush(Colors.Blue);
-                
                 button.Effect = new DropShadowEffect()
                 { BlurRadius = 5, ShadowDepth = 2 };
                 button.Margin = new Thickness(5, 5, 5, 5);
@@ -60,6 +60,7 @@ namespace POSSystem
                 button.Click += new RoutedEventHandler(button_Click);
 
                 this.sp21.Children.Add(button);
+
 
             }
         }
