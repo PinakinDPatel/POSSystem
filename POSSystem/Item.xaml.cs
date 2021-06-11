@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
+using System.Data.SqlClient;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace POSSystem
 {
@@ -20,9 +10,21 @@ namespace POSSystem
     /// </summary>
     public partial class Item : Window
     {
+        string constring = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
         public Item()
         {
             InitializeComponent();
+
+            SqlConnection con = new SqlConnection(constring);
+            string queryD = "Select Department from Department";
+            SqlCommand cmdD = new SqlCommand(queryD, con);
+            SqlDataAdapter sdaD = new SqlDataAdapter(cmdD);
+            DataTable dtD = new DataTable();
+            sdaD.Fill(dtD);
+
+            drpDepartment.ItemsSource = dtD.DefaultView;
+
+            
         }
     }
 }

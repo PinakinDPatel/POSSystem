@@ -162,9 +162,9 @@
             <TextBox Name="txtQty" Grid.Column="1" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="80"/>
             <TextBox Name="txtTotal" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Background="White" />
             <Label Content="Tax :-" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="18"  Grid.Column="1" Grid.Row="1" Height="31" Width="64"/>
-            <TextBox Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Grid.Row="1"  />
+            <TextBox Name="txtTax" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Grid.Row="1"  />
             <Label Content="Grand-Total :-" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="18" Grid.Row="2" Height="31" Width="143" Grid.Column="1" />
-            <TextBox Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Grid.Row="2"  />
+            <TextBox Name="txtGrandTotal" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Grid.Row="2"  />
         </Grid>
 
         <UniformGrid Grid.Column="2" Grid.Row="1" Name="sp21"></UniformGrid>
@@ -183,7 +183,7 @@
                 <RowDefinition Height="176*" ></RowDefinition>
                 <RowDefinition Height="61*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Button Content="LogOut" Grid.Column="1"  Grid.Row="1" FontFamily="Arial Black" FontSize="24" Foreground="White">
+            <Button Content="LogOut" Grid.Column="1"  Grid.Row="1" FontFamily="Arial Black" FontSize="24" Foreground="White" Click="onClickShutDown">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FFFD1212" Offset="0"/>
@@ -191,7 +191,7 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <Button Content="Setting"  Grid.Row="1" FontFamily="Arial Black" FontSize="24" Foreground="White">
+            <Button Content="Setting"  Grid.Row="1" FontFamily="Arial Black" FontSize="24" Foreground="White" Click="OnClickSetting">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FF0C5F26" Offset="0"/>

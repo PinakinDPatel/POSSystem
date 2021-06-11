@@ -14,6 +14,7 @@ namespace POSSystem
     {
         DataTable dt = new DataTable();
         string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+
         //string conString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=E:\PSPCStore\POSSystem\POSSystem\Database1.mdf;Integrated Security=True";
         public MainWindow()
         {
@@ -103,7 +104,7 @@ namespace POSSystem
 
             sp21.Visibility = Visibility.Visible;
             TxtBxStackPanel2.Visibility = Visibility.Hidden;
-            
+
         }
 
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
@@ -137,7 +138,6 @@ namespace POSSystem
 
         private void TotalEvent()
         {
-          //  decimal sum = 0.00m;
             decimal sum = 0;
             decimal Qtysum = 0;
             foreach (DataRow dr in dt.Rows)
@@ -146,10 +146,22 @@ namespace POSSystem
                 sum += decimal.Parse(amounnt);
                 Qtysum += decimal.Parse(dr.ItemArray[3].ToString());
             }
-
-          
             txtTotal.Text = sum.ToString();
             txtQty.Text = Qtysum.ToString();
+
+            txtGrandTotal.Text = decimal.Parse(Convert.ToDecimal(decimal.Parse(txtTotal.Text) + decimal.Parse(txtTax.Text)).ToString()).ToString();
+
+        }
+
+        private void onClickShutDown(object sender, RoutedEventArgs e)
+        {
+            //Application app = new Application();
+            //app.Shutdown();
+        }
+
+        private void OnClickSetting(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
