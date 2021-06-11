@@ -1,0 +1,45 @@
+﻿<Window x:Class="POSSystem.ItemView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:POSSystem"
+      mc:Ignorable="d" 
+      d:DesignHeight="488.136" d:DesignWidth="1106.038"
+      Title="ItemView" WindowStartupLocation="CenterScreen" WindowState="Maximized" WindowStyle="None">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50*"></RowDefinition>
+            <RowDefinition Height="400*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100*"></ColumnDefinition>
+            <ColumnDefinition Width="500*"></ColumnDefinition>
+            <ColumnDefinition Width="100*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Label Content="Item" Grid.Column="1" FontSize="36" FontFamily="Arial Black" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+        <Button Name="btnAddItem" Content="+" Grid.Column="2" Height="30" Width="30" FontSize="30" FontFamily="Arial Black" HorizontalAlignment="Left" VerticalAlignment="Center" Background="White" BorderBrush="White" Foreground="#FF0E2CE6" FontWeight="Bold" Margin="0,10,0,13"/>
+        <Button Name="btnImport" Content="Import" Grid.Column="2" Height="30" Width="80" FontSize="20" FontFamily="Arial Black" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White" BorderBrush="White" Foreground="#FF0E2CE6" FontWeight="Bold" Margin="0,10,0,13" Click="Button_Click_1"/>
+        <Button Name="btnClose" Content="X" Grid.Column="2" Height="30" Width="30" FontSize="30" FontFamily="Arial Black" HorizontalAlignment="Right" VerticalAlignment="Center" Background="White" BorderBrush="White" Foreground="#FFF50929" FontWeight="Bold" Margin="0,10,0,13" Click="Button_Click"/>
+        <DataGrid Name="dgitem" Grid.Row="1" Grid.ColumnSpan="3" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding ScanCode}" Header="ScanCode" MinWidth="120"/>
+                <DataGridTextColumn Binding="{Binding Description}" ClipboardContentBinding="{x:Null}" Header="Description" MinWidth="200"/>
+                <DataGridTextColumn Binding="{Binding Payee}" ClipboardContentBinding="{x:Null}" Header="Payee" MinWidth="150"/>
+                <DataGridTextColumn Binding="{Binding UnitCase}" ClipboardContentBinding="{x:Null}" Header="UnitCase" MinWidth="80"/>
+                <DataGridTextColumn Binding="{Binding CaseCost}" ClipboardContentBinding="{x:Null}" Header="CaseCost" MinWidth="80"/>
+                <DataGridTextColumn Binding="{Binding UnitRetail}" ClipboardContentBinding="{x:Null}" Header="UnitRetail" MinWidth="80"/>
+                <DataGridTextColumn Binding="{Binding MessureIn}" ClipboardContentBinding="{x:Null}" Header="MessureIn" MinWidth="100"/>
+                <DataGridTextColumn Binding="{Binding Menufacture}" ClipboardContentBinding="{x:Null}" Header="Menufacture" MinWidth="150"/>
+                <DataGridTextColumn Binding="{Binding FoodStamp}" ClipboardContentBinding="{x:Null}" Header="FoodStamp" MinWidth="150"/>
+                <DataGridTextColumn Binding="{Binding TaxRate}" ClipboardContentBinding="{x:Null}" Header="TaxRate" MinWidth="145"/>
+                <DataGridTextColumn Binding="{Binding MinAge}" ClipboardContentBinding="{x:Null}" Header="MinAge" MinWidth="100"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid Name="dgImport" Grid.Row="1" Grid.ColumnSpan="3" Visibility="Hidden"/>
+        <Button Name="btnItemsSave" Content="Save" Grid.Column="2" Height="30" Width="80" FontSize="20" FontFamily="Arial Black" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White" BorderBrush="White" Foreground="#FF0E2CE6" FontWeight="Bold" Margin="0,10,0,13" Visibility="Hidden"/>
+
+
+    </Grid>
+</Window>
