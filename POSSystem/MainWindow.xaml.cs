@@ -10,9 +10,6 @@ using System.Collections.Generic;
 
 namespace POSSystem
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         DataTable dt = new DataTable();
@@ -21,6 +18,8 @@ namespace POSSystem
         public MainWindow()
         {
             InitializeComponent();
+            lblDate.Content = DateTime.Now.ToString("MM/dd/yyyy HH:MM:ss");
+
             TextBox tb = new TextBox();
             tb.KeyDown += new KeyEventHandler(OnKeyDownHandler);
             SqlConnection con = new SqlConnection(conString);
@@ -34,7 +33,7 @@ namespace POSSystem
             sda.Fill(dt);
             dt.Columns.Add("quantity");
             dt.Columns.Add("Amount");
-           
+
             con.Close();
             textBox1.Focus();
 
@@ -47,6 +46,7 @@ namespace POSSystem
             cmd1.ExecuteNonQuery();
             con.Close();
 
+            //Shadow Effect Of Button
             DropShadowEffect newDropShadowEffect = new DropShadowEffect();
             newDropShadowEffect.BlurRadius = 5;
             newDropShadowEffect.Direction = 100;
@@ -72,11 +72,10 @@ namespace POSSystem
 
 
             }
+
         }
         void button_Click(object sender, RoutedEventArgs e)
         {
-            //Console.WriteLine(string.Format("You clicked on the {0}. button.", (sender as Button).Tag));
-            //MessageBox.Show(e.ToString());
             var btnContent = sender as Button;
             lblDepartment.Content = btnContent.Content;
             TxtBxStackPanel2.Visibility = Visibility.Visible;
@@ -96,13 +95,15 @@ namespace POSSystem
             dr[3] = 1;
             dr[4] = (int.Parse(txtDeptAmt.Text) * 1).ToString();
             dt.Rows.Add(dr);
-           
+
             JRDGrid.ItemsSource = dt.DefaultView;
             JRDGrid.Items.Refresh();
+            TotalEvent();
             txtDeptAmt.Text = "";
 
             sp21.Visibility = Visibility.Visible;
             TxtBxStackPanel2.Visibility = Visibility.Hidden;
+            
         }
 
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
@@ -110,19 +111,19 @@ namespace POSSystem
             if (e.Key == Key.Enter)
             {
                 SqlConnection con = new SqlConnection(conString);
-                string query = "select Scancode,Description,UnitRetail from item where Scancode=@password ";
+                string query = "select Scancode,Description,UnitRetail,@qty as quantity,UnitRetail as Amount from item where Scancode=@password ";
                 SqlCommand cmd = new SqlCommand(query, con);
 
                 cmd.Parameters.AddWithValue("@password", textBox1.Text);
+                cmd.Parameters.AddWithValue("@qty", 1);
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
                 con.Open();
                 sda.Fill(dt);
                 con.Close();
                 JRDGrid.ItemsSource = dt.DefaultView;
                 JRDGrid.Items.Refresh();
+                TotalEvent();
                 textBox1.Text = "";
-
-
             }
         }
 
@@ -130,30 +131,25 @@ namespace POSSystem
         {
             cashTxtPanel.Visibility = Visibility.Visible;
             sp02.Visibility = Visibility.Hidden;
+            TotalEvent();
         }
-        //void button_Click(object sender, RoutedEventArgs e)
-        //{
-
-        //    Console.WriteLine(string.Format("You clicked on the {0}. button.", (sender as Button).Tag));
-        //    int i = Convert.ToInt32((sender as Button).Tag);
-        //    insert(i);
-        //    DataTable dt = new DataTable();
-        //   // dt = (sele)
 
 
-        //    MessageBox.Show(string.Format("You clicked on the {0}. button.", (sender as Button).Tag));
-        //}
-        //void insert(int i)
-        //{
-        //}
+        private void TotalEvent()
+        {
+          //  decimal sum = 0.00m;
+            decimal sum = 0;
+            decimal Qtysum = 0;
+            foreach (DataRow dr in dt.Rows)
+            {
+                string amounnt = dr.ItemArray[4].ToString();
+                sum += decimal.Parse(amounnt);
+                Qtysum += decimal.Parse(dr.ItemArray[3].ToString());
+            }
+
+          
+            txtTotal.Text = sum.ToString();
+            txtQty.Text = Qtysum.ToString();
+        }
     }
-
-}
-public class Author
-{
-    public int Scancode { get; set; }
-    public string Description { get; set; }
-    public string Quantity { get; set; }
-    public string UnitRetail { get; set; }
-    public string Amount { get; set; }
 }

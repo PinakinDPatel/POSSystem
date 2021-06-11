@@ -44,17 +44,18 @@ namespace POSSystem
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             SqlConnection con = new SqlConnection(constring);
-            if (lblAccountId == null)
+            int lbl = Convert.ToInt32(lblAccountId.Content);
+            string queryS = "Select Name from Account where Name=@account";
+            SqlCommand cmd = new SqlCommand(queryS, con);
+            cmd.Parameters.AddWithValue("@account", txtaccount.Text);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            con.Open();
+            int i = cmd.ExecuteNonQuery();
+            con.Close();
+            if (lbl == 0)
             {
-                string queryS = "Select Name from Account where Name=@account";
-                SqlCommand cmd = new SqlCommand(queryS, con);
-                cmd.Parameters.AddWithValue("@account", txtaccount.Text);
-                SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                sda.Fill(dt);
-                con.Open();
-                int i = cmd.ExecuteNonQuery();
-                con.Close();
                 if (dt.Rows.Count > 0)
                 {
                     MessageBox.Show("UserName Or Password Already Exist!");
@@ -80,31 +81,38 @@ namespace POSSystem
                     txtEmail.Text = "";
                     txtMobile.Text = "";
                     drphead.Text = "";
-                    lblAccountId.Content = "";
+                    lblAccountId.Content = 0;
                 }
             }
             else
             {
-                string time = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
-                string queryIU = "Update Account Set Name=@account,Head=@head,Mobile=@mobile,Address=@address,Email=@email,CreateOn=@time Where AccountId='"+lblAccountId.Content+"'";
-                SqlCommand cmdI = new SqlCommand(queryIU, con);
-                cmdI.Parameters.AddWithValue("@account", txtaccount.Text);
-                cmdI.Parameters.AddWithValue("@head", drphead.Text);
-                cmdI.Parameters.AddWithValue("@address", txtAddress.Text);
-                cmdI.Parameters.AddWithValue("@mobile", txtMobile.Text);
-                cmdI.Parameters.AddWithValue("@email", txtEmail.Text);
-                cmdI.Parameters.AddWithValue("@time", time);
-                con.Open();
-                cmdI.ExecuteNonQuery();
-                con.Close();
-                Datable();
-                txtaccount.Text = "";
-                txtAddress.Text = "";
-                txtEmail.Text = "";
-                txtMobile.Text = "";
-                drphead.Text = "";
-                lblAccountId.Content = "";
-                btnSave.Content = "Save";
+                if (dt.Rows.Count > 0)
+                {
+                    MessageBox.Show("UserName Or Password Already Exist!");
+                }
+                else
+                {
+                    string time = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
+                    string queryIU = "Update Account Set Name=@account,Head=@head,Mobile=@mobile,Address=@address,Email=@email,CreateOn=@time Where AccountId='" + lblAccountId.Content + "'";
+                    SqlCommand cmdI = new SqlCommand(queryIU, con);
+                    cmdI.Parameters.AddWithValue("@account", txtaccount.Text);
+                    cmdI.Parameters.AddWithValue("@head", drphead.Text);
+                    cmdI.Parameters.AddWithValue("@address", txtAddress.Text);
+                    cmdI.Parameters.AddWithValue("@mobile", txtMobile.Text);
+                    cmdI.Parameters.AddWithValue("@email", txtEmail.Text);
+                    cmdI.Parameters.AddWithValue("@time", time);
+                    con.Open();
+                    cmdI.ExecuteNonQuery();
+                    con.Close();
+                    Datable();
+                    txtaccount.Text = "";
+                    txtAddress.Text = "";
+                    txtEmail.Text = "";
+                    txtMobile.Text = "";
+                    drphead.Text = "";
+                    lblAccountId.Content = 0;
+                    btnSave.Content = "Save";
+                }
             }
         }
         private void onEdit(object sender, RoutedEventArgs e)
@@ -135,6 +143,7 @@ namespace POSSystem
                 dtDG.AcceptChanges();
             else
                 dtDG.RejectChanges();
+            lblAccountId.Content = 0;
         }
     }
 }

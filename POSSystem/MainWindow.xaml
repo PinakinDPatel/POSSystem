@@ -98,23 +98,52 @@
         </Grid>
         <Grid Grid.Row="0" Grid.Column="1" Background="#FFF7F7F7">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="4*" ></ColumnDefinition>
-                <ColumnDefinition Width="11*"></ColumnDefinition>
+                <ColumnDefinition Width="81*" ></ColumnDefinition>
+                <ColumnDefinition Width="104*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Label Content="Barcode :-" Margin="0,25,0,0" VerticalAlignment="Top" HorizontalAlignment="Right" FontFamily="Arial Black" FontSize="18" Height="29" Width="110" FontWeight="Bold"/>
-            <TextBox Grid.Column="1" Name="textBox1"  KeyDown="OnKeyDownHandler" HorizontalAlignment="Left" Height="29" Margin="0,25,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="202" BorderBrush="Black"/>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Content="Barcode :-" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="18" Height="29" Width="110" FontWeight="Bold"/>
+            <TextBox Name="textBox1"  KeyDown="OnKeyDownHandler" HorizontalAlignment="Center" Height="29" TextWrapping="Wrap" VerticalAlignment="Top" Width="202" BorderBrush="Black" Grid.Row="1"/>
+            <Label Name="lblDate" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="18" Height="29" FontWeight="Bold" Grid.Column="1"  Grid.RowSpan="2"/>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition ></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <DataGrid  Name="JRDGrid" AutoGenerateColumns="False"  HorizontalAlignment="Center" Height="385" VerticalAlignment="Top" Width="555" CanUserAddRows="False" Background="White">
+            <DataGrid Name="JRDGrid" AutoGenerateColumns="False"  HorizontalAlignment="Center" Height="385" VerticalAlignment="Top" Width="555" CanUserAddRows="False" Background="White">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Scancode}"  Header="ScanCode" MinWidth="100"/>
-                    <DataGridTextColumn Binding="{Binding description}" Header="Description" MinWidth="155"  IsReadOnly="False" />
-                    <DataGridTextColumn Binding="{Binding quantity}" Header="Quantity" MinWidth="100"/>
-                    <DataGridTextColumn Binding="{Binding unitretail}"  Header="Price" MinWidth="100"/>
-                    <DataGridTextColumn Binding="{Binding Amount}" Header="Amount" MinWidth="100"/>
+                    <DataGridTextColumn Binding="{Binding Scancode}"  Header="ScanCode" MinWidth="100"  IsReadOnly="True">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding description}" Header="Description" MinWidth="155"  IsReadOnly="True"/>
+                    <DataGridTextColumn Binding="{Binding quantity}" Header="Quantity" MinWidth="100" IsReadOnly="False">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding unitretail}"  Header="Price" MinWidth="100" IsReadOnly="True">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Amount}" Header="Amount" MinWidth="100" IsReadOnly="True">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
@@ -130,8 +159,8 @@
                 <RowDefinition Height="115*"></RowDefinition>
             </Grid.RowDefinitions>
             <Label Content="Total :-" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="18" Grid.Column="1" Height="31" Width="78"/>
-            <TextBox Grid.Column="1" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="80"/>
-            <TextBox Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Background="White" />
+            <TextBox Name="txtQty" Grid.Column="1" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="80"/>
+            <TextBox Name="txtTotal" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Background="White" />
             <Label Content="Tax :-" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="18"  Grid.Column="1" Grid.Row="1" Height="31" Width="64"/>
             <TextBox Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Grid.Row="1"  />
             <Label Content="Grand-Total :-" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="18" Grid.Row="2" Height="31" Width="143" Grid.Column="1" />
