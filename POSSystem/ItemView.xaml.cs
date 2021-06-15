@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace POSSystem
 {
@@ -46,14 +36,90 @@ namespace POSSystem
             appl.Shutdown();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void Button_Click_Imaport(object sender, RoutedEventArgs e)
         {
             dgitem.Visibility = Visibility.Hidden;
-            btnAddItem.Visibility= Visibility.Hidden;
+            btnAddItem.Visibility = Visibility.Hidden;
             btnImport.Visibility = Visibility.Hidden;
             btnClose.Visibility = Visibility.Hidden;
             btnItemsSave.Visibility = Visibility.Visible;
             dgImport.Visibility = Visibility.Visible;
+        }
+
+        private void BtnAddItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BrowseButton_Click(object sender, RoutedEventArgs e)
+        {
+            DataTable dt = new DataTable();
+            string[] headers;
+
+            Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
+            Nullable<bool> result = openFileDlg.ShowDialog();
+            if (result == true)
+            {
+                FileNameTextBox.Text = openFileDlg.FileName;
+                string extension = System.IO.Path.GetExtension(openFileDlg.FileName).ToLower();
+
+                if (extension == ".csv")
+                {
+                    using (StreamReader sr = new StreamReader(openFileDlg.FileName))
+                    {
+                        headers = sr.ReadLine().Split(',');
+                        foreach (string header in headers)
+                        {
+                            dt.Columns.Add(header);
+                        }
+
+                        while (!sr.EndOfStream)
+                        {
+                            string[] rows = sr.ReadLine().Split(',');
+                            if (rows.Length > 1)
+                            {
+                                DataRow dr = dt.NewRow();
+                                for (int i = 0; i < headers.Length; i++)
+                                {
+                                    if (i < rows.Length)
+                                    {
+                                        dr[i] = rows[i].Trim();
+                                    }
+                                }
+                                dt.Rows.Add(dr);
+                            }
+                        }
+                    }
+                }
+            }
+
+            dgitem.Visibility = Visibility.Hidden;
+            dgImport.Visibility = Visibility.Visible;
+
+            dgImport.ItemsSource = dt.DefaultView;
+            dgImport.AutoGenerateColumns = true;
+            dgImport.CanUserAddRows = false;
+        }
+        private void dataGrid1_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            var dropDown = new ComboBox() { ItemsSource = new string[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" } };
+            dropDown.Name = e.Column.Header.ToString();
+            dropDown.SelectionChanged += new SelectionChangedEventHandler(ComboBox_SelectionChanged);
+            e.Column.Header = dropDown;
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //var HeaderTexts = dataGridUserSalesRep.Columns.Select(e => e.Header.ToString()).ToList();
+            foreach (var col in dgImport.Columns)
+            {
+                //dgImport.Columns[0].HeaderText = "HeaderName";
+            }
+        }
+
+        private void Button_Click_Save_ImportFile(object sender, RoutedEventArgs e)
+        {
+            var dsds = dgImport.ItemsSource;
         }
     }
 }
