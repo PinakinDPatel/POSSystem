@@ -11,16 +11,17 @@
         <StackPanel HorizontalAlignment="Left" Height="50" Margin="0,10,0,0" VerticalAlignment="Top" Width="491">
             <Label Content="Department" FontSize="24" HorizontalAlignment="Center" FontFamily="Arial Black" Margin="0,6,0,0"/>
         </StackPanel>
-        <Label Content="Department Name :-" HorizontalAlignment="Left" Margin="111,98,0,0" VerticalAlignment="Top" FontSize="14" Foreground="#FF751FDC" FontWeight="Bold"/>
-        <TextBox Name="TxtDepartment" HorizontalAlignment="Left" Height="28" Margin="262,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171" FontSize="14">
+        <Label Content="Department Name :-" HorizontalAlignment="Left" Margin="116,61,0,0" VerticalAlignment="Top" FontSize="14" Foreground="#FF751FDC" FontWeight="Bold"/>
+        <TextBox Name="TxtDepartment" HorizontalAlignment="Left" Height="28" Margin="262,61,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171" FontSize="14">
             <TextBox.Effect>
                 <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFE6D4FD"/>
             </TextBox.Effect>
         </TextBox>
         <DataGrid Name="DeptGrid" HorizontalAlignment="Left" Height="206" Margin="50,225,0,0" VerticalAlignment="Top" Width="412" AutoGenerateColumns="False">
             <DataGrid.Columns>
-            <DataGridTextColumn Binding="{Binding Department}" ClipboardContentBinding="{x:Null}" Header="Name" MinWidth="150"/>
+                <DataGridTextColumn Binding="{Binding Department}" ClipboardContentBinding="{x:Null}" Header="Name" MinWidth="150"/>
                 <DataGridTextColumn Binding="{Binding DepartmentCode}" ClipboardContentBinding="{x:Null}" Header="Code" MinWidth="50"/>
+                <DataGridTextColumn Binding="{Binding TaxRate}" ClipboardContentBinding="{x:Null}" Header="TaxRate" MinWidth="50"/>
                 <DataGridTemplateColumn Header="Edit" Width="94">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -38,7 +39,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <Label Name="lblDeptId" Visibility="Hidden"></Label>
-        <Button Name="btnDeptSave" Content="Save" HorizontalAlignment="Left" Margin="225,183,0,0" VerticalAlignment="Top" Width="75" Foreground="White" Height="28" Click="Button_Click">
+        <Button Name="btnDeptSave" Content="Save" HorizontalAlignment="Left" Margin="225,183,0,0" Width="95" Height="35" VerticalAlignment="Top" Foreground="White"  Click="Button_Click">
             <Button.Effect>
                 <DropShadowEffect Color="#FFEDDAFD"/>
             </Button.Effect>
@@ -49,12 +50,19 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Label Content="Department Code :-" HorizontalAlignment="Left" Margin="111,138,0,0" VerticalAlignment="Top" FontSize="14" Foreground="#FF751FDC" FontWeight="Bold"/>
-        <TextBox x:Name="TxtDepartment_Code" HorizontalAlignment="Left" Height="28" Margin="262,139,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171" FontSize="14">
+        <Label Content="Department Code :-" HorizontalAlignment="Left" Margin="121,102,0,0" VerticalAlignment="Top" FontSize="14" Foreground="#FF751FDC" FontWeight="Bold"/>
+        <TextBox x:Name="TxtDepartment_Code" HorizontalAlignment="Left" Height="28" Margin="262,101,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171" FontSize="14">
             <TextBox.Effect>
                 <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFE6D4FD"/>
             </TextBox.Effect>
         </TextBox>
+        <TextBox x:Name="TxtTaxRate" HorizontalAlignment="Left" Height="28" Margin="263,142,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171" FontSize="14">
+            <TextBox.Effect>
+                <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFE6D4FD"/>
+            </TextBox.Effect>
+        </TextBox>
+        <Label Content="TaxRate :-" HorizontalAlignment="Left" Margin="183,143,0,0" VerticalAlignment="Top" FontSize="14" Foreground="#FF751FDC" FontWeight="Bold"/>
+        <Label Name="lblusername" Visibility="Hidden"/>
 
 
 

@@ -2,8 +2,49 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:POSSystem"
-             StartupUri="Itemview.xaml">
+             StartupUri="login.xaml">
     <Application.Resources>
-         
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="2" Color="#264f96" ShadowDepth="1"  />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="#264f96"/>
+            <Setter Property="FontFamily" Value="Cambria"/>
+
+        </Style>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="33" />
+            <Setter Property="FontFamily" Value="Cambria" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#264f96" Offset="0"/>
+                        <GradientStop Color="#5a6d8f" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border CornerRadius="10" Background="{TemplateBinding Background}">
+                            <Grid>
+                                <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#6e9ffa"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Application.Resources>
 </Application>

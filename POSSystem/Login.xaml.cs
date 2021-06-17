@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Navigation;
 
 namespace POSSystem
 {
@@ -44,11 +45,12 @@ namespace POSSystem
 
             if (dt.Rows.Count > 0)
             {
-                this.Hide();
+                
                 string username = dt.Rows[0]["UserName"].ToString();
-                //Mainpage frm = new Mainpage(username);
-                //frm.Show();
-                //this.Hide();
+                MainWindow frm = new MainWindow(username);
+                Department Dept = new Department(username);
+                Dept.Show();
+                this.Close();
 
             }
             else

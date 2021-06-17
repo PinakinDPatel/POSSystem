@@ -19,11 +19,23 @@ namespace POSSystem
             DeptGridV();
 
         }
-
+        public Department(string username) : this()
+        {
+            if (username != null)
+            {
+                lblusername.Content = username;
+            }
+            else
+            {
+                Login login = new Login();
+                login.Show();
+                this.Close();
+            }
+        }
         private void DeptGridV()
         {
             SqlConnection con = new SqlConnection(conString);
-            string queryD = "Select DepartmentId,Department,DepartmentCode from department";
+            string queryD = "Select DepartmentId,Department,DepartmentCode,TaxRate from department";
             SqlCommand cmd = new SqlCommand(queryD, con);
             SqlDataAdapter sda = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -34,6 +46,7 @@ namespace POSSystem
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            string date = DateTime.Now.ToString("yyyy-MM-dd HH:MM:ss");
             SqlConnection con = new SqlConnection(conString);
             int lbl = Convert.ToInt32(lblDeptId.Content);
             string queryD = "Select Department,DepartmentCode from department where Department=@department or DepartmentCode=@deptCode";
@@ -55,16 +68,18 @@ namespace POSSystem
                 else
                 {
 
-                    string time = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
-                    string queryI = "Insert into Department(Department,DepartmentCode,CreateOn)Values(@department,@deptCode,@time)";
+                    string queryI = "Insert into Department(Department,DepartmentCode,CreateOn,TaxRate,CreateBy)Values(@department,@deptCode,@time,@taxrate,@createby)";
                     SqlCommand cmdI = new SqlCommand(queryI, con);
                     cmdI.Parameters.AddWithValue("@department", TxtDepartment.Text);
                     cmdI.Parameters.AddWithValue("@deptCode", TxtDepartment_Code.Text);
-                    cmdI.Parameters.AddWithValue("@time", time);
+                    cmdI.Parameters.AddWithValue("@time", date);
+                    cmdI.Parameters.AddWithValue("@taxrate", TxtTaxRate.Text);
+                    cmdI.Parameters.AddWithValue("@createby", lblusername.Content);
                     cmdI.ExecuteNonQuery();
                     con.Close();
                     TxtDepartment.Text = "";
                     TxtDepartment_Code.Text = "";
+                    TxtTaxRate.Text = "";
                     DeptGridV();
                     lblDeptId.Content = 0;
                 }
@@ -79,12 +94,13 @@ namespace POSSystem
 
                 else
                 {
-                    string time = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
-                    string queryIU = "Update Department Set Department=@department,DepartmentCode=@deptCode,CreateOn=@time Where DepartmentId='" + lblDeptId.Content + "'";
+                    string queryIU = "Update Department Set Department=@department,DepartmentCode=@deptCode,CreateOn=@time,TaxRate=@taxrate,CreateBy=@createby Where DepartmentId='" + lblDeptId.Content + "'";
                     SqlCommand cmdI = new SqlCommand(queryIU, con);
                     cmdI.Parameters.AddWithValue("@department", TxtDepartment.Text);
                     cmdI.Parameters.AddWithValue("@deptCode", TxtDepartment_Code.Text);
-                    cmdI.Parameters.AddWithValue("@time", time);
+                    cmdI.Parameters.AddWithValue("@time", date);
+                    cmdI.Parameters.AddWithValue("@taxrate", TxtTaxRate.Text);
+                    cmdI.Parameters.AddWithValue("@createby", lblusername.Content);
                     con.Open();
                     cmdI.ExecuteNonQuery();
                     con.Close();
@@ -103,6 +119,7 @@ namespace POSSystem
             lblDeptId.Content = row["DepartmentId"].ToString();
             TxtDepartment.Text = row["Department"].ToString();
             TxtDepartment_Code.Text = row["DepartmentCode"].ToString();
+            TxtTaxRate.Text = row["TaxRate"].ToString();
             btnDeptSave.Content = "Update";
 
         }
