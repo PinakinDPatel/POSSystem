@@ -15,6 +15,7 @@ namespace POSSystem
         string tenderCode = "";
         DataTable dt = new DataTable();
         string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+
         //string conString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=E:\PSPCStore\POSSystem\POSSystem\Database1.mdf;Integrated Security=True";
         public MainWindow()
         {
