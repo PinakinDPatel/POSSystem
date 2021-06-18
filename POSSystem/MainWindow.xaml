@@ -5,6 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:POSSystem"
         mc:Ignorable="d"  WindowStartupLocation="CenterScreen" WindowState="Maximized" d:DesignWidth="1374" d:DesignHeight="738"  >
+    <Window.Resources>
+
+    </Window.Resources>
     <Grid>
         <!--<Button Content="Button" HorizontalAlignment="Left" Margin="1325,685,0,0" VerticalAlignment="Top"/>-->
         <Grid.RowDefinitions>
@@ -18,11 +21,14 @@
             <ColumnDefinition Width="604*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Grid.Row="0"  Background="#FFF7F7F7">
-            <Label Content="PSPCStore" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Engravers MT" FontSize="22" FontWeight="Bold" Background="Transparent">
+            <Label Content="PSPCStore" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Engravers MT" FontSize="36" FontWeight="Bold" Background="Transparent">
+                <Label.Effect>
+                    <DropShadowEffect ShadowDepth="2"/>
+                </Label.Effect>
                 <Label.Foreground>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="Black" Offset="0"/>
-                        <GradientStop Color="#FF10FFE9" Offset="1"/>
+                        <GradientStop Color="#FF6018C7" Offset="0"/>
+                        <GradientStop Color="#FF5C34B2" Offset="1"/>
                     </LinearGradientBrush>
                 </Label.Foreground>
             </Label>
@@ -30,9 +36,17 @@
         <UniformGrid Grid.Column="0" Grid.Row="2" Margin="0,0,0,-121" Name="sp02"  Background="#FFF7F7F7"></UniformGrid>
         <StackPanel Grid.Column="0" Grid.Row="2" Margin="0,0,0,-121" Height="Auto" Name="cashTxtPanel" Visibility="Hidden">
             <Label Content="Cash-Receive" Name="lblCashReceive" HorizontalAlignment="Center" Margin="0,20" FontFamily="Arial Black" FontSize="18" />
-            <TextBox Name="TxtCashReceive" Margin="10,-15,10,0" Height="41" FontSize="24" FontFamily="Arial Black"/>
+            <TextBox Name="TxtCashReceive" Margin="10,-15,10,0" Height="41" FontSize="24" FontFamily="Arial Black" KeyDown="TxtCashReceive_KeyDown"/>
             <Label Content="Cash-Return" Name="lblCashReturn" HorizontalAlignment="Center" Margin="0,20" FontFamily="Arial Black" FontSize="18"/>
             <TextBox Name="TxtCashReturn" Margin="10,-15,10,0" Height="41" FontSize="24" TextAlignment="Center" FontFamily="Arial Black"/>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="2"  Height="Auto" Name="customerTxtPanel"  Visibility="Hidden">
+            <Label Content="Select Customer" HorizontalAlignment="Center"></Label>
+            <ComboBox Margin="5,5,5,5" Height="30" Name="cbcustomer" ItemsSource="{Binding Name}"></ComboBox>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="2"  Height="Auto" Name="checkTxtPanel" Visibility="Hidden">
+            <Label Content="Enter Check No."  HorizontalAlignment="Center"></Label>
+            <TextBox Margin="5,5,5,5" Height="30" Name="TxtCheck"></TextBox>
         </StackPanel>
         <Grid Grid.Row="1" Grid.Column="0">
             <Grid.RowDefinitions>
@@ -41,46 +55,22 @@
                 <RowDefinition ></RowDefinition>
                 <RowDefinition ></RowDefinition>
             </Grid.RowDefinitions>
-            <Button Content="Cash" Margin="10,10,10,10" Foreground="White" FontFamily="Arial Black" FontSize="24" Click="Cash_Click">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FF802DF7" Offset="0"/>
-                        <GradientStop Color="#FFE2D1F9" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
+            <Button Content="Cash" Margin="10,10,10,10" Foreground="White" FontSize="33" FontWeight="Bold" Click="Tender_Click">
                 <Button.Effect>
                     <DropShadowEffect/>
                 </Button.Effect>
             </Button>
-            <Button Content="Card" Grid.Row="1" Margin="10,10,10,10" Foreground="White" FontFamily="Arial Black" FontSize="24">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FF802DF7" Offset="0"/>
-                        <GradientStop Color="#FFE2D1F9" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
+            <Button Content="Card" Grid.Row="1" Margin="10,10,10,10" Foreground="White" FontSize="33" FontWeight="Bold" Click="Tender_Click">
                 <Button.Effect>
                     <DropShadowEffect/>
                 </Button.Effect>
             </Button>
-            <Button Content="Customer" Grid.Row="2" Margin="10,10,10,10" Foreground="White" FontFamily="Arial Black" FontSize="24">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FF802DF7" Offset="0"/>
-                        <GradientStop Color="#FFE2D1F9" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
+            <Button Content="Customer" Grid.Row="2" Margin="10,10,10,10" Foreground="White" FontSize="33" FontWeight="Bold" Click="Tender_Click">
                 <Button.Effect>
                     <DropShadowEffect/>
                 </Button.Effect>
             </Button>
-            <Button Content="Cheque" Grid.Row="3" Margin="10,10,10,10" Foreground="White" FontFamily="Arial Black" FontSize="24">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FF802DF7" Offset="0"/>
-                        <GradientStop Color="#FFE2D1F9" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
+            <Button Content="Check" Grid.Row="3" Margin="10,10,10,10" Foreground="White" FontSize="33" FontWeight="Bold" Click="Tender_Click">
                 <Button.Effect>
                     <DropShadowEffect/>
                 </Button.Effect>
@@ -91,10 +81,14 @@
                 <ColumnDefinition ></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Label Content="UserName" Grid.Column="1" Margin="0,15,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Cambria" FontSize="16"/>
-            <Label Content="Transaction ID" Margin="0,15,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Cambria" FontSize="16"/>
-            <Label Content="254862155" Margin="0,40,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="16"/>
-            <Label Content="Patel1234" Grid.Column="1" Margin="0,40,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="16"/>
+            <Grid.RowDefinitions>
+                <RowDefinition ></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="1" Content="UserName" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+            <Label Content="Transaction ID" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+            <Label Grid.Row="1" Name="lblTranid" Content="254862155"  VerticalAlignment="Top" HorizontalAlignment="Center"/>
+            <Label Name="lblusername" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center"/>
         </Grid>
         <Grid Grid.Row="0" Grid.Column="1" Background="#FFF7F7F7">
             <Grid.ColumnDefinitions>
@@ -105,45 +99,40 @@
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Content="Barcode :-" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="18" Height="29" Width="110" FontWeight="Bold"/>
+            <Label Content="Barcode :-" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
             <TextBox Name="textBox1"  KeyDown="OnKeyDownHandler" HorizontalAlignment="Center" Height="29" TextWrapping="Wrap" VerticalAlignment="Top" Width="202" BorderBrush="Black" Grid.Row="1"/>
-            <Label Name="lblDate" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="18" Height="29" FontWeight="Bold" Grid.Column="1"  Grid.RowSpan="2"/>
+            <Label Name="lblDate" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1"  Grid.RowSpan="2"/>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition ></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <DataGrid Name="JRDGrid" AutoGenerateColumns="False"  HorizontalAlignment="Center" Height="385" VerticalAlignment="Top" Width="555" CanUserAddRows="False" Background="White">
+            <DataGrid Name="JRDGrid" AutoGenerateColumns="False"  HorizontalAlignment="Center" VerticalAlignment="Top" CanUserAddRows="False" Background="White">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Scancode}"  Header="ScanCode" MinWidth="100"  IsReadOnly="True">
+                    <DataGridTextColumn Binding="{Binding Scancode}"  Header="ScanCode" Width="100*"  IsReadOnly="True"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding description}" Header="Description" Width="155*"  IsReadOnly="True"/>
+                    <DataGridTextColumn Binding="{Binding quantity}" Header="Quantity" Width="100*" IsReadOnly="False">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="HorizontalAlignment" Value="Right"></Setter>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding description}" Header="Description" MinWidth="155"  IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding quantity}" Header="Quantity" MinWidth="100" IsReadOnly="False">
+                    <DataGridTextColumn Binding="{Binding unitretail}"  Header="Price" Width="100*" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="HorizontalAlignment" Value="Right"></Setter>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding unitretail}"  Header="Price" MinWidth="100" IsReadOnly="True">
+                    <DataGridTextColumn Binding="{Binding Amount}" Header="Amount" Width="100*" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="HorizontalAlignment" Value="Right"></Setter>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Amount}" Header="Amount" MinWidth="100" IsReadOnly="True">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="HorizontalAlignment" Value="Right"></Setter>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TaxRate}" Header="TaxRate" Visibility="Hidden" MinWidth="155"  IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
@@ -154,26 +143,43 @@
                 <ColumnDefinition Width="141*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="79*"></RowDefinition>
-                <RowDefinition Height="43*"></RowDefinition>
-                <RowDefinition Height="115*"></RowDefinition>
+                <RowDefinition Height="58*"></RowDefinition>
+                <RowDefinition Height="58*"></RowDefinition>
+                <RowDefinition Height="58*"></RowDefinition>
+                <RowDefinition Height="58*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Content="Total :-" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="18" Grid.Column="1" Height="31" Width="78"/>
+            <Label Content="Total :-" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1"/>
             <TextBox Name="txtQty" Grid.Column="1" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="80"/>
             <TextBox Name="txtTotal" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Background="White" />
-            <Label Content="Tax :-" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="18"  Grid.Column="1" Grid.Row="1" Height="31" Width="64"/>
-            <TextBox Name="txtTax" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Grid.Row="1"  />
-            <Label Content="Grand-Total :-" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="18" Grid.Row="2" Height="31" Width="143" Grid.Column="1" />
-            <TextBox Name="txtGrandTotal" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Grid.Row="2"  />
+            <Label Content="Tax :-" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1" />
+            <TextBox  Name="taxtTotal" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Grid.Row="1"  />
+            <Label Content="Grand-Total :-" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="2" Grid.Column="1" />
+            <TextBox Name="grandTotal" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Grid.Row="2"  />
+            <Button Content="Save" FontSize="33" FontWeight="Bold" Foreground="White"  Grid.Row="3" Grid.Column="2" Click="Button_Click_1" Margin="5,5,5,5"/>
         </Grid>
-
         <UniformGrid Grid.Column="2" Grid.Row="1" Name="sp21"></UniformGrid>
-        <StackPanel Grid.Column="2" Grid.Row="1" Name="TxtBxStackPanel2" Height="auto" Visibility="Hidden">
-            <Button Content="Go Back" Click="Button_Click_Go_Back" Margin="5,5,5,5"></Button>
-            <Label Name="lblDepartment" Margin="5,5,5,5"></Label>
-            <TextBox Name="txtDeptAmt" Margin="5,5,5,5"></TextBox>
-            <Button Content="Save" Margin="5,5,5,5" Click="Button_Click_Sale_Save"></Button>
-        </StackPanel>
+        <Grid Grid.Column="2" Grid.Row="1" Visibility="Hidden" Name="TxtBxStackPanel2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Button Content="Go Back" Grid.Column="4" Click="Button_Click_Go_Back" ></Button>
+            <Label Name="lblDepartment" Grid.Column="1" Grid.Row="2" Margin="5,5,5,5" FontSize="30"></Label>
+            <TextBox Name="txtDeptAmt" Grid.Row="2" Grid.Column="2" Margin="5,5,5,5"  Text="{Binding LimitedDouble,StringFormat={}{0:00.00}}" FontSize="30"></TextBox>
+            <Button Content="Save" Grid.Column="3" Grid.Row="2" Margin="5,5,5,5" Click="Button_Click_Sale_Save"></Button>
+        </Grid>
         <Grid Grid.Row="2" Grid.Column="2" Margin="0,0,0,-121" Background="#FFF7F7F7">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition ></ColumnDefinition>
@@ -183,22 +189,8 @@
                 <RowDefinition Height="176*" ></RowDefinition>
                 <RowDefinition Height="61*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Button Content="LogOut" Grid.Column="1"  Grid.Row="1" FontFamily="Arial Black" FontSize="24" Foreground="White" Click="onClickShutDown">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FFFD1212" Offset="0"/>
-                        <GradientStop Color="#FFFDD7D7" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
-            </Button>
-            <Button Content="Setting"  Grid.Row="1" FontFamily="Arial Black" FontSize="24" Foreground="White" Click="OnClickSetting">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FF0C5F26" Offset="0"/>
-                        <GradientStop Color="#FFCCFDCF" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
-            </Button>
+            <Button Content="LogOut" Grid.Column="1"  Grid.Row="1" FontSize="33" FontWeight="Bold" Foreground="White" Margin="5,5,5,5" Click="Button_Click_2"></Button>
+            <Button Content="Setting"  Grid.Row="1" FontSize="33" FontWeight="Bold" Foreground="White" Margin="5,5,5,5"></Button>
 
         </Grid>
     </Grid>
