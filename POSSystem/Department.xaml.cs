@@ -122,6 +122,7 @@ namespace POSSystem
                             DeptGridV();
                             TxtDepartment.Text = "";
                             TxtDepartment_Code.Text = "";
+                            TxtTaxRate.Text = "";
                             lblDeptId.Content = 0;
                             btnDeptSave.Content = "Save";
                         }

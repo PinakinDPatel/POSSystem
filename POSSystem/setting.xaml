@@ -1,0 +1,32 @@
+﻿<Window x:Class="POSSystem.setting"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:POSSystem"
+        mc:Ignorable="d"
+        Title="setting" WindowState="Maximized">
+    <Grid>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top" FontSize="14">
+                <MenuItem Header="Store">
+                    <MenuItem Header="StoreSetting"/>
+                    <MenuItem Header="DayClose"/>
+                    <MenuItem Header="User"/>
+                    <MenuItem Header="LogOut"/>
+                </MenuItem>
+                <MenuItem Header="Report">
+                    <MenuItem Header="DayClosing"/>
+                    <MenuItem Header="ItemSales"/>
+                    <MenuItem Header="CashierReport"/>
+                </MenuItem>
+                <MenuItem Header="Setting">
+                    <MenuItem Header="Account"/>
+                    <MenuItem Header="Department"/>
+                    <MenuItem Header="Item"/>
+                </MenuItem>
+            </Menu>
+            <StackPanel></StackPanel>
+        </DockPanel>
+    </Grid>
+</Window>

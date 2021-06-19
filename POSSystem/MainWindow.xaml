@@ -55,26 +55,10 @@
                 <RowDefinition ></RowDefinition>
                 <RowDefinition ></RowDefinition>
             </Grid.RowDefinitions>
-            <Button Content="Cash" Margin="10,10,10,10" Foreground="White" FontSize="33" FontWeight="Bold" Click="Tender_Click">
-                <Button.Effect>
-                    <DropShadowEffect/>
-                </Button.Effect>
-            </Button>
-            <Button Content="Card" Grid.Row="1" Margin="10,10,10,10" Foreground="White" FontSize="33" FontWeight="Bold" Click="Tender_Click">
-                <Button.Effect>
-                    <DropShadowEffect/>
-                </Button.Effect>
-            </Button>
-            <Button Content="Customer" Grid.Row="2" Margin="10,10,10,10" Foreground="White" FontSize="33" FontWeight="Bold" Click="Tender_Click">
-                <Button.Effect>
-                    <DropShadowEffect/>
-                </Button.Effect>
-            </Button>
-            <Button Content="Check" Grid.Row="3" Margin="10,10,10,10" Foreground="White" FontSize="33" FontWeight="Bold" Click="Tender_Click">
-                <Button.Effect>
-                    <DropShadowEffect/>
-                </Button.Effect>
-            </Button>
+            <Button Content="Cash" Margin="10,10,10,10" Foreground="White" FontSize="33" FontWeight="Bold" Click="Tender_Click"></Button>
+            <Button Content="Card" Grid.Row="1" Margin="10,10,10,10" Foreground="White" FontSize="33" FontWeight="Bold" Click="Tender_Click"></Button>
+            <Button Content="Customer" Grid.Row="2" Margin="10,10,10,10" Foreground="White" FontSize="33" FontWeight="Bold" Click="Tender_Click"/>
+            <Button Content="Check" Grid.Row="3" Margin="10,10,10,10" Foreground="White" FontSize="33" FontWeight="Bold" Click="Tender_Click"/>
         </Grid>
         <Grid Grid.Row="0" Grid.Column="2" Background="#FFF7F7F7">
             <Grid.ColumnDefinitions>
@@ -100,14 +84,14 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Label Content="Barcode :-" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
-            <TextBox Name="textBox1"  KeyDown="OnKeyDownHandler" HorizontalAlignment="Center" Height="29" TextWrapping="Wrap" VerticalAlignment="Top" Width="202" BorderBrush="Black" Grid.Row="1"/>
+            <TextBox Name="textBox1"  KeyDown="OnKeyDownHandler" HorizontalAlignment="Center" Height="29" TextWrapping="Wrap" VerticalAlignment="Top" Width="202" BorderBrush="Black" Grid.Row="1" PreviewMouseLeftButtonDown="textbox1_MouseLeftButtonDown"/>
             <Label Name="lblDate" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1"  Grid.RowSpan="2"/>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition ></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <DataGrid Name="JRDGrid" AutoGenerateColumns="False"  HorizontalAlignment="Center" VerticalAlignment="Top" CanUserAddRows="False" Background="White">
+            <DataGrid Name="JRDGrid" AutoGenerateColumns="False"  HorizontalAlignment="Center" VerticalAlignment="Top" CanUserAddRows="False" Background="White" CellEditEnding="JRDGrid_CellEditEnding">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Scancode}"  Header="ScanCode" Width="100*"  IsReadOnly="True"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding description}" Header="Description" Width="155*"  IsReadOnly="True"/>
@@ -138,8 +122,8 @@
         </Grid>
         <Grid Grid.Row="2" Grid.Column="1" Margin="0,0,0,-121" Background="#FFF7F7F7">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="256*" ></ColumnDefinition>
-                <ColumnDefinition Width="158*"></ColumnDefinition>
+                <ColumnDefinition Width="284*" ></ColumnDefinition>
+                <ColumnDefinition Width="130*"></ColumnDefinition>
                 <ColumnDefinition Width="141*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -148,14 +132,39 @@
                 <RowDefinition Height="58*"></RowDefinition>
                 <RowDefinition Height="58*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Content="Total :-" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1"/>
-            <TextBox Name="txtQty" Grid.Column="1" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="80"/>
+            <Label Content="Total :-" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Height="33" Width="69"/>
+            <TextBox Name="txtQty" Grid.Column="1" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"/>
             <TextBox Name="txtTotal" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Background="White" />
-            <Label Content="Tax :-" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1" />
+            <Label Content="Tax :-" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1" Height="33" Width="56" />
             <TextBox  Name="taxtTotal" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Grid.Row="1"  />
-            <Label Content="Grand-Total :-" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="2" Grid.Column="1" />
+            <Label Content="Grand-Total :-" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="2" Grid.Column="1" Height="33" Width="128" />
             <TextBox Name="grandTotal" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Grid.Row="2"  />
             <Button Content="Save" FontSize="33" FontWeight="Bold" Foreground="White"  Grid.Row="3" Grid.Column="2" Click="Button_Click_1" Margin="5,5,5,5"/>
+
+            <Grid Grid.Column="0" Grid.RowSpan="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Button Content="1" Margin="5,5,5,5" Click="NumButton_Click"></Button>
+                <Button Content="2" Grid.Column="1" Margin="5,5,5,5"  Click="NumButton_Click"></Button>
+                <Button Content="3" Grid.Column="2" Margin="5,5,5,5" Click="NumButton_Click"></Button>
+                <Button Content="4" Grid.Column="0" Grid.Row="1" Margin="5,5,5,5" Click="NumButton_Click"></Button>
+                <Button Content="5" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5" Click="NumButton_Click"></Button>
+                <Button Content="6" Grid.Column="2" Grid.Row="1" Margin="5,5,5,5" Click="NumButton_Click"></Button>
+                <Button Content="7" Grid.Column="0" Grid.Row="2" Margin="5,5,5,5" Click="NumButton_Click"></Button>
+                <Button Content="8" Grid.Column="1" Grid.Row="2" Margin="5,5,5,5" Click="NumButton_Click"></Button>
+                <Button Content="9" Grid.Column="2" Grid.Row="2" Margin="5,5,5,5" Click="NumButton_Click"></Button>
+                <Button Content="0" Grid.Column="0" Grid.Row="3" Margin="5,5,5,5" Click="NumButton_Click"></Button>
+                <Button Content="Clear" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="3" Margin="5,5,5,5"></Button>
+            </Grid>
         </Grid>
         <UniformGrid Grid.Column="2" Grid.Row="1" Name="sp21"></UniformGrid>
         <Grid Grid.Column="2" Grid.Row="1" Visibility="Hidden" Name="TxtBxStackPanel2">
