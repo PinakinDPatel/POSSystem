@@ -45,7 +45,7 @@ namespace POSSystem
             dt.Columns.Add("CreateOn");
 
             //con.Close();
-            textBox1.Focus();
+            //textBox1.Focus();
 
             string queryS = "Select Department from Department";
             SqlCommand cmd1 = new SqlCommand(queryS, con);
@@ -364,9 +364,9 @@ namespace POSSystem
         {
             string number = (sender as Button).Content.ToString();
         }
-        //private void textbox1_MouseLeftButtonDown(object sender, RoutedEventArgs e)
-        //{
-        //    NumButton_Click(object sender, RoutedEventArgs e);
-        //}
+        private void tb_GotFocus(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }
