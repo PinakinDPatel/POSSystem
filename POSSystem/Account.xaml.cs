@@ -32,118 +32,172 @@ namespace POSSystem
 
         private void Datable()
         {
-            SqlConnection con = new SqlConnection(constring);
-            string queryDG = "Select * from Account";
-            SqlCommand cmdDG = new SqlCommand(queryDG, con);
-            SqlDataAdapter sdaDG = new SqlDataAdapter(cmdDG);
-            DataTable dtDG = new DataTable();
-            sdaDG.Fill(dtDG);
-            this.dgAccount.ItemsSource = dtDG.AsDataView();
+            try
+            {
+                SqlConnection con = new SqlConnection(constring);
+                string queryDG = "Select * from Account";
+                SqlCommand cmdDG = new SqlCommand(queryDG, con);
+                SqlDataAdapter sdaDG = new SqlDataAdapter(cmdDG);
+                DataTable dtDG = new DataTable();
+                sdaDG.Fill(dtDG);
+                this.dgAccount.ItemsSource = dtDG.AsDataView();
+            }
+            catch (Exception ex) { }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            SqlConnection con = new SqlConnection(constring);
-            int lbl = Convert.ToInt32(lblAccountId.Content);
-            string queryS = "Select Name from Account where Name=@account";
-            SqlCommand cmd = new SqlCommand(queryS, con);
-            cmd.Parameters.AddWithValue("@account", txtaccount.Text);
-            SqlDataAdapter sda = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
-            sda.Fill(dt);
-            con.Open();
-            int i = cmd.ExecuteNonQuery();
-            con.Close();
-            if (lbl == 0)
+            try
             {
-                if (dt.Rows.Count > 0)
-                {
-                    MessageBox.Show("UserName Or Password Already Exist!");
-                }
-                else
-                {
+                if (txtaccount.Text == "")
+                    txtaccount.BorderBrush = System.Windows.Media.Brushes.Red;
+                if (drphead.Text == "")
+                    cmb1BorderHead.BorderBrush = System.Windows.Media.Brushes.Red;
+                if (txtAddress.Text == "")
+                    txtAddress.BorderBrush = System.Windows.Media.Brushes.Red;
+                if (txtMobile.Text == "")
+                    txtMobile.BorderBrush = System.Windows.Media.Brushes.Red;
+                if (txtEmail.Text == "")
+                    txtEmail.BorderBrush = System.Windows.Media.Brushes.Red;
 
-                    string time = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
-                    string queryI = "Insert into Account(Name,Head,Address,Mobile,Email,CreateOn)Values(@account,@head,@address,@mobile,@email,@time)";
-                    SqlCommand cmdI = new SqlCommand(queryI, con);
-                    cmdI.Parameters.AddWithValue("@account", txtaccount.Text);
-                    cmdI.Parameters.AddWithValue("@head", drphead.Text);
-                    cmdI.Parameters.AddWithValue("@address", txtAddress.Text);
-                    cmdI.Parameters.AddWithValue("@mobile", txtMobile.Text);
-                    cmdI.Parameters.AddWithValue("@email", txtEmail.Text);
-                    cmdI.Parameters.AddWithValue("@time", time);
+                if (txtaccount.Text != "" && drphead.Text != "" && txtAddress.Text != "" && txtMobile.Text != "" && txtEmail.Text != "")
+                {
+                    SqlConnection con = new SqlConnection(constring);
+                    int lbl = Convert.ToInt32(lblAccountId.Content);
+                    string queryS = "Select Name from Account where Name=@account";
+                    SqlCommand cmd = new SqlCommand(queryS, con);
+                    cmd.Parameters.AddWithValue("@account", txtaccount.Text);
+                    SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    sda.Fill(dt);
                     con.Open();
-                    cmdI.ExecuteNonQuery();
+                    int i = cmd.ExecuteNonQuery();
                     con.Close();
-                    Datable();
-                    txtaccount.Text = "";
-                    txtAddress.Text = "";
-                    txtEmail.Text = "";
-                    txtMobile.Text = "";
-                    drphead.Text = "";
-                    lblAccountId.Content = 0;
+                    if (lbl == 0)
+                    {
+                        if (dt.Rows.Count > 0)
+                        {
+                            MessageBox.Show("UserName Or Password Already Exist!");
+                        }
+                        else
+                        {
+
+                            string time = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
+                            string queryI = "Insert into Account(Name,Head,Address,Mobile,Email,CreateOn)Values(@account,@head,@address,@mobile,@email,@time)";
+                            SqlCommand cmdI = new SqlCommand(queryI, con);
+                            cmdI.Parameters.AddWithValue("@account", txtaccount.Text);
+                            cmdI.Parameters.AddWithValue("@head", drphead.Text);
+                            cmdI.Parameters.AddWithValue("@address", txtAddress.Text);
+                            cmdI.Parameters.AddWithValue("@mobile", txtMobile.Text);
+                            cmdI.Parameters.AddWithValue("@email", txtEmail.Text);
+                            cmdI.Parameters.AddWithValue("@time", time);
+                            con.Open();
+                            cmdI.ExecuteNonQuery();
+                            con.Close();
+                            Datable();
+                            txtaccount.Text = "";
+                            txtAddress.Text = "";
+                            txtEmail.Text = "";
+                            txtMobile.Text = "";
+                            drphead.Text = "";
+                            lblAccountId.Content = 0;
+                        }
+                    }
+                    else
+                    {
+                        if (dt.Rows.Count > 0)
+                        {
+                            MessageBox.Show("UserName Or Password Already Exist!");
+                        }
+                        else
+                        {
+                            string time = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
+                            string queryIU = "Update Account Set Name=@account,Head=@head,Mobile=@mobile,Address=@address,Email=@email,CreateOn=@time Where AccountId='" + lblAccountId.Content + "'";
+                            SqlCommand cmdI = new SqlCommand(queryIU, con);
+                            cmdI.Parameters.AddWithValue("@account", txtaccount.Text);
+                            cmdI.Parameters.AddWithValue("@head", drphead.Text);
+                            cmdI.Parameters.AddWithValue("@address", txtAddress.Text);
+                            cmdI.Parameters.AddWithValue("@mobile", txtMobile.Text);
+                            cmdI.Parameters.AddWithValue("@email", txtEmail.Text);
+                            cmdI.Parameters.AddWithValue("@time", time);
+                            con.Open();
+                            cmdI.ExecuteNonQuery();
+                            con.Close();
+                            Datable();
+                            txtaccount.Text = "";
+                            txtAddress.Text = "";
+                            txtEmail.Text = "";
+                            txtMobile.Text = "";
+                            drphead.Text = "";
+                            lblAccountId.Content = 0;
+                            btnSave.Content = "Save";
+                        }
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                if (dt.Rows.Count > 0)
-                {
-                    MessageBox.Show("UserName Or Password Already Exist!");
-                }
-                else
-                {
-                    string time = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
-                    string queryIU = "Update Account Set Name=@account,Head=@head,Mobile=@mobile,Address=@address,Email=@email,CreateOn=@time Where AccountId='" + lblAccountId.Content + "'";
-                    SqlCommand cmdI = new SqlCommand(queryIU, con);
-                    cmdI.Parameters.AddWithValue("@account", txtaccount.Text);
-                    cmdI.Parameters.AddWithValue("@head", drphead.Text);
-                    cmdI.Parameters.AddWithValue("@address", txtAddress.Text);
-                    cmdI.Parameters.AddWithValue("@mobile", txtMobile.Text);
-                    cmdI.Parameters.AddWithValue("@email", txtEmail.Text);
-                    cmdI.Parameters.AddWithValue("@time", time);
-                    con.Open();
-                    cmdI.ExecuteNonQuery();
-                    con.Close();
-                    Datable();
-                    txtaccount.Text = "";
-                    txtAddress.Text = "";
-                    txtEmail.Text = "";
-                    txtMobile.Text = "";
-                    drphead.Text = "";
-                    lblAccountId.Content = 0;
-                    btnSave.Content = "Save";
-                }
             }
         }
         private void onEdit(object sender, RoutedEventArgs e)
         {
-            DataRowView row = (DataRowView)dgAccount.SelectedItem;
-            lblAccountId.Content = row["AccountId"].ToString();
-            txtaccount.Text = row["Name"].ToString();
-            txtAddress.Text = row["Address"].ToString();
-            txtEmail.Text = row["Email"].ToString();
-            txtMobile.Text = row["Mobile"].ToString();
-            drphead.Text = row["Head"].ToString();
-            btnSave.Content = "Update";
+            try
+            {
+                DataRowView row = (DataRowView)dgAccount.SelectedItem;
+                lblAccountId.Content = row["AccountId"].ToString();
+                txtaccount.Text = row["Name"].ToString();
+                txtAddress.Text = row["Address"].ToString();
+                txtEmail.Text = row["Email"].ToString();
+                txtMobile.Text = row["Mobile"].ToString();
+                drphead.Text = row["Head"].ToString();
+                btnSave.Content = "Update";
+            }
+            catch (Exception ex) { }
 
         }
         private void onDelete(object sender, RoutedEventArgs e)
         {
-            DataRowView row = (DataRowView)dgAccount.SelectedItem;
-            row.Delete();
-
-            int rowsAffected;
-            using (SqlConnection conn = new SqlConnection(constring))
+            try
             {
-                SqlCommand cmd = new SqlCommand("DELETE from Account WHERE AccountId = " + row["AccountId"], conn);
-                cmd.Connection.Open();
-                rowsAffected = cmd.ExecuteNonQuery();
+                DataRowView row = (DataRowView)dgAccount.SelectedItem;
+                row.Delete();
+
+                int rowsAffected;
+                using (SqlConnection conn = new SqlConnection(constring))
+                {
+                    SqlCommand cmd = new SqlCommand("DELETE from Account WHERE AccountId = " + row["AccountId"], conn);
+                    cmd.Connection.Open();
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+                if (rowsAffected > 0)
+                    dtDG.AcceptChanges();
+                else
+                    dtDG.RejectChanges();
+                lblAccountId.Content = 0;
             }
-            if (rowsAffected > 0)
-                dtDG.AcceptChanges();
-            else
-                dtDG.RejectChanges();
-            lblAccountId.Content = 0;
+            catch (Exception ex) { }
+        }
+
+        private void textBox_txtaccount(object sender, TextChangedEventArgs e)
+        {
+            txtaccount.BorderBrush = System.Windows.Media.Brushes.Gray;
+        }
+        private void textBox_txtAddress(object sender, TextChangedEventArgs e)
+        {
+            txtAddress.BorderBrush = System.Windows.Media.Brushes.Gray;
+        }
+        private void textBox_txtMobile(object sender, TextChangedEventArgs e)
+        {
+            txtMobile.BorderBrush = System.Windows.Media.Brushes.Gray;
+        }
+
+        private void textBox_txtEmail(object sender, TextChangedEventArgs e)
+        {
+            txtEmail.BorderBrush = System.Windows.Media.Brushes.Gray;
+        }
+        private void drphead_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            cmb1BorderHead.BorderBrush = System.Windows.Media.Brushes.White;
         }
     }
 }

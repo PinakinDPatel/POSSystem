@@ -20,43 +20,55 @@ namespace POSSystem
 
         private void btnclick(object sender, RoutedEventArgs e)
         {
-            string number = (sender as Button).Content.ToString();
-            TxtPassword.Text += number;
+            try
+            {
+                string number = (sender as Button).Content.ToString();
+                TxtPassword.Text += number;
+            }
+            catch (Exception ex) { }
         }
 
         private void TxtClear_Click(object sender, RoutedEventArgs e)
         {
-            TxtPassword.Text = "";
+            try
+            {
+                TxtPassword.Text = "";
+            }
+            catch (Exception ex) { }
         }
 
         private void TxtSignIn_Click(object sender, RoutedEventArgs e)
         {
-            SqlConnection con = new SqlConnection(conString);
-            string query = "select * from userregi where password=@password ";
-            SqlCommand cmd = new SqlCommand(query, con);
-
-            cmd.Parameters.AddWithValue("@password", TxtPassword.Text);
-            SqlDataAdapter sda = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
-            sda.Fill(dt);
-            con.Open();
-            int i = cmd.ExecuteNonQuery();
-            con.Close();
-
-            if (dt.Rows.Count > 0)
+            try
             {
-                
-                string username = dt.Rows[0]["UserName"].ToString();
-                MainWindow frm = new MainWindow(username);
-                Department Dept = new Department(username);
-                Dept.Show();
-                this.Close();
+                SqlConnection con = new SqlConnection(conString);
+                string query = "select * from userregi where password=@password ";
+                SqlCommand cmd = new SqlCommand(query, con);
 
+                cmd.Parameters.AddWithValue("@password", TxtPassword.Text);
+                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                sda.Fill(dt);
+                con.Open();
+                int i = cmd.ExecuteNonQuery();
+                con.Close();
+
+                if (dt.Rows.Count > 0)
+                {
+
+                    string username = dt.Rows[0]["UserName"].ToString();
+                    MainWindow frm = new MainWindow(username);
+                    Department Dept = new Department(username);
+                    Dept.Show();
+                    this.Close();
+
+                }
+                else
+                {
+                    MessageBox.Show("Please Enter Correct Password");
+                }
             }
-            else
-            {
-                MessageBox.Show("Please Enter Correct Password");
-            }
+            catch (Exception ex) { }
         }
     }
 }

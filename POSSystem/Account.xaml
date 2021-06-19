@@ -12,41 +12,43 @@
             <Label Content="Account" HorizontalAlignment="Center" Margin="0,9,0,0" FontFamily="Arial Black" FontSize="36" Foreground="Black"/>
         </StackPanel>
         <Label Content="Account Name :-" HorizontalAlignment="Left" Margin="69,100,0,0" VerticalAlignment="Top" Foreground="#FF6549C7" FontFamily="Arial Black" FontSize="14"/>
-        <TextBox HorizontalAlignment="Left" Name="txtaccount" Height="28" Margin="211,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="192" FontSize="14">
+        <TextBox HorizontalAlignment="Left" TextChanged="textBox_txtaccount" Name="txtaccount" Height="28" Margin="211,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="192" FontSize="14">
             <TextBox.Effect>
                 <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFD7C9F3"/>
             </TextBox.Effect>
         </TextBox>
         <Label Content="Head :-" HorizontalAlignment="Left" Margin="142,149,0,0" VerticalAlignment="Top" Foreground="#FF6549C7" FontFamily="Arial Black" FontSize="14"/>
-        <ComboBox Name="drphead" HorizontalAlignment="Left" Margin="211,152,0,0" VerticalAlignment="Top" Width="192" Height="28">
-            <ComboBox.Background>
-                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                    <GradientStop Color="#FFF0F0F0" Offset="0"/>
-                    <GradientStop Color="White" Offset="1"/>
-                </LinearGradientBrush>
-            </ComboBox.Background>
-            <ComboBoxItem Content="Tender" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
-            <ComboBoxItem Content="Customers" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
-            <ComboBoxItem Content="Vendor" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
-            <ComboBoxItem Content="Expence" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
-            <ComboBoxItem Content="Income" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
-            <ComboBoxItem Content="Employee" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
-        </ComboBox>
+        <Border Name="cmb1BorderHead" BorderThickness="1" HorizontalAlignment="Left"  Grid.Row="1" Margin="211,152,0,0" VerticalAlignment="Top" Width="192" Height="28">
+            <ComboBox Name="drphead" SelectionChanged="drphead_SelectionChanged">
+                <ComboBox.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </ComboBox.Background>
+                <ComboBoxItem Content="Tender" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
+                <ComboBoxItem Content="Customers" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
+                <ComboBoxItem Content="Vendor" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
+                <ComboBoxItem Content="Expence" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
+                <ComboBoxItem Content="Income" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
+                <ComboBoxItem Content="Employee" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
+            </ComboBox>
+        </Border>
         <Label Content="Address :-" HorizontalAlignment="Left" Margin="119,197,0,0" VerticalAlignment="Top" Foreground="#FF6549C7" FontFamily="Arial Black" FontSize="14"/>
-        <TextBox Name="txtAddress" HorizontalAlignment="Left" Height="28" Margin="211,197,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="192" FontSize="14">
+        <TextBox Name="txtAddress" HorizontalAlignment="Left" TextChanged="textBox_txtAddress" Height="28" Margin="211,197,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="192" FontSize="14">
             <TextBox.Effect>
                 <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFD7C9F3"/>
             </TextBox.Effect>
         </TextBox>
         <Label Content="Mobile No. :-" HorizontalAlignment="Left" Margin="482,100,0,0" VerticalAlignment="Top" Foreground="#FF6549C7" FontFamily="Arial Black" FontSize="14"/>
-        <TextBox Name="txtMobile" HorizontalAlignment="Left" Height="28" Margin="587,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="192" FontSize="14">
+        <TextBox Name="txtMobile" HorizontalAlignment="Left" TextChanged="textBox_txtMobile" Height="28" Margin="587,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="192" FontSize="14">
             <TextBox.Effect>
                 <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFD7C9F3"/>
             </TextBox.Effect>
         </TextBox>
         <Label Name="lblAccountId" Visibility="Hidden"></Label>
         <Label Content="Email :-" HorizontalAlignment="Left" Margin="520,149,0,0" VerticalAlignment="Top" Foreground="#FF6549C7" FontFamily="Arial Black" FontSize="14"/>
-        <TextBox Name="txtEmail" HorizontalAlignment="Left" Height="28" Margin="587,152,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="192" FontSize="14">
+        <TextBox Name="txtEmail" HorizontalAlignment="Left" TextChanged="textBox_txtEmail" Height="28" Margin="587,152,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="192" FontSize="14">
             <TextBox.Effect>
                 <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFD7C9F3"/>
             </TextBox.Effect>

@@ -23,8 +23,6 @@ namespace POSSystem
             sdaD.Fill(dtD);
 
             drpDepartment.ItemsSource = dtD.DefaultView;
-
-            
         }
     }
 }
