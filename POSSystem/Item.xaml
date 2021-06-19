@@ -7,13 +7,12 @@
       mc:Ignorable="d" 
       Height="519.597" Width="818.326" WindowStartupLocation="CenterScreen" WindowStyle="None">
     <!--d:DesignHeight="519.597" d:DesignWidth="1018.326" WindowStartupLocation="CenterScreen" WindowStyle="None">-->
-
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="166*"></ColumnDefinition>
-            <ColumnDefinition Width="239*"></ColumnDefinition>
-            <ColumnDefinition Width="166*"></ColumnDefinition>
-            <ColumnDefinition Width="239*"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
@@ -42,7 +41,6 @@
         <TextBox Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
         <Label Content="FoodStamp" HorizontalAlignment="Right" Grid.Row="6" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
         <TextBox Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
-
         <Label Content="Min Age" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
         <TextBox Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
         <Label Content="UnitCase" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="2" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
@@ -55,25 +53,7 @@
         <TextBox Grid.Column="3" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
         <Label Content="TaxRate" HorizontalAlignment="Right" Grid.Row="6" Grid.Column="2" VerticalAlignment="Top"  FontFamily="Arial Black" FontSize="16"/>
         <TextBox Grid.Column="3" Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
-        <Button Grid.ColumnSpan="4" Content="Save" HorizontalAlignment="Center" Grid.Row="7" VerticalAlignment="Top" Width="158" Height="40" Foreground="White" FontFamily="Arial Black" FontSize="18" >
-            <Button.Effect>
-                <DropShadowEffect BlurRadius="2" ShadowDepth="3"/>
-            </Button.Effect>
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF6422C3" Offset="0"/>
-                    <GradientStop Color="#FFE5BAFF" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-        <Label Content="Create New Item" Grid.ColumnSpan="4" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Arial Black" FontSize="18">
-            <Label.Foreground>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF6F33D6" Offset="0"/>
-                    <GradientStop Color="#FFD0B6FF" Offset="1"/>
-                </LinearGradientBrush>
-            </Label.Foreground>
-        </Label>
-
+        <Button Grid.ColumnSpan="4" Content="Save" HorizontalAlignment="Center" Grid.Row="7" VerticalAlignment="Top" Width="158" Height="40" Foreground="White" FontSize="30" />
+        <Label Content="Create New Item" Grid.ColumnSpan="4" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
     </Grid>
 </Window>

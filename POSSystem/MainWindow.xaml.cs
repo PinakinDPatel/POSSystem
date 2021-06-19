@@ -7,6 +7,7 @@ using System.Windows.Media.Effects;
 using System.Data.SqlClient;
 using System.Windows.Input;
 using System.Collections.Generic;
+using System.Windows.Data;
 
 namespace POSSystem
 {
@@ -211,8 +212,7 @@ namespace POSSystem
                 }
                 Qtysum += decimal.Parse(dr.ItemArray[4].ToString());
             }
-            //Taxsum = sum * Taxsum / 100;
-            //Taxsum += decimal.Parse(Convert.ToDecimal(decimal.Parse(dr.ItemArray[3].ToString()) * decimal.Parse(dr.ItemArray[5].ToString()) / 100).ToString());
+            
             Total = sum + Taxsum;
             txtTotal.Text = sum.ToString("0.00");
             txtQty.Text = Qtysum.ToString();
@@ -311,7 +311,7 @@ namespace POSSystem
             con.Open();
             objbulk.WriteToServer(dt);
             con.Close();
-
+            
             TxtCashReturn.Text = "";
             TxtCashReceive.Text = "";
             cbcustomer.Text = "";
@@ -339,5 +339,34 @@ namespace POSSystem
             login.Show();
             
         }
+
+        private void JRDGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                var column = e.Column as DataGridBoundColumn;
+                if (column != null)
+                {
+                    var bindingPath = (column.Binding as Binding).Path.Path;
+                    if (bindingPath == "quantity")
+                    {
+                        int rowIndex = e.Row.GetIndex();
+                        var el = e.EditingElement as TextBox;
+                        // rowIndex has the row index
+                        // bindingPath has the column's binding
+                        // el.Text has the new, user-entered value
+                    }
+                }
+            }
+        }
+
+        private void NumButton_Click(object sender, RoutedEventArgs e)
+        {
+            string number = (sender as Button).Content.ToString();
+        }
+        //private void textbox1_MouseLeftButtonDown(object sender, RoutedEventArgs e)
+        //{
+        //    NumButton_Click(object sender, RoutedEventArgs e);
+        //}
     }
 }

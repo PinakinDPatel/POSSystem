@@ -45,7 +45,7 @@ namespace POSSystem
         {
             SqlConnection con = new SqlConnection(constring);
             int lbl = Convert.ToInt32(lblAccountId.Content);
-            string queryS = "Select Name from Account where Name=@account";
+            string queryS = "Select Name from Account where Name=@account and AccountId!='"+ lblAccountId.Content + "'";
             SqlCommand cmd = new SqlCommand(queryS, con);
             cmd.Parameters.AddWithValue("@account", txtaccount.Text);
             SqlDataAdapter sda = new SqlDataAdapter(cmd);

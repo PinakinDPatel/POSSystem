@@ -15,18 +15,13 @@ using System.Windows.Shapes;
 namespace POSSystem
 {
     /// <summary>
-    /// Interaction logic for Sale.xaml
+    /// Interaction logic for setting.xaml
     /// </summary>
-    public partial class Sale : Window
+    public partial class setting : Window
     {
-        public Sale()
+        public setting()
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

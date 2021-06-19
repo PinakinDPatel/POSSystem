@@ -40,16 +40,14 @@ namespace POSSystem
             SqlDataAdapter sda = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             sda.Fill(dt);
-
             DeptGrid.ItemsSource = dt.DefaultView;
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             string date = DateTime.Now.ToString("yyyy-MM-dd HH:MM:ss");
             SqlConnection con = new SqlConnection(conString);
             int lbl = Convert.ToInt32(lblDeptId.Content);
-            string queryD = "Select Department,DepartmentCode from department where Department=@department or DepartmentCode=@deptCode";
+            string queryD = "Select Department,DepartmentCode from department where (Department=@department or DepartmentCode=@deptCode) and departmentid!='" + lblDeptId.Content + "'";
             SqlCommand cmd = new SqlCommand(queryD, con);
             cmd.Parameters.AddWithValue("@department", TxtDepartment.Text);
             cmd.Parameters.AddWithValue("@deptCode", TxtDepartment_Code.Text);
@@ -59,7 +57,7 @@ namespace POSSystem
             con.Open();
             if (lbl == 0)
             {
-                
+
                 if (dtDept.Rows.Count > 0)
                 {
                     MessageBox.Show("Department or DepartmentCode Already Exist!");
@@ -82,8 +80,8 @@ namespace POSSystem
                     TxtTaxRate.Text = "";
                     DeptGridV();
                     lblDeptId.Content = 0;
+                    TxtTaxRate.Text = "";
                 }
-
             }
             else
             {
@@ -91,7 +89,6 @@ namespace POSSystem
                 {
                     MessageBox.Show("Department or DepartmentCode Already Exist!");
                 }
-
                 else
                 {
                     string queryIU = "Update Department Set Department=@department,DepartmentCode=@deptCode,CreateOn=@time,TaxRate=@taxrate,CreateBy=@createby Where DepartmentId='" + lblDeptId.Content + "'";
@@ -101,7 +98,6 @@ namespace POSSystem
                     cmdI.Parameters.AddWithValue("@time", date);
                     cmdI.Parameters.AddWithValue("@taxrate", TxtTaxRate.Text);
                     cmdI.Parameters.AddWithValue("@createby", lblusername.Content);
-                    con.Open();
                     cmdI.ExecuteNonQuery();
                     con.Close();
                     DeptGridV();
@@ -109,9 +105,9 @@ namespace POSSystem
                     TxtDepartment_Code.Text = "";
                     lblDeptId.Content = 0;
                     btnDeptSave.Content = "Save";
+                    TxtTaxRate.Text = "";
                 }
             }
-
         }
         private void onEdit(object sender, RoutedEventArgs e)
         {
@@ -121,7 +117,6 @@ namespace POSSystem
             TxtDepartment_Code.Text = row["DepartmentCode"].ToString();
             TxtTaxRate.Text = row["TaxRate"].ToString();
             btnDeptSave.Content = "Update";
-
         }
         private void onDelete(object sender, RoutedEventArgs e)
         {
