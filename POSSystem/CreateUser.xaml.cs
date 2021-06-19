@@ -30,35 +30,39 @@ namespace POSSystem
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            SqlConnection con = new SqlConnection(constring);
-            string queryS = "Select UserName,PassWord from UserRegi where UserName=@userName or Password=@password";
-            SqlCommand cmd = new SqlCommand(queryS, con);
-            cmd.Parameters.AddWithValue("@userName", txtUser.Text);
-            cmd.Parameters.AddWithValue("@password", txtPassword.Text);
-            SqlDataAdapter sda = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
-            sda.Fill(dt);
-            con.Open();
-            int i = cmd.ExecuteNonQuery();
-            con.Close();
-            if (dt.Rows.Count > 0)
+            try
             {
-                MessageBox.Show("UserName Or Password Already Exist!");
-            }
-            else
-            {
-                string time = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
-                string queryI = "Insert into UserRegi(UserName,Password,CreateOn)Values(@userName,@password,@time)";
-                SqlCommand cmdI = new SqlCommand(queryI, con);
-                cmdI.Parameters.AddWithValue("@userName", txtUser.Text);
-                cmdI.Parameters.AddWithValue("@password", txtPassword.Text);
-                cmdI.Parameters.AddWithValue("@time", time);
+                SqlConnection con = new SqlConnection(constring);
+                string queryS = "Select UserName,PassWord from UserRegi where UserName=@userName or Password=@password";
+                SqlCommand cmd = new SqlCommand(queryS, con);
+                cmd.Parameters.AddWithValue("@userName", txtUser.Text);
+                cmd.Parameters.AddWithValue("@password", txtPassword.Text);
+                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                sda.Fill(dt);
                 con.Open();
-                cmdI.ExecuteNonQuery();
+                int i = cmd.ExecuteNonQuery();
                 con.Close();
-                txtPassword.Text = "";
-                txtUser.Text = "";
+                if (dt.Rows.Count > 0)
+                {
+                    MessageBox.Show("UserName Or Password Already Exist!");
+                }
+                else
+                {
+                    string time = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
+                    string queryI = "Insert into UserRegi(UserName,Password,CreateOn)Values(@userName,@password,@time)";
+                    SqlCommand cmdI = new SqlCommand(queryI, con);
+                    cmdI.Parameters.AddWithValue("@userName", txtUser.Text);
+                    cmdI.Parameters.AddWithValue("@password", txtPassword.Text);
+                    cmdI.Parameters.AddWithValue("@time", time);
+                    con.Open();
+                    cmdI.ExecuteNonQuery();
+                    con.Close();
+                    txtPassword.Text = "";
+                    txtUser.Text = "";
+                }
             }
+            catch (Exception ex) { }
         }
     }
 }

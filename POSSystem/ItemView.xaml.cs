@@ -10,6 +10,9 @@ using Newtonsoft.Json;
 using System.Linq;
 using System.Data.OleDb;
 using ExcelDataReader;
+using System.Windows.Input;
+using System.Diagnostics;
+using System.Text;
 
 namespace POSSystem
 {
@@ -35,6 +38,7 @@ namespace POSSystem
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 sda.Fill(dt);
+                dgitem.CanUserAddRows = false;
                 dgitem.ItemsSource = dt.DefaultView;
             }
             catch (Exception e)
@@ -179,8 +183,8 @@ namespace POSSystem
             }
         }
 
-        List<string> strList1 = new List<String>();
-        List<string> strList2 = new List<String>();
+        List<string> strList1 = new List<string>();
+        List<string> strList2 = new List<string>();
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -240,6 +244,7 @@ namespace POSSystem
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
                 DataTable dtItem = new DataTable();
                 sda.Fill(dtItem);
+                dgitem.CanUserAddRows = false;
                 dgitem.ItemsSource = dtItem.DefaultView;
 
                 dgitem.Visibility = Visibility.Visible;
@@ -301,6 +306,7 @@ namespace POSSystem
                     da.Fill(dt);
                     connection.Close();
                 }
+                dgitem.CanUserAddRows = false;
                 dgitem.ItemsSource = dt.DefaultView;
 
                 txtScanCode.Text = "";
@@ -368,6 +374,7 @@ namespace POSSystem
                     cmbHeader.Text = "";
                     txtChangeValue.Text = "";
 
+                    dgitem.CanUserAddRows = false;
                     dgitem.ItemsSource = dt.DefaultView;
                     grdSecondPart.Visibility = Visibility.Visible;
                     grdSecondPart2.Visibility = Visibility.Hidden;
@@ -377,6 +384,30 @@ namespace POSSystem
             {
                 throw ex6;
             }
+        }
+
+        private void BtnSearch_Click_ExportCSV(object sender, RoutedEventArgs e)
+        {
+            DataTable dt = new DataTable();
+            dt = ((DataView)dgitem.ItemsSource).ToTable();
+            StringBuilder sb = new StringBuilder();
+            string[] columnNames = dt.Columns.Cast<DataColumn>().Select(column => column.ColumnName).ToArray();
+            sb.AppendLine(string.Join(",", columnNames));
+            foreach (DataRow row in dt.Rows)
+            {
+                string[] fields = row.ItemArray.Select(field => field.ToString()).ToArray();
+                sb.AppendLine(string.Join(",", fields));
+            }
+            File.WriteAllText("test.csv", sb.ToString());
+            try
+            {
+                StreamWriter sw = new StreamWriter("export.csv");
+                sw.WriteLine(sb.ToString());
+                sw.Close();
+                Process.Start("export.csv");
+            }
+            catch (Exception ex)
+            { }
         }
 
         private void ComboBox_SelectionChanged_Field(object sender, SelectionChangedEventArgs e)
@@ -390,6 +421,7 @@ namespace POSSystem
         }
     }
 }
+
 public class ItemModel
 {
     public int ItemId { get; set; }

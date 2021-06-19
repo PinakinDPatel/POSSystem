@@ -94,6 +94,7 @@
             <Button Name="btnChangeValue" Content="Change" Grid.Row="1" Grid.Column="2" Click="BtnSearch_Click_ChangeValue" Grid.RowSpan="1"/>
 
         </Grid>
+        <Button Name="btnExportCSV" Content="Export CSV" Click="BtnSearch_Click_ExportCSV"  Grid.Row="1"  Grid.Column="5" />
         <DataGrid Name="dgitem" Grid.Row="2" Grid.ColumnSpan="3" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding ScanCode}" Header="ScanCode" Width="120*"/>
