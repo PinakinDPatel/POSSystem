@@ -84,7 +84,7 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Label Content="Barcode :-" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
-            <TextBox Name="textBox1"  KeyDown="OnKeyDownHandler" HorizontalAlignment="Center" Height="29" TextWrapping="Wrap" VerticalAlignment="Top" Width="202" BorderBrush="Black" Grid.Row="1" PreviewMouseLeftButtonDown="textbox1_MouseLeftButtonDown"/>
+            <TextBox Name="textBox1"  KeyDown="OnKeyDownHandler" HorizontalAlignment="Center" Height="29" TextWrapping="Wrap" VerticalAlignment="Top" Width="202" BorderBrush="Black" Grid.Row="1" />
             <Label Name="lblDate" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1"  Grid.RowSpan="2"/>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="1">
