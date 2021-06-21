@@ -36,7 +36,7 @@
         <UniformGrid Grid.Column="0" Grid.Row="2" Margin="0,0,0,-121" Name="sp02"  Background="#FFF7F7F7"></UniformGrid>
         <StackPanel Grid.Column="0" Grid.Row="2" Margin="0,0,0,-121" Height="Auto" Name="cashTxtPanel" Visibility="Hidden">
             <Label Content="Cash-Receive" Name="lblCashReceive" HorizontalAlignment="Center" Margin="0,20" FontFamily="Arial Black" FontSize="18" />
-            <TextBox Name="TxtCashReceive" Margin="10,-15,10,0" Height="41" FontSize="24" FontFamily="Arial Black" KeyDown="TxtCashReceive_KeyDown"/>
+            <TextBox Name="TxtCashReceive" GotFocus="textbox_GotFocus" Margin="10,-15,10,0" Height="41" FontSize="24" FontFamily="Arial Black" KeyDown="TxtCashReceive_KeyDown"/>
             <Label Content="Cash-Return" Name="lblCashReturn" HorizontalAlignment="Center" Margin="0,20" FontFamily="Arial Black" FontSize="18"/>
             <TextBox Name="TxtCashReturn" Margin="10,-15,10,0" Height="41" FontSize="24" TextAlignment="Center" FontFamily="Arial Black"/>
         </StackPanel>
@@ -46,7 +46,7 @@
         </StackPanel>
         <StackPanel Grid.Column="0" Grid.Row="2"  Height="Auto" Name="checkTxtPanel" Visibility="Hidden">
             <Label Content="Enter Check No."  HorizontalAlignment="Center"></Label>
-            <TextBox Margin="5,5,5,5" Height="30" Name="TxtCheck"></TextBox>
+            <TextBox Margin="5,5,5,5" GotFocus="textbox_GotFocus" Height="30" Name="TxtCheck"></TextBox>
         </StackPanel>
         <Grid Grid.Row="1" Grid.Column="0">
             <Grid.RowDefinitions>
@@ -71,7 +71,7 @@
             </Grid.RowDefinitions>
             <Label Grid.Column="1" Content="UserName" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
             <Label Content="Transaction ID" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
-            <Label Grid.Row="1" Name="lblTranid" Content="254862155"  VerticalAlignment="Top" HorizontalAlignment="Center"/>
+            <Label Grid.Row="1" Name="lblTranid"  VerticalAlignment="Top" HorizontalAlignment="Center"/>
             <Label Name="lblusername" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center"/>
         </Grid>
         <Grid Grid.Row="0" Grid.Column="1" Background="#FFF7F7F7">
@@ -84,7 +84,7 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Label Content="Barcode :-" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
-            <TextBox Name="textBox1"  KeyDown="OnKeyDownHandler" HorizontalAlignment="Center" Height="29" TextWrapping="Wrap" VerticalAlignment="Top" Width="202" BorderBrush="Black" Grid.Row="1" />
+            <TextBox Name="textBox1" GotFocus="textbox_GotFocus"  KeyDown="OnKeyDownHandler" HorizontalAlignment="Center" Height="29" TextWrapping="Wrap" VerticalAlignment="Top" Width="202" BorderBrush="Black" Grid.Row="1" />
             <Label Name="lblDate" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1"  Grid.RowSpan="2"/>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="1">
@@ -186,7 +186,7 @@
             </Grid.RowDefinitions>
             <Button Content="Go Back" Grid.Column="4" Click="Button_Click_Go_Back" ></Button>
             <Label Name="lblDepartment" Grid.Column="1" Grid.Row="2" Margin="5,5,5,5" FontSize="30"></Label>
-            <TextBox Name="txtDeptAmt" Grid.Row="2" Grid.Column="2" Margin="5,5,5,5"  Text="{Binding LimitedDouble,StringFormat={}{0:00.00}}" FontSize="30"></TextBox>
+            <TextBox Name="txtDeptAmt" GotFocus="textbox_GotFocus" Grid.Row="2" Grid.Column="2" Margin="5,5,5,5"  Text="{Binding LimitedDouble,StringFormat={}{0:00.00}}" FontSize="30"></TextBox>
             <Button Content="Save" Grid.Column="3" Grid.Row="2" Margin="5,5,5,5" Click="Button_Click_Sale_Save"></Button>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="2" Margin="0,0,0,-121" Background="#FFF7F7F7">

@@ -23,6 +23,9 @@ namespace POSSystem
         DataTable dt = new DataTable();
         string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
         //string conString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=E:\PSPCStore\POSSystem\POSSystem\Database1.mdf;Integrated Security=True";
+
+        string txtGotFocusStr = string.Empty;
+
         public MainWindow()
         {
             try
@@ -97,6 +100,22 @@ namespace POSSystem
                 sdacustomer.Fill(dtAcc);
                 cbcustomer.ItemsSource = dtAcc.DefaultView;
                 cbcustomer.DisplayMemberPath = "Name";
+
+                // Load Transaction Id Label.
+                using (SqlConnection conn = new SqlConnection(conString))
+                {
+                    conn.Open();
+                    string query1 = "SELECT TOP 1 * FROM Transactions ORDER BY TransactionId DESC";
+                    using (SqlCommand cmd2 = new SqlCommand(query1, conn))
+                    {
+                        SqlDataReader data = cmd2.ExecuteReader();
+                        if (data.Read())
+                        {
+                            lblTranid.Content = Convert.ToInt32(data.GetValue(0).ToString()) + 1;
+                        }
+                    }
+                    conn.Close();
+                }
             }
             catch (Exception ex) { }
         }
@@ -509,7 +528,7 @@ namespace POSSystem
                 this.Close();
                 login.Show();
             }
-            catch (Exception ex){ }
+            catch (Exception ex) { }
         }
         void DrawAtStart(string text, int Offset)
         {
@@ -542,7 +561,7 @@ namespace POSSystem
             }
             catch (Exception ex) { }
         }
-        void InsertHeaderStyleItem(string key, string value,string value1, int Offset)
+        void InsertHeaderStyleItem(string key, string value, string value1, int Offset)
         {
             try
             {
@@ -559,7 +578,7 @@ namespace POSSystem
                       new SolidBrush(Color.Black), startX + 150, startY + Offset);
             }
             catch (Exception ex) { }
-          
+
         }
         void DrawLine(string text, Font font, int Offset, int xOffset)
         {
@@ -574,7 +593,8 @@ namespace POSSystem
         }
         void DrawSimpleString(string text, Font font, int Offset, int xOffset)
         {
-            try {
+            try
+            {
                 int startX = 10;
                 int startY = 5;
                 graphics.DrawString(text, font,
@@ -583,7 +603,7 @@ namespace POSSystem
             catch (Exception ex) { }
         }
 
-        
+
 
         private void JRDGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
@@ -602,6 +622,8 @@ namespace POSSystem
                             // rowIndex has the row index
                             // bindingPath has the column's binding
                             // el.Text has the new, user-entered value
+
+                            (e.Row.Item as DataRowView).Row[5] = Convert.ToDecimal(el.Text) * Convert.ToDecimal((e.Row.Item as DataRowView).Row[2]);
                         }
                     }
                 }
@@ -614,12 +636,43 @@ namespace POSSystem
             try
             {
                 string number = (sender as Button).Content.ToString();
+
+                if (txtGotFocusStr == "textBox1")
+                {
+                    string textBox1Str = textBox1.Text;
+                    textBox1.Text = textBox1Str + number;
+                }
+                if (txtGotFocusStr == "TxtCashReceive")
+                {
+                    string textBox1Str = TxtCashReceive.Text;
+                    TxtCashReceive.Text = textBox1Str + number;
+                }
+                if (txtGotFocusStr == "TxtCheck")
+                {
+                    string textBox1Str = TxtCheck.Text;
+                    TxtCheck.Text = textBox1Str + number;
+                }
+                if (txtGotFocusStr == "txtDeptAmt")
+                {
+                    string textBox1Str = txtDeptAmt.Text;
+                    txtDeptAmt.Text = textBox1Str + number;
+                }
             }
             catch (Exception ex) { }
         }
+
         //private void textbox1_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         //{
         //   // NumButton_Click(object sender, RoutedEventArgs e);
         //}
+
+        private void textbox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+            if (tb != null)
+            {
+                txtGotFocusStr = tb.Name;
+            }
+        }
     }
 }
