@@ -50,6 +50,8 @@ namespace POSSystem
                 dt.Columns.Add("TransactionId");
                 dt.Columns.Add("CreateBy");
                 dt.Columns.Add("CreateOn");
+                dt.Columns.Add("ShiftClose");
+                dt.Columns.Add("DayClose");
 
                 //con.Close();
                 textBox1.Focus();
@@ -286,20 +288,20 @@ namespace POSSystem
                 string cashReturn = TxtCashReturn.Text;
                 string tranid = Convert.ToInt32(lblTranid.Content).ToString();
 
-                string transaction = "insert into Transactions(EndDate,EndTime,GrossAmount,TaxAmount,GrandAmount,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + totalAmt + "','" + tax + "','" + grandTotalAmt + "','" + userName + "','" + date + "')";
+                string transaction = "insert into Transactions(EndDate,EndTime,GrossAmount,TaxAmount,GrandAmount,ShiftClose,DayClose,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + totalAmt + "','" + tax + "','" + grandTotalAmt + "',0,0,'" + userName + "','" + date + "')";
                 SqlCommand cmd = new SqlCommand(transaction, con);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
                 if (tenderCode == "Cash")
                 {
-                    string tender = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + cashRec + "','" + tranid + "','" + userName + "','" + date + "')";
+                    string tender = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn,ShiftClose,DayClose)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + cashRec + "','" + tranid + "','" + userName + "','" + date + "',0,0)";
                     SqlCommand cmdTender = new SqlCommand(tender, con);
                     con.Open();
                     cmdTender.ExecuteNonQuery();
                     con.Close();
 
-                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + "-" + cashReturn + "','" + tranid + "','" + userName + "','" + date + "')";
+                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn,ShiftClose,DayClose)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + "-" + cashReturn + "','" + tranid + "','" + userName + "','" + date + "',0,0)";
                     SqlCommand cmdTender1 = new SqlCommand(tender1, con);
                     con.Open();
                     cmdTender1.ExecuteNonQuery();
@@ -307,7 +309,7 @@ namespace POSSystem
                 }
                 else if (tenderCode == "Card")
                 {
-                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + userName + "','" + date + "')";
+                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn,ShiftClose,DayClose)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + userName + "','" + date + "',0,0)";
                     SqlCommand cmdTender1 = new SqlCommand(tender1, con);
                     con.Open();
                     cmdTender1.ExecuteNonQuery();
@@ -315,7 +317,7 @@ namespace POSSystem
                 }
                 else if (tenderCode == "Customer")
                 {
-                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,AccountName,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + cbcustomer.Text + "','" + userName + "','" + date + "')";
+                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,AccountName,CreateBy,CreateOn,ShiftClose,DayClose)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + cbcustomer.Text + "','" + userName + "','" + date + "',0,0)";
                     SqlCommand cmdTender1 = new SqlCommand(tender1, con);
                     con.Open();
                     cmdTender1.ExecuteNonQuery();
@@ -323,7 +325,7 @@ namespace POSSystem
                 }
                 else
                 {
-                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CheckNo,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + TxtCheck.Text + "','" + userName + "','" + date + "')";
+                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CheckNo,CreateBy,CreateOn,ShiftClose,DayClose)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + TxtCheck.Text + "','" + userName + "','" + date + "',0,0)";
                     SqlCommand cmdTender1 = new SqlCommand(tender1, con);
                     con.Open();
                     cmdTender1.ExecuteNonQuery();
@@ -336,6 +338,8 @@ namespace POSSystem
                     dataRow[8] = tranid;
                     dataRow[9] = userName;
                     dataRow[10] = date;
+                    dataRow[11] = 0;
+                    dataRow[12] = 0;
                 }
 
                 SqlBulkCopy objbulk = new SqlBulkCopy(con);
@@ -350,6 +354,8 @@ namespace POSSystem
                 objbulk.ColumnMappings.Add("TransactionId", "TransactionId");
                 objbulk.ColumnMappings.Add("CreateBy", "CreateBy");
                 objbulk.ColumnMappings.Add("CreateOn", "CreateOn");
+                objbulk.ColumnMappings.Add("ShiftClose", "ShiftClose");
+                objbulk.ColumnMappings.Add("DayClose", "DayClose");
                 con.Open();
                 objbulk.WriteToServer(dt);
                 con.Close();
