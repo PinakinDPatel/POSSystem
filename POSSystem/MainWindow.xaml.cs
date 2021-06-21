@@ -321,7 +321,7 @@ namespace POSSystem
                     cmdTender1.ExecuteNonQuery();
                     con.Close();
                 }
-                else
+                else if(tenderCode=="Check")
                 {
                     string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CheckNo,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + TxtCheck.Text + "','" + userName + "','" + date + "')";
                     SqlCommand cmdTender1 = new SqlCommand(tender1, con);
@@ -598,6 +598,12 @@ namespace POSSystem
                 string number = (sender as Button).Content.ToString();
             }
             catch (Exception ex) { }
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            Report rpt = new Report();
+            rpt.Show();
         }
         //private void textbox1_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         //{

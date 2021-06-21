@@ -199,7 +199,7 @@
                 <RowDefinition Height="61*"></RowDefinition>
             </Grid.RowDefinitions>
             <Button Content="LogOut" Grid.Column="1"  Grid.Row="1" FontSize="33" FontWeight="Bold" Foreground="White" Margin="5,5,5,5" Click="Button_Click_2"></Button>
-            <Button Content="Setting"  Grid.Row="1" FontSize="33" FontWeight="Bold" Foreground="White" Margin="5,5,5,5"></Button>
+            <Button Content="Setting"  Grid.Row="1" FontSize="33" FontWeight="Bold" Foreground="White" Margin="5,5,5,5" Click="Button_Click_3"></Button>
 
         </Grid>
     </Grid>

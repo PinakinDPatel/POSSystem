@@ -28,17 +28,51 @@ namespace POSSystem
         // Day Close
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var date = DateTime.Now.ToString("yyyy-MM-dd");
-            string tenderQ = "Update tender set shiftClose=1, DayClose=@NowDate Where DayClose=0";
-            SqlCommand tenderCMD = new SqlCommand(conString);
-            tenderCMD.Parameters.AddWithValue("@time", date);
-            string transQ = "Update Transactions set shiftClose=1, DayClose=@NowDate Department Where DayClose=0";
-            SqlCommand transCMD = new SqlCommand(conString);
-            transCMD.Parameters.AddWithValue("@time", date);
-            string itemQ = "Update SalesItem set shiftClose=1, DayClose=@NowDate Department Where DayClose=0";
-            SqlCommand itemCMD = new SqlCommand(conString);
-            itemCMD.Parameters.AddWithValue("@time", date)
+            try
+            {
+                SqlConnection con = new SqlConnection(conString);
+                string tenderQ = "Update tender set shiftClose=1 Where shiftClose is null";
+                SqlCommand tenderCMD = new SqlCommand(tenderQ, con);
+                string transQ = "Update Transactions set shiftClose=1 Where shiftClose is null";
+                SqlCommand transCMD = new SqlCommand(transQ, con);
+                string itemQ = "Update SalesItem set shiftClose=1 Where shiftClose is null";
+                SqlCommand itemCMD = new SqlCommand(itemQ, con);
+                con.Open();
+                tenderCMD.ExecuteNonQuery();
+                transCMD.ExecuteNonQuery();
+                itemCMD.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (Exception ex)
+            {
 
+            }
+        }
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(conString);
+                var date = DateTime.Now.ToString("yyyy-MM-dd");
+                string tenderQ = "Update tender set shiftClose=1, DayClose=@NowDate Where DayClose is null";
+                SqlCommand tenderCMD = new SqlCommand(tenderQ, con);
+                tenderCMD.Parameters.AddWithValue("@NowDate", date);
+                string transQ = "Update Transactions set shiftClose=1, DayClose=@Date Where DayClose is null";
+                SqlCommand transCMD = new SqlCommand(transQ, con);
+                transCMD.Parameters.AddWithValue("@Date", date);
+                string itemQ = "Update SalesItem set shiftClose=1, DayClose=@Now Where DayClose is null";
+                SqlCommand itemCMD = new SqlCommand(itemQ, con);
+                itemCMD.Parameters.AddWithValue("@Now", date);
+                con.Open();
+                tenderCMD.ExecuteNonQuery();
+                transCMD.ExecuteNonQuery();
+                itemCMD.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }
