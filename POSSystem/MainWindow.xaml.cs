@@ -443,24 +443,6 @@ namespace POSSystem
                     InsertItem(dt.Rows[i]["description"].ToString() + System.Environment.NewLine + dt.Rows[i]["Scancode"].ToString(), dt.Rows[i]["quantity"].ToString(), dt.Rows[i]["Amount"].ToString(), Offset);
                     Offset = Offset + largeinc;
                 }
-                //foreach (var itran in dt.Rows.Count)
-                //{
-
-                //    InsertItem(itran[0] + " x " + itran.Quantity, itran.Total.CValue, Offset);
-                //    Offset = Offset + smallinc;
-                //}
-
-                //foreach (var dtran in dt.Columns)
-                // {
-                //     InsertItem(dtran.Deal.Name, dtran.Total.CValue, Offset);
-                //     Offset = Offset + smallinc;
-
-                //     foreach (var di in dtran.Deal.DealItems)
-                //     {
-                //        InsertItem(di.Item.Name + " x " + (dtran.Quantity * di.Quantity), "", Offset);
-                //         Offset = Offset + smallinc;
-                //     }
-                //}
 
                 underLine = "-----------------------------------";
                 DrawLine(underLine, largefont, Offset, 2);
