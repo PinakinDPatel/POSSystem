@@ -58,8 +58,8 @@ namespace POSSystem
 
                     string username = dt.Rows[0]["UserName"].ToString();
                     MainWindow frm = new MainWindow(username);
-                    Department Dept = new Department(username);
-                    Dept.Show();
+                    //Department Dept = new Department(username);
+                    frm.Show();
                     this.Close();
 
                 }

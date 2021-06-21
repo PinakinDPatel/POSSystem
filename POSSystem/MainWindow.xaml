@@ -21,7 +21,7 @@
             <ColumnDefinition Width="604*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Grid.Row="0"  Background="#FFF7F7F7">
-            <Label Content="PSPCStore" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Engravers MT" FontSize="36" FontWeight="Bold" Background="Transparent">
+            <Label Content="PSPCStore" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Engravers MT" FontSize="20" FontWeight="Bold" Background="Transparent">
                 <Label.Effect>
                     <DropShadowEffect ShadowDepth="2"/>
                 </Label.Effect>
@@ -48,7 +48,7 @@
             <Label Content="Enter Check No."  HorizontalAlignment="Center"></Label>
             <TextBox Margin="5,5,5,5" GotFocus="textbox_GotFocus" Height="30" Name="TxtCheck"></TextBox>
         </StackPanel>
-        <Grid Grid.Row="1" Grid.Column="0">
+        <Grid Grid.Row="1" Grid.Column="0" Background="#FFF7F7F7">
             <Grid.RowDefinitions>
                 <RowDefinition ></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -133,12 +133,12 @@
                 <RowDefinition Height="58*"></RowDefinition>
             </Grid.RowDefinitions>
             <Label Content="Total :-" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Height="33" Width="69"/>
-            <TextBox Name="txtQty" Grid.Column="1" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"/>
-            <TextBox Name="txtTotal" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Background="White" />
+            <TextBox Name="txtQty" Grid.Column="1" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" Focusable="False"/>
+            <TextBox Name="txtTotal" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Background="White" Focusable="False"/>
             <Label Content="Tax :-" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1" Height="33" Width="56" />
-            <TextBox  Name="taxtTotal" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Grid.Row="1"  />
+            <TextBox  Name="taxtTotal" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Grid.Row="1"  Focusable="False"/>
             <Label Content="Grand-Total :-" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="2" Grid.Column="1" Height="33" Width="128" />
-            <TextBox Name="grandTotal" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Grid.Row="2"  />
+            <TextBox Name="grandTotal" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Grid.Row="2"  Focusable="False"/>
             <Button Content="Save" FontSize="33" FontWeight="Bold" Foreground="White"  Grid.Row="3" Grid.Column="2" Click="Button_Click_1" Margin="5,5,5,5"/>
 
             <Grid Grid.Column="0" Grid.RowSpan="4">
@@ -166,7 +166,7 @@
                 <Button Content="Clear" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="3" Margin="5,5,5,5"></Button>
             </Grid>
         </Grid>
-        <UniformGrid Grid.Column="2" Grid.Row="1" Name="sp21"></UniformGrid>
+        <UniformGrid Grid.Column="2" Grid.Row="1" Name="sp21" Background="#FFF7F7F7"></UniformGrid>
         <Grid Grid.Column="2" Grid.Row="1" Visibility="Hidden" Name="TxtBxStackPanel2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -199,7 +199,7 @@
                 <RowDefinition Height="61*"></RowDefinition>
             </Grid.RowDefinitions>
             <Button Content="LogOut" Grid.Column="1"  Grid.Row="1" FontSize="33" FontWeight="Bold" Foreground="White" Margin="5,5,5,5" Click="Button_Click_2"></Button>
-            <Button Content="Setting"  Grid.Row="1" FontSize="33" FontWeight="Bold" Foreground="White" Margin="5,5,5,5"></Button>
+            <Button Content="Setting"  Grid.Row="1" FontSize="33" FontWeight="Bold" Foreground="White" Margin="5,5,5,5" Click="Button_Click_3"></Button>
 
         </Grid>
     </Grid>
