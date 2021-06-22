@@ -598,6 +598,7 @@ namespace POSSystem
                             // el.Text has the new, user-entered value
 
                             (e.Row.Item as DataRowView).Row[5] = Convert.ToDecimal(el.Text) * Convert.ToDecimal((e.Row.Item as DataRowView).Row[2]);
+                            TotalEvent();
                         }
                     }
                 }
@@ -652,6 +653,25 @@ namespace POSSystem
             {
                 txtGotFocusStr = tb.Name;
             }
+        }
+
+        private void JdGrid_delete_click(object sender, RoutedEventArgs e)
+        {
+            //DataTable dtFromGrid = new DataTable();
+            //dtFromGrid = ((DataView)JRDGrid.ItemsSource).ToTable();
+            DataRowView row = (DataRowView)JRDGrid.SelectedItem;
+            dt.Rows.Remove(row.Row);
+            //JRDGrid.ItemsSource = dtFromGrid.DefaultView;
+
+            //var scanCode = row["ScanCode"].ToString();
+            //string description = row["Description"].ToString();
+            //SqlConnection con = new SqlConnection(conString);
+            //SqlCommand cmd = new SqlCommand();
+            //cmd.CommandText = "DELETE FROM Item WHERE scanCode=" + scanCode;// + "and Description=" + description;
+            //cmd.Connection = con;
+            //con.Open();
+            //int numberDeleted = cmd.ExecuteNonQuery();
+            //con.Close();
         }
     }
 }

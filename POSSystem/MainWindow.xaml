@@ -117,6 +117,20 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TaxRate}" Header="TaxRate" Visibility="Hidden" MinWidth="155"  IsReadOnly="True"/>
+
+                    <DataGridTemplateColumn Header="Delete">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <!--<Button Content="Delete" Click="JdGrid_delete_click" Command="Delete"/>-->
+                                <Button Click="JdGrid_delete_click" Background="White" Margin="2,2,2,2">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="Image/Edit1.png" Width="25" Height="25"/>
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
