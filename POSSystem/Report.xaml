@@ -5,14 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:POSSystem"
         mc:Ignorable="d"
-        Title="Report" Height="768" Width="1080">
+        Title="Report" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition />
             <RowDefinition/>
+            <RowDefinition />
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Button Content="Shift Close" Click="Button_Click"></Button>
-        <Button Grid.Row="1" Content="Day Close" Click="Button_Click_1"></Button>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Button Content="Shift Close" Click="Button_Click" Margin="10,10,10,10"/>
+        <Button Content="Day Close" Grid.Column="1" Margin="10,10,10,10" Click="Button_Click_1"/>
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Content="Department" Margin="10"/>
+            <Button Content="Account" Grid.Column="1" Margin="10"/>
+            <Button Content="Reports" Grid.Column="2" Margin="10"/>
+            <Button Content="Item" Grid.Column="3" Margin="10"/>
+        </Grid>
     </Grid>
 </Window>
