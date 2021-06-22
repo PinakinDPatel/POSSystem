@@ -13,6 +13,7 @@ using ExcelDataReader;
 using System.Windows.Input;
 using System.Diagnostics;
 using System.Text;
+using System.Configuration;
 
 namespace POSSystem
 {
@@ -21,7 +22,8 @@ namespace POSSystem
     /// </summary>
     public partial class ItemView : Window
     {
-        string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        //string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
         public ItemView()
         {
             InitializeComponent();
@@ -73,7 +75,8 @@ namespace POSSystem
 
         private void BtnAddItem_Click(object sender, RoutedEventArgs e)
         {
-
+            Item item = new Item();
+            item.Show();
         }
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)

@@ -12,7 +12,7 @@ using System.Text;
 using System.Drawing.Printing;
 using Color = System.Drawing.Color;
 using System.Windows.Data;
-using System.Xml;
+using System.Configuration;
 
 namespace POSSystem
 {
@@ -22,8 +22,9 @@ namespace POSSystem
         private Graphics graphics;
         string tenderCode = "";
         DataTable dt = new DataTable();
-        string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
-        //string conString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=E:\PSPCStore\POSSystem\POSSystem\Database1.mdf;Integrated Security=True";
+        //string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        //string conString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=F:\DesktopApplication\POSSystem\Database1.mdf;Integrated Security=True";
+        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
 
         string txtGotFocusStr = string.Empty;
 
@@ -187,12 +188,12 @@ namespace POSSystem
             {
                 if (e.Key == Key.Enter || e.Key == Key.Tab)
                 {
-                    string pass = textBox1.Text.Remove(textBox1.Text.Length - 1, 1);
+                    string code = textBox1.Text.Remove(textBox1.Text.Length - 1, 1);
                     SqlConnection con = new SqlConnection(conString);
                     string query = "select Scancode,Description,UnitRetail,@qty as quantity,UnitRetail as Amount,Department.TaxRate from Item inner join Department on item.Department=Department.Department where Scancode=@password ";
                     SqlCommand cmd = new SqlCommand(query, con);
 
-                    cmd.Parameters.AddWithValue("@password", pass);
+                    cmd.Parameters.AddWithValue("@password", code);
                     cmd.Parameters.AddWithValue("@qty", 1);
                     SqlDataAdapter sda = new SqlDataAdapter(cmd);
                     con.Open();

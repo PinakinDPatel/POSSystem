@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -22,7 +23,8 @@ namespace POSSystem
     /// </summary>
     public partial class Account : Window
     {
-        string constring = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+       // string constring = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
         DataTable dtDG = new DataTable();
         public Account()
         {
@@ -34,7 +36,7 @@ namespace POSSystem
         {
             try
             {
-                SqlConnection con = new SqlConnection(constring);
+                SqlConnection con = new SqlConnection(conString);
                 string queryDG = "Select * from Account";
                 SqlCommand cmdDG = new SqlCommand(queryDG, con);
                 SqlDataAdapter sdaDG = new SqlDataAdapter(cmdDG);
@@ -62,7 +64,7 @@ namespace POSSystem
 
                 if (txtaccount.Text != "" && drphead.Text != "" && txtAddress.Text != "" && txtMobile.Text != "" && txtEmail.Text != "")
                 {
-                    SqlConnection con = new SqlConnection(constring);
+                    SqlConnection con = new SqlConnection(conString);
                     int lbl = Convert.ToInt32(lblAccountId.Content);
                     string queryS = "Select Name from Account where Name=@account";
                     SqlCommand cmd = new SqlCommand(queryS, con);
@@ -163,7 +165,7 @@ namespace POSSystem
                 row.Delete();
 
                 int rowsAffected;
-                using (SqlConnection conn = new SqlConnection(constring))
+                using (SqlConnection conn = new SqlConnection(conString))
                 {
                     SqlCommand cmd = new SqlCommand("DELETE from Account WHERE AccountId = " + row["AccountId"], conn);
                     cmd.Connection.Open();

@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace POSSystem
 {
@@ -22,7 +23,8 @@ namespace POSSystem
     public partial class DayClose : Window
     {
         DataTable dt = new DataTable();
-        string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        //string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
         public DayClose()
         {
             InitializeComponent();
@@ -34,34 +36,32 @@ namespace POSSystem
             sda.Fill(dt);
 
 
-            for(int i=0;i<dt.Rows.Count; i++)
+            for (int i = 0; i < dt.Rows.Count; i++)
             {
-                for (int j = 0; j <= dt.Columns.Count - 1; j++)
-                {
 
-                    if (dt.Rows[i].ItemArray[j].ToString() == "Cash")
-                    {
-                        TxtCash.Content = dt.Rows[i].ItemArray[1].ToString();
-                    }
-                    if (dt.Rows[i].ItemArray[j].ToString() == "Check")
-                    {
-                        TxtCheck.Content = dt.Rows[i].ItemArray[1].ToString();
-                    }
-                    if (dt.Rows[i].ItemArray[j].ToString() == "Card")
-                    {
-                        TxtCard.Content = dt.Rows[i].ItemArray[1].ToString();
-                    }
-                    if (dt.Rows[i].ItemArray[j].ToString() == "Tax")
-                    {
-                        TxtTax.Content = dt.Rows[i].ItemArray[1].ToString();
-                    }
-                    if (dt.Rows[i].ItemArray[j].ToString() == "GrossAmount")
-                    {
-                        TxtTaxable.Content = dt.Rows[i].ItemArray[1].ToString();
-                    }
+                if (dt.Rows[i].ItemArray[0].ToString() == "Cash")
+                {
+                    TxtCash.Content = dt.Rows[i].ItemArray[1].ToString();
+                }
+                if (dt.Rows[i].ItemArray[0].ToString() == "Check")
+                {
+                    TxtCheck.Content = dt.Rows[i].ItemArray[1].ToString();
+                }
+                if (dt.Rows[i].ItemArray[0].ToString() == "Card")
+                {
+                    TxtCard.Content = dt.Rows[i].ItemArray[1].ToString();
+                }
+                if (dt.Rows[i].ItemArray[0].ToString() == "Tax")
+                {
+                    TxtTax.Content = dt.Rows[i].ItemArray[1].ToString();
+                }
+                if (dt.Rows[i].ItemArray[0].ToString() == "GrossAmount")
+                {
+                    TxtTaxable.Content = dt.Rows[i].ItemArray[1].ToString();
                 }
             }
 
         }
     }
 }
+
