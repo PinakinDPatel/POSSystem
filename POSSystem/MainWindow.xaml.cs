@@ -12,6 +12,7 @@ using System.Text;
 using System.Drawing.Printing;
 using Color = System.Drawing.Color;
 using System.Windows.Data;
+using System.Xml;
 
 namespace POSSystem
 {
@@ -186,11 +187,12 @@ namespace POSSystem
             {
                 if (e.Key == Key.Enter || e.Key == Key.Tab)
                 {
+                    string pass = textBox1.Text.Remove(textBox1.Text.Length - 1, 1);
                     SqlConnection con = new SqlConnection(conString);
                     string query = "select Scancode,Description,UnitRetail,@qty as quantity,UnitRetail as Amount,Department.TaxRate from Item inner join Department on item.Department=Department.Department where Scancode=@password ";
                     SqlCommand cmd = new SqlCommand(query, con);
 
-                    cmd.Parameters.AddWithValue("@password", textBox1.Text);
+                    cmd.Parameters.AddWithValue("@password", pass);
                     cmd.Parameters.AddWithValue("@qty", 1);
                     SqlDataAdapter sda = new SqlDataAdapter(cmd);
                     con.Open();
@@ -342,7 +344,7 @@ namespace POSSystem
                     cmdTender1.ExecuteNonQuery();
                     con.Close();
                 }
-                else if(tenderCode=="Check")
+                else if (tenderCode == "Check")
                 {
                     string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CheckNo,CreateBy,CreateOn,ShiftClose,DayClose)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + TxtCheck.Text + "','" + userName + "','" + date + "',0,0)";
                     SqlCommand cmdTender1 = new SqlCommand(tender1, con);
@@ -612,6 +614,7 @@ namespace POSSystem
                             // el.Text has the new, user-entered value
 
                             (e.Row.Item as DataRowView).Row[5] = Convert.ToDecimal(el.Text) * Convert.ToDecimal((e.Row.Item as DataRowView).Row[2]);
+                            TotalEvent();
                         }
                     }
                 }
@@ -666,6 +669,25 @@ namespace POSSystem
             {
                 txtGotFocusStr = tb.Name;
             }
+        }
+
+        private void JdGrid_delete_click(object sender, RoutedEventArgs e)
+        {
+            //DataTable dtFromGrid = new DataTable();
+            //dtFromGrid = ((DataView)JRDGrid.ItemsSource).ToTable();
+            DataRowView row = (DataRowView)JRDGrid.SelectedItem;
+            dt.Rows.Remove(row.Row);
+            //JRDGrid.ItemsSource = dtFromGrid.DefaultView;
+
+            //var scanCode = row["ScanCode"].ToString();
+            //string description = row["Description"].ToString();
+            //SqlConnection con = new SqlConnection(conString);
+            //SqlCommand cmd = new SqlCommand();
+            //cmd.CommandText = "DELETE FROM Item WHERE scanCode=" + scanCode;// + "and Description=" + description;
+            //cmd.Connection = con;
+            //con.Open();
+            //int numberDeleted = cmd.ExecuteNonQuery();
+            //con.Close();
         }
     }
 }
