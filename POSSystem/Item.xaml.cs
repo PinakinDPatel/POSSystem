@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Windows;
 
@@ -10,19 +11,19 @@ namespace POSSystem
     /// </summary>
     public partial class Item : Window
     {
-        string constring = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        //string constring = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
         public Item()
         {
             InitializeComponent();
 
-            SqlConnection con = new SqlConnection(constring);
+            SqlConnection con = new SqlConnection(conString);
             string queryD = "Select Department from Department";
             SqlCommand cmdD = new SqlCommand(queryD, con);
             SqlDataAdapter sdaD = new SqlDataAdapter(cmdD);
             DataTable dtD = new DataTable();
             sdaD.Fill(dtD);
-
-            drpDepartment.ItemsSource = dtD.DefaultView;
+            this.drpDepartment.ItemsSource = dtD.AsDataView();
         }
     }
 }

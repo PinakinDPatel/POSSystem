@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace POSSystem
 {
@@ -22,7 +23,8 @@ namespace POSSystem
     public partial class DayClose : Window
     {
         DataTable dt = new DataTable();
-        string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        //string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
         public DayClose()
         {
             InitializeComponent();

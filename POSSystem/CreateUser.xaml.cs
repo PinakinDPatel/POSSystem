@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -22,7 +23,8 @@ namespace POSSystem
     /// </summary>
     public partial class CreateUser : Window
     {
-        string constring = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        //string constring = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
         public CreateUser()
         {
             InitializeComponent();
@@ -32,7 +34,7 @@ namespace POSSystem
         {
             try
             {
-                SqlConnection con = new SqlConnection(constring);
+                SqlConnection con = new SqlConnection(conString);
                 string queryS = "Select UserName,PassWord from UserRegi where UserName=@userName or Password=@password";
                 SqlCommand cmd = new SqlCommand(queryS, con);
                 cmd.Parameters.AddWithValue("@userName", txtUser.Text);

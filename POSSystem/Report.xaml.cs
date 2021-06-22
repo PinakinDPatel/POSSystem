@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Configuration;
 
 namespace POSSystem
 {
@@ -20,7 +21,8 @@ namespace POSSystem
     /// </summary>
     public partial class Report : Window
     {
-        string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        //string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
         public Report()
         {
             InitializeComponent();
@@ -73,6 +75,24 @@ namespace POSSystem
             {
 
             }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            Department dept = new Department();
+            dept.Show();
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            Account Acc = new Account();
+            Acc.Show();
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            ItemView item = new ItemView();
+            item.Show();
         }
     }
 }

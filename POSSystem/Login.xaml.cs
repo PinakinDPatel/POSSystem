@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Navigation;
+using System.Configuration;
 
 namespace POSSystem
 {
@@ -12,7 +13,10 @@ namespace POSSystem
     /// </summary>
     public partial class Login : Window
     {
-        string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        //string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        //string conString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=F:\DesktopApplication\POSSystem\Database1.mdf;Integrated Security=True";
+        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
+
         public Login()
         {
             InitializeComponent();
