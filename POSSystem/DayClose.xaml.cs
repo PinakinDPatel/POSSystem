@@ -34,34 +34,32 @@ namespace POSSystem
             sda.Fill(dt);
 
 
-            for(int i=0;i<dt.Rows.Count; i++)
+            for (int i = 0; i < dt.Rows.Count; i++)
             {
-                for (int j = 0; j <= dt.Columns.Count - 1; j++)
-                {
 
-                    if (dt.Rows[i].ItemArray[j].ToString() == "Cash")
-                    {
-                        TxtCash.Content = dt.Rows[i].ItemArray[1].ToString();
-                    }
-                    if (dt.Rows[i].ItemArray[j].ToString() == "Check")
-                    {
-                        TxtCheck.Content = dt.Rows[i].ItemArray[1].ToString();
-                    }
-                    if (dt.Rows[i].ItemArray[j].ToString() == "Card")
-                    {
-                        TxtCard.Content = dt.Rows[i].ItemArray[1].ToString();
-                    }
-                    if (dt.Rows[i].ItemArray[j].ToString() == "Tax")
-                    {
-                        TxtTax.Content = dt.Rows[i].ItemArray[1].ToString();
-                    }
-                    if (dt.Rows[i].ItemArray[j].ToString() == "GrossAmount")
-                    {
-                        TxtTaxable.Content = dt.Rows[i].ItemArray[1].ToString();
-                    }
+                if (dt.Rows[i].ItemArray[0].ToString() == "Cash")
+                {
+                    TxtCash.Content = dt.Rows[i].ItemArray[1].ToString();
+                }
+                if (dt.Rows[i].ItemArray[0].ToString() == "Check")
+                {
+                    TxtCheck.Content = dt.Rows[i].ItemArray[1].ToString();
+                }
+                if (dt.Rows[i].ItemArray[0].ToString() == "Card")
+                {
+                    TxtCard.Content = dt.Rows[i].ItemArray[1].ToString();
+                }
+                if (dt.Rows[i].ItemArray[0].ToString() == "Tax")
+                {
+                    TxtTax.Content = dt.Rows[i].ItemArray[1].ToString();
+                }
+                if (dt.Rows[i].ItemArray[0].ToString() == "GrossAmount")
+                {
+                    TxtTaxable.Content = dt.Rows[i].ItemArray[1].ToString();
                 }
             }
 
         }
     }
 }
+
