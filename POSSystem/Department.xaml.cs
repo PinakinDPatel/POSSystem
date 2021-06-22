@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows;
@@ -12,7 +13,8 @@ namespace POSSystem
     public partial class Department : Window
     {
         DataTable dt = new DataTable();
-        string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        //string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
         public Department()
         {
             InitializeComponent();
