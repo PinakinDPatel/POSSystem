@@ -59,13 +59,10 @@ namespace POSSystem
 
                 if (dt.Rows.Count > 0)
                 {
-
-                    string username = dt.Rows[0]["UserName"].ToString();
-                    MainWindow frm = new MainWindow(username);
-                    //Department Dept = new Department(username);
+                    App.Current.Properties["username"] = dt.Rows[0]["UserName"].ToString();
+                    MainWindow frm = new MainWindow();
                     frm.Show();
                     this.Close();
-
                 }
                 else
                 {

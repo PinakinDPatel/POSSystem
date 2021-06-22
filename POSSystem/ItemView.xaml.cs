@@ -24,6 +24,7 @@ namespace POSSystem
     {
         //string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
         string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
+        string username = App.Current.Properties["username"].ToString();
         public ItemView()
         {
             InitializeComponent();
