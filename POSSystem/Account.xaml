@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:POSSystem"
       mc:Ignorable="d"
-      Title="Account" ResizeMode="NoResize" WindowStyle="None" Height="554.873" Width="869.597" WindowStartupLocation="CenterScreen">
+      Title="Account" ResizeMode="NoResize" Height="554.873" Width="869.597" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="15*"></RowDefinition>
@@ -33,14 +33,8 @@
                 </TextBox.Effect>
             </TextBox>
             <Label Content="Head :-" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Grid.Row="1"/>
-            <Border Name="cmb1BorderHead" BorderThickness="1" HorizontalAlignment="Left"  Grid.Row="1" Margin="211,152,0,0" VerticalAlignment="Top" Width="192" Height="28">
-            <ComboBox Name="drphead" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="drphead_SelectionChanged" FontSize="14" Grid.Column="1" Grid.Row="1">
-                <ComboBox.Background>
-                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                        <GradientStop Color="#FFF0F0F0" Offset="0"/>
-                        <GradientStop Color="White" Offset="1"/>
-                    </LinearGradientBrush>
-                </ComboBox.Background>
+            <Border Name="cmb1BorderHead" BorderThickness="1" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Width="192" Height="28">
+                <ComboBox Name="drphead" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="drphead_SelectionChanged" Width="192" Height="32" FontSize="14">
                 <ComboBoxItem Content="Tender" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
                 <ComboBoxItem Content="Customers" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
                 <ComboBoxItem Content="Vendor" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
@@ -48,7 +42,7 @@
                 <ComboBoxItem Content="Income" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
                 <ComboBoxItem Content="Employee" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
             </ComboBox>
-                </Border>
+            </Border>
             <Label Content="Address :-" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Grid.Row="2"/>
             <TextBox Name="txtAddress" HorizontalAlignment="Left" VerticalAlignment="Center" TextChanged="textBox_txtAddress" Height="32" Width="192" FontSize="14" Grid.Column="1" Grid.Row="2">
                 <TextBox.Effect>

@@ -86,7 +86,7 @@ namespace POSSystem
                         {
 
                             string time = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
-                            string queryI = "Insert into Account(Name,Head,Address,Mobile,Email,CreateOn)Values(@account,@head,@address,@mobile,@email,@time,@user)";
+                            string queryI = "Insert into Account(Name,Head,Address,Mobile,Email,CreateOn,Createby)Values(@account,@head,@address,@mobile,@email,@time,@user)";
                             SqlCommand cmdI = new SqlCommand(queryI, con);
                             cmdI.Parameters.AddWithValue("@account", txtaccount.Text);
                             cmdI.Parameters.AddWithValue("@head", drphead.Text);
@@ -116,7 +116,7 @@ namespace POSSystem
                         else
                         {
                             string time = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
-                            string queryIU = "Update Account Set Name=@account,Head=@head,Mobile=@mobile,Address=@address,Email=@email,CreateOn=@time Where AccountId='" + lblAccountId.Content + "'";
+                            string queryIU = "Update Account Set Name=@account,Head=@head,Mobile=@mobile,Address=@address,Email=@email,CreateOn=@time,CreateBy=@user Where AccountId='" + lblAccountId.Content + "'";
                             SqlCommand cmdI = new SqlCommand(queryIU, con);
                             cmdI.Parameters.AddWithValue("@account", txtaccount.Text);
                             cmdI.Parameters.AddWithValue("@head", drphead.Text);
@@ -124,6 +124,7 @@ namespace POSSystem
                             cmdI.Parameters.AddWithValue("@mobile", txtMobile.Text);
                             cmdI.Parameters.AddWithValue("@email", txtEmail.Text);
                             cmdI.Parameters.AddWithValue("@time", time);
+                            cmdI.Parameters.AddWithValue("@user", username);
                             con.Open();
                             cmdI.ExecuteNonQuery();
                             con.Close();
