@@ -19,7 +19,7 @@ namespace POSSystem
         {
             InitializeComponent();
             List<string> cmbList = new List<string>();
-            SqlConnection con = new SqlConnection(constring);
+            SqlConnection con = new SqlConnection(conString);
             string queryD = "Select Department from Department";
             SqlCommand cmdD = new SqlCommand(queryD, con);
             SqlDataAdapter sdaD = new SqlDataAdapter(cmdD);
