@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -31,6 +32,44 @@ namespace POSSystem
                 cmbList.Add(row.ItemArray[0].ToString());
             }
             drpDepartment.ItemsSource = cmbList;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string date = DateTime.Now.ToString("yyyy-MM-dd HH:MM:ss");
+            SqlConnection con = new SqlConnection(conString);
+            string queryD = "Select ScanCode from item where ScanCode=@ScanCode";
+            SqlCommand cmd = new SqlCommand(queryD, con);
+            cmd.Parameters.AddWithValue("@ScanCode", TxtScanCode.Text);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            con.Open();
+            if (dt.Rows.Count > 0)
+            {
+                MessageBox.Show("ScanCode Already Exist!");
+            }
+
+            else
+            {
+                string queryI = "Insert into item(ScanCode,Description,Department,Manufacturer,Payee,FoodStamp,UnitCase,CaseCost,UnitRetail,CaseDiscount,TaxRate)Values(@ScanCode,@Description,@Department,@Manufacturer,@Payee,@FoodStamp,@UnitCase,@CaseCost,@UnitRetail,@CaseDiscount,@TaxRate)";
+                SqlCommand cmdI = new SqlCommand(queryI, con);
+                cmdI.Parameters.AddWithValue("@ScanCode", TxtScanCode.Text);
+                cmdI.Parameters.AddWithValue("@Description", TxtDescription.Text);
+                cmdI.Parameters.AddWithValue("@Department", drpDepartment.Text);
+                cmdI.Parameters.AddWithValue("@Manufacturer", TxtMenufacturer.Text);
+                cmdI.Parameters.AddWithValue("@Payee", TxtPayee.Text);
+                cmdI.Parameters.AddWithValue("@FoodStamp", TxtFoodStamp.Text);
+                //cmdI.Parameters.AddWithValue("@MinAge", TxtMinAge.Text);
+                cmdI.Parameters.AddWithValue("@UnitCase", TxtUnitCase.Text);
+                cmdI.Parameters.AddWithValue("@CaseCost", TxtCaseCost.Text);
+                cmdI.Parameters.AddWithValue("@UnitRetail", TxtUnitRetail.Text);
+                cmdI.Parameters.AddWithValue("@CaseDiscount", TxtCashDiscount.Text);
+                cmdI.Parameters.AddWithValue("@TaxRate", TxtTaxRate.Text);
+
+                cmdI.ExecuteNonQuery();
+                con.Close();
+            }
         }
     }
 }
