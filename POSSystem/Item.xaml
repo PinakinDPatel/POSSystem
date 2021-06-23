@@ -24,6 +24,7 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
+        <Label Name="lblusername" Visibility="Hidden"/>
         <Label Content="ScanCode" HorizontalAlignment="Right" Grid.Row="1" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
         <TextBox Name="TxtScanCode" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
         <Label Content="Description" HorizontalAlignment="Right" Grid.Row="2" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>

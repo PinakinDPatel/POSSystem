@@ -19,6 +19,7 @@ namespace POSSystem
         public Item()
         {
             InitializeComponent();
+            lblusername.Content = username.ToString();
             List<string> cmbList = new List<string>();
             SqlConnection con = new SqlConnection(conString);
             string queryD = "Select Department from Department";
@@ -52,7 +53,7 @@ namespace POSSystem
 
             else
             {
-                string queryI = "Insert into item(ScanCode,Description,Department,Manufacturer,Payee,FoodStamp,UnitCase,CaseCost,UnitRetail,CaseDiscount,TaxRate)Values(@ScanCode,@Description,@Department,@Manufacturer,@Payee,@FoodStamp,@UnitCase,@CaseCost,@UnitRetail,@CaseDiscount,@TaxRate)";
+                string queryI = "Insert into item(ScanCode,Description,Department,Manufacturer,Payee,FoodStamp,UnitCase,CaseCost,UnitRetail,CaseDiscount,TaxRate,CreateBy,CreateOn)Values(@ScanCode,@Description,@Department,@Manufacturer,@Payee,@FoodStamp,@UnitCase,@CaseCost,@UnitRetail,@CaseDiscount,@TaxRate,@CreateBy,@CreateOn)";
                 SqlCommand cmdI = new SqlCommand(queryI, con);
                 cmdI.Parameters.AddWithValue("@ScanCode", TxtScanCode.Text);
                 cmdI.Parameters.AddWithValue("@Description", TxtDescription.Text);
@@ -66,9 +67,22 @@ namespace POSSystem
                 cmdI.Parameters.AddWithValue("@UnitRetail", TxtUnitRetail.Text);
                 cmdI.Parameters.AddWithValue("@CaseDiscount", TxtCashDiscount.Text);
                 cmdI.Parameters.AddWithValue("@TaxRate", TxtTaxRate.Text);
-
+                cmdI.Parameters.AddWithValue("@CreateBy", lblusername.Content);
+                cmdI.Parameters.AddWithValue("@CreateOn", date);
                 cmdI.ExecuteNonQuery();
                 con.Close();
+
+                TxtScanCode.Text = "";
+                TxtDescription.Text = "";
+                drpDepartment.Text = "";
+                TxtMenufacturer.Text = "";
+                TxtPayee.Text = "";
+                TxtFoodStamp.Text = "";
+                TxtUnitCase.Text = "";
+                TxtCaseCost.Text = "";
+                TxtUnitRetail.Text = "";
+                TxtCashDiscount.Text = "";
+                TxtTaxRate.Text = "";
             }
         }
     }
