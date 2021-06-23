@@ -56,9 +56,9 @@
                 <DataGridTemplateColumn Header="Edit" Width="50*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="onEdit" Background="White">
+                            <Button Click="onEdit" Background="White" Width="25" Height="25">
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="Image/Edit1.png" Width="25" Height="25"/>
+                                    <Image Source="Image/Edit1.png"/>
                                 </StackPanel>
                             </Button>
                         </DataTemplate>
@@ -67,9 +67,9 @@
                 <DataGridTemplateColumn Header="Delete" Width="50*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="onDelete" Background="White">
+                            <Button Click="onDelete" Background="White" Width="22" Height="24">
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="Image/Delete.png" Width="25" Height="25"/>
+                                    <Image Source="Image/Delete.png"/>
                                 </StackPanel>
                             </Button>
                         </DataTemplate>

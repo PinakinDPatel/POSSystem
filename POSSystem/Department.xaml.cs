@@ -106,7 +106,7 @@ namespace POSSystem
                             cmdI.Parameters.AddWithValue("@deptCode", TxtDepartment_Code.Text);
                             cmdI.Parameters.AddWithValue("@time", date);
                             cmdI.Parameters.AddWithValue("@taxrate", TxtTaxRate.Text);
-                            cmdI.Parameters.AddWithValue("@createby", lblusername.Content);
+                            cmdI.Parameters.AddWithValue("@createby", username);
                             con.Open();
                             cmdI.ExecuteNonQuery();
                             con.Close();
