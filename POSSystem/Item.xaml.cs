@@ -32,5 +32,30 @@ namespace POSSystem
             }
             drpDepartment.ItemsSource = cmbList;
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            SqlConnection con = new SqlConnection(conString);
+            string queryI = "Insert into item(ScanCode,Description,Department,Manufacturer,Payee,FoodStamp,MinAge,UnitCase,CaseCost,UnitRetail,CaseDiscount,TaxRate)Values(@ScanCode,@Description,@Department,@Manufacturer,@Payee,@FoodStamp,@MinAge,@UnitCase,@CaseCost,@UnitRetail,@CaseDiscount,@TaxRate)";
+            SqlCommand cmdI = new SqlCommand(queryI, con);
+            cmdI.Parameters.AddWithValue("@ScanCode", TxtScanCode.Text);
+            cmdI.Parameters.AddWithValue("@Description", TxtDescription.Text);
+            cmdI.Parameters.AddWithValue("@Department", drpDepartment.Text);
+            cmdI.Parameters.AddWithValue("@Manufacturer", TxtMenufacturer.Text);
+            cmdI.Parameters.AddWithValue("@Payee", TxtPayee.Text);
+            cmdI.Parameters.AddWithValue("@FoodStamp", TxtFoodStamp.Text);
+            cmdI.Parameters.AddWithValue("@MinAge", TxtMinAge.Text);
+            cmdI.Parameters.AddWithValue("@UnitCase", TxtUnitCase.Text);
+            cmdI.Parameters.AddWithValue("@CaseCost", TxtCaseCost.Text);
+            cmdI.Parameters.AddWithValue("@UnitRetail", TxtUnitRetail.Text);
+            cmdI.Parameters.AddWithValue("@CaseDiscount", TxtCashDiscount.Text);
+            cmdI.Parameters.AddWithValue("@TaxRate", TxtTaxRate.Text);
+            SqlDataAdapter sda = new SqlDataAdapter(cmdI);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            con.Open();
+            cmdI.ExecuteNonQuery();
+            con.Close();
+        }
     }
 }
