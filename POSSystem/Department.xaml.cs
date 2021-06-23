@@ -15,25 +15,14 @@ namespace POSSystem
         DataTable dt = new DataTable();
         //string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
         string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
+        string username = App.Current.Properties["username"].ToString();
         public Department()
         {
             InitializeComponent();
             DeptGridV();
 
         }
-        public Department(string username) : this()
-        {
-            if (username != null)
-            {
-                lblusername.Content = username;
-            }
-            else
-            {
-                Login login = new Login();
-                login.Show();
-                this.Close();
-            }
-        }
+       
         private void DeptGridV()
         {
             try
@@ -91,7 +80,7 @@ namespace POSSystem
                             cmdI.Parameters.AddWithValue("@deptCode", TxtDepartment_Code.Text);
                             cmdI.Parameters.AddWithValue("@time", date);
                             cmdI.Parameters.AddWithValue("@taxrate", TxtTaxRate.Text);
-                            cmdI.Parameters.AddWithValue("@createby", lblusername.Content);
+                            cmdI.Parameters.AddWithValue("@createby", username);
                             cmdI.ExecuteNonQuery();
                             con.Close();
                             TxtDepartment.Text = "";

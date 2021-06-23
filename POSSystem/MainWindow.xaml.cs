@@ -25,9 +25,8 @@ namespace POSSystem
         //string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
         //string conString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=F:\DesktopApplication\POSSystem\Database1.mdf;Integrated Security=True";
         string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
-
+        string username = App.Current.Properties["username"].ToString();
         string txtGotFocusStr = string.Empty;
-
         public MainWindow()
         {
             try
@@ -35,7 +34,7 @@ namespace POSSystem
 
                 InitializeComponent();
                 lblDate.Content = DateTime.Now.ToString("yyyy-MM-dd HH:MM:ss");
-
+                lblusername.Content = username;
                 TextBox tb = new TextBox();
                 tb.KeyDown += new KeyEventHandler(OnKeyDownHandler);
                 tb.KeyDown += new KeyEventHandler(TxtCashReceive_KeyDown);
@@ -119,23 +118,6 @@ namespace POSSystem
                         }
                     }
                     conn.Close();
-                }
-            }
-            catch (Exception ex) { }
-        }
-        public MainWindow(string username) : this()
-        {
-            try
-            {
-                if (username != null)
-                {
-                    lblusername.Content = username;
-                }
-                else
-                {
-                    Login login = new Login();
-                    login.Show();
-                    this.Close();
                 }
             }
             catch (Exception ex) { }
@@ -303,7 +285,7 @@ namespace POSSystem
                 string onlydate = date.Substring(0, 10);
                 string onlytime = date.Substring(11);
                 string totalAmt = txtTotal.Text;
-                string userName = lblusername.Content.ToString();
+                //string userName = lblusername.Content.ToString();
                 string tax = taxtTotal.Text;
                 string grandTotalAmt = grandTotal.Text;
                 string cashRec = TxtCashReceive.Text;
@@ -514,6 +496,7 @@ namespace POSSystem
         {
             try
             {
+                App.Current.Properties["username"] = "";
                 lblusername.Content = "";
                 Login login = new Login();
                 this.Close();
