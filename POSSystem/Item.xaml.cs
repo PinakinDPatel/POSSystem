@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows;
@@ -11,19 +12,24 @@ namespace POSSystem
     /// </summary>
     public partial class Item : Window
     {
-        //string constring = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
-        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
+        string constring = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        // string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
         public Item()
         {
             InitializeComponent();
-
-            SqlConnection con = new SqlConnection(conString);
+            List<string> cmbList = new List<string>();
+            SqlConnection con = new SqlConnection(constring);
             string queryD = "Select Department from Department";
             SqlCommand cmdD = new SqlCommand(queryD, con);
             SqlDataAdapter sdaD = new SqlDataAdapter(cmdD);
             DataTable dtD = new DataTable();
             sdaD.Fill(dtD);
-            this.drpDepartment.ItemsSource = dtD.AsDataView();
+
+            foreach (DataRow row in dtD.Rows)
+            {
+                cmbList.Add(row.ItemArray[0].ToString());
+            }
+            drpDepartment.ItemsSource = cmbList;
         }
     }
 }
