@@ -11,12 +11,12 @@
     <Grid>
         <!--<Button Content="Button" HorizontalAlignment="Left" Margin="1325,685,0,0" VerticalAlignment="Top"/>-->
         <Grid.RowDefinitions>
-            <RowDefinition Height="84"></RowDefinition>
-            <RowDefinition Height="384"></RowDefinition>
-            <RowDefinition Height="115"></RowDefinition>
+            <RowDefinition Height="44*"></RowDefinition>
+            <RowDefinition Height="210*"></RowDefinition>
+            <RowDefinition Height="115*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="207"></ColumnDefinition>
+            <ColumnDefinition Width="207*"></ColumnDefinition>
             <ColumnDefinition Width="555*"></ColumnDefinition>
             <ColumnDefinition Width="604*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
@@ -33,20 +33,21 @@
                 </Label.Foreground>
             </Label>
         </Grid>
-        <UniformGrid Grid.Column="0" Grid.Row="2" Margin="0,0,0,-121" Name="sp02"  Background="#FFF7F7F7"></UniformGrid>
-        <StackPanel Grid.Column="0" Grid.Row="2" Margin="0,0,0,-121" Height="Auto" Name="cashTxtPanel" Visibility="Hidden">
+        <UniformGrid Grid.Column="0" Grid.Row="2"  Name="sp02"  Background="#FFF7F7F7"></UniformGrid>
+        <StackPanel Grid.Column="0" Grid.Row="2" Height="Auto" Name="cashTxtPanel" Visibility="Hidden">
             <Label Content="Cash-Receive" Name="lblCashReceive" HorizontalAlignment="Center" Margin="0,20" FontFamily="Arial Black" FontSize="18" />
             <TextBox Name="TxtCashReceive" GotFocus="textbox_GotFocus" Margin="10,-15,10,0" Height="41" FontSize="24" FontFamily="Arial Black" KeyDown="TxtCashReceive_KeyDown"/>
             <Label Content="Cash-Return" Name="lblCashReturn" HorizontalAlignment="Center" Margin="0,20" FontFamily="Arial Black" FontSize="18"/>
             <TextBox Name="TxtCashReturn" Margin="10,-15,10,0" Height="41" FontSize="24" TextAlignment="Center" FontFamily="Arial Black"/>
         </StackPanel>
-        <StackPanel Grid.Column="0" Grid.Row="2"  Height="Auto" Name="customerTxtPanel"  Visibility="Hidden">
+        <StackPanel Grid.Column="0" Grid.Row="2"  Height="Auto" Name="customerTxtPanel" Visibility="Hidden" >
             <Label Content="Select Customer" HorizontalAlignment="Center"></Label>
-            <ComboBox Margin="5,5,5,5" Height="30" Name="cbcustomer" ItemsSource="{Binding Name}"></ComboBox>
+            <ComboBox SelectionChanged="ComboBox_SelectionChanged" Margin="5,5,5,5" Height="30" Name="cbcustomer" ItemsSource="{Binding Name}"></ComboBox>
+            <Button Name="btnConform" Content="Conform" Margin="15" Click="btnConform_Click" Visibility="Hidden"/>
         </StackPanel>
         <StackPanel Grid.Column="0" Grid.Row="2"  Height="Auto" Name="checkTxtPanel" Visibility="Hidden">
             <Label Content="Enter Check No."  HorizontalAlignment="Center"></Label>
-            <TextBox Margin="5,5,5,5" GotFocus="textbox_GotFocus" Height="30" Name="TxtCheck"></TextBox>
+            <TextBox KeyDown="TxtCheck_KeyDown" Margin="5,5,5,5" GotFocus="textbox_GotFocus" Height="30" Name="TxtCheck"></TextBox>
         </StackPanel>
         <Grid Grid.Row="1" Grid.Column="0" Background="#FFF7F7F7">
             <Grid.RowDefinitions>
@@ -134,7 +135,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        <Grid Grid.Row="2" Grid.Column="1" Margin="0,0,0,-121" Background="#FFF7F7F7">
+        <Grid Grid.Row="2" Grid.Column="1"  Background="#FFF7F7F7">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="284*" ></ColumnDefinition>
                 <ColumnDefinition Width="130*"></ColumnDefinition>
@@ -153,7 +154,6 @@
             <TextBox  Name="taxtTotal" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Grid.Row="1"  Focusable="False"/>
             <Label Content="Grand-Total :-" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="2" Grid.Column="1" Height="33" Width="128" />
             <TextBox Name="grandTotal" Grid.Column="2" HorizontalAlignment="Right" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="22" FontFamily="Arial Black" TextAlignment="Right" Grid.Row="2"  Focusable="False"/>
-            <Button Content="Save" FontSize="33" FontWeight="Bold" Foreground="White"  Grid.Row="3" Grid.Column="2" Click="Button_Click_1" Margin="5,5,5,5"/>
 
             <Grid Grid.Column="0" Grid.RowSpan="4">
                 <Grid.ColumnDefinitions>
@@ -200,10 +200,11 @@
             </Grid.RowDefinitions>
             <Button Content="Go Back" Grid.Column="4" Click="Button_Click_Go_Back" ></Button>
             <Label Name="lblDepartment" Grid.Column="1" Grid.Row="2" Margin="5,5,5,5" FontSize="30"></Label>
+            <Label Name="lblTaxRate" Visibility="Hidden"/>
             <TextBox Name="txtDeptAmt" GotFocus="textbox_GotFocus" Grid.Row="2" Grid.Column="2" Margin="5,5,5,5"  Text="{Binding LimitedDouble,StringFormat={}{0:00.00}}" FontSize="30"></TextBox>
             <Button Content="Save" Grid.Column="3" Grid.Row="2" Margin="5,5,5,5" Click="Button_Click_Sale_Save"></Button>
         </Grid>
-        <Grid Grid.Row="2" Grid.Column="2" Margin="0,0,0,-121" Background="#FFF7F7F7">
+        <Grid Grid.Row="2" Grid.Column="2" Background="#FFF7F7F7">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition ></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
