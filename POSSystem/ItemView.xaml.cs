@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Diagnostics;
 using System.Text;
 using System.Configuration;
+using System.Web;
 
 namespace POSSystem
 {
@@ -24,11 +25,22 @@ namespace POSSystem
     {
         //string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
         string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
+
+        private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
+        string errorFileName = "ItemView.cs";
+
         //string username = App.Current.Properties["username"].ToString();
         public ItemView()
         {
-            InitializeComponent();
-            ItemLoad();
+            try
+            {
+                InitializeComponent();
+                ItemLoad();
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void ItemLoad()
@@ -44,16 +56,23 @@ namespace POSSystem
                 dgitem.CanUserAddRows = false;
                 dgitem.ItemsSource = dt.DefaultView;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw e;
+                SendErrorToText(ex, errorFileName);
             }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Application appl = new Application();
-            appl.Shutdown();
+            try
+            {
+                Application appl = new Application();
+                appl.Shutdown();
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void Button_Click_Imaport(object sender, RoutedEventArgs e)
@@ -72,14 +91,20 @@ namespace POSSystem
             }
             catch (Exception ex1)
             {
-                throw ex1;
+                SendErrorToText(ex1, errorFileName);
             }
         }
 
         private void BtnAddItem_Click(object sender, RoutedEventArgs e)
         {
-            Item item = new Item();
-            item.Show();
+            try
+            {
+                Item item = new Item();
+                item.Show();
+            }
+            catch (Exception ex) {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
@@ -96,8 +121,11 @@ namespace POSSystem
                     FileNameTextBox.Text = openFileDlg.FileName;
                     string extension = System.IO.Path.GetExtension(openFileDlg.FileName).ToLower();
 
-                    //Stream stream =  result.InputStream;
-                    FileStream stream = File.Open(openFileDlg.FileName, FileMode.Open, FileAccess.Read);
+
+                    byte[] bytes = System.IO.File.ReadAllBytes(openFileDlg.FileName);
+                    HttpPostedFileBase objFile = (HttpPostedFileBase)new MemoryPostedFile(bytes);
+
+                    Stream stream = objFile.InputStream;
 
                     IExcelDataReader reader = null;
 
@@ -108,7 +136,7 @@ namespace POSSystem
                         {
                             ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
                             {
-                                UseHeaderRow = true
+                                UseHeaderRow = false
                             }
                         });
                         dt = dataSet.Tables[0];
@@ -116,17 +144,17 @@ namespace POSSystem
 
                     if (extension == ".xlsx")
                     {
-                        reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                        reader = ExcelReaderFactory.CreateBinaryReader(stream);
                         var dataSet = reader.AsDataSet(new ExcelDataSetConfiguration()
                         {
                             ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
                             {
-                                UseHeaderRow = true
+                                UseHeaderRow = false
                             }
                         });
                         dt = dataSet.Tables[0];
                     }
-
+                    stream.Close();
 
                     if (extension == ".csv")
                     {
@@ -167,7 +195,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                throw ex;
+                SendErrorToText(ex, errorFileName);
             }
         }
         private void dataGrid1_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
@@ -185,7 +213,7 @@ namespace POSSystem
             }
             catch (Exception ex2)
             {
-                throw ex2;
+                SendErrorToText(ex2, errorFileName);
             }
         }
 
@@ -202,7 +230,7 @@ namespace POSSystem
             }
             catch (Exception ex3)
             {
-                throw ex3;
+                SendErrorToText(ex3, errorFileName);
             }
         }
 
@@ -259,7 +287,7 @@ namespace POSSystem
             }
             catch (Exception ex4)
             {
-                throw ex4;
+                SendErrorToText(ex4, errorFileName);
             }
         }
 
@@ -325,7 +353,7 @@ namespace POSSystem
             }
             catch (Exception ex5)
             {
-                throw ex5;
+                SendErrorToText(ex5, errorFileName);
             }
         }
 
@@ -388,7 +416,7 @@ namespace POSSystem
             }
             catch (Exception ex6)
             {
-                throw ex6;
+                SendErrorToText(ex6, errorFileName);
             }
         }
 
@@ -413,7 +441,9 @@ namespace POSSystem
                 Process.Start("export.csv");
             }
             catch (Exception ex)
-            { }
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void ComboBox_SelectionChanged_Field(object sender, SelectionChangedEventArgs e)
@@ -424,6 +454,51 @@ namespace POSSystem
         private void textBox_TextChanged_Value(object sender, TextChangedEventArgs e)
         {
             txtChangeValue.BorderBrush = System.Windows.Media.Brushes.Gray;
+        }
+
+        public static void SendErrorToText(Exception ex, string errorFileName)
+        {
+            var line = Environment.NewLine + Environment.NewLine;
+            ErrorlineNo = ex.StackTrace.Substring(ex.StackTrace.Length - 7, 7);
+            Errormsg = ex.GetType().Name.ToString();
+            extype = ex.GetType().ToString();
+
+            ErrorLocation = ex.Message.ToString();
+            try
+            {
+                string filepath = System.AppDomain.CurrentDomain.BaseDirectory;
+                string errorpath = filepath + "\\ErrorFiles\\";
+                if (!Directory.Exists(errorpath))
+                {
+                    Directory.CreateDirectory(errorpath);
+                }
+
+                if (!Directory.Exists(filepath))
+                {
+                    Directory.CreateDirectory(filepath);
+                }
+                filepath = filepath + "log.txt";   //Text File Name
+                if (!File.Exists(filepath))
+                {
+                    File.Create(filepath).Dispose();
+                }
+                using (StreamWriter sw = File.AppendText(filepath))
+                {
+                    string error = "Log Written Date:" + " " + DateTime.Now.ToString() + line + "File Name :" + errorFileName + line + "Error Line No :" + " " + ErrorlineNo + line + "Error Message:" + " " + Errormsg + line + "Exception Type:" + " " + extype + line + "Error Location :" + " " + ErrorLocation + line + " Error Page Url:" + " " + exurl + line + "User Host IP:" + " " + hostIp + line;
+                    sw.WriteLine("-----------Exception Details on " + " " + DateTime.Now.ToString() + "-----------------");
+                    sw.WriteLine("-------------------------------------------------------------------------------------");
+                    sw.WriteLine(line);
+                    sw.WriteLine(error);
+                    sw.WriteLine("--------------------------------*End*------------------------------------------");
+                    sw.WriteLine(line);
+                    sw.Flush();
+                    sw.Close();
+
+                }
+            }
+            catch (Exception e)
+            {
+            }
         }
     }
 }
@@ -448,4 +523,22 @@ public class ItemModel
     public string StoreId { get; set; }
     public string CreateOn { get; set; }
     public string CreateBy { get; set; }
+}
+
+public class MemoryPostedFile : HttpPostedFileBase
+{
+    private readonly byte[] fileBytes;
+
+    public MemoryPostedFile(byte[] fileBytes, string fileName = null)
+    {
+        this.fileBytes = fileBytes;
+        this.FileName = fileName;
+        this.InputStream = new MemoryStream(fileBytes);
+    }
+
+    public override int ContentLength => fileBytes.Length;
+
+    public override string FileName { get; }
+
+    public override Stream InputStream { get; }
 }

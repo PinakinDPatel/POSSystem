@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,9 +27,20 @@ namespace POSSystem
         //string constring = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
         string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
         string username = App.Current.Properties["username"].ToString();
+
+        private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
+        string errorFileName = "CreateUser.cs";
+
         public CreateUser()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -65,7 +77,55 @@ namespace POSSystem
                     txtUser.Text = "";
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
+        public static void SendErrorToText(Exception ex, string errorFileName)
+        {
+            var line = Environment.NewLine + Environment.NewLine;
+            ErrorlineNo = ex.StackTrace.Substring(ex.StackTrace.Length - 7, 7);
+            Errormsg = ex.GetType().Name.ToString();
+            extype = ex.GetType().ToString();
+
+            ErrorLocation = ex.Message.ToString();
+            try
+            {
+                string filepath = System.AppDomain.CurrentDomain.BaseDirectory;
+                string errorpath = filepath + "\\ErrorFiles\\";
+                if (!Directory.Exists(errorpath))
+                {
+                    Directory.CreateDirectory(errorpath);
+                }
+
+                if (!Directory.Exists(filepath))
+                {
+                    Directory.CreateDirectory(filepath);
+                }
+                filepath = filepath + "log.txt";   //Text File Name
+                if (!File.Exists(filepath))
+                {
+                    File.Create(filepath).Dispose();
+                }
+                using (StreamWriter sw = File.AppendText(filepath))
+                {
+                    string error = "Log Written Date:" + " " + DateTime.Now.ToString() + line + "File Name :" + errorFileName + line + "Error Line No :" + " " + ErrorlineNo + line + "Error Message:" + " " + Errormsg + line + "Exception Type:" + " " + extype + line + "Error Location :" + " " + ErrorLocation + line + " Error Page Url:" + " " + exurl + line + "User Host IP:" + " " + hostIp + line;
+                    sw.WriteLine("-----------Exception Details on " + " " + DateTime.Now.ToString() + "-----------------");
+                    sw.WriteLine("-------------------------------------------------------------------------------------");
+                    sw.WriteLine(line);
+                    sw.WriteLine(error);
+                    sw.WriteLine("--------------------------------*End*------------------------------------------");
+                    sw.WriteLine(line);
+                    sw.Flush();
+                    sw.Close();
+
+                }
+            }
+            catch (Exception e)
+            {
+            }
         }
     }
 }

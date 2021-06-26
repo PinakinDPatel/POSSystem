@@ -13,6 +13,7 @@ using System.Drawing.Printing;
 using Color = System.Drawing.Color;
 using System.Windows.Data;
 using System.Configuration;
+using System.IO;
 
 namespace POSSystem
 {
@@ -26,12 +27,15 @@ namespace POSSystem
         //string conString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=F:\DesktopApplication\POSSystem\Database1.mdf;Integrated Security=True";
         string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
         string username = App.Current.Properties["username"].ToString();
+
+        private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
+        string errorFileName = "MainWindow.cs";
+
         string txtGotFocusStr = string.Empty;
         public MainWindow()
         {
             try
             {
-
                 InitializeComponent();
                 lblDate.Content = DateTime.Now.ToString("yyyy-MM-dd HH:MM:ss");
                 lblusername.Content = username;
@@ -120,7 +124,10 @@ namespace POSSystem
                     conn.Close();
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
         void button_Click(object sender, RoutedEventArgs e)
         {
@@ -131,7 +138,10 @@ namespace POSSystem
                 TxtBxStackPanel2.Visibility = Visibility.Visible;
                 sp21.Visibility = Visibility.Hidden;
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
         private void Button_Click_Go_Back(object sender, RoutedEventArgs e)
         {
@@ -140,7 +150,10 @@ namespace POSSystem
                 sp21.Visibility = Visibility.Visible;
                 TxtBxStackPanel2.Visibility = Visibility.Hidden;
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
         private void Button_Click_Sale_Save(object sender, RoutedEventArgs e)
         {
@@ -161,7 +174,11 @@ namespace POSSystem
                 sp21.Visibility = Visibility.Visible;
                 TxtBxStackPanel2.Visibility = Visibility.Hidden;
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
@@ -187,7 +204,10 @@ namespace POSSystem
                     textBox1.Text = "";
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void Tender_Click(object sender, RoutedEventArgs e)
@@ -224,7 +244,10 @@ namespace POSSystem
                     checkTxtPanel.Visibility = Visibility.Hidden;
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
 
@@ -261,7 +284,10 @@ namespace POSSystem
                 taxtTotal.Text = Taxsum.ToString("0.00");
                 grandTotal.Text = Total.ToString("0.00");
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void TxtCashReceive_KeyDown(object sender, KeyEventArgs e)
@@ -273,7 +299,10 @@ namespace POSSystem
                     TxtCashReturn.Text = decimal.Parse(Convert.ToDecimal(decimal.Parse(TxtCashReceive.Text) - decimal.Parse(grandTotal.Text)).ToString("0.00")).ToString("0.00");
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -383,7 +412,10 @@ namespace POSSystem
                 customerTxtPanel.Visibility = Visibility.Hidden;
                 checkTxtPanel.Visibility = Visibility.Hidden;
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
         private void FormatPage(object sender, PrintPageEventArgs e)
         {
@@ -489,7 +521,10 @@ namespace POSSystem
                 string DrawnBy = "PSPCStore: 0312-0459491 - OR - 0321-6228321";
                 DrawSimpleString(DrawnBy, minifont, Offset, 15);
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -502,7 +537,10 @@ namespace POSSystem
                 this.Close();
                 login.Show();
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
         void DrawAtStart(string text, int Offset)
         {
@@ -515,7 +553,10 @@ namespace POSSystem
                 graphics.DrawString(text, minifont,
                          new SolidBrush(Color.Black), startX + 5, startY + Offset);
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
         void InsertItem(string key, string value, string value1, int Offset)
         {
@@ -533,7 +574,7 @@ namespace POSSystem
                 graphics.DrawString(value1, minifont,
                         new SolidBrush(Color.Black), startX + 150, startY + Offset);
             }
-            catch (Exception ex) { }
+            catch (Exception ex) { SendErrorToText(ex, errorFileName); }
         }
         void InsertHeaderStyleItem(string key, string value, string value1, int Offset)
         {
@@ -551,7 +592,10 @@ namespace POSSystem
                 graphics.DrawString(value1, itemfont,
                       new SolidBrush(Color.Black), startX + 150, startY + Offset);
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
 
         }
         void DrawLine(string text, Font font, int Offset, int xOffset)
@@ -563,7 +607,10 @@ namespace POSSystem
                 graphics.DrawString(text, font,
                          new SolidBrush(Color.Black), startX + xOffset, startY + Offset);
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
         void DrawSimpleString(string text, Font font, int Offset, int xOffset)
         {
@@ -574,7 +621,10 @@ namespace POSSystem
                 graphics.DrawString(text, font,
                          new SolidBrush(Color.Black), startX + xOffset, startY + Offset);
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void JRDGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -601,7 +651,10 @@ namespace POSSystem
                     }
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
         private void NumButton_Click(object sender, RoutedEventArgs e)
         {
@@ -630,27 +683,96 @@ namespace POSSystem
                     txtDeptAmt.Text = textBox1Str + number;
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            Report rpt = new Report();
-            rpt.Show();
+            try
+            {
+                Report rpt = new Report();
+                rpt.Show();
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
-       
+
         private void textbox_GotFocus(object sender, RoutedEventArgs e)
         {
-            TextBox tb = sender as TextBox;
-            if (tb != null)
+            try
             {
-                txtGotFocusStr = tb.Name;
+                TextBox tb = sender as TextBox;
+                if (tb != null)
+                {
+                    txtGotFocusStr = tb.Name;
+                }
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
             }
         }
 
         private void JdGrid_delete_click(object sender, RoutedEventArgs e)
         {
-            DataRowView row = (DataRowView)JRDGrid.SelectedItem;
-            dt.Rows.Remove(row.Row);
+            try
+            {
+                DataRowView row = (DataRowView)JRDGrid.SelectedItem;
+                dt.Rows.Remove(row.Row);
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
+        public static void SendErrorToText(Exception ex, string errorFileName)
+        {
+            var line = Environment.NewLine + Environment.NewLine;
+            ErrorlineNo = ex.StackTrace.Substring(ex.StackTrace.Length - 7, 7);
+            Errormsg = ex.GetType().Name.ToString();
+            extype = ex.GetType().ToString();
+
+            ErrorLocation = ex.Message.ToString();
+            try
+            {
+                string filepath = System.AppDomain.CurrentDomain.BaseDirectory;
+                string errorpath = filepath + "\\ErrorFiles\\";
+                if (!Directory.Exists(errorpath))
+                {
+                    Directory.CreateDirectory(errorpath);
+                }
+
+                if (!Directory.Exists(filepath))
+                {
+                    Directory.CreateDirectory(filepath);
+                }
+                filepath = filepath + "log.txt";   //Text File Name
+                if (!File.Exists(filepath))
+                {
+                    File.Create(filepath).Dispose();
+                }
+                using (StreamWriter sw = File.AppendText(filepath))
+                {
+                    string error = "Log Written Date:" + " " + DateTime.Now.ToString() + line + "File Name :" + errorFileName + line + "Error Line No :" + " " + ErrorlineNo + line + "Error Message:" + " " + Errormsg + line + "Exception Type:" + " " + extype + line + "Error Location :" + " " + ErrorLocation + line + " Error Page Url:" + " " + exurl + line + "User Host IP:" + " " + hostIp + line;
+                    sw.WriteLine("-----------Exception Details on " + " " + DateTime.Now.ToString() + "-----------------");
+                    sw.WriteLine("-------------------------------------------------------------------------------------");
+                    sw.WriteLine(line);
+                    sw.WriteLine(error);
+                    sw.WriteLine("--------------------------------*End*------------------------------------------");
+                    sw.WriteLine(line);
+                    sw.Flush();
+                    sw.Close();
+
+                }
+            }
+            catch (Exception e)
+            {
+            }
         }
     }
 }
