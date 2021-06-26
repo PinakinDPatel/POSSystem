@@ -23,6 +23,7 @@ namespace POSSystem
         private Graphics graphics;
         string tenderCode = "";
         DataTable dt = new DataTable();
+        DataTable dtdep = new DataTable();
         //string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
         //string conString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=F:\DesktopApplication\POSSystem\Database1.mdf;Integrated Security=True";
         string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
@@ -64,10 +65,9 @@ namespace POSSystem
                 //con.Close();
                 textBox1.Focus();
 
-                string queryS = "Select Department from Department";
+                string queryS = "Select Department,TaxRate from Department";
                 SqlCommand cmd1 = new SqlCommand(queryS, con);
                 SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
-                DataTable dtdep = new DataTable();
                 sda1.Fill(dtdep);
                 con.Open();
                 cmd1.ExecuteNonQuery();
@@ -92,9 +92,10 @@ namespace POSSystem
                     button.Effect = new DropShadowEffect()
                     { Color = Colors.BlueViolet };
                     button.Margin = new Thickness(5, 5, 5, 5);
-
+                    string abc = dtdep.Rows[i].ItemArray[1].ToString();
                     // button.Effect.add
-                    button.Click += new RoutedEventHandler(button_Click);
+                    //button.Click += new RoutedEventHandler(button_Click);
+                    button.Click += (sender, e) => { button_Click(sender, e, abc); };
 
                     this.sp21.Children.Add(button);
                 }
@@ -108,32 +109,41 @@ namespace POSSystem
                 cbcustomer.ItemsSource = dtAcc.DefaultView;
                 cbcustomer.DisplayMemberPath = "Name";
 
-                // Load Transaction Id Label.
-                using (SqlConnection conn = new SqlConnection(conString))
-                {
-                    conn.Open();
-                    string query1 = "SELECT TOP 1 * FROM Transactions ORDER BY TransactionId DESC";
-                    using (SqlCommand cmd2 = new SqlCommand(query1, conn))
-                    {
-                        SqlDataReader data = cmd2.ExecuteReader();
-                        if (data.Read())
-                        {
-                            lblTranid.Content = Convert.ToInt32(data.GetValue(0).ToString()) + 1;
-                        }
-                    }
-                    conn.Close();
-                }
+                loadtransactionId();
+
             }
-            catch (Exception ex)
+            catch (Exception ex) { }
+        }
+
+        private void loadtransactionId()
+        {
+            using (SqlConnection conn = new SqlConnection(conString))
             {
-                SendErrorToText(ex, errorFileName);
+                conn.Open();
+                string query1 = "SELECT TOP 1 * FROM Transactions ORDER BY TransactionId DESC";
+                using (SqlCommand cmd2 = new SqlCommand(query1, conn))
+                {
+                    SqlDataReader data = cmd2.ExecuteReader();
+                    if (data.Read())
+                    {
+                        lblTranid.Content = Convert.ToInt32(data.GetValue(0).ToString()) + 1;
+                    }
+                    else
+                    {
+                        lblTranid.Content = 1;
+                    }
+
+                }
+                conn.Close();
             }
         }
-        void button_Click(object sender, RoutedEventArgs e)
+        string taxrate = "";
+        void button_Click(object sender, RoutedEventArgs e, string abc)
         {
             try
             {
                 var btnContent = sender as Button;
+                taxrate = abc;
                 lblDepartment.Content = btnContent.Content;
                 TxtBxStackPanel2.Visibility = Visibility.Visible;
                 sp21.Visibility = Visibility.Hidden;
@@ -163,7 +173,7 @@ namespace POSSystem
                 dr[0] = 0;
                 dr[1] = lblDepartment.Content.ToString();
                 dr[2] = Convert.ToDecimal(txtDeptAmt.Text).ToString("0.00");
-                dr[3] = 9;
+                dr[3] = taxrate;
                 dr[4] = 1;
                 dr[5] = (decimal.Parse(txtDeptAmt.Text) * 1).ToString("0.00");
                 dt.Rows.Add(dr);
@@ -187,12 +197,12 @@ namespace POSSystem
             {
                 if (e.Key == Key.Enter || e.Key == Key.Tab)
                 {
-                    string code = textBox1.Text.Remove(textBox1.Text.Length - 1, 1);
+                    //string code = textBox1.Text.Remove(textBox1.Text.Length - 1, 1);
                     SqlConnection con = new SqlConnection(conString);
                     string query = "select Scancode,Description,UnitRetail,@qty as quantity,UnitRetail as Amount,Department.TaxRate from Item inner join Department on item.Department=Department.Department where Scancode=@password ";
                     SqlCommand cmd = new SqlCommand(query, con);
 
-                    cmd.Parameters.AddWithValue("@password", code);
+                    cmd.Parameters.AddWithValue("@password", textBox1.Text);
                     cmd.Parameters.AddWithValue("@qty", 1);
                     SqlDataAdapter sda = new SqlDataAdapter(cmd);
                     con.Open();
@@ -297,6 +307,7 @@ namespace POSSystem
                 if (e.Key == Key.Tab || e.Key == Key.Enter)
                 {
                     TxtCashReturn.Text = decimal.Parse(Convert.ToDecimal(decimal.Parse(TxtCashReceive.Text) - decimal.Parse(grandTotal.Text)).ToString("0.00")).ToString("0.00");
+                    Button_Click_1();
                 }
             }
             catch (Exception ex)
@@ -305,7 +316,7 @@ namespace POSSystem
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void Button_Click_1()
         {
             try
             {
@@ -411,6 +422,8 @@ namespace POSSystem
                 sp02.Visibility = Visibility.Visible;
                 customerTxtPanel.Visibility = Visibility.Hidden;
                 checkTxtPanel.Visibility = Visibility.Hidden;
+
+                loadtransactionId();
             }
             catch (Exception ex)
             {
@@ -690,15 +703,8 @@ namespace POSSystem
         }
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                Report rpt = new Report();
-                rpt.Show();
-            }
-            catch (Exception ex)
-            {
-                SendErrorToText(ex, errorFileName);
-            }
+            Report rpt = new Report();
+            rpt.Show();
         }
 
         private void textbox_GotFocus(object sender, RoutedEventArgs e)
@@ -719,60 +725,40 @@ namespace POSSystem
 
         private void JdGrid_delete_click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                DataRowView row = (DataRowView)JRDGrid.SelectedItem;
-                dt.Rows.Remove(row.Row);
-            }
-            catch (Exception ex)
-            {
-                SendErrorToText(ex, errorFileName);
-            }
+            DataRowView row = (DataRowView)JRDGrid.SelectedItem;
+            dt.Rows.Remove(row.Row);
+            TotalEvent();
         }
 
-        public static void SendErrorToText(Exception ex, string errorFileName)
+        private void TxtCheck_KeyDown(object sender, KeyEventArgs e)
         {
-            var line = Environment.NewLine + Environment.NewLine;
-            ErrorlineNo = ex.StackTrace.Substring(ex.StackTrace.Length - 7, 7);
-            Errormsg = ex.GetType().Name.ToString();
-            extype = ex.GetType().ToString();
-
-            ErrorLocation = ex.Message.ToString();
             try
             {
-                string filepath = System.AppDomain.CurrentDomain.BaseDirectory;
-                string errorpath = filepath + "\\ErrorFiles\\";
-                if (!Directory.Exists(errorpath))
+                if (e.Key == Key.Tab || e.Key == Key.Enter)
                 {
-                    Directory.CreateDirectory(errorpath);
-                }
-
-                if (!Directory.Exists(filepath))
-                {
-                    Directory.CreateDirectory(filepath);
-                }
-                filepath = filepath + "log.txt";   //Text File Name
-                if (!File.Exists(filepath))
-                {
-                    File.Create(filepath).Dispose();
-                }
-                using (StreamWriter sw = File.AppendText(filepath))
-                {
-                    string error = "Log Written Date:" + " " + DateTime.Now.ToString() + line + "File Name :" + errorFileName + line + "Error Line No :" + " " + ErrorlineNo + line + "Error Message:" + " " + Errormsg + line + "Exception Type:" + " " + extype + line + "Error Location :" + " " + ErrorLocation + line + " Error Page Url:" + " " + exurl + line + "User Host IP:" + " " + hostIp + line;
-                    sw.WriteLine("-----------Exception Details on " + " " + DateTime.Now.ToString() + "-----------------");
-                    sw.WriteLine("-------------------------------------------------------------------------------------");
-                    sw.WriteLine(line);
-                    sw.WriteLine(error);
-                    sw.WriteLine("--------------------------------*End*------------------------------------------");
-                    sw.WriteLine(line);
-                    sw.Flush();
-                    sw.Close();
-
+                    Button_Click_1();
                 }
             }
-            catch (Exception e)
+            catch (Exception ex) { }
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
             {
+                btnConform.Visibility = Visibility.Visible;
             }
+            catch (Exception ex) { }
+        }
+
+        private void btnConform_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Button_Click_1();
+                btnConform.Visibility = Visibility.Hidden;
+            }
+            catch (Exception ex) { }
         }
     }
 }

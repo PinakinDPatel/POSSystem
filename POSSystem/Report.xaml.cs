@@ -46,11 +46,11 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                string tenderQ = "Update tender set shiftClose=1 Where shiftClose is null";
+                string tenderQ = "Update tender set shiftClose=username Where shiftClose is null";
                 SqlCommand tenderCMD = new SqlCommand(tenderQ, con);
-                string transQ = "Update Transactions set shiftClose=1 Where shiftClose is null";
+                string transQ = "Update Transactions set shiftClose=username Where shiftClose is null";
                 SqlCommand transCMD = new SqlCommand(transQ, con);
-                string itemQ = "Update SalesItem set shiftClose=1 Where shiftClose is null";
+                string itemQ = "Update SalesItem set shiftClose=username Where shiftClose is null";
                 SqlCommand itemCMD = new SqlCommand(itemQ, con);
                 con.Open();
                 tenderCMD.ExecuteNonQuery();
@@ -69,13 +69,13 @@ namespace POSSystem
             {
                 SqlConnection con = new SqlConnection(conString);
                 var date = DateTime.Now.ToString("yyyy-MM-dd");
-                string tenderQ = "Update tender set shiftClose=1, DayClose=@NowDate Where DayClose is null";
+                string tenderQ = "Update tender set shiftClose=username, DayClose=@NowDate Where DayClose is null";
                 SqlCommand tenderCMD = new SqlCommand(tenderQ, con);
                 tenderCMD.Parameters.AddWithValue("@NowDate", date);
-                string transQ = "Update Transactions set shiftClose=1, DayClose=@Date Where DayClose is null";
+                string transQ = "Update Transactions set shiftClose=username, DayClose=@Date Where DayClose is null";
                 SqlCommand transCMD = new SqlCommand(transQ, con);
                 transCMD.Parameters.AddWithValue("@Date", date);
-                string itemQ = "Update SalesItem set shiftClose=1, DayClose=@Now Where DayClose is null";
+                string itemQ = "Update SalesItem set shiftClose=username, DayClose=@Now Where DayClose is null";
                 SqlCommand itemCMD = new SqlCommand(itemQ, con);
                 itemCMD.Parameters.AddWithValue("@Now", date);
                 con.Open();
