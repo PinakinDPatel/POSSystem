@@ -62,7 +62,7 @@
                     <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFD7C9F3"/>
                 </TextBox.Effect>
             </TextBox>
-            <Button Content="Save" Name="btnSave" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="192" FontSize="14" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="2" Click="Button_Click">
+            <Button Content="Save" Name="btnSave" HorizontalAlignment="Left" VerticalAlignment="Center" Height="32" Width="192" FontSize="14" Grid.Column="3" Grid.Row="2" Click="Button_Click">
                 
             </Button>
         </Grid>

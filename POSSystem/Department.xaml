@@ -4,8 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:POSSystem"
-      mc:Ignorable="d" 
-      WindowStyle="None" WindowStartupLocation="CenterScreen" Height="600" Width="600">
+      mc:Ignorable="d" WindowStartupLocation="CenterScreen" Height="600" Width="600">
 
     <Grid>
         <Grid.RowDefinitions>

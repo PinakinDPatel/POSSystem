@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:POSSystem"
-      mc:Ignorable="d" Height="371.618" Width="690.266" ResizeMode="NoResize" WindowStyle="None" WindowStartupLocation="CenterScreen">
+      mc:Ignorable="d" Height="371.618" Width="690.266" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="White">
 
     <Grid>
         <Grid.Background>
@@ -14,8 +14,8 @@
             </LinearGradientBrush>
         </Grid.Background>
         <Label Content="Login" HorizontalAlignment="Left" Margin="118,62,0,0" VerticalAlignment="Top" FontSize="36" FontFamily="Arial Black"/>
-        <Label Content="Enter Your Password" HorizontalAlignment="Left" Margin="100,157,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Foreground="#FF951FE6"/>
-        <TextBox HorizontalAlignment="Left" Name="TxtPassword" Height="40" Margin="88,201,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171" BorderBrush="#FF6C0FF1">
+        <Label Content="Enter Your Password" HorizontalAlignment="Left" Margin="100,130,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Foreground="#FF951FE6"/>
+        <TextBox HorizontalAlignment="Left" Name="TxtPassword" Height="40" Margin="88,170,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171" BorderBrush="#FF6C0FF1">
             <TextBox.Effect>
                 <DropShadowEffect Color="#FFCCB1FD" BlurRadius="2" ShadowDepth="3"/>
             </TextBox.Effect>
@@ -25,7 +25,7 @@
                 </Style>
             </TextBox.Resources>
         </TextBox>
-        <Button Content="Sign In" Name="TxtSignIn" HorizontalAlignment="Left" Margin="94,262,0,0" VerticalAlignment="Top" Width="150" Height="42" Foreground="White" Click="TxtSignIn_Click">
+        <Button Content="Sign In" Name="TxtSignIn" HorizontalAlignment="Left" Margin="98,225,0,0" VerticalAlignment="Top" Width="150" Height="42" Foreground="White" Click="TxtSignIn_Click">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FF7940DE" Offset="0"/>
@@ -39,11 +39,8 @@
                 <Style TargetType="Button">
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background">
-                                <Setter.Value>
-                                    <SolidColorBrush Color="Red" />
-                                </Setter.Value>
-                            </Setter>
+                            <Setter Property="Background" Value="Red"/>
+                            <Setter Property="Foreground" Value="White"/>
                         </Trigger>
                     </Style.Triggers>
                 </Style>
