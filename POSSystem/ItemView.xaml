@@ -23,7 +23,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Visibility="Hidden" Name="btnback" Height="90" Width="90" FontSize="30" FontFamily="Arial Black" HorizontalAlignment="Left" VerticalAlignment="Center" Background="White" Foreground="#FF0E2CE6" FontWeight="Bold" Click="Btnback_Click" >
+            <Button Visibility="Hidden" Name="btnback" Height="90" Width="90" FontSize="30" FontFamily="Arial Black" HorizontalAlignment="Left" VerticalAlignment="Center" Background="White" Foreground="#FF0E2CE6" FontWeight="Bold" >
                 <Image Source="Image/back1.png" Width="90" Height="90" Cursor="Hand" />
                 <Button.Effect>
                     <DropShadowEffect Opacity="0" />
