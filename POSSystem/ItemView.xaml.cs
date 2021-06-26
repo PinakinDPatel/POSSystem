@@ -88,6 +88,7 @@ namespace POSSystem
 
                 dgImport.Visibility = Visibility.Visible;
                 grupload.Visibility = Visibility.Visible;
+                btnback.Visibility = Visibility.Visible;
             }
             catch (Exception ex1)
             {
@@ -188,6 +189,8 @@ namespace POSSystem
 
                 dgitem.Visibility = Visibility.Hidden;
                 dgImport.Visibility = Visibility.Visible;
+                BrowseButton.Visibility = Visibility.Hidden;
+                btnsave.Visibility = Visibility.Visible;
 
                 dgImport.ItemsSource = dt.DefaultView;
                 dgImport.AutoGenerateColumns = true;
@@ -350,6 +353,7 @@ namespace POSSystem
 
                 grdSecondPart.Visibility = Visibility.Hidden;
                 grdSecondPart2.Visibility = Visibility.Visible;
+                btnback.Visibility = Visibility.Visible;
             }
             catch (Exception ex5)
             {
