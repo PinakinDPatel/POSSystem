@@ -1,0 +1,79 @@
+﻿<Window x:Class="POSSystem.Expence"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:POSSystem"
+        mc:Ignorable="d"
+        Title="Expence" WindowState="Maximized" ShowInTaskbar="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Expence" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36"></Label>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="325"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Add Expence" HorizontalAlignment="Center" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
+                <Label Name="lblExpenceid"/>
+                <Label Content="Date :" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <Label Content="Expence :" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <Label Content="Amount :" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <Label Content="Comment :" Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <TextBox Name="txtDate" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Height="35" Width="180" Margin="5,5,5,5"/>
+                <ComboBox Name="cbExpence" ItemsSource="{Binding Name}"  Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Height="35" Width="180" Margin="5,5,5,5" Background="White"/>
+                <TextBox Name="txtAmount" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Width="180" Height="35" Margin="5,5,5,5"/>
+                <TextBox Name="txtcomment" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Width="180" Height="35" Margin="5,5,5,5"/>
+                <Button Name="btnSave" Content="Save" HorizontalAlignment="Center" Grid.Row="5" Width="180" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="5,5,5,5" Click="Button_Click"/>
+            </Grid>
+            <DataGrid Name="dgExpence" Grid.Column="1" Background="White" AutoGenerateColumns="False" Margin="0,10,25,0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Expence}" Header="Expence" Width="100*"/>
+                    <DataGridTextColumn Binding="{Binding Amount}" Header="Amount" Width="50*"/>
+                    <DataGridTextColumn Binding="{Binding Comment}" Header="Comment" Width="120*"/>
+                    <DataGridTemplateColumn Header="Edit" Width="40*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Click="onEdit" Background="White" Width="22" Height="25">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="Image/Edit1.png"/>
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Delete" Width="40*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Click="onDelete" Background="White" Width="20" Height="25">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="Image/Delete.png" Width="22"/>
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</Window>

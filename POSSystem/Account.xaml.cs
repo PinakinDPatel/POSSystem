@@ -33,10 +33,11 @@ namespace POSSystem
         string errorFileName = "Account.cs";
 
         DataTable dtDG = new DataTable();
-        string username = "ss";// App.Current.Properties["username"].ToString();
+        string username =App.Current.Properties["username"].ToString();
         public Account()
         {
             InitializeComponent();
+            dtDG.Reset();
             Datable();
         }
 
@@ -50,6 +51,7 @@ namespace POSSystem
                 SqlDataAdapter sdaDG = new SqlDataAdapter(cmdDG);
                 DataTable dtDG = new DataTable();
                 sdaDG.Fill(dtDG);
+                dgAccount.CanUserAddRows = false;
                 this.dgAccount.ItemsSource = dtDG.AsDataView();
             }
             catch (Exception ex)
