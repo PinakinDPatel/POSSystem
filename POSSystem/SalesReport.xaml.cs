@@ -80,8 +80,8 @@ namespace POSSystem
                 conTotal1.Close();
 
                 amountTotal.Content = dtTotal.Rows[0]["Amount"].ToString();
-                taxTotal.Text = dtTotal.Rows[0]["TaxRate"].ToString();
-                var _amountTaxTotal = Convert.ToDecimal(amountTotal.Content) + Convert.ToDecimal(taxTotal.Text);
+                taxTotal.Content = dtTotal.Rows[0]["TaxRate"].ToString();
+                var _amountTaxTotal = Convert.ToDecimal(amountTotal.Content) + Convert.ToDecimal(taxTotal.Content);
                 amountTaxTotal.Content = _amountTaxTotal.ToString();
                 cashamountTotal.Content = dtTotal1.Rows[0]["Amount"].ToString();
             }
