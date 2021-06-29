@@ -4,7 +4,10 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:POSSystem"
-      mc:Ignorable="d" Height="371.618" Width="690.266" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="White">
+      mc:Ignorable="d" Height="371.618" Width="690.266" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="#FF200F4B" BorderThickness="1" WindowStyle="ThreeDBorderWindow" BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Foreground="#FF382185">
+    <Window.Effect>
+        <DropShadowEffect Direction="300" ShadowDepth="10" Color="#FF636363"/>
+    </Window.Effect>
 
     <Grid>
         <Grid.Background>
@@ -19,13 +22,8 @@
             <TextBox.Effect>
                 <DropShadowEffect Color="#FFCCB1FD" BlurRadius="2" ShadowDepth="3"/>
             </TextBox.Effect>
-            <TextBox.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="8"/>
-                </Style>
-            </TextBox.Resources>
         </TextBox>
-        <Button Content="Sign In" Name="TxtSignIn" HorizontalAlignment="Left" Margin="98,225,0,0" VerticalAlignment="Top" Width="150" Height="42" Foreground="White" Click="TxtSignIn_Click">
+        <Button Content="Sign In" Name="TxtSignIn" HorizontalAlignment="Left" FontSize="18" FontWeight="Bold" Margin="98,225,0,0" VerticalAlignment="Top" Width="150" Height="42" Foreground="White" Click="TxtSignIn_Click">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FF7940DE" Offset="0"/>
