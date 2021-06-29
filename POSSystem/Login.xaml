@@ -18,7 +18,7 @@
         </Grid.Background>
         <Label Content="Login" HorizontalAlignment="Left" Margin="118,62,0,0" VerticalAlignment="Top" FontSize="36" FontFamily="Arial Black"/>
         <Label Content="Enter Your Password" HorizontalAlignment="Left" Margin="100,130,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Foreground="#FF951FE6"/>
-        <TextBox HorizontalAlignment="Left" Name="TxtPassword" Height="40" Margin="88,170,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171" BorderBrush="#FF6C0FF1">
+        <TextBox HorizontalAlignment="Left" Name="TxtPassword" Height="40" Margin="88,170,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171" BorderBrush="#FF6C0FF1" Padding="5,5,0,0" FontSize="20">
             <TextBox.Effect>
                 <DropShadowEffect Color="#FFCCB1FD" BlurRadius="2" ShadowDepth="3"/>
             </TextBox.Effect>

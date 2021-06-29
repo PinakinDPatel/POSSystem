@@ -361,6 +361,15 @@ namespace POSSystem
             }
         }
 
+        private void Btnback_Click(object sender, RoutedEventArgs e)
+        {
+            grupload.Visibility = Visibility.Hidden;
+            grdSecondPart.Visibility = Visibility.Visible;
+            AddExport.Visibility = Visibility.Visible;
+            grdSecondPart2.Visibility = Visibility.Hidden;
+            btnback.Visibility = Visibility.Hidden;
+        }
+
         private void BtnSearch_Click_ChangeValue(object sender, RoutedEventArgs e)
         {
             try

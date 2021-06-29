@@ -167,6 +167,19 @@ namespace POSSystem
 
         }
 
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                CreateUser user = new CreateUser();
+                user.Show();
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
         public static void SendErrorToText(Exception ex, string errorFileName)
         {
             var line = Environment.NewLine + Environment.NewLine;

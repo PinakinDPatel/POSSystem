@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Data;
+using System.Data.SqlClient;
+using System.Windows.Navigation;
+using System.Configuration;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace POSSystem
 {
@@ -45,7 +47,7 @@ namespace POSSystem
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 sda.Fill(dt);
-
+                DeptGrid.CanUserAddRows = false;
                 DeptGrid.ItemsSource = dt.DefaultView;
             }
             catch (Exception ex)
@@ -141,6 +143,7 @@ namespace POSSystem
             }
 
         }
+
         private void onEdit(object sender, RoutedEventArgs e)
         {
             try
@@ -155,6 +158,7 @@ namespace POSSystem
             catch (Exception ex) { SendErrorToText(ex, errorFileName); }
 
         }
+
         private void onDelete(object sender, RoutedEventArgs e)
         {
             try
@@ -193,7 +197,6 @@ namespace POSSystem
         {
             TxtTaxRate.BorderBrush = System.Windows.Media.Brushes.Gray;
         }
-
 
         public static void SendErrorToText(Exception ex, string errorFileName)
         {
@@ -239,5 +242,30 @@ namespace POSSystem
             {
             }
         }
+
+        //private byte[] _imageBytes = null;
+
+        //// Browse for an image on your computer
+        //private void BrowseButton_OnClick(object sender, RoutedEventArgs e)
+        // {
+        //    Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
+        //    {
+        //        CheckFileExists = true,
+        //        Multiselect = false,
+        //         Filter = "Images (*.jpg,*.png)|*.jpg;*.png|All Files(*.*)|*.*"
+        //    };
+
+        //    if (dialog.ShowDialog() != true) { return; }
+
+        //    ImagePath.Text = dialog.FileName;
+        //    MyImage.Source = new BitmapImage(new Uri(ImagePath.Text));
+
+        //    using (var fs = new FileStream(ImagePath.Text, FileMode.Open, FileAccess.Read))
+        //    {
+        //        _imageBytes = new byte[fs.Length];
+        //        fs.Read(_imageBytes, 0, System.Convert.ToInt32(fs.Length));
+        //    }
+        //}
+        
     }
 }

@@ -4,16 +4,10 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:POSSystem"
-      mc:Ignorable="d" Height="523.985" Width="414.666" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize">
+      mc:Ignorable="d" Height="523.985" Width="414.666" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <!--d:DesignHeight="750" d:DesignWidth="600"-->
 
     <Grid>
-        <Grid.Background>
-            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="#FFD8D8D8" Offset="0"/>
-                <GradientStop Color="White" Offset="1"/>
-            </LinearGradientBrush>
-        </Grid.Background>
         <Label Content="Create User" FontSize="36" HorizontalAlignment="Center" Margin="83,66,57,0" Width="275" FontWeight="Bold" FontFamily="Arial Black" Foreground="#FF020202" Height="55" VerticalAlignment="Top">
             <Label.Effect>
                 <DropShadowEffect Color="#FFE5C6F7" BlurRadius="2" ShadowDepth="3"/>
@@ -31,7 +25,7 @@
                 <DropShadowEffect Color="#FFC499F7"/>
             </TextBox.Effect>
         </TextBox>
-        <Button Content="Create" HorizontalAlignment="Left" Margin="100,0,0,72" VerticalAlignment="Bottom" Width="198" Height="52" FontSize="36" Foreground="#FFFDFDFD" Click="Button_Click">
+        <Button Content="Create" Margin="100,381,111,72" FontSize="36" Foreground="#FFFDFDFD" Click="Button_Click">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                     <GradientStop Color="#FF7832F3" Offset="0"/>

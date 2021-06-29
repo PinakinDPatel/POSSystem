@@ -14,6 +14,8 @@ using Color = System.Drawing.Color;
 using System.Windows.Data;
 using System.Configuration;
 using System.IO;
+using System.Windows.Media.Imaging;
+using System.Windows.Resources;
 
 namespace POSSystem
 {
@@ -65,7 +67,7 @@ namespace POSSystem
                 //con.Close();
                 textBox1.Focus();
 
-                string queryS = "Select Department,TaxRate from Department";
+                 string queryS = "Select Department,TaxRate,FilePath from Department";
                 SqlCommand cmd1 = new SqlCommand(queryS, con);
                 SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
                 sda1.Fill(dtdep);
@@ -80,16 +82,45 @@ namespace POSSystem
                 newDropShadowEffect.Opacity = 95;
                 newDropShadowEffect.ShadowDepth = 5;
 
+               
                 for (int i = 0; i < dtdep.Rows.Count; ++i)
                 {
                     Button button = new Button()
                     {
                         Content = dtdep.Rows[i].ItemArray[0],
-                        Tag = i
+                        
+                    Tag = i
                     };
-                    button.Foreground = new SolidColorBrush(Colors.White);
-                    button.FontSize = 28;
-                    button.Background = new SolidColorBrush(Colors.DarkRed);
+                    if (dtdep.Rows[i].ItemArray[0].ToString() == "Drinks") {
+                        button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri("Image/Drinks.jpeg", UriKind.Relative)) };
+                    }
+                    if (dtdep.Rows[i].ItemArray[0].ToString() == "Bear/Wine")
+                    {
+                        button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri("Image/Beer.jpg", UriKind.Relative)) };
+                    }
+                    if (dtdep.Rows[i].ItemArray[0].ToString() == "Deli")
+                    {
+                        button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri("Image/Deli.jpg", UriKind.Relative)) };
+                    }
+                    if (dtdep.Rows[i].ItemArray[0].ToString() == "Grocery")
+                    {
+                        button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri("Image/Grocery.jpg", UriKind.Relative)) };
+                    }
+                    if (dtdep.Rows[i].ItemArray[0].ToString() == "Frozen Food")
+                    {
+                        button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri("Image/FrozenFood.jpg", UriKind.Relative)) };
+                    }
+                    if (dtdep.Rows[i].ItemArray[0].ToString() == "Meat")
+                    {
+                        button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri("Image/Meat.jpg", UriKind.Relative)) };
+                    }
+                    if (dtdep.Rows[i].ItemArray[0].ToString() == "Non Food")
+                    {
+                        button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri("Image/Produce.jpg", UriKind.Relative)) };
+                    }
+                   
+                    button.Foreground = new SolidColorBrush(Colors.Black);
+                    //button.Background = new SolidColorBrush(Colors.DarkRed);
                     button.Effect = new DropShadowEffect()
                     { Color = Colors.BlueViolet };
                     button.Margin = new Thickness(5, 5, 5, 5);

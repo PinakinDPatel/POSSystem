@@ -12,7 +12,8 @@
             <RowDefinition Height="20*"></RowDefinition>
             <RowDefinition Height="65*"></RowDefinition>
         </Grid.RowDefinitions>
-            <Label Content="Department" FontSize="32" Grid.ColumnSpan="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <!--<Label Content="Department" FontSize="32" Grid.ColumnSpan="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>-->
+        
         <Grid Grid.Row="1" Margin="10,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -21,6 +22,7 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
@@ -44,7 +46,43 @@
                 </TextBox.Effect>
             </TextBox>
             <Label Content="TaxRate :-" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14" Grid.Column="2"/>
-           
+            <!--<TextBox x:Name="ImagePath" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,5">
+                <TextBox.Effect>
+                    <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFE6D4FD"/>
+                </TextBox.Effect>
+            </TextBox>
+            <Button x:Name="BrowseButton" Content="Browse" Click="BrowseButton_OnClick" Grid.Row="2" Grid.Column="2" FontSize="25" Margin="0,0,0,5"/>
+            <Image x:Name="MyImage" >
+                <Image.Source>
+                    <BitmapImage UriSource="{Binding ElementName=ImagePath, Path=Text}" />
+                </Image.Source>
+            </Image>-->
+            <ComboBox Name="drphead" FontSize="14" Grid.Row="2" Grid.ColumnSpan="2">
+                <ComboBoxItem IsSelected="True" >
+                    <WrapPanel>
+                        <TextBlock Text="Item 1 " VerticalAlignment="Center" />
+                        <Button Width="30" Height="30" >
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Image Height="25" Source="Image/Beer.jpg"></Image>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </WrapPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <WrapPanel>
+                        <TextBlock Text="Item 2 " VerticalAlignment="Center" />
+                        <Button Width="30" Height="30" >
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Image Height="25" Source="Image/Drinks.jpeg"></Image>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </WrapPanel>
+                </ComboBoxItem>
+            </ComboBox>
         </Grid>
         <Label Name="lblusername" Visibility="Hidden"/>
         <DataGrid Name="DeptGrid" Grid.Row="2" HorizontalAlignment="Center"   VerticalAlignment="Top" AutoGenerateColumns="False">
