@@ -59,8 +59,8 @@ namespace POSSystem
                 dt.Columns.Add("TransactionId");
                 dt.Columns.Add("CreateBy");
                 dt.Columns.Add("CreateOn");
-                dt.Columns.Add("ShiftClose");
-                dt.Columns.Add("DayClose");
+                //dt.Columns.Add("ShiftClose");
+                //dt.Columns.Add("DayClose");
 
                 //con.Close();
                 textBox1.Focus();
@@ -88,15 +88,13 @@ namespace POSSystem
                         Tag = i
                     };
                     button.Foreground = new SolidColorBrush(Colors.White);
+                    button.FontSize = 28;
                     button.Background = new SolidColorBrush(Colors.DarkRed);
                     button.Effect = new DropShadowEffect()
                     { Color = Colors.BlueViolet };
                     button.Margin = new Thickness(5, 5, 5, 5);
                     string abc = dtdep.Rows[i].ItemArray[1].ToString();
-                    // button.Effect.add
-                    //button.Click += new RoutedEventHandler(button_Click);
                     button.Click += (sender, e) => { button_Click(sender, e, abc); };
-
                     this.sp21.Children.Add(button);
                 }
 
@@ -332,20 +330,20 @@ namespace POSSystem
                 string cashReturn = TxtCashReturn.Text;
                 string tranid = Convert.ToInt32(lblTranid.Content).ToString();
 
-                string transaction = "insert into Transactions(EndDate,EndTime,GrossAmount,TaxAmount,GrandAmount,ShiftClose,DayClose,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + totalAmt + "','" + tax + "','" + grandTotalAmt + "',0,0,'" + username + "','" + date + "')";
+                string transaction = "insert into Transactions(EndDate,EndTime,GrossAmount,TaxAmount,GrandAmount,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + totalAmt + "','" + tax + "','" + grandTotalAmt + "','" + username + "','" + date + "')";
                 SqlCommand cmd = new SqlCommand(transaction, con);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
                 if (tenderCode == "Cash")
                 {
-                    string tender = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn,ShiftClose,DayClose)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + cashRec + "','" + tranid + "','" + username + "','" + date + "',0,0)";
+                    string tender = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + cashRec + "','" + tranid + "','" + username + "','" + date + "')";
                     SqlCommand cmdTender = new SqlCommand(tender, con);
                     con.Open();
                     cmdTender.ExecuteNonQuery();
                     con.Close();
 
-                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn,ShiftClose,DayClose)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + "-" + cashReturn + "','" + tranid + "','" + username + "','" + date + "',0,0)";
+                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + "-" + cashReturn + "','" + tranid + "','" + username + "','" + date + "')";
                     SqlCommand cmdTender1 = new SqlCommand(tender1, con);
                     con.Open();
                     cmdTender1.ExecuteNonQuery();
@@ -353,7 +351,7 @@ namespace POSSystem
                 }
                 else if (tenderCode == "Card")
                 {
-                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn,ShiftClose,DayClose)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + username + "','" + date + "',0,0)";
+                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + username + "','" + date + "')";
                     SqlCommand cmdTender1 = new SqlCommand(tender1, con);
                     con.Open();
                     cmdTender1.ExecuteNonQuery();
@@ -361,7 +359,7 @@ namespace POSSystem
                 }
                 else if (tenderCode == "Customer")
                 {
-                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,AccountName,CreateBy,CreateOn,ShiftClose,DayClose)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + cbcustomer.Text + "','" + username + "','" + date + "',0,0)";
+                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,AccountName,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + cbcustomer.Text + "','" + username + "','" + date + "')";
                     SqlCommand cmdTender1 = new SqlCommand(tender1, con);
                     con.Open();
                     cmdTender1.ExecuteNonQuery();
@@ -369,7 +367,7 @@ namespace POSSystem
                 }
                 else if (tenderCode == "Check")
                 {
-                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CheckNo,CreateBy,CreateOn,ShiftClose,DayClose)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + TxtCheck.Text + "','" + username + "','" + date + "',0,0)";
+                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CheckNo,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + TxtCheck.Text + "','" + username + "','" + date + "')";
                     SqlCommand cmdTender1 = new SqlCommand(tender1, con);
                     con.Open();
                     cmdTender1.ExecuteNonQuery();
@@ -382,8 +380,8 @@ namespace POSSystem
                     dataRow[8] = tranid;
                     dataRow[9] = username;
                     dataRow[10] = date;
-                    dataRow[11] = 0;
-                    dataRow[12] = 0;
+                    //dataRow[11] = 0;
+                    //dataRow[12] = 0;
                 }
 
                 SqlBulkCopy objbulk = new SqlBulkCopy(con);
@@ -398,8 +396,8 @@ namespace POSSystem
                 objbulk.ColumnMappings.Add("TransactionId", "TransactionId");
                 objbulk.ColumnMappings.Add("CreateBy", "CreateBy");
                 objbulk.ColumnMappings.Add("CreateOn", "CreateOn");
-                objbulk.ColumnMappings.Add("ShiftClose", "ShiftClose");
-                objbulk.ColumnMappings.Add("DayClose", "DayClose");
+                //objbulk.ColumnMappings.Add("ShiftClose", "ShiftClose");
+                //objbulk.ColumnMappings.Add("DayClose", "DayClose");
                 con.Open();
                 objbulk.WriteToServer(dt);
                 con.Close();

@@ -45,17 +45,35 @@ namespace POSSystem
         {
             try
             {
+                shiftClose();
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+        private void shiftClose()
+        {
+            try
+            {
                 SqlConnection con = new SqlConnection(conString);
-                string tenderQ = "Update tender set shiftClose=username Where shiftClose is null";
+                string tenderQ = "Update tender set shiftClose=@username Where shiftClose is null";
                 SqlCommand tenderCMD = new SqlCommand(tenderQ, con);
-                string transQ = "Update Transactions set shiftClose=username Where shiftClose is null";
+                tenderCMD.Parameters.AddWithValue("@username", username);
+                string transQ = "Update Transactions set shiftClose=@username Where shiftClose is null";
                 SqlCommand transCMD = new SqlCommand(transQ, con);
-                string itemQ = "Update SalesItem set shiftClose=username Where shiftClose is null";
+                transCMD.Parameters.AddWithValue("@username", username);
+                string itemQ = "Update SalesItem set shiftClose=@username Where shiftClose is null";
                 SqlCommand itemCMD = new SqlCommand(itemQ, con);
+                itemCMD.Parameters.AddWithValue("@username", username);
+                string expQ = "Update Expence set shiftClose=@username Where shiftClose is null";
+                SqlCommand expCMD = new SqlCommand(expQ, con);
+                expCMD.Parameters.AddWithValue("@username", username);
                 con.Open();
                 tenderCMD.ExecuteNonQuery();
                 transCMD.ExecuteNonQuery();
                 itemCMD.ExecuteNonQuery();
+                expCMD.ExecuteNonQuery();
                 con.Close();
             }
             catch (Exception ex)
@@ -63,26 +81,45 @@ namespace POSSystem
                 SendErrorToText(ex, errorFileName);
             }
         }
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+
+        private void Dayclose()
         {
             try
             {
                 SqlConnection con = new SqlConnection(conString);
                 var date = DateTime.Now.ToString("yyyy-MM-dd");
-                string tenderQ = "Update tender set shiftClose=username, DayClose=@NowDate Where DayClose is null";
+                string tenderQ = "Update tender set DayClose=@NowDate Where DayClose is null";
                 SqlCommand tenderCMD = new SqlCommand(tenderQ, con);
                 tenderCMD.Parameters.AddWithValue("@NowDate", date);
-                string transQ = "Update Transactions set shiftClose=username, DayClose=@Date Where DayClose is null";
+                string transQ = "Update Transactions set DayClose=@Date Where DayClose is null";
                 SqlCommand transCMD = new SqlCommand(transQ, con);
                 transCMD.Parameters.AddWithValue("@Date", date);
-                string itemQ = "Update SalesItem set shiftClose=username, DayClose=@Now Where DayClose is null";
+                string itemQ = "Update SalesItem set DayClose=@Now Where DayClose is null";
                 SqlCommand itemCMD = new SqlCommand(itemQ, con);
                 itemCMD.Parameters.AddWithValue("@Now", date);
+                string expeQ = "Update SalesItem set DayClose=@Now Where DayClose is null";
+                SqlCommand expCMD = new SqlCommand(expeQ, con);
+                expCMD.Parameters.AddWithValue("@Now", date);
                 con.Open();
                 tenderCMD.ExecuteNonQuery();
                 transCMD.ExecuteNonQuery();
                 itemCMD.ExecuteNonQuery();
+                expCMD.ExecuteNonQuery();
                 con.Close();
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                shiftClose();
+                Dayclose();
             }
             catch (Exception ex)
             {
