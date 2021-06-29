@@ -262,6 +262,14 @@
       <DependentUpon>Database1.mdf</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Image\Beer.jpg" />
+    <Resource Include="Image\Bread.jpg" />
+    <Resource Include="Image\Dairy.jpg" />
+    <Resource Include="Image\Deli.jpg" />
+    <Resource Include="Image\FrozenFood.jpg" />
+    <Resource Include="Image\Grocery.jpg" />
+    <Resource Include="Image\Meat.jpg" />
+    <Resource Include="Image\Produce.jpg" />
     <Resource Include="Image\Drinks.jpeg" />
     <Resource Include="Image\back1.png" />
     <Resource Include="Image\back.png" />
