@@ -67,7 +67,7 @@ namespace POSSystem
                 //con.Close();
                 textBox1.Focus();
 
-                 string queryS = "Select Department,TaxRate,FilePath from Department";
+                 string queryS = "Select Department,TaxRate from Department";
                 SqlCommand cmd1 = new SqlCommand(queryS, con);
                 SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
                 sda1.Fill(dtdep);
