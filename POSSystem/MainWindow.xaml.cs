@@ -27,8 +27,6 @@ namespace POSSystem
         string tenderCode = "";
         DataTable dt = new DataTable();
         DataTable dtdep = new DataTable();
-        //string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
-        //string conString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=F:\DesktopApplication\POSSystem\Database1.mdf;Integrated Security=True";
         string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
         string username = App.Current.Properties["username"].ToString();
 
@@ -62,8 +60,6 @@ namespace POSSystem
                 dt.Columns.Add("TransactionId");
                 dt.Columns.Add("CreateBy");
                 dt.Columns.Add("CreateOn");
-                //dt.Columns.Add("ShiftClose");
-                //dt.Columns.Add("DayClose");
 
                 //con.Close();
                 textBox1.Focus();
@@ -295,8 +291,6 @@ namespace POSSystem
                     }
                     Qtysum += decimal.Parse(dr.ItemArray[4].ToString());
                 }
-                //Taxsum = sum * Taxsum / 100;
-                //Taxsum += decimal.Parse(Convert.ToDecimal(decimal.Parse(dr.ItemArray[3].ToString()) * decimal.Parse(dr.ItemArray[5].ToString()) / 100).ToString());
                 Total = sum + Taxsum;
                 txtTotal.Text = sum.ToString("0.00");
                 txtQty.Text = Qtysum.ToString();
@@ -407,8 +401,6 @@ namespace POSSystem
                 objbulk.ColumnMappings.Add("TransactionId", "TransactionId");
                 objbulk.ColumnMappings.Add("CreateBy", "CreateBy");
                 objbulk.ColumnMappings.Add("CreateOn", "CreateOn");
-                //objbulk.ColumnMappings.Add("ShiftClose", "ShiftClose");
-                //objbulk.ColumnMappings.Add("DayClose", "DayClose");
                 con.Open();
                 objbulk.WriteToServer(dt);
                 con.Close();

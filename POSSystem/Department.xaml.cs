@@ -3,20 +3,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Navigation;
 using System.Configuration;
 using System.IO;
-using System.Windows.Media.Imaging;
 
 namespace POSSystem
 {
-    /// <summary>
-    /// Interaction logic for Department.xaml
-    /// </summary>
     public partial class Department : Window
     {
         DataTable dt = new DataTable();
-        //string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
         string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
         string username = App.Current.Properties["username"].ToString();
 
@@ -42,7 +36,7 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                string queryD = "Select DepartmentId,Department,DepartmentCode,TaxRate from department";
+                string queryD = "Select DepartmentId,Department,DepartmentCode,TaxRate,FilePath from department";
                 SqlCommand cmd = new SqlCommand(queryD, con);
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
@@ -156,6 +150,7 @@ namespace POSSystem
                 TxtDepartment.Text = row["Department"].ToString();
                 TxtDepartment_Code.Text = row["DepartmentCode"].ToString();
                 TxtTaxRate.Text = row["TaxRate"].ToString();
+                drpimg.Text = row["FilePath"].ToString();
                 btnDeptSave.Content = "Update";
             }
             catch (Exception ex) { SendErrorToText(ex, errorFileName); }
@@ -245,30 +240,5 @@ namespace POSSystem
             {
             }
         }
-
-        //private byte[] _imageBytes = null;
-
-        //// Browse for an image on your computer
-        //private void BrowseButton_OnClick(object sender, RoutedEventArgs e)
-        // {
-        //    Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
-        //    {
-        //        CheckFileExists = true,
-        //        Multiselect = false,
-        //         Filter = "Images (*.jpg,*.png)|*.jpg;*.png|All Files(*.*)|*.*"
-        //    };
-
-        //    if (dialog.ShowDialog() != true) { return; }
-
-        //    ImagePath.Text = dialog.FileName;
-        //    MyImage.Source = new BitmapImage(new Uri(ImagePath.Text));
-
-        //    using (var fs = new FileStream(ImagePath.Text, FileMode.Open, FileAccess.Read))
-        //    {
-        //        _imageBytes = new byte[fs.Length];
-        //        fs.Read(_imageBytes, 0, System.Convert.ToInt32(fs.Length));
-        //    }
-        //}
-
     }
 }
