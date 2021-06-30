@@ -79,7 +79,6 @@ namespace POSSystem
                     SqlDataAdapter sda = new SqlDataAdapter(cmd);
                     DataTable dtDept = new DataTable();
                     sda.Fill(dtDept);
-                    con.Open();
                     if (lbl == 0)
                     {
 
@@ -91,18 +90,20 @@ namespace POSSystem
                         else
                         {
 
-                            string queryI = "Insert into Department(Department,DepartmentCode,CreateOn,TaxRate,CreateBy)Values(@department,@deptCode,@time,@taxrate,@createby)";
+                            string queryI = "Insert into Department(Department,DepartmentCode,CreateOn,TaxRate,CreateBy,FilePath)Values(@department,@deptCode,@time,@taxrate,@createby,@filepath)";
                             SqlCommand cmdI = new SqlCommand(queryI, con);
                             cmdI.Parameters.AddWithValue("@department", TxtDepartment.Text);
                             cmdI.Parameters.AddWithValue("@deptCode", TxtDepartment_Code.Text);
                             cmdI.Parameters.AddWithValue("@time", date);
                             cmdI.Parameters.AddWithValue("@taxrate", TxtTaxRate.Text);
                             cmdI.Parameters.AddWithValue("@createby", username);
+                            cmdI.Parameters.AddWithValue("@filepath", drpimg.Text);
                             cmdI.ExecuteNonQuery();
                             con.Close();
                             TxtDepartment.Text = "";
                             TxtDepartment_Code.Text = "";
                             TxtTaxRate.Text = "";
+                            drpimg.Text = "";
                             DeptGridV();
                             lblDeptId.Content = 0;
                         }
@@ -110,30 +111,32 @@ namespace POSSystem
                     }
                     else
                     {
-                        if (dtDept.Rows.Count > 0)
-                        {
-                            MessageBox.Show("Department or DepartmentCode Already Exist!");
-                        }
+                        //if (dtDept.Rows.Count > 0)
+                        //{
+                        //    MessageBox.Show("Department or DepartmentCode Already Exist!");
+                        //}
 
-                        else
-                        {
-                            string queryIU = "Update Department Set Department=@department,DepartmentCode=@deptCode,CreateOn=@time,TaxRate=@taxrate,CreateBy=@createby Where DepartmentId='" + lblDeptId.Content + "'";
-                            SqlCommand cmdI = new SqlCommand(queryIU, con);
-                            cmdI.Parameters.AddWithValue("@department", TxtDepartment.Text);
-                            cmdI.Parameters.AddWithValue("@deptCode", TxtDepartment_Code.Text);
-                            cmdI.Parameters.AddWithValue("@time", date);
-                            cmdI.Parameters.AddWithValue("@taxrate", TxtTaxRate.Text);
-                            cmdI.Parameters.AddWithValue("@createby", username);
-                            con.Open();
-                            cmdI.ExecuteNonQuery();
-                            con.Close();
-                            DeptGridV();
-                            TxtDepartment.Text = "";
-                            TxtDepartment_Code.Text = "";
-                            TxtTaxRate.Text = "";
-                            lblDeptId.Content = 0;
-                            btnDeptSave.Content = "Save";
-                        }
+                        //else
+                        //{
+                        string queryIU = "Update Department Set Department=@department,DepartmentCode=@deptCode,CreateOn=@time,TaxRate=@taxrate,CreateBy=@createby,FilePath=@filepath Where DepartmentId='" + lblDeptId.Content + "'";
+                        SqlCommand cmdI = new SqlCommand(queryIU, con);
+                        cmdI.Parameters.AddWithValue("@department", TxtDepartment.Text);
+                        cmdI.Parameters.AddWithValue("@deptCode", TxtDepartment_Code.Text);
+                        cmdI.Parameters.AddWithValue("@time", date);
+                        cmdI.Parameters.AddWithValue("@taxrate", TxtTaxRate.Text);
+                        cmdI.Parameters.AddWithValue("@createby", username);
+                        cmdI.Parameters.AddWithValue("@filepath", drpimg.Text);
+                        con.Open();
+                        cmdI.ExecuteNonQuery();
+                        con.Close();
+                        DeptGridV();
+                        TxtDepartment.Text = "";
+                        TxtDepartment_Code.Text = "";
+                        TxtTaxRate.Text = "";
+                        drpimg.Text = "";
+                        lblDeptId.Content = 0;
+                        btnDeptSave.Content = "Save";
+                        //}
                     }
                 }
             }
@@ -266,6 +269,6 @@ namespace POSSystem
         //        fs.Read(_imageBytes, 0, System.Convert.ToInt32(fs.Length));
         //    }
         //}
-        
+
     }
 }

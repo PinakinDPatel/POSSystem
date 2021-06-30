@@ -12,8 +12,8 @@
             <RowDefinition Height="20*"></RowDefinition>
             <RowDefinition Height="65*"></RowDefinition>
         </Grid.RowDefinitions>
-            <!--<Label Content="Department" FontSize="32" Grid.ColumnSpan="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>-->
-        
+        <!--<Label Content="Department" FontSize="32" Grid.ColumnSpan="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>-->
+
         <Grid Grid.Row="1" Margin="10,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -57,18 +57,24 @@
                     <BitmapImage UriSource="{Binding ElementName=ImagePath, Path=Text}" />
                 </Image.Source>
             </Image>-->
-            <ComboBox Name="drphead" FontSize="14" Grid.Row="2" Grid.ColumnSpan="2">
-                <ComboBoxItem IsSelected="True" >
-                    <WrapPanel>
-                        <TextBlock Text="Item 1 " VerticalAlignment="Center" />
-                        <Button Width="30" Height="30" >
-                            <Button.Template>
-                                <ControlTemplate>
-                                    <Image Height="25" Source="Image/Beer.jpg"></Image>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                    </WrapPanel>
+            <ComboBox Name="drpimg" FontSize="14" Grid.Row="2" Grid.ColumnSpan="2">
+                <ComboBoxItem Content="Bread.jpg" />
+                <ComboBoxItem Content="Beer.jpg" />
+                <ComboBoxItem Content="Drinks.jpeg" />
+                <ComboBoxItem Content="Deli.jpg" />
+                <ComboBoxItem Content="Dairy.jpg" />
+                <ComboBoxItem Content="FrozenFood.jpg" />
+                <ComboBoxItem Content="Grocery.jpg" />
+                <ComboBoxItem Content="Meat.jpg" />
+                <ComboBoxItem Content="Produce.jpg" />
+                <!--<ComboBoxItem IsSelected="True" >
+                    <Button Width="30" Height="30" >
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image Height="25" Source="Image/Beer.jpg"></Image>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
                 </ComboBoxItem>
                 <ComboBoxItem >
                     <WrapPanel>
@@ -81,7 +87,7 @@
                             </Button.Template>
                         </Button>
                     </WrapPanel>
-                </ComboBoxItem>
+                </ComboBoxItem>-->
             </ComboBox>
         </Grid>
         <Label Name="lblusername" Visibility="Hidden"/>
