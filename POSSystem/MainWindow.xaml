@@ -49,7 +49,7 @@
             <Label Content="Enter Check No."  HorizontalAlignment="Center"></Label>
             <TextBox KeyDown="TxtCheck_KeyDown" Margin="5,5,5,5" GotFocus="textbox_GotFocus" Height="30" Name="TxtCheck"></TextBox>
         </StackPanel>
-        <Grid Grid.Row="1" Grid.Column="0" Background="#000C66">
+        <Grid Grid.Row="1" Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition ></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -58,7 +58,7 @@
             </Grid.RowDefinitions>
             <Button Content="Cash" Margin="10,10,10,10" Foreground="White" FontSize="33" Click="Tender_Click" FontWeight="Bold" >
                 <Button.Background>
-                    <ImageBrush ImageSource="Image/Cash.jpg" Opacity="0.9"/>
+                    <ImageBrush ImageSource="Image/Cash.jpg" />
                 </Button.Background>
             </Button>
             <Button Content="Card" Grid.Row="1" Margin="10,10,10,10" Foreground="White" FontSize="33" FontWeight="Bold" Click="Tender_Click">
@@ -203,7 +203,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <UniformGrid Name="sp21" Grid.RowSpan="9" Background="#FFF7F7F7"></UniformGrid>
+            <UniformGrid Name="sp21" Grid.RowSpan="9" ></UniformGrid>
             <Grid Grid.Row="10" Background="#FFF7F7F7">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition ></ColumnDefinition>
@@ -236,7 +236,7 @@
             <TextBox Name="txtDeptAmt" GotFocus="textbox_GotFocus" Grid.Row="2" Grid.Column="2" Margin="5,5,5,5"  Text="{Binding LimitedDouble,StringFormat={}{0:00.00}}" FontSize="30"></TextBox>
             <Button Content="Save" Grid.Column="3" Grid.Row="2" Margin="5,5,5,5" Click="Button_Click_Sale_Save"></Button>
         </Grid>
-        <Grid Grid.Row="2" Grid.Column="2" Background="#FFF7F7F7">
+        <!--<Grid Grid.Row="2" Grid.Column="2" Background="#FFF7F7F7">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition ></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
@@ -248,6 +248,6 @@
             <Button Content="LogOut" Grid.Column="1"  Grid.Row="1" FontSize="33" FontWeight="Bold" Foreground="White" Margin="5,5,5,5" Click="Button_Click_2"></Button>
             <Button Content="Setting"  Grid.Row="1" FontSize="33" FontWeight="Bold" Foreground="White" Margin="5,5,5,5" Click="Button_Click_3"></Button>
 
-        </Grid>
+        </Grid>-->
     </Grid>
 </Window>

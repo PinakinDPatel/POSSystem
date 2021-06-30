@@ -255,13 +255,6 @@
     <Resource Include="Image\Delete.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Database1.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Database1_log.ldf">
-      <DependentUpon>Database1.mdf</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Resource Include="Image\Check.jpg" />
     <Resource Include="Image\Card.jpg" />
     <Resource Include="Image\Cash.jpg" />
