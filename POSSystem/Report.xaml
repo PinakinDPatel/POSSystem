@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="Report" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="Image/background.jpg"/>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition/>
@@ -40,6 +43,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Button Content="User" Margin="10" Click="Button_Click_5"/>
+            <Button Content="Store" Margin="10" Grid.Column="1" Click="Button_Click_6"/>
         </Grid>
     </Grid>
 </Window>

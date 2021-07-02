@@ -4,226 +4,110 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:POSSystem"
-      mc:Ignorable="d" Height="371.618" Width="690.266" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="#FF200F4B" BorderThickness="1" WindowStyle="ThreeDBorderWindow" BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Foreground="#FF382185">
-    <Window.Effect>
-        <DropShadowEffect Direction="300" ShadowDepth="10" Color="#FF636363"/>
-    </Window.Effect>
-
+      mc:Ignorable="d" Height="371.618" Width="690.266" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" >
     <Grid>
         <Grid.Background>
-            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="#FFE2E2E2" Offset="0"/>
-                <GradientStop Color="White" Offset="1"/>
-            </LinearGradientBrush>
+            <ImageBrush ImageSource="Image/background.jpg"/>
         </Grid.Background>
-        <Label Content="Login" HorizontalAlignment="Left" Margin="118,62,0,0" VerticalAlignment="Top" FontSize="36" FontFamily="Arial Black"/>
-        <Label Content="Enter Your Password" HorizontalAlignment="Left" Margin="100,130,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Foreground="#FF951FE6"/>
-        <TextBox HorizontalAlignment="Left" Name="TxtPassword" Height="40" Margin="88,170,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171" BorderBrush="#FF6C0FF1" Padding="5,5,0,0" FontSize="20">
-            <TextBox.Effect>
-                <DropShadowEffect Color="#FFCCB1FD" BlurRadius="2" ShadowDepth="3"/>
-            </TextBox.Effect>
-        </TextBox>
-        <Button Content="Sign In" Name="TxtSignIn" HorizontalAlignment="Left" FontSize="18" FontWeight="Bold" Margin="98,225,0,0" VerticalAlignment="Top" Width="150" Height="42" Foreground="White" Click="TxtSignIn_Click">
+        <Label Content="PSPCStore" HorizontalAlignment="Center" FontSize="50" FontWeight="Bold" FontFamily="High Tower Text" Background="{x:Null}" >
+            <Label.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF99571F" Offset="0"/>
+                    <GradientStop Color="#FFE0B086" Offset="1"/>
+                </LinearGradientBrush>
+            </Label.Foreground>
+        </Label>
+        <Label Content="Login" HorizontalAlignment="Left" Margin="143,90,0,0" VerticalAlignment="Top" FontSize="36" FontFamily="Arial Black"/>
+        <Label Content="Enter Your Password" HorizontalAlignment="Left" Margin="125,158,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" />
+        <TextBox HorizontalAlignment="Left" Name="TxtPassword" Height="40" Margin="113,198,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171" BorderBrush="#FF6C0FF1" Padding="5,5,0,0" FontSize="20" />
+        <Button Content="Sign In" Name="TxtSignIn" HorizontalAlignment="Left" FontSize="18" FontWeight="Bold" Margin="123,253,0,0" VerticalAlignment="Top" Width="150" Height="42" Foreground="White" Click="TxtSignIn_Click"/>
+        <Button Content="1" Name="Txt1" HorizontalAlignment="Left" Margin="360,88,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0" Click="btnclick">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF7940DE" Offset="0"/>
-                    <GradientStop Color="#FF391676" Offset="1"/>
+                    <GradientStop Color="#FF955912"/>
+                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
                 </LinearGradientBrush>
             </Button.Background>
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="15"/>
-                </Style>
-                <Style TargetType="Button">
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="Red"/>
-                            <Setter Property="Foreground" Value="White"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Resources>
-            <Button.Effect>
-                <DropShadowEffect Color="#FFD1A4F7"/>
-            </Button.Effect>
         </Button>
-        <Button Content="1" Name="Txt1" HorizontalAlignment="Left" Margin="347,77,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0" Click="btnclick">
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="8"/>
-                </Style>
-            </Button.Resources>
+        <Button Content="2" Name="Txt2" HorizontalAlignment="Left" Margin="450,88,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF7B22D4" Offset="0"/>
-                    <GradientStop Color="#FF979479" Offset="1"/>
+                    <GradientStop Color="#FF955912"/>
+                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
                 </LinearGradientBrush>
             </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect Color="#FFD1A4F7"/>
-            </Button.Effect>
         </Button>
-        <Button Content="2" Name="Txt2" HorizontalAlignment="Left" Margin="437,77,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="8"/>
-                </Style>
-            </Button.Resources>
+        <Button Content="3" Name="Txt3" HorizontalAlignment="Left" Margin="540,88,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF7B22D4" Offset="0"/>
-                    <GradientStop Color="#FF979479" Offset="1"/>
+                    <GradientStop Color="#FF955912"/>
+                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
                 </LinearGradientBrush>
             </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect Color="#FFD1A4F7"/>
-            </Button.Effect>
         </Button>
-        <Button Content="3" Name="Txt3" HorizontalAlignment="Left" Margin="527,77,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="8"/>
-                </Style>
-            </Button.Resources>
+        <Button Content="4" Name="Txt4" HorizontalAlignment="Left" Margin="360,146,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF7B22D4" Offset="0"/>
-                    <GradientStop Color="#FF979479" Offset="1"/>
+                    <GradientStop Color="#FF955912"/>
+                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
                 </LinearGradientBrush>
             </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect Color="#FFD1A4F7"/>
-            </Button.Effect>
         </Button>
-        <Button Content="4" Name="Txt4" HorizontalAlignment="Left" Margin="347,135,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="8"/>
-                </Style>
-            </Button.Resources>
+        <Button Content="5" Name="Txt5" HorizontalAlignment="Left" Margin="450,146,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF7B22D4" Offset="0"/>
-                    <GradientStop Color="#FF979479" Offset="1"/>
+                    <GradientStop Color="#FF955912"/>
+                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
                 </LinearGradientBrush>
             </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect Color="#FFD1A4F7"/>
-            </Button.Effect>
         </Button>
-        <Button Content="5" Name="Txt5" HorizontalAlignment="Left" Margin="437,135,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="8"/>
-                </Style>
-            </Button.Resources>
+        <Button Content="6" Name="Txt6" HorizontalAlignment="Left" Margin="540,146,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF7B22D4" Offset="0"/>
-                    <GradientStop Color="#FF979479" Offset="1"/>
+                    <GradientStop Color="#FF955912"/>
+                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
                 </LinearGradientBrush>
             </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect Color="#FFD1A4F7"/>
-            </Button.Effect>
         </Button>
-        <Button Content="6" Name="Txt6" HorizontalAlignment="Left" Margin="527,135,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="8"/>
-                </Style>
-            </Button.Resources>
+        <Button Content="7" Name="Txt7" HorizontalAlignment="Left" Margin="360,206,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF7B22D4" Offset="0"/>
-                    <GradientStop Color="#FF979479" Offset="1"/>
+                    <GradientStop Color="#FF955912"/>
+                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
                 </LinearGradientBrush>
             </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect Color="#FFD1A4F7"/>
-            </Button.Effect>
         </Button>
-        <Button Content="7" Name="Txt7" HorizontalAlignment="Left" Margin="347,195,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="8"/>
-                </Style>
-            </Button.Resources>
+        <Button Content="8" Name="Txt8" HorizontalAlignment="Left" Margin="450,206,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF7B22D4" Offset="0"/>
-                    <GradientStop Color="#FF979479" Offset="1"/>
+                    <GradientStop Color="#FF955912"/>
+                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
                 </LinearGradientBrush>
             </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect Color="#FFD1A4F7"/>
-            </Button.Effect>
         </Button>
-        <Button Content="8" Name="Txt8" HorizontalAlignment="Left" Margin="437,195,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="8"/>
-                </Style>
-            </Button.Resources>
+        <Button Content="9" Name="Txt9" HorizontalAlignment="Left" Margin="540,206,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF7B22D4" Offset="0"/>
-                    <GradientStop Color="#FF979479" Offset="1"/>
+                    <GradientStop Color="#FF955912"/>
+                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
                 </LinearGradientBrush>
             </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect Color="#FFD1A4F7"/>
-            </Button.Effect>
         </Button>
-        <Button Content="9" Name="Txt9" HorizontalAlignment="Left" Margin="527,195,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="8"/>
-                </Style>
-            </Button.Resources>
+        <Button Content="0" Name="Txt0" HorizontalAlignment="Left" Margin="360,267,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0" Click="btnclick">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF7B22D4" Offset="0"/>
-                    <GradientStop Color="#FF979479" Offset="1"/>
+                    <GradientStop Color="#FF955912"/>
+                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
                 </LinearGradientBrush>
             </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect Color="#FFD1A4F7"/>
-            </Button.Effect>
         </Button>
-        <Button Content="0" Name="Txt0" HorizontalAlignment="Left" Margin="347,256,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0" Click="btnclick">
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="8"/>
-                </Style>
-            </Button.Resources>
+        <Button Content="Clear" Name="TxtClear" HorizontalAlignment="Left" Margin="450,267,0,0" VerticalAlignment="Top" Width="165" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0" Click="TxtClear_Click">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF7B22D4" Offset="0"/>
-                    <GradientStop Color="#FF979479" Offset="1"/>
+                    <GradientStop Color="#FF955912"/>
+                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
                 </LinearGradientBrush>
             </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect Color="#FFD1A4F7"/>
-            </Button.Effect>
         </Button>
-        <Button Content="Clear" Name="TxtClear" HorizontalAlignment="Left" Margin="437,256,0,0" VerticalAlignment="Top" Width="165" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0" Click="TxtClear_Click">
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="8"/>
-                </Style>
-            </Button.Resources>
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF7B22D4" Offset="0"/>
-                    <GradientStop Color="#FF979479" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect Color="#FFD1A4F7"/>
-            </Button.Effect>
-        </Button>
-
-
     </Grid>
 </Window>

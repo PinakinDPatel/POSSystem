@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="SalesReport" Height="450" Width="800">
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="Image/background.jpg"/>
+        </Grid.Background>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="396"/>
@@ -48,7 +51,7 @@
         </Grid>
 
 
-        <DataGrid Name="deprtDG" Grid.Row="3" Grid.RowSpan="6" AutoGenerateColumns="False">
+        <DataGrid Name="deprtDG" Grid.Row="3" Grid.RowSpan="6" AutoGenerateColumns="False" Background="{x:Null}">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Department}"  Header="Department" Width="60*"  IsReadOnly="True"/>
                 <DataGridTextColumn Binding="{Binding Amount}"  Header="Amount" Width="40*"  IsReadOnly="True"/>
@@ -71,7 +74,7 @@
             <Label Content="Grand Total" Grid.Row="2"/>
             <Label Name="amountTaxTotal" Grid.Row="2" Grid.Column="1"></Label>
         </Grid>
-        <DataGrid Name="cashDG" Grid.Row="3" Grid.Column="1" Grid.RowSpan="8"/>
+        <DataGrid Name="cashDG" Grid.Row="3" Grid.Column="1" Grid.RowSpan="8" Background="{x:Null}"/>
         <Label Name="cashamountTotal" Grid.Row="7" Grid.Column="1"></Label>
     </Grid>
 </Window>

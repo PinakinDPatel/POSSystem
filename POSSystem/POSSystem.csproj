@@ -136,6 +136,9 @@
     <Compile Include="SalesReport.xaml.cs">
       <DependentUpon>SalesReport.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StoreDetails.xaml.cs">
+      <DependentUpon>StoreDetails.xaml</DependentUpon>
+    </Compile>
     <Page Include="Account.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -206,6 +209,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="StoreDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -255,9 +262,6 @@
     <Resource Include="Image\Delete.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\Check.jpg" />
-    <Resource Include="Image\Card.jpg" />
-    <Resource Include="Image\Cash.jpg" />
     <Resource Include="Image\Beer.jpg" />
     <Resource Include="Image\Bread.jpg" />
     <Resource Include="Image\Dairy.jpg" />
@@ -277,6 +281,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Image\Tabacco.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\background.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\Logout.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.1.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.1.0\build\MaterialDesignThemes.targets')" />

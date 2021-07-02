@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="Expence" WindowState="Maximized" ShowInTaskbar="False">
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="Image/background.jpg"/>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="9*"/>
@@ -46,8 +49,7 @@
                 <Button Name="btnSave" Content="Save" HorizontalAlignment="Center" Grid.Row="5" Width="180" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="5,5,5,5" Click="Button_Click"/>
             </Grid>
             <Grid Grid.Column="1">
-                <Border Background="#FFA69090"/>
-                <DataGrid Name="dgExpence" Background="White" AutoGenerateColumns="False" Margin="5,5,5,5" Foreground="#FF6368D6">
+                <DataGrid Name="dgExpence" Background="{x:Null}" AutoGenerateColumns="False" Margin="5,5,5,5" Foreground="#FF6368D6">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding Expence}" Header="Expence" Width="100*"/>
                         <DataGridTextColumn Binding="{Binding Amount}" Header="Amount" Width="50*"/>

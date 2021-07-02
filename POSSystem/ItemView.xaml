@@ -9,6 +9,9 @@
       Title="ItemView" WindowStartupLocation="CenterScreen" WindowState="Maximized">
 
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="Image/background.jpg"/>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition ></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -127,7 +130,7 @@
 
         </Grid>
 
-        <DataGrid Name="dgitem" Grid.Row="2" Grid.RowSpan="4" AutoGenerateColumns="False">
+        <DataGrid Name="dgitem" Grid.Row="2" Grid.RowSpan="4" AutoGenerateColumns="False" Background="{x:Null}">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding ScanCode}" Header="ScanCode" Width="120*"/>
                 <DataGridTextColumn Binding="{Binding Description}" ClipboardContentBinding="{x:Null}" Header="Description" Width="200*"/>
@@ -144,7 +147,7 @@
         </DataGrid>
 
         <DataGrid Name="dgImport" Grid.Row="2" Grid.RowSpan="4" Visibility="Hidden" AutoGenerateColumns="True"
-         AutoGeneratingColumn="dataGrid1_AutoGeneratingColumn">
+         AutoGeneratingColumn="dataGrid1_AutoGeneratingColumn" Background="{x:Null}">
         </DataGrid>
         <!--<Button Name="btnItemsSave" Content="Save" Grid.Column="2" Height="30" Width="80" FontSize="20" FontFamily="Arial Black" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White" BorderBrush="White" Foreground="#FF0E2CE6" FontWeight="Bold" Margin="0,10,0,13" Visibility="Hidden"/>-->
     </Grid>

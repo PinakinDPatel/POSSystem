@@ -4,6 +4,13 @@
              xmlns:local="clr-namespace:POSSystem"
              StartupUri="Login.xaml">
     <Application.Resources>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect />
+                </Setter.Value>
+            </Setter>
+        </Style>
          <Style TargetType="{x:Type Label}">
             <Setter Property="Effect">
                 <Setter.Value>
@@ -11,9 +18,8 @@
                 </Setter.Value>
             </Setter>
             <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Foreground" Value="#264f96"/>
+            <Setter Property="Foreground" Value="#FFBB7D33"/>
             <Setter Property="FontFamily" Value="Cambria"/>
-
         </Style>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Foreground" Value="White" />
@@ -27,10 +33,11 @@
             </Setter>
             <Setter Property="Background">
                 <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#264f96" Offset="0"/>
-                        <GradientStop Color="#5a6d8f" Offset="1"/>
-                    </LinearGradientBrush>
+                    <!--<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFCD7A19"/>
+                        <GradientStop Color="#FFF1DCC3" Offset="1"/>
+                    </LinearGradientBrush>-->
+                    <SolidColorBrush Color="#FF7C3F0D" />
                 </Setter.Value>
             </Setter>
             <Setter Property="Template">
@@ -46,7 +53,7 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#6e9ffa"/>
+                    <Setter Property="Background" Value="Red"/>
                     <Setter Property="Foreground" Value="White"/>
                 </Trigger>
             </Style.Triggers>

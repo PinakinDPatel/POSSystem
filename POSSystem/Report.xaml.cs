@@ -127,6 +127,12 @@ namespace POSSystem
             }
         }
 
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            StoreDetails SD = new StoreDetails();
+            SD.Show();
+        }
+
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             try

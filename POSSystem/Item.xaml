@@ -8,6 +8,9 @@
       Height="519.597" Width="818.326" WindowStartupLocation="CenterScreen">
     <!--d:DesignHeight="519.597" d:DesignWidth="1018.326" WindowStartupLocation="CenterScreen" WindowStyle="None">-->
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="Image/background.jpg"/>
+        </Grid.Background>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>

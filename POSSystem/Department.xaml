@@ -7,6 +7,9 @@
       mc:Ignorable="d" WindowStartupLocation="CenterScreen" Height="600" Width="600">
 
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="Image/background.jpg"/>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="15*"></RowDefinition>
             <RowDefinition Height="20*"></RowDefinition>
@@ -82,7 +85,7 @@
             </ComboBox>
         </Grid>
         <Label Name="lblusername" Visibility="Hidden"/>
-        <DataGrid Name="DeptGrid" Grid.Row="2" HorizontalAlignment="Center"   VerticalAlignment="Top" AutoGenerateColumns="False">
+        <DataGrid Name="DeptGrid" Grid.Row="2" HorizontalAlignment="Center"   VerticalAlignment="Top" AutoGenerateColumns="False" Background="{x:Null}">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Department}" ClipboardContentBinding="{x:Null}" Header="Name" Width="110*"/>
                 <DataGridTextColumn Binding="{Binding DepartmentCode}" ClipboardContentBinding="{x:Null}" Header="Code" Width="40*"/>

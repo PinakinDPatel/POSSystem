@@ -8,38 +8,15 @@
     <!--d:DesignHeight="750" d:DesignWidth="600"-->
 
     <Grid>
-        <Label Content="Create User" FontSize="36" HorizontalAlignment="Center" Margin="83,66,57,0" Width="275" FontWeight="Bold" FontFamily="Arial Black" Foreground="#FF020202" Height="55" VerticalAlignment="Top">
-            <Label.Effect>
-                <DropShadowEffect Color="#FFE5C6F7" BlurRadius="2" ShadowDepth="3"/>
-            </Label.Effect>
+        <Grid.Background>
+            <ImageBrush ImageSource="Image/background.jpg"/>
+        </Grid.Background>
+        <Label Content="Create User" FontSize="36" HorizontalAlignment="Center" Margin="83,66,57,0" Width="275" FontWeight="Bold" FontFamily="Arial Black" Height="55" VerticalAlignment="Top">
         </Label>
-        <Label Content="UserName" HorizontalAlignment="Left" Margin="30,178,0,0" VerticalAlignment="Top" Height="33" Width="240" FontSize="20" Foreground="#FF9F19EC" FontWeight="Bold"/>
-        <TextBox HorizontalAlignment="Left" Name="txtUser" Height="34" Margin="30,216,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="345" FontSize="18">
-            <TextBox.Effect>
-                <DropShadowEffect Color="#FFC499F7"/>
-            </TextBox.Effect>
-        </TextBox>
-        <Label Content="Password" HorizontalAlignment="Left" Margin="30,284,0,0" VerticalAlignment="Top" Height="33" Width="240" FontSize="20" Foreground="#FF9F19EC" FontWeight="Bold"/>
-        <TextBox HorizontalAlignment="Left" Height="34" Margin="30,322,0,0" TextWrapping="Wrap" Name="txtPassword" VerticalAlignment="Top" Width="345" FontSize="18">
-            <TextBox.Effect>
-                <DropShadowEffect Color="#FFC499F7"/>
-            </TextBox.Effect>
-        </TextBox>
-        <Button Content="Create" Margin="100,381,111,72" FontSize="36" Foreground="#FFFDFDFD" Click="Button_Click">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                    <GradientStop Color="#FF7832F3" Offset="0"/>
-                    <GradientStop Color="#FF2F0F66" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect Color="#FFCBB1F7"/>
-            </Button.Effect>
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="20"/>
-                </Style>
-            </Button.Resources>
-        </Button>
+        <Label Content="UserName" HorizontalAlignment="Left" Margin="30,178,0,0" VerticalAlignment="Top" Height="33" Width="240" FontSize="20"  FontWeight="Bold"/>
+        <TextBox HorizontalAlignment="Left" Name="txtUser" Height="34" Margin="30,216,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="345" FontSize="18"/>
+        <Label Content="Password" HorizontalAlignment="Left" Margin="30,284,0,0" VerticalAlignment="Top" Height="33" Width="240" FontSize="20" FontWeight="Bold"/>
+        <TextBox HorizontalAlignment="Left" Height="34" Margin="30,322,0,0" TextWrapping="Wrap" Name="txtPassword" VerticalAlignment="Top" Width="345" FontSize="18"/>
+        <Button Content="Create" Margin="100,381,111,72" FontSize="36" Foreground="#FFFDFDFD" Click="Button_Click"/>
     </Grid>
 </Window>
