@@ -92,7 +92,7 @@ namespace POSSystem
                         var Path = Directory.GetParent(Assembly.GetExecutingAssembly().Location);
                         var path = dtdep.Rows[i].ItemArray[2].ToString();
                         var fullpath = Path + "\\Image\\" + path;
-                        button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)),Opacity=0.95};
+                        button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
                     }
                     button.Foreground = new SolidColorBrush(Colors.White);
                     button.FontSize = 30;
@@ -752,6 +752,56 @@ namespace POSSystem
         {
             Report rpt = new Report();
             rpt.Show();
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            if (txtGotFocusStr == "textBox1")
+            {
+                textBox1.Text = "";
+            }
+            if (txtGotFocusStr == "TxtCashReceive")
+            {
+                TxtCashReceive.Text = "";
+            }
+            if (txtGotFocusStr == "TxtCheck")
+            {
+                TxtCheck.Text = "";
+            }
+            if (txtGotFocusStr == "txtDeptAmt")
+            {
+                txtDeptAmt.Text = "";
+            }
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(conString);
+                string tenderQ = "Update tender set shiftClose=@username Where shiftClose is null";
+                SqlCommand tenderCMD = new SqlCommand(tenderQ, con);
+                tenderCMD.Parameters.AddWithValue("@username", username);
+                string transQ = "Update Transactions set shiftClose=@username Where shiftClose is null";
+                SqlCommand transCMD = new SqlCommand(transQ, con);
+                transCMD.Parameters.AddWithValue("@username", username);
+                string itemQ = "Update SalesItem set shiftClose=@username Where shiftClose is null";
+                SqlCommand itemCMD = new SqlCommand(itemQ, con);
+                itemCMD.Parameters.AddWithValue("@username", username);
+                string expQ = "Update Expence set shiftClose=@username Where shiftClose is null";
+                SqlCommand expCMD = new SqlCommand(expQ, con);
+                expCMD.Parameters.AddWithValue("@username", username);
+                con.Open();
+                tenderCMD.ExecuteNonQuery();
+                transCMD.ExecuteNonQuery();
+                itemCMD.ExecuteNonQuery();
+                expCMD.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void textbox_GotFocus(object sender, RoutedEventArgs e)

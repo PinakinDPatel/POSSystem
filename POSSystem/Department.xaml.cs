@@ -92,6 +92,7 @@ namespace POSSystem
                             cmdI.Parameters.AddWithValue("@taxrate", TxtTaxRate.Text);
                             cmdI.Parameters.AddWithValue("@createby", username);
                             cmdI.Parameters.AddWithValue("@filepath", drpimg.Text);
+                            con.Open();
                             cmdI.ExecuteNonQuery();
                             con.Close();
                             TxtDepartment.Text = "";
