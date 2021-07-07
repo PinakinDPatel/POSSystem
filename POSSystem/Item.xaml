@@ -5,59 +5,74 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:POSSystem"
       mc:Ignorable="d" 
-      Height="519.597" Width="818.326" WindowStartupLocation="CenterScreen">
+      Height="519.597" Width="818.326" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" >
+    <Window.Effect>
+        <DropShadowEffect/>
+    </Window.Effect>
     <!--d:DesignHeight="519.597" d:DesignWidth="1018.326" WindowStartupLocation="CenterScreen" WindowStyle="None">-->
-    <Grid>
-        <Grid.Background>
-            <ImageBrush ImageSource="Image/background.jpg"/>
-        </Grid.Background>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+    <Grid Background="#FFB28661">
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="14*"/>
+            <RowDefinition Height="351*"/>
         </Grid.RowDefinitions>
-        <Label Name="lblusername" Visibility="Hidden"/>
-        <Label Content="ScanCode" HorizontalAlignment="Right" Grid.Row="1" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
-        <TextBox Name="TxtScanCode" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
-        <Label Content="Description" HorizontalAlignment="Right" Grid.Row="2" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
-        <TextBox Name="TxtDescription" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
-        <Label Content="Department" HorizontalAlignment="Right" Grid.Row="3" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
-        <ComboBox Name="drpDepartment" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="191" ItemsSource="{Binding TypeList}">
-            <!--<ComboBoxItem Content="Deli"></ComboBoxItem>
+        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Close_Click" >
+            <Button.Effect>
+                <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
+            </Button.Effect>
+            <Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>
+        </Button>
+        <Grid Grid.Row="1">
+            <Grid.Background>
+                <ImageBrush ImageSource="Image/background.jpg"/>
+            </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Name="lblusername" Visibility="Hidden"/>
+            <Label Content="ScanCode" HorizontalAlignment="Right" Grid.Row="1" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
+            <TextBox Name="TxtScanCode" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
+            <Label Content="Description" HorizontalAlignment="Right" Grid.Row="2" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
+            <TextBox Name="TxtDescription" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
+            <Label Content="Department" HorizontalAlignment="Right" Grid.Row="3" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
+            <ComboBox Name="drpDepartment" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="191" ItemsSource="{Binding TypeList}">
+                <!--<ComboBoxItem Content="Deli"></ComboBoxItem>
             <ComboBoxItem Content="Drinks"></ComboBoxItem>
             <ComboBoxItem Content="Grocery"></ComboBoxItem>
             <ComboBoxItem Content="Snacks"></ComboBoxItem>-->
-        </ComboBox>
-        <Label Content="Menufacturer" HorizontalAlignment="Right" Grid.Row="4" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
-        <TextBox Name="TxtMenufacturer" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
-        <Label Content="Payee" HorizontalAlignment="Right" Grid.Row="5" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
-        <TextBox Name="TxtPayee" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
-        <Label Content="FoodStamp" HorizontalAlignment="Right" Grid.Row="6" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
-        <TextBox Name="TxtFoodStamp" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
-        <Label Content="Min Age" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
-        <TextBox Name="TxtMinAge" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
-        <Label Content="UnitCase" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="2" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
-        <TextBox Name="TxtUnitCase" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
-        <Label Content="CaseCost" HorizontalAlignment="Right" Grid.Row="3" Grid.Column="2" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
-        <TextBox Name="TxtCaseCost" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
-        <Label Content="UnitRetail" HorizontalAlignment="Right" Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
-        <TextBox Name="TxtUnitRetail" Grid.Column="3" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
-        <Label Content="CashDiscount" HorizontalAlignment="Right" Grid.Row="5" Grid.Column="2" VerticalAlignment="Top"  FontFamily="Arial Black" FontSize="16"  />
-        <TextBox Name="TxtCashDiscount" Grid.Column="3" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
-        <Label Content="TaxRate" HorizontalAlignment="Right" Grid.Row="6" Grid.Column="2" VerticalAlignment="Top"  FontFamily="Arial Black" FontSize="16"/>
-        <TextBox Name="TxtTaxRate" Grid.Column="3" Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
-        <Button Name="btnSave" Grid.ColumnSpan="4" Content="Save" HorizontalAlignment="Center" Grid.Row="7" VerticalAlignment="Top" Width="158" Height="40" Foreground="White" FontSize="30" Click="Button_Click" />
-        <Label Content="Create New Item" Grid.ColumnSpan="4" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
+            </ComboBox>
+            <Label Content="Menufacturer" HorizontalAlignment="Right" Grid.Row="4" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
+            <TextBox Name="TxtMenufacturer" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
+            <Label Content="Payee" HorizontalAlignment="Right" Grid.Row="5" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
+            <TextBox Name="TxtPayee" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
+            <Label Content="FoodStamp" HorizontalAlignment="Right" Grid.Row="6" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
+            <TextBox Name="TxtFoodStamp" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
+            <Label Content="Min Age" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
+            <TextBox Name="TxtMinAge" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
+            <Label Content="UnitCase" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="2" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
+            <TextBox Name="TxtUnitCase" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
+            <Label Content="CaseCost" HorizontalAlignment="Right" Grid.Row="3" Grid.Column="2" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
+            <TextBox Name="TxtCaseCost" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
+            <Label Content="UnitRetail" HorizontalAlignment="Right" Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
+            <TextBox Name="TxtUnitRetail" Grid.Column="3" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
+            <Label Content="CashDiscount" HorizontalAlignment="Right" Grid.Row="5" Grid.Column="2" VerticalAlignment="Top"  FontFamily="Arial Black" FontSize="16"  />
+            <TextBox Name="TxtCashDiscount" Grid.Column="3" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
+            <Label Content="TaxRate" HorizontalAlignment="Right" Grid.Row="6" Grid.Column="2" VerticalAlignment="Top"  FontFamily="Arial Black" FontSize="16"/>
+            <TextBox Name="TxtTaxRate" Grid.Column="3" Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" TextWrapping="Wrap" Width="191" />
+            <Button Name="btnSave" Grid.ColumnSpan="4" Content="Save" HorizontalAlignment="Center" Grid.Row="7" VerticalAlignment="Top" Width="158" Height="40" Foreground="White" FontSize="30" Click="Button_Click" />
+            <Label Content="Create New Item" Grid.ColumnSpan="4" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
+        </Grid>
     </Grid>
 </Window>

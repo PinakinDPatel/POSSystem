@@ -4,64 +4,75 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:POSSystem"
-      mc:Ignorable="d" WindowStartupLocation="CenterScreen" Height="600" Width="600">
-
-    <Grid>
-        <Grid.Background>
-            <ImageBrush ImageSource="Image/background.jpg"/>
-        </Grid.Background>
+      mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Maximized" WindowStyle="None">
+    <Grid Background="#FFB28661">
         <Grid.RowDefinitions>
-            <RowDefinition Height="15*"></RowDefinition>
-            <RowDefinition Height="20*"></RowDefinition>
-            <RowDefinition Height="65*"></RowDefinition>
+            <RowDefinition Height="14*"/>
+            <RowDefinition Height="351*"/>
         </Grid.RowDefinitions>
-        <Label Content="Department" FontSize="32" Grid.ColumnSpan="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <Grid Grid.Row="1" Margin="10,0,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
+        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Close_Click" >
+            <Button.Effect>
+                <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
+            </Button.Effect>
+            <Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>
+        </Button>
+        <Grid Grid.Row="1">
+            <Grid.Background>
+                <ImageBrush ImageSource="Image/background.jpg"/>
+            </Grid.Background>
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="15*"></RowDefinition>
+                <RowDefinition Height="20*"></RowDefinition>
+                <RowDefinition Height="65*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Content="Department Name :-" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontSize="14"/>
-            <TextBox Name="TxtDepartment" HorizontalAlignment="Center" Height="32" VerticalAlignment="Top" Width="140" FontSize="14" Grid.Row="1">
-                <TextBox.Effect>
-                    <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFE6D4FD"/>
-                </TextBox.Effect>
-            </TextBox>
-            <Label Name="lblDeptId" Visibility="Hidden"></Label>
-            <Button Name="btnDeptSave" Content="Save" Width="95" Height="33" Foreground="White" Grid.Column="3" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="28" Click="Button_Click"/>
-            <Label Content="Department Code :-"  VerticalAlignment="Bottom" FontSize="14" Grid.Column="1" HorizontalAlignment="Center"/>
-            <TextBox x:Name="TxtDepartment_Code" HorizontalAlignment="Center" Height="32" VerticalAlignment="Top" Width="140" FontSize="14" Grid.Column="1" Grid.Row="1">
-                <TextBox.Effect>
-                    <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFE6D4FD"/>
-                </TextBox.Effect>
-            </TextBox>
-            <TextBox x:Name="TxtTaxRate" HorizontalAlignment="Center" Height="32" VerticalAlignment="Top" Width="140" FontSize="14" Grid.Column="2" Grid.Row="1">
-                <TextBox.Effect>
-                    <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFE6D4FD"/>
-                </TextBox.Effect>
-            </TextBox>
-            <Label Content="TaxRate :-" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14" Grid.Column="2"/>
-            <Label Content="Image :-" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,5,0"/>
-            <ComboBox Name="drpimg" FontSize="14" Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="1" Margin="5">
-                <ComboBoxItem Content="Bread.jpg" />
-                <ComboBoxItem Content="Beer.jpg" />
-                <ComboBoxItem Content="Drinks.jpeg" />
-                <ComboBoxItem Content="Deli.jpg" />
-                <ComboBoxItem Content="Dairy.jpg" />
-                <ComboBoxItem Content="FrozenFood.jpg" />
-                <ComboBoxItem Content="Grocery.jpg" />
-                <ComboBoxItem Content="Meat.jpg" />
-                <ComboBoxItem Content="Produce.jpg" />
-                <ComboBoxItem Content="Tabacco.jpg" />
-                <ComboBoxItem Content="NonFood.jpg" />
-                <!--<ComboBoxItem IsSelected="True" >
+            <Label Content="Department" FontSize="32" Grid.ColumnSpan="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Grid Grid.Row="1" Margin="10,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Content="Department Name :-" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontSize="14"/>
+                <TextBox Name="TxtDepartment" FontSize="14" Grid.Row="1" Margin="5">
+                    <TextBox.Effect>
+                        <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFE6D4FD"/>
+                    </TextBox.Effect>
+                </TextBox>
+                <Label Name="lblDeptId" Visibility="Hidden"></Label>
+                <Button Name="btnDeptSave" Content="Save" Foreground="White" Grid.Column="4" Grid.Row="1" Margin="5" FontSize="28" Click="Button_Click"/>
+                <Label Content="Department Code :-"  VerticalAlignment="Bottom" FontSize="14" Grid.Column="1" HorizontalAlignment="Center"/>
+                <TextBox x:Name="TxtDepartment_Code" FontSize="14" Grid.Column="1" Grid.Row="1" Margin="5">
+                    <TextBox.Effect>
+                        <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFE6D4FD"/>
+                    </TextBox.Effect>
+                </TextBox>
+                <TextBox x:Name="TxtTaxRate" FontSize="14" Grid.Column="2" Grid.Row="1" Margin="5">
+                    <TextBox.Effect>
+                        <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFE6D4FD"/>
+                    </TextBox.Effect>
+                </TextBox>
+                <Label Content="TaxRate :-" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14" Grid.Column="2"/>
+                <Label Content="Image :-" Grid.Column="3" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="14"/>
+                <ComboBox Name="drpimg" FontSize="14" Grid.Row="1" Grid.Column="3" Margin="5">
+                    <ComboBoxItem Content="Bread.jpg" />
+                    <ComboBoxItem Content="Beer.jpg" />
+                    <ComboBoxItem Content="Drinks.jpeg" />
+                    <ComboBoxItem Content="Deli.jpg" />
+                    <ComboBoxItem Content="Dairy.jpg" />
+                    <ComboBoxItem Content="FrozenFood.jpg" />
+                    <ComboBoxItem Content="Grocery.jpg" />
+                    <ComboBoxItem Content="Meat.jpg" />
+                    <ComboBoxItem Content="Produce.jpg" />
+                    <ComboBoxItem Content="Tabacco.jpg" />
+                    <ComboBoxItem Content="NonFood.jpg" />
+                    <!--<ComboBoxItem IsSelected="True" >
                     <Button Width="30" Height="30" >
                         <Button.Template>
                             <ControlTemplate>
@@ -82,38 +93,39 @@
                         </Button>
                     </WrapPanel>
                 </ComboBoxItem>-->
-            </ComboBox>
+                </ComboBox>
+            </Grid>
+            <Label Name="lblusername" Visibility="Hidden"/>
+            <DataGrid Name="DeptGrid" Grid.Row="2" HorizontalAlignment="Center"   VerticalAlignment="Top" AutoGenerateColumns="False" Background="{x:Null}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Department}" ClipboardContentBinding="{x:Null}" Header="Name" Width="110*"/>
+                    <DataGridTextColumn Binding="{Binding DepartmentCode}" ClipboardContentBinding="{x:Null}" Header="Code" Width="40*"/>
+                    <DataGridTextColumn Binding="{Binding TaxRate}" ClipboardContentBinding="{x:Null}" Header="TaxRate" Width="40*"/>
+                    <DataGridTextColumn Binding="{Binding FilePath}" ClipboardContentBinding="{x:Null}" Header="Image" Width="80*"/>
+                    <DataGridTemplateColumn Header="Edit" Width="50*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Click="onEdit" Background="White" Width="25" Height="25">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="Image/Edit1.png"/>
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Delete" Width="50*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Click="onDelete" Background="White" Width="22" Height="24">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="Image/Delete.png"/>
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
-        <Label Name="lblusername" Visibility="Hidden"/>
-        <DataGrid Name="DeptGrid" Grid.Row="2" HorizontalAlignment="Center"   VerticalAlignment="Top" AutoGenerateColumns="False" Background="{x:Null}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Department}" ClipboardContentBinding="{x:Null}" Header="Name" Width="110*"/>
-                <DataGridTextColumn Binding="{Binding DepartmentCode}" ClipboardContentBinding="{x:Null}" Header="Code" Width="40*"/>
-                <DataGridTextColumn Binding="{Binding TaxRate}" ClipboardContentBinding="{x:Null}" Header="TaxRate" Width="40*"/>
-                <DataGridTextColumn Binding="{Binding FilePath}" ClipboardContentBinding="{x:Null}" Header="Image" Width="80*"/>
-                <DataGridTemplateColumn Header="Edit" Width="50*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Click="onEdit" Background="White" Width="25" Height="25">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="Image/Edit1.png"/>
-                                </StackPanel>
-                            </Button>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Delete" Width="50*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Click="onDelete" Background="White" Width="22" Height="24">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="Image/Delete.png"/>
-                                </StackPanel>
-                            </Button>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
     </Grid>
 </Window>

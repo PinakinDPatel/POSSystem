@@ -21,6 +21,11 @@ namespace POSSystem
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "Login.cs";
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
         public Login()
         {
             try

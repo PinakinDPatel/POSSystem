@@ -42,7 +42,10 @@ namespace POSSystem
                 SendErrorToText(ex, errorFileName);
             }
         }
-
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             try

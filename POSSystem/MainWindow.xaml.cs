@@ -804,6 +804,11 @@ namespace POSSystem
             }
         }
 
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
         private void textbox_GotFocus(object sender, RoutedEventArgs e)
         {
             try

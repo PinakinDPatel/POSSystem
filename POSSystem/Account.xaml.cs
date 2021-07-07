@@ -40,7 +40,10 @@ namespace POSSystem
             dtDG.Reset();
             Datable();
         }
-
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
         private void Datable()
         {
             try

@@ -4,110 +4,122 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:POSSystem"
-      mc:Ignorable="d" Height="371.618" Width="690.266" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" >
-    <Grid>
-        <Grid.Background>
-            <ImageBrush ImageSource="Image/background.jpg"/>
-        </Grid.Background>
-        <Label Content="PSPCStore" HorizontalAlignment="Center" FontSize="50" FontWeight="Bold" FontFamily="High Tower Text" Background="{x:Null}" >
-            <Label.Foreground>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF99571F" Offset="0"/>
-                    <GradientStop Color="#FFE0B086" Offset="1"/>
-                </LinearGradientBrush>
-            </Label.Foreground>
-        </Label>
-        <Label Content="Login" HorizontalAlignment="Left" Margin="143,90,0,0" VerticalAlignment="Top" FontSize="36" FontFamily="Arial Black"/>
-        <Label Content="Enter Your Password" HorizontalAlignment="Left" Margin="125,158,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" />
-        <TextBox HorizontalAlignment="Left" Name="TxtPassword" Height="40" Margin="113,198,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171" BorderBrush="#FF6C0FF1" Padding="5,5,0,0" FontSize="20" />
-        <Button Content="Sign In" Name="TxtSignIn" HorizontalAlignment="Left" FontSize="18" FontWeight="Bold" Margin="123,253,0,0" VerticalAlignment="Top" Width="150" Height="42" Foreground="White" Click="TxtSignIn_Click"/>
-        <Button Content="1" Name="Txt1" HorizontalAlignment="Left" Margin="360,88,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0" Click="btnclick">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF955912"/>
-                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
+      mc:Ignorable="d" Height="371.618" Width="690.266" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" >
+    <Grid Background="#FFB28661">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9*" />
+            <RowDefinition Height="115*"/>
+        </Grid.RowDefinitions>
+        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Button_Click">
+            <Button.Effect>
+                <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
+            </Button.Effect>
+            <Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>
         </Button>
-        <Button Content="2" Name="Txt2" HorizontalAlignment="Left" Margin="450,88,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF955912"/>
-                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-        <Button Content="3" Name="Txt3" HorizontalAlignment="Left" Margin="540,88,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF955912"/>
-                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-        <Button Content="4" Name="Txt4" HorizontalAlignment="Left" Margin="360,146,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF955912"/>
-                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-        <Button Content="5" Name="Txt5" HorizontalAlignment="Left" Margin="450,146,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF955912"/>
-                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-        <Button Content="6" Name="Txt6" HorizontalAlignment="Left" Margin="540,146,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF955912"/>
-                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-        <Button Content="7" Name="Txt7" HorizontalAlignment="Left" Margin="360,206,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF955912"/>
-                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-        <Button Content="8" Name="Txt8" HorizontalAlignment="Left" Margin="450,206,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF955912"/>
-                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-        <Button Content="9" Name="Txt9" HorizontalAlignment="Left" Margin="540,206,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF955912"/>
-                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-        <Button Content="0" Name="Txt0" HorizontalAlignment="Left" Margin="360,267,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0" Click="btnclick">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF955912"/>
-                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-        <Button Content="Clear" Name="TxtClear" HorizontalAlignment="Left" Margin="450,267,0,0" VerticalAlignment="Top" Width="165" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0" Click="TxtClear_Click">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF955912"/>
-                    <GradientStop Color="#FFDAC3A7" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
+        <Grid Grid.Row="1">
+            <Grid.Background>
+                <ImageBrush ImageSource="Image/background.jpg"/>
+            </Grid.Background>
+            <Label Content="PSPCStore" HorizontalAlignment="Center" FontSize="50" FontWeight="Bold" FontFamily="High Tower Text" Background="{x:Null}" >
+                <Label.Foreground>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF99571F" Offset="0"/>
+                        <GradientStop Color="#FFE0B086" Offset="1"/>
+                    </LinearGradientBrush>
+                </Label.Foreground>
+            </Label>
+            <Label Content="Login" HorizontalAlignment="Left" Margin="143,90,0,0" VerticalAlignment="Top" FontSize="36" FontFamily="Arial Black"/>
+            <Label Content="Enter Your Password" HorizontalAlignment="Left" Margin="125,158,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" />
+            <TextBox HorizontalAlignment="Left" Name="TxtPassword" Height="40" Margin="113,198,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171" BorderBrush="#FF6C0FF1" Padding="5,5,0,0" FontSize="20" />
+            <Button Content="Sign In" Name="TxtSignIn" HorizontalAlignment="Left" FontSize="18" FontWeight="Bold" Margin="123,253,0,0" VerticalAlignment="Top" Width="150" Height="42" Foreground="White" Click="TxtSignIn_Click"/>
+            <Button Content="1" Name="Txt1" HorizontalAlignment="Left" Margin="360,88,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0" Click="btnclick">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF955912"/>
+                        <GradientStop Color="#FFDAC3A7" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Content="2" Name="Txt2" HorizontalAlignment="Left" Margin="450,88,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF955912"/>
+                        <GradientStop Color="#FFDAC3A7" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Content="3" Name="Txt3" HorizontalAlignment="Left" Margin="540,88,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF955912"/>
+                        <GradientStop Color="#FFDAC3A7" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Content="4" Name="Txt4" HorizontalAlignment="Left" Margin="360,146,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF955912"/>
+                        <GradientStop Color="#FFDAC3A7" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Content="5" Name="Txt5" HorizontalAlignment="Left" Margin="450,146,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF955912"/>
+                        <GradientStop Color="#FFDAC3A7" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Content="6" Name="Txt6" HorizontalAlignment="Left" Margin="540,146,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF955912"/>
+                        <GradientStop Color="#FFDAC3A7" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Content="7" Name="Txt7" HorizontalAlignment="Left" Margin="360,206,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF955912"/>
+                        <GradientStop Color="#FFDAC3A7" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Content="8" Name="Txt8" HorizontalAlignment="Left" Margin="450,206,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF955912"/>
+                        <GradientStop Color="#FFDAC3A7" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Content="9" Name="Txt9" HorizontalAlignment="Left" Margin="540,206,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0"  Click="btnclick">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF955912"/>
+                        <GradientStop Color="#FFDAC3A7" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Content="0" Name="Txt0" HorizontalAlignment="Left" Margin="360,267,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0" Click="btnclick">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF955912"/>
+                        <GradientStop Color="#FFDAC3A7" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Content="Clear" Name="TxtClear" HorizontalAlignment="Left" Margin="450,267,0,0" VerticalAlignment="Top" Width="165" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0" Click="TxtClear_Click">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF955912"/>
+                        <GradientStop Color="#FFDAC3A7" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+        </Grid>
     </Grid>
 </Window>

@@ -74,7 +74,10 @@ namespace POSSystem
                 SendErrorToText(ex, errorFileName);
             }
         }
-
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
         public static void SendErrorToText(Exception ex, string errorFileName)
         {
             var line = Environment.NewLine + Environment.NewLine;

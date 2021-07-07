@@ -5,109 +5,121 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:POSSystem"
       mc:Ignorable="d"
-      Title="Account" ResizeMode="NoResize"  WindowStartupLocation="CenterScreen" WindowState="Maximized">
-    <Grid>
-        <Grid.Background>
-            <ImageBrush ImageSource="Image/background.jpg"/>
-        </Grid.Background>
+      Title="Account" ResizeMode="NoResize"  WindowStartupLocation="CenterScreen" WindowState="Maximized" WindowStyle="None">
+    <Grid Background="#FFB28661">
         <Grid.RowDefinitions>
-            <RowDefinition Height="67*"></RowDefinition>
-            <RowDefinition Height="439*"></RowDefinition>
+            <RowDefinition Height="14*"/>
+            <RowDefinition Height="351*"/>
         </Grid.RowDefinitions>
-        <Label Content="Account" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Close_Click">
+            <Button.Effect>
+                <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
+            </Button.Effect>
+            <Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>
+        </Button>
         <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="90*"  />
-                <ColumnDefinition Width="151*"  />
-                <ColumnDefinition Width="127*" />
-            </Grid.ColumnDefinitions>
-            <DataGrid Name="dgAccount"  AutoGenerateColumns="False" FontSize="14" Margin="5,5,5,5" Grid.Column="1" Grid.ColumnSpan="2" Background="{x:Null}" >
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Width="100*" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Head" Width="100*" Binding="{Binding Head}"/>
-                    <DataGridTextColumn Header="Address" Width="100*" Binding="{Binding Address}"/>
-                    <DataGridTextColumn Header="Mobile" Width="100*" Binding="{Binding Mobile}"/>
-                    <DataGridTextColumn Header="Email" Width="100*" Binding="{Binding Email}"/>
-                    <DataGridTemplateColumn Header="Edit" Width="40*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Click="onEdit" Background="White">
-                                    <StackPanel Orientation="Horizontal" >
-                                        <Image Source="Image/Edit1.png" Width="25" Height="25"/>
-                                    </StackPanel>
-                                </Button>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Delete" Width="40*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Click="onDelete" Background="White">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Source="Image/Delete.png" Width="25" Height="25"/>
-                                    </StackPanel>
-                                </Button>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-            <Grid Grid.Column="0" Margin="0,0,20,0">
+            <Grid.Background>
+                <ImageBrush ImageSource="Image/background.jpg"/>
+            </Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="67*"></RowDefinition>
+                <RowDefinition Height="439*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Content="Account" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="90*"  />
+                    <ColumnDefinition Width="151*"  />
+                    <ColumnDefinition Width="127*" />
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Label Content="Account Name :-" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14"/>
-                <TextBox Name="txtaccount" TextChanged="textBox_txtaccount" FontSize="14" Grid.Column="1" Margin="12">
-                    <TextBox.Effect>
-                        <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFD7C9F3"/>
-                    </TextBox.Effect>
-                </TextBox>
-                <Label Content="Head :-" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Grid.Row="1"/>
-                <Border Name="cmb1BorderHead" BorderThickness="1" Grid.Column="1" Grid.Row="1" Margin="12">
-                    <ComboBox Name="drphead" SelectionChanged="drphead_SelectionChanged" FontSize="14">
-                        <ComboBoxItem Content="Tender" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
-                        <ComboBoxItem Content="Customers" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
-                        <ComboBoxItem Content="Vendor" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
-                        <ComboBoxItem Content="Expence" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
-                        <ComboBoxItem Content="Income" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
-                        <ComboBoxItem Content="Employee" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
-                    </ComboBox>
-                </Border>
-                <Label Content="Address :-" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Grid.Row="2"/>
-                <TextBox Name="txtAddress" TextChanged="textBox_txtAddress" FontSize="14" Grid.Column="1" Grid.Row="2" Margin="12" >
-                    <TextBox.Effect>
-                        <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFD7C9F3"/>
-                    </TextBox.Effect>
-                </TextBox>
-                <Label Content="Mobile No. :-" HorizontalAlignment="Right" VerticalAlignment="Center"  FontSize="14" Grid.Row="3" />
-                <TextBox Name="txtMobile" TextChanged="textBox_txtMobile" FontSize="14" Grid.Column="1" Grid.Row="3" Margin="12">
-                    <TextBox.Effect>
-                        <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFD7C9F3"/>
-                    </TextBox.Effect>
-                </TextBox>
-                <Label Name="lblAccountId" Visibility="Hidden"></Label>
-                <Label Content="Email :-" HorizontalAlignment="Right" VerticalAlignment="Center"  FontSize="14" Grid.Row="4"/>
-                <TextBox Name="txtEmail" TextChanged="textBox_txtEmail" FontSize="14" Grid.Column="1" Grid.Row="4" Margin="12" >
-                    <TextBox.Effect>
-                        <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFD7C9F3"/>
-                    </TextBox.Effect>
-                </TextBox>
-                <Button Content="Save" Name="btnSave" FontSize="25" Grid.Row="6" Grid.ColumnSpan="2" Click="Button_Click" Margin="70,10,70,10"/>
+                <DataGrid Name="dgAccount"  AutoGenerateColumns="False" FontSize="14" Margin="5,5,5,5" Grid.Column="1" Grid.ColumnSpan="2" Background="{x:Null}" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Width="100*" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="Head" Width="100*" Binding="{Binding Head}"/>
+                        <DataGridTextColumn Header="Address" Width="100*" Binding="{Binding Address}"/>
+                        <DataGridTextColumn Header="Mobile" Width="100*" Binding="{Binding Mobile}"/>
+                        <DataGridTextColumn Header="Email" Width="100*" Binding="{Binding Email}"/>
+                        <DataGridTemplateColumn Header="Edit" Width="40*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Click="onEdit" Background="White">
+                                        <StackPanel Orientation="Horizontal" >
+                                            <Image Source="Image/Edit1.png" Width="25" Height="25"/>
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Delete" Width="40*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Click="onDelete" Background="White">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="Image/Delete.png" Width="25" Height="25"/>
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Grid Grid.Column="0" Margin="0,0,20,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Account Name :-" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14"/>
+                    <TextBox Name="txtaccount" TextChanged="textBox_txtaccount" FontSize="14" Grid.Column="1" Margin="12">
+                        <TextBox.Effect>
+                            <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFD7C9F3"/>
+                        </TextBox.Effect>
+                    </TextBox>
+                    <Label Content="Head :-" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Grid.Row="1"/>
+                    <Border Name="cmb1BorderHead" BorderThickness="1" Grid.Column="1" Grid.Row="1" Margin="12">
+                        <ComboBox Name="drphead" SelectionChanged="drphead_SelectionChanged" FontSize="14">
+                            <ComboBoxItem Content="Tender" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
+                            <ComboBoxItem Content="Customers" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
+                            <ComboBoxItem Content="Vendor" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
+                            <ComboBoxItem Content="Expence" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
+                            <ComboBoxItem Content="Income" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
+                            <ComboBoxItem Content="Employee" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
+                        </ComboBox>
+                    </Border>
+                    <Label Content="Address :-" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Grid.Row="2"/>
+                    <TextBox Name="txtAddress" TextChanged="textBox_txtAddress" FontSize="14" Grid.Column="1" Grid.Row="2" Margin="12" >
+                        <TextBox.Effect>
+                            <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFD7C9F3"/>
+                        </TextBox.Effect>
+                    </TextBox>
+                    <Label Content="Mobile No. :-" HorizontalAlignment="Right" VerticalAlignment="Center"  FontSize="14" Grid.Row="3" />
+                    <TextBox Name="txtMobile" TextChanged="textBox_txtMobile" FontSize="14" Grid.Column="1" Grid.Row="3" Margin="12">
+                        <TextBox.Effect>
+                            <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFD7C9F3"/>
+                        </TextBox.Effect>
+                    </TextBox>
+                    <Label Name="lblAccountId" Visibility="Hidden"></Label>
+                    <Label Content="Email :-" HorizontalAlignment="Right" VerticalAlignment="Center"  FontSize="14" Grid.Row="4"/>
+                    <TextBox Name="txtEmail" TextChanged="textBox_txtEmail" FontSize="14" Grid.Column="1" Grid.Row="4" Margin="12" >
+                        <TextBox.Effect>
+                            <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFD7C9F3"/>
+                        </TextBox.Effect>
+                    </TextBox>
+                    <Button Content="Save" Name="btnSave" FontSize="25" Grid.Row="6" Grid.ColumnSpan="2" Click="Button_Click" Margin="70,10,70,10"/>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

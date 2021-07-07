@@ -24,7 +24,10 @@ namespace POSSystem
             toDate.SelectedDate = DateTime.Now.Date;
             Datable(DateTime.Now.Date.ToString(), DateTime.Now.Date.ToString());
         }
-
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
         private void Datable(string fromDate, string toDate)
         {
             try

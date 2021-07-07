@@ -40,6 +40,10 @@ namespace POSSystem
                 SendErrorToText(ex, errorFileName);
             }
         }
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
         // Day Close
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -131,6 +135,12 @@ namespace POSSystem
         {
             StoreDetails SD = new StoreDetails();
             SD.Show();
+        }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            SalesReport Sr = new SalesReport();
+            Sr.Show();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)

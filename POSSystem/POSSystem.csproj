@@ -273,8 +273,6 @@
     <Resource Include="Image\Drinks.jpeg" />
     <Resource Include="Image\back1.png" />
     <Resource Include="Image\csv.jpg" />
-    <Resource Include="Image\import.png" />
-    <Resource Include="Image\Add.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Image\NonFood.jpg" />
@@ -286,7 +284,19 @@
     <Resource Include="Image\background.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\Logout.jpg" />
+    <Resource Include="Image\close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\import1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\Add2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\logout2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.1.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.1.0\build\MaterialDesignThemes.targets')" />

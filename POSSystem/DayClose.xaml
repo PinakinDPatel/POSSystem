@@ -5,60 +5,72 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:POSSystem"
         mc:Ignorable="d"
-        Title="DayClose" Height="450" Width="800" WindowStartupLocation="CenterScreen">
-    <Grid>
-        <Grid.Background>
-            <ImageBrush ImageSource="Image/background.jpg"/>
-        </Grid.Background>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Grid>
+        Title="DayClose" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowStyle="None">
+    <Grid Background="#FFB28661">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="14*"/>
+            <RowDefinition Height="351*"/>
+        </Grid.RowDefinitions>
+        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Button_Click" >
+            <Button.Effect>
+                <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
+            </Button.Effect>
+            <Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>
+        </Button>
+        <Grid Grid.Row="1">
+            <Grid.Background>
+                <ImageBrush ImageSource="Image/background.jpg"/>
+            </Grid.Background>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Label Content="Taxable" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Label Content="Non-Taxable" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Label Content="Tax" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Label Name="TxtTaxable" Grid.Column="1" Margin="10" HorizontalAlignment="Right"/>
-            <Label Name="TxtNonTaxable" Grid.Row="1" Grid.Column="1" Margin="10" HorizontalAlignment="Right"/>
-            <Label Name="TxtTax" Grid.Row="2" Grid.Column="1" Margin="10" HorizontalAlignment="Right"/>
-        </Grid>
-        <Grid Grid.Column="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Label Content="Cash" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Label Content="Check" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Label Content="Customer" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Label Content="Card" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Label Name="TxtCash" Grid.Column="1" Margin="10" HorizontalAlignment="Right" />
-            <Label Name="TxtCheck" Grid.Row="1" Grid.Column="1" Margin="10" HorizontalAlignment="Right"/>
-            <Label Name="TxtCustomer" Grid.Row="2" Grid.Column="1" Margin="10" HorizontalAlignment="Right"/>
-            <Label Name="TxtCard" Grid.Row="3" Grid.Column="1" Margin="10" HorizontalAlignment="Right"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Content="Taxable" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Label Content="Non-Taxable" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Label Content="Tax" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Label Name="TxtTaxable" Grid.Column="1" Margin="10" HorizontalAlignment="Right"/>
+                <Label Name="TxtNonTaxable" Grid.Row="1" Grid.Column="1" Margin="10" HorizontalAlignment="Right"/>
+                <Label Name="TxtTax" Grid.Row="2" Grid.Column="1" Margin="10" HorizontalAlignment="Right"/>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Content="Cash" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Label Content="Check" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Label Content="Customer" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Label Content="Card" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Label Name="TxtCash" Grid.Column="1" Margin="10" HorizontalAlignment="Right" />
+                <Label Name="TxtCheck" Grid.Row="1" Grid.Column="1" Margin="10" HorizontalAlignment="Right"/>
+                <Label Name="TxtCustomer" Grid.Row="2" Grid.Column="1" Margin="10" HorizontalAlignment="Right"/>
+                <Label Name="TxtCard" Grid.Row="3" Grid.Column="1" Margin="10" HorizontalAlignment="Right"/>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

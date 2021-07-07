@@ -5,43 +5,55 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:POSSystem"
         mc:Ignorable="d"
-        Height="450" Width="800">
-    <Grid>
-        <Grid.Background>
-            <ImageBrush ImageSource="Image/background.jpg"/>
-        </Grid.Background>
+        Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" >
+    <Grid Background="#FFB28661">
         <Grid.RowDefinitions>
-            <RowDefinition Height="64*"/>
-            <RowDefinition Height="355*"/>
+            <RowDefinition Height="22*"/>
+            <RowDefinition Height="351*"/>
         </Grid.RowDefinitions>
-        <Label Content="Store Details" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <Grid Grid.Row="1" >
+        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Close_Click" >
+            <Button.Effect>
+                <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
+            </Button.Effect>
+            <Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>
+        </Button>
+        <Grid Grid.Row="1">
+            <Grid.Background>
+                <ImageBrush ImageSource="Image/background.jpg"/>
+            </Grid.Background>
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="64*"/>
+                <RowDefinition Height="355*"/>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="158*"/>
-                <ColumnDefinition Width="237*"/>
-                <ColumnDefinition Width="124*"/>
-                <ColumnDefinition Width="245*"/>
-                <ColumnDefinition Width="28*"/>
-            </Grid.ColumnDefinitions>
-            <Label Name="lblStoreId" Visibility="Hidden"/>
-            <Label Grid.Row="0" Grid.Column="0" Content="StoreName :-" HorizontalAlignment="Right" VerticalAlignment="Center" Height="33" Margin="0,9" Width="121"/>
-            <TextBox Name="TxtName" Grid.Row="0" Grid.Column="1" Margin="10"/>
-            <Label Grid.Row="1" Grid.Column="0" Content="Address :-" HorizontalAlignment="Right" VerticalAlignment="Center" Height="33" Margin="0,9" Width="96"/>
-            <TextBox Name="TxtAddress" Grid.Row="1" Grid.Column="1" Margin="10"/>
-            <Label Grid.Row="0" Grid.Column="2" Content="Phone :-" HorizontalAlignment="Right" VerticalAlignment="Center" Height="33" Margin="0,9" Width="80"/>
-            <TextBox Name="TxtPhone" Grid.Row="0" Grid.Column="3" Margin="10"/>
-            <Label Grid.Row="1" Grid.Column="2" Content="Email :-" HorizontalAlignment="Right" VerticalAlignment="Center" Height="33" Margin="0,9" Width="75"/>
-            <TextBox Name="TxtEmail" Grid.Row="1" Grid.Column="3" Margin="10"/>
-            <Button Grid.Row="3" Grid.ColumnSpan="5" Margin="280,0,280,0" Content="Save" Click="Button_Click"/>
+            <Label Content="Store Details" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Grid Grid.Row="1" >
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="158*"/>
+                    <ColumnDefinition Width="237*"/>
+                    <ColumnDefinition Width="124*"/>
+                    <ColumnDefinition Width="245*"/>
+                    <ColumnDefinition Width="28*"/>
+                </Grid.ColumnDefinitions>
+                <Label Name="lblStoreId" Visibility="Hidden"/>
+                <Label Grid.Row="0" Grid.Column="0" Content="StoreName :-" HorizontalAlignment="Right" VerticalAlignment="Center" Height="33" Margin="0,9" Width="121"/>
+                <TextBox Name="TxtName" Grid.Row="0" Grid.Column="1" Margin="10"/>
+                <Label Grid.Row="1" Grid.Column="0" Content="Address :-" HorizontalAlignment="Right" VerticalAlignment="Center" Height="33" Margin="0,9" Width="96"/>
+                <TextBox Name="TxtAddress" Grid.Row="1" Grid.Column="1" Margin="10"/>
+                <Label Grid.Row="0" Grid.Column="2" Content="Phone :-" HorizontalAlignment="Right" VerticalAlignment="Center" Height="33" Margin="0,9" Width="80"/>
+                <TextBox Name="TxtPhone" Grid.Row="0" Grid.Column="3" Margin="10"/>
+                <Label Grid.Row="1" Grid.Column="2" Content="Email :-" HorizontalAlignment="Right" VerticalAlignment="Center" Height="33" Margin="0,9" Width="75"/>
+                <TextBox Name="TxtEmail" Grid.Row="1" Grid.Column="3" Margin="10"/>
+                <Button Grid.Row="3" Grid.ColumnSpan="5" Margin="280,0,280,0" Content="Save" Click="Button_Click"/>
+            </Grid>
         </Grid>
     </Grid>
 </Window>
