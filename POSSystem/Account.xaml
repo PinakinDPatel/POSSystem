@@ -42,7 +42,7 @@
                         <DataGridTemplateColumn Header="Edit" Width="40*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Click="onEdit" Background="White">
+                                    <Button Click="onEdit" Background="{x:Null}" >
                                         <StackPanel Orientation="Horizontal" >
                                             <Image Source="Image/Edit1.png" Width="25" Height="25"/>
                                         </StackPanel>
@@ -53,7 +53,7 @@
                         <DataGridTemplateColumn Header="Delete" Width="40*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Click="onDelete" Background="White">
+                                    <Button Click="onDelete" Background="{x:Null}">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Source="Image/Delete.png" Width="25" Height="25"/>
                                         </StackPanel>
