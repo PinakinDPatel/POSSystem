@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:POSSystem"
         mc:Ignorable="d"
-        Title="SalesReport" Height="450" Width="800" WindowStyle="None">
+        Title="SalesReport" Height="450" Width="800" ResizeMode="NoResize"  WindowStartupLocation="CenterScreen" WindowStyle="None">
     <Grid Background="#FFB28661">
         <Grid.RowDefinitions>
             <RowDefinition Height="14*"/>
@@ -85,7 +85,12 @@
                 <Label Content="Grand Total" Grid.Row="2"/>
                 <Label Name="amountTaxTotal" Grid.Row="2" Grid.Column="1"></Label>
             </Grid>
-            <DataGrid Name="cashDG" Grid.Row="3" Grid.Column="1" Grid.RowSpan="8" Background="{x:Null}"/>
+            <DataGrid Name="cashDG" Grid.Row="3" Grid.Column="1" Grid.RowSpan="8" Background="{x:Null}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding TenderCode}"  Header="TenderCode" Width="60*"  IsReadOnly="True"/>
+                    <DataGridTextColumn Binding="{Binding Amount}"  Header="Amount" Width="40*"  IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
             <Label Name="cashamountTotal" Grid.Row="7" Grid.Column="1"></Label>
         </Grid>
     </Grid>

@@ -292,10 +292,10 @@ namespace POSSystem
                     Qtysum += decimal.Parse(dr.ItemArray[4].ToString());
                 }
                 Total = sum + Taxsum;
-                txtTotal.Text = sum.ToString("0.00");
-                txtQty.Text = Qtysum.ToString();
-                taxtTotal.Text = Taxsum.ToString("0.00");
-                grandTotal.Text = Total.ToString("0.00");
+                txtTotal.Text = '$' + sum.ToString("0.00");
+                //txtQty.Text = Qtysum.ToString();
+                taxtTotal.Text = '$' + Taxsum.ToString("0.00");
+                grandTotal.Text = '$' + Total.ToString("0.00");
             }
             catch (Exception ex)
             {
@@ -412,7 +412,7 @@ namespace POSSystem
                 cbcustomer.Text = "";
                 TxtCheck.Text = "";
                 txtTotal.Text = "";
-                txtQty.Text = "";
+                //txtQty.Text = "";
                 grandTotal.Text = "";
                 taxtTotal.Text = "";
                 lblDate.Content = DateTime.Now.ToString("yyyy-MM-dd HH:MM:ss");

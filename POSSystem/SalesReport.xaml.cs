@@ -33,7 +33,7 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                string queryDG = "select Department,max(Price) as Amount from Department Join SalesItem On Department.Department = SalesItem.Descripation where DayClose between @fromDate and @toDate group by Department";
+                string queryDG = "select Department,sum(Price) as Amount from Department Join SalesItem On Department.Department = SalesItem.Descripation where DayClose between @fromDate and @toDate group by Department";
                 SqlCommand cmdDG = new SqlCommand(queryDG, con);
                 cmdDG.Parameters.AddWithValue("@fromDate", Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd"));
                 cmdDG.Parameters.AddWithValue("@toDate", Convert.ToDateTime(toDate).ToString("yyyy-MM-dd"));
@@ -46,7 +46,7 @@ namespace POSSystem
                 deprtDG.CanUserAddRows = false;
 
                 SqlConnection con1 = new SqlConnection(conString);
-                string queryDG1 = "select TenderCode,max(Tender.Amount) as Amount from Tender  where DayClose between @fromDate1 and @toDate1 group by TenderCode union all select expence.VoucherType,max(expence.Amount) as Amount from expence  where DayClose between @fromDate1 and @toDate1 group by VoucherType";
+                string queryDG1 = "select TenderCode,sum(Tender.Amount) as Amount from Tender  where DayClose between @fromDate1 and @toDate1 group by TenderCode union all select expence.VoucherType,max(expence.Amount) as Amount from expence  where DayClose between @fromDate1 and @toDate1 group by VoucherType";
                 SqlCommand cmdDG1 = new SqlCommand(queryDG1, con1);
                 cmdDG1.Parameters.AddWithValue("@fromDate1", Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd"));
                 cmdDG1.Parameters.AddWithValue("@toDate1", Convert.ToDateTime(toDate).ToString("yyyy-MM-dd"));
@@ -55,12 +55,12 @@ namespace POSSystem
                 con1.Open();
                 sdaDG1.Fill(dt1);
                 con1.Close();
-                cashDG.ItemsSource = dt1.AsDataView();
+                this.cashDG.ItemsSource = dt1.AsDataView();
                 cashDG.CanUserAddRows = false;
 
                 // For Department Total.
                 SqlConnection conTotal = new SqlConnection(conString);
-                string queryDGTotal = "select max(Price) as Amount,max(TaxRate) as TaxRate from Department Join SalesItem On Department.Department = SalesItem.Descripation where DayClose between @fromDate2 and @toDate2";
+                string queryDGTotal = "select sum(Price) as Amount,sum(TaxRate) as TaxRate from Department Join SalesItem On Department.Department = SalesItem.Descripation where DayClose between @fromDate2 and @toDate2";
                 SqlCommand cmdDGTotal = new SqlCommand(queryDGTotal, conTotal);
                 cmdDGTotal.Parameters.AddWithValue("@fromDate2", Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd"));
                 cmdDGTotal.Parameters.AddWithValue("@toDate2", Convert.ToDateTime(toDate).ToString("yyyy-MM-dd"));
@@ -72,7 +72,7 @@ namespace POSSystem
 
                 // For Cash Total.
                 SqlConnection conTotal1 = new SqlConnection(conString);
-                string queryDGTotal1 = "select max(Tender.Amount) as Amount from Tender  where DayClose between @fromDate12 and @toDate12 union all select max(expence.Amount) as Amount from expence  where expence.DayClose between @fromDate12 and @toDate12";
+                string queryDGTotal1 = "select sum(Tender.Amount) as Amount from Tender  where DayClose between @fromDate12 and @toDate12 union all select max(expence.Amount) as Amount from expence  where expence.DayClose between @fromDate12 and @toDate12";
                 SqlCommand cmdDGTotal1 = new SqlCommand(queryDGTotal1, conTotal1);
                 cmdDGTotal1.Parameters.AddWithValue("@fromDate12", Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd"));
                 cmdDGTotal1.Parameters.AddWithValue("@toDate12", Convert.ToDateTime(toDate).ToString("yyyy-MM-dd"));
