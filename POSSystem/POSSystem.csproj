@@ -124,11 +124,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddPromotionItem.xaml.cs">
+      <DependentUpon>AddPromotionItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CreatePromotion.xaml.cs">
+      <DependentUpon>CreatePromotion.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DayClose.xaml.cs">
       <DependentUpon>DayClose.xaml</DependentUpon>
     </Compile>
     <Compile Include="Expence.xaml.cs">
       <DependentUpon>Expence.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Promotion.xaml.cs">
+      <DependentUpon>Promotion.xaml</DependentUpon>
     </Compile>
     <Compile Include="Report.xaml.cs">
       <DependentUpon>Report.xaml</DependentUpon>
@@ -142,6 +151,14 @@
     <Page Include="Account.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddPromotionItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CreatePromotion.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="CreateUser.xaml">
       <SubType>Designer</SubType>
@@ -201,6 +218,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Promotion.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Report.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
