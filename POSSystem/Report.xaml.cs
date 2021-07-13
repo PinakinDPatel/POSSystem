@@ -143,6 +143,12 @@ namespace POSSystem
             Sr.Show();
         }
 
+        private void BtnPromotion_Click(object sender, RoutedEventArgs e)
+        {
+            Promotion P = new Promotion();
+            P.Show();
+        }
+
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             try

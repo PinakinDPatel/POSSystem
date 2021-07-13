@@ -55,6 +55,7 @@
                 </Grid.ColumnDefinitions>
                 <Button Content="User" Margin="10" Click="Button_Click_5"/>
                 <Button Content="Store" Margin="10" Grid.Column="1" Click="Button_Click_6"/>
+                <Button Content="Promotion" Margin="10" Grid.Column="2" Click="BtnPromotion_Click"/>
             </Grid>
         </Grid>
     </Grid>
