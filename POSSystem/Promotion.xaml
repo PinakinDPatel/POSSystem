@@ -37,11 +37,12 @@
                     <DataGridTextColumn Header="PromotionName" Width="100*" Binding="{Binding PromotionName}"/>
                     <DataGridTextColumn Header="Description" Width="100*" Binding="{Binding Description}"/>
                     <DataGridTextColumn Header="StartDate" Width="100*" Binding="{Binding StartDate}"/>
-                    <DataGridTextColumn Header="Items" Width="100*" Binding="{Binding Items}"/>
+                    <DataGridTextColumn Header="EndDate" Width="100*" Binding="{Binding EndDate}"/>
+                    <DataGridTextColumn Header="Items" Width="100*" Binding="{Binding ItemCount}"/>
                     <DataGridTemplateColumn Header="Edit" Width="40*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Background="White">
+                                <Button Click="onEdit" Background="{x:Null}" >
                                     <StackPanel Orientation="Horizontal" >
                                         <Image Source="Image/Edit1.png" Width="25" Height="25"/>
                                     </StackPanel>
@@ -52,7 +53,7 @@
                     <DataGridTemplateColumn Header="Delete" Width="40*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Background="White">
+                                <Button Click="onDelete" Background="{x:Null}">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Source="Image/Delete.png" Width="25" Height="25"/>
                                     </StackPanel>
@@ -63,7 +64,7 @@
                     <DataGridTemplateColumn Header="Add" Width="40*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Click="onAdd" Background="White">
+                                <Button Click="onAdd" Background="{x:Null}">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Source="Image/Add2.png" Width="25" Height="25"/>
                                     </StackPanel>

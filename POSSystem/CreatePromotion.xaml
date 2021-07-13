@@ -59,8 +59,8 @@
                 <Label Grid.Row="6" Content="End Date :-" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <DatePicker x:Name="DatePickerEnd" FontSize="20" Grid.Row="6" Grid.Column="1" Margin="0,5,40,5"/>
                 <Label Grid.Row="7" Content="ScanData :-" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <TextBox Grid.Row="7" Grid.Column="1" Margin="0,5,40,5"/>
-                <Button Grid.ColumnSpan="2" Grid.Row="9" Content="Save" Margin="170,0,170,0" Click="BtnSave_Click"/>
+                <TextBox Name="txtScanData" Grid.Row="7" Grid.Column="1" Margin="0,5,40,5"/>
+                <Button Name="btnsave" Grid.ColumnSpan="2" Grid.Row="9" Content="Save" Margin="170,0,170,0" Click="BtnSave_Click"/>
             </Grid>
         </Grid>
     </Grid>
