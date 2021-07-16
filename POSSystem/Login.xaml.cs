@@ -6,12 +6,14 @@ using System.Data.SqlClient;
 using System.Windows.Navigation;
 using System.Configuration;
 using System.IO;
+using System.Security.Permissions;
 
 namespace POSSystem
 {
     /// <summary>
     /// Interaction logic for Login.xaml
     /// </summary>
+
     public partial class Login : Window
     {
         //string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
@@ -82,9 +84,18 @@ namespace POSSystem
                 if (dt.Rows.Count > 0)
                 {
                     App.Current.Properties["username"] = dt.Rows[0]["UserName"].ToString();
-                    MainWindow frm = new MainWindow();
-                    frm.Show();
-                    this.Close();
+                    App.Current.Properties["Role"] = dt.Rows[0]["RoleName"].ToString();
+
+                    if (App.Current.Properties["Role"].ToString() == "Admin1")
+                    {
+                        MainWindow frm = new MainWindow();
+                        frm.Show();
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid Role.");
+                    }
                 }
                 else
                 {

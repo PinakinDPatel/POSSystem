@@ -68,11 +68,12 @@ namespace POSSystem
                 else
                 {
                     string time = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
-                    string queryI = "Insert into UserRegi(UserName,Password,CreateOn)Values(@userName,@password,@time)";
+                    string queryI = "Insert into UserRegi(UserName,Password,CreateOn,RoleName)Values(@userName,@password,@time,@roleName)";
                     SqlCommand cmdI = new SqlCommand(queryI, con);
                     cmdI.Parameters.AddWithValue("@userName", txtUser.Text);
                     cmdI.Parameters.AddWithValue("@password", txtPassword.Text);
                     cmdI.Parameters.AddWithValue("@time", time);
+                    cmdI.Parameters.AddWithValue("@roleName", txtRole.Text);
                     con.Open();
                     cmdI.ExecuteNonQuery();
                     con.Close();

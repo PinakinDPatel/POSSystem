@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Configuration;
 using System.IO;
+using System.Data;
 
 namespace POSSystem
 {
@@ -24,7 +25,7 @@ namespace POSSystem
     {
         //string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
         string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
-        string username = App.Current.Properties["username"].ToString();
+        string username = "Test"; // App.Current.Properties["username"].ToString();
 
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "Report.cs";
@@ -92,29 +93,43 @@ namespace POSSystem
             {
                 SqlConnection con = new SqlConnection(conString);
                 var date = DateTime.Now.ToString("yyyy-MM-dd");
-                string tenderQ = "Update tender set DayClose=@NowDate Where DayClose is null";
+                string tenderQ = "Update tender set DayClose=@NowDate Where DayClose is null or DayClose=''";
                 SqlCommand tenderCMD = new SqlCommand(tenderQ, con);
                 tenderCMD.Parameters.AddWithValue("@NowDate", date);
-                string transQ = "Update Transactions set DayClose=@Date Where DayClose is null";
+                string transQ = "Update Transactions set DayClose=@Date Where DayClose is null or DayClose=''";
                 SqlCommand transCMD = new SqlCommand(transQ, con);
                 transCMD.Parameters.AddWithValue("@Date", date);
-                string itemQ = "Update SalesItem set DayClose=@Now Where DayClose is null";
+                string itemQ = "Update SalesItem set DayClose=@Now Where DayClose is null or DayClose=''";
                 SqlCommand itemCMD = new SqlCommand(itemQ, con);
                 itemCMD.Parameters.AddWithValue("@Now", date);
-                string expeQ = "Update SalesItem set DayClose=@Now Where DayClose is null";
-                SqlCommand expCMD = new SqlCommand(expeQ, con);
-                expCMD.Parameters.AddWithValue("@Now", date);
+                //string expeQ = "Update SalesItem set DayClose=@Now Where DayClose is null";
+                //SqlCommand expCMD = new SqlCommand(expeQ, con);
+                //expCMD.Parameters.AddWithValue("@Now", date);
                 con.Open();
                 tenderCMD.ExecuteNonQuery();
                 transCMD.ExecuteNonQuery();
                 itemCMD.ExecuteNonQuery();
-                expCMD.ExecuteNonQuery();
+                //expCMD.ExecuteNonQuery();
                 con.Close();
+                InsertQuery();
+
             }
             catch (Exception ex)
             {
                 SendErrorToText(ex, errorFileName);
             }
+        }
+
+        private void InsertQuery()
+        {
+            SqlConnection con = new SqlConnection(conString);
+            con.Open();
+            SqlCommand sql_cmnd = new SqlCommand("sp_DayClose", con);
+            sql_cmnd.CommandType = CommandType.StoredProcedure;
+            sql_cmnd.Parameters.AddWithValue("@enterOn", SqlDbType.NVarChar).Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+            sql_cmnd.Parameters.AddWithValue("@enterBy", SqlDbType.NVarChar).Value = username;
+            sql_cmnd.ExecuteNonQuery();
+            con.Close();
         }
 
 

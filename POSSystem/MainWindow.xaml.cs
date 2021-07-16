@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Resources;
 using System.Reflection;
 using System.Linq;
+using System.Security.Permissions;
 
 namespace POSSystem
 {
@@ -69,9 +70,9 @@ namespace POSSystem
                 SqlCommand cmd1 = new SqlCommand(queryS, con);
                 SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
                 sda1.Fill(dtdep);
-                con.Open();
-                cmd1.ExecuteNonQuery();
-                con.Close();
+                //con.Open();
+                //cmd1.ExecuteNonQuery();
+                //con.Close();
 
                 //Shadow Effect Of Button
                 //DropShadowEffect newDropShadowEffect = new DropShadowEffect();
@@ -118,7 +119,10 @@ namespace POSSystem
                 loadtransactionId();
 
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void loadtransactionId()
@@ -219,7 +223,7 @@ namespace POSSystem
                     foreach (DataRow row in dt.AsEnumerable())
                     {
                         string _scancode = row["ScanCode"].ToString();
-                        string query1 = "select promotiongroup.ScanCode, promotiongroup.PromotionName,promotion.NewPrice,promotion.Quantity,promotion.pricereduce  from promotiongroup inner join promotion on promotiongroup.promotionname =  promotion.promotionname  where promotiongroup.ScanCode = @_scancode and @datetime between promotion.StartDate and promotion.EndDate";
+                        string query1 = "select promotiongroup.ScanCode, promotiongroup.PromotionName,promotion.NewPrice,promotion.Quantity,promotion.PriceReduce  from promotiongroup inner join promotion on promotiongroup.promotionname =  promotion.promotionname  where promotiongroup.ScanCode = @_scancode and @datetime between promotion.StartDate and promotion.EndDate";
                         SqlCommand cmd1 = new SqlCommand(query1, con);
                         cmd1.Parameters.AddWithValue("@_scancode", _scancode);
                         cmd1.Parameters.AddWithValue("@datetime", DateTime.Now.ToString("MM-dd-yyyy"));
@@ -256,7 +260,11 @@ namespace POSSystem
                                     {
                                         if (sumCount >= Convert.ToInt32(itemDT1["Quantity"]))
                                         {
-                                            itemDT["UnitRetail"] = itemDT1["NewPrice"];
+                                            string price = itemDT1["NewPrice"].ToString();
+                                            if (price == "")
+                                                price = (Convert.ToDecimal(itemDT["UnitRetail"]) - (Convert.ToDecimal(itemDT["UnitRetail"]) * Convert.ToDecimal(itemDT1["PriceReduce"]) / 100)).ToString();
+
+                                            itemDT["UnitRetail"] = price;
                                             itemDT["Amount"] = Convert.ToDecimal(itemDT["UnitRetail"]) * Convert.ToDecimal(itemDT["Quantity"]);
                                         }
                                     }
@@ -316,7 +324,6 @@ namespace POSSystem
             }
         }
 
-
         private void TotalEvent()
         {
             try
@@ -360,7 +367,7 @@ namespace POSSystem
             {
                 if (e.Key == Key.Tab || e.Key == Key.Enter)
                 {
-                    TxtCashReturn.Text = decimal.Parse(Convert.ToDecimal(decimal.Parse(TxtCashReceive.Text) - decimal.Parse(grandTotal.Text)).ToString("0.00")).ToString("0.00");
+                    TxtCashReturn.Text = decimal.Parse(Convert.ToDecimal(decimal.Parse(TxtCashReceive.Text) - decimal.Parse(grandTotal.Text.Replace("$", ""))).ToString("0.00")).ToString("0.00");
                     Button_Click_1();
                 }
             }
@@ -378,10 +385,10 @@ namespace POSSystem
                 string date = DateTime.Now.ToString("yyyy-MM-dd HH:MM:ss");
                 string onlydate = date.Substring(0, 10);
                 string onlytime = date.Substring(11);
-                string totalAmt = txtTotal.Text;
+                string totalAmt = txtTotal.Text.Replace("$","");
                 //string userName = lblusername.Content.ToString();
-                string tax = taxtTotal.Text;
-                string grandTotalAmt = grandTotal.Text;
+                string tax = taxtTotal.Text.Replace("$", "");
+                string grandTotalAmt = grandTotal.Text.Replace("$", "");
                 string cashRec = TxtCashReceive.Text;
                 string cashReturn = TxtCashReturn.Text;
                 string tranid = Convert.ToInt32(lblTranid.Content).ToString();
@@ -393,17 +400,17 @@ namespace POSSystem
                 con.Close();
                 if (tenderCode == "Cash")
                 {
-                    string tender = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + cashRec + "','" + tranid + "','" + username + "','" + date + "')";
+                    string tender = "insert into Tender(EndDate,Endtime,TenderCode,Amount,Change,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + cashRec + "','" + cashReturn + "','" + tranid + "','" + username + "','" + date + "')";
                     SqlCommand cmdTender = new SqlCommand(tender, con);
                     con.Open();
                     cmdTender.ExecuteNonQuery();
                     con.Close();
 
-                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + "-" + cashReturn + "','" + tranid + "','" + username + "','" + date + "')";
-                    SqlCommand cmdTender1 = new SqlCommand(tender1, con);
-                    con.Open();
-                    cmdTender1.ExecuteNonQuery();
-                    con.Close();
+                    //string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + "-" + cashReturn + "','" + tranid + "','" + username + "','" + date + "')";
+                    //SqlCommand cmdTender1 = new SqlCommand(tender1, con);
+                    //con.Open();
+                    //cmdTender1.ExecuteNonQuery();
+                    //con.Close();
                 }
                 else if (tenderCode == "Card")
                 {
@@ -706,15 +713,15 @@ namespace POSSystem
                         {
                             int rowIndex = e.Row.GetIndex();
                             var el = e.EditingElement as TextBox;
-                            DataTable dt_1 = new DataTable();
-                            dt = ((DataView)JRDGrid.ItemsSource).ToTable();
+                            //DataTable dt_1 = new DataTable();
+                            //dt = ((DataView)JRDGrid.ItemsSource).ToTable();
 
                             DataTable dt1 = new DataTable();
                             foreach (DataRow row in dt.AsEnumerable())
                             {
                                 SqlConnection con = new SqlConnection(conString);
                                 string _scancode = row["ScanCode"].ToString();
-                                string query1 = "select promotiongroup.ScanCode, promotiongroup.PromotionName,promotion.NewPrice,promotion.Quantity,promotion.pricereduce  from promotiongroup inner join promotion on promotiongroup.promotionname =  promotion.promotionname  where promotiongroup.ScanCode = @_scancode and @datetime between promotion.StartDate and promotion.EndDate";
+                                string query1 = "select promotiongroup.ScanCode, promotiongroup.PromotionName,promotion.NewPrice,promotion.Quantity,promotion.PriceReduce  from promotiongroup inner join promotion on promotiongroup.promotionname =  promotion.promotionname  where promotiongroup.ScanCode = @_scancode and @datetime between promotion.StartDate and promotion.EndDate";
                                 SqlCommand cmd1 = new SqlCommand(query1, con);
                                 cmd1.Parameters.AddWithValue("@_scancode", _scancode);
                                 cmd1.Parameters.AddWithValue("@datetime", DateTime.Now.ToString("MM-dd-yyyy"));
@@ -730,14 +737,6 @@ namespace POSSystem
 
                             foreach (DataRow distrinctRow in distrinctPromotionName.AsEnumerable())
                             {
-                                //int sumCount = 0;
-                                //foreach (var item in dt1.AsEnumerable())
-                                //{
-                                //    if (item["PromotionName"].ToString() == distrinctRow["PromotionName"].ToString())
-                                //    {
-                                //        sumCount++;
-                                //    }
-                                //}
                                 foreach (DataRow itemDT in dt.AsEnumerable())
                                 {
                                     foreach (DataRow itemDT1 in dt1.AsEnumerable())
@@ -750,7 +749,11 @@ namespace POSSystem
                                                 {
                                                     if (Convert.ToInt32(el.Text) >= Convert.ToInt32(itemDT1["Quantity"]))
                                                     {
-                                                        itemDT["UnitRetail"] = itemDT1["NewPrice"];
+                                                        string price = itemDT1["NewPrice"].ToString();
+                                                        if (price == "")
+                                                            price = (Convert.ToDecimal(itemDT["UnitRetail"]) - Convert.ToDecimal(itemDT["UnitRetail"]) * Convert.ToDecimal(itemDT1["PriceReduce"]) / 100).ToString();
+
+                                                        itemDT["UnitRetail"] = price;
                                                         itemDT["Quantity"] = el.Text;
                                                         itemDT["Amount"] = Convert.ToDecimal(itemDT["UnitRetail"]) * Convert.ToDecimal(el.Text);
                                                     }
@@ -784,8 +787,6 @@ namespace POSSystem
                             }
                             JRDGrid.ItemsSource = dt.DefaultView;
                             TotalEvent();
-                            //(e.Row.Item as DataRowView).Row[5] = Convert.ToDecimal(el.Text) * Convert.ToDecimal((e.Row.Item as DataRowView).Row[2]);
-                            //TotalEvent();
                         }
                     }
                 }
@@ -839,11 +840,6 @@ namespace POSSystem
             try
             {
                 string filepath = System.AppDomain.CurrentDomain.BaseDirectory;
-                string errorpath = filepath + "\\ErrorFiles\\";
-                if (!Directory.Exists(errorpath))
-                {
-                    Directory.CreateDirectory(errorpath);
-                }
 
                 if (!Directory.Exists(filepath))
                 {
@@ -899,6 +895,7 @@ namespace POSSystem
             }
         }
 
+        //Shift close
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
             try
@@ -928,7 +925,7 @@ namespace POSSystem
                 SendErrorToText(ex, errorFileName);
             }
         }
-
+        //page close
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -960,15 +957,15 @@ namespace POSSystem
             dt.AcceptChanges();
             JRDGrid.ItemsSource = dt.DefaultView;
 
-            DataTable dt_1 = new DataTable();
-            dt_1 = ((DataView)JRDGrid.ItemsSource).ToTable();
+            //DataTable dt_1 = new DataTable();
+            //dt_1 = ((DataView)JRDGrid.ItemsSource).ToTable();
 
             DataTable dt1 = new DataTable();
-            foreach (DataRow row1 in dt_1.AsEnumerable())
+            foreach (DataRow row1 in dt.AsEnumerable())
             {
                 SqlConnection con = new SqlConnection(conString);
                 string _scancode = row1["ScanCode"].ToString();
-                string query1 = "select promotiongroup.ScanCode, promotiongroup.PromotionName,promotion.NewPrice,promotion.Quantity,promotion.pricereduce  from promotiongroup inner join promotion on promotiongroup.promotionname =  promotion.promotionname  where promotiongroup.ScanCode = @_scancode and @datetime between promotion.StartDate and promotion.EndDate";
+                string query1 = "select promotiongroup.ScanCode, promotiongroup.PromotionName,promotion.NewPrice,promotion.Quantity,promotion.PriceReduce  from promotiongroup inner join promotion on promotiongroup.promotionname =  promotion.promotionname  where promotiongroup.ScanCode = @_scancode and @datetime between promotion.StartDate and promotion.EndDate";
                 SqlCommand cmd1 = new SqlCommand(query1, con);
                 cmd1.Parameters.AddWithValue("@_scancode", _scancode);
                 cmd1.Parameters.AddWithValue("@datetime", DateTime.Now.ToString("MM-dd-yyyy"));
@@ -979,7 +976,7 @@ namespace POSSystem
             }
 
             var sum = dt1.AsEnumerable().Count();  //dt.AsEnumerable().Sum(x => Convert.ToInt32(x["Quantity"]));
-            foreach (DataRow itemDT in dt_1.AsEnumerable())
+            foreach (DataRow itemDT in dt.AsEnumerable())
             {
                 foreach (DataRow itemDT1 in dt1.AsEnumerable())
                 {
@@ -989,9 +986,13 @@ namespace POSSystem
                         {
                             if (Convert.ToInt32(itemDT["Quantity"]) >= Convert.ToInt32(itemDT1["Quantity"]))
                             {
-                                itemDT["UnitRetail"] = itemDT1["NewPrice"];
-                                itemDT["Quantity"] = itemDT1["Quantity"];
-                                itemDT["Amount"] = Convert.ToDecimal(itemDT["UnitRetail"]) * Convert.ToDecimal(itemDT1["Quantity"]);
+                                string price = itemDT1["NewPrice"].ToString();
+                                if (price == "")
+                                    price = (Convert.ToDecimal(itemDT["UnitRetail"]) - Convert.ToDecimal(itemDT["UnitRetail"]) * Convert.ToDecimal(itemDT1["PriceReduce"]) / 100).ToString();
+
+                                itemDT["UnitRetail"] = price;
+                                //itemDT["Quantity"] = itemDT1["Quantity"];
+                                itemDT["Amount"] = Convert.ToDecimal(itemDT["UnitRetail"]) * Convert.ToDecimal(itemDT["Quantity"]);
                             }
                             else
                             {
@@ -1019,7 +1020,7 @@ namespace POSSystem
                     }
                 }
             }
-            JRDGrid.ItemsSource = dt_1.DefaultView;
+            JRDGrid.ItemsSource = dt.DefaultView;
 
             TotalEvent();
         }
@@ -1033,7 +1034,11 @@ namespace POSSystem
                     Button_Click_1();
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1042,7 +1047,10 @@ namespace POSSystem
             {
                 btnConform.Visibility = Visibility.Visible;
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void btnConform_Click(object sender, RoutedEventArgs e)
@@ -1052,7 +1060,10 @@ namespace POSSystem
                 Button_Click_1();
                 btnConform.Visibility = Visibility.Hidden;
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -22,7 +23,6 @@ namespace POSSystem
             InitializeComponent();
             fromDate.SelectedDate = DateTime.Now.Date;
             toDate.SelectedDate = DateTime.Now.Date;
-            Datable(DateTime.Now.Date.ToString(), DateTime.Now.Date.ToString());
         }
         private void Close_Click(object sender, RoutedEventArgs e)
         {
@@ -33,7 +33,7 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                string queryDG = "select Department,sum(Price) as Amount from Department Join SalesItem On Department.Department = SalesItem.Descripation where DayClose between @fromDate and @toDate group by Department";
+                string queryDG = "select Description,sum(cast(Amount as decimal(10,2)))as Amount,Type from dayclose where Enddate between @fromDate and @toDate Group by Description,Type";
                 SqlCommand cmdDG = new SqlCommand(queryDG, con);
                 cmdDG.Parameters.AddWithValue("@fromDate", Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd"));
                 cmdDG.Parameters.AddWithValue("@toDate", Convert.ToDateTime(toDate).ToString("yyyy-MM-dd"));
@@ -42,51 +42,24 @@ namespace POSSystem
                 con.Open();
                 sdaDG.Fill(dt);
                 con.Close();
-                this.deprtDG.ItemsSource = dt.AsDataView();
+
+                DataTable deptDT = (from row in dt.AsEnumerable() where row.Field<string>("Type") == "In" select row).CopyToDataTable();
+                DataTable cashDT = (from row in dt.AsEnumerable() where row.Field<string>("Type") == "Out" select row).CopyToDataTable();
+
+                string deptAmtTotal = deptDT.AsEnumerable().Sum(x => Convert.ToDecimal(x["Amount"])).ToString();
+                string cashAmtTotal = cashDT.AsEnumerable().Sum(x => Convert.ToDecimal(x["Amount"])).ToString();
+                string compareTotal1 = (Convert.ToDecimal(deptAmtTotal) - Convert.ToDecimal(cashAmtTotal)).ToString();
+
+                deptDT.Rows.Add("Total", deptAmtTotal);
+                cashDT.Rows.Add("Total", cashAmtTotal);
+
+                deprtDG.ItemsSource = deptDT.DefaultView;
                 deprtDG.CanUserAddRows = false;
 
-                SqlConnection con1 = new SqlConnection(conString);
-                string queryDG1 = "select TenderCode,sum(Tender.Amount) as Amount from Tender  where DayClose between @fromDate1 and @toDate1 group by TenderCode union all select expence.VoucherType,max(expence.Amount) as Amount from expence  where DayClose between @fromDate1 and @toDate1 group by VoucherType";
-                SqlCommand cmdDG1 = new SqlCommand(queryDG1, con1);
-                cmdDG1.Parameters.AddWithValue("@fromDate1", Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd"));
-                cmdDG1.Parameters.AddWithValue("@toDate1", Convert.ToDateTime(toDate).ToString("yyyy-MM-dd"));
-                SqlDataAdapter sdaDG1 = new SqlDataAdapter(cmdDG1);
-                DataTable dt1 = new DataTable();
-                con1.Open();
-                sdaDG1.Fill(dt1);
-                con1.Close();
-                this.cashDG.ItemsSource = dt1.AsDataView();
+                cashDG.ItemsSource = cashDT.DefaultView;
                 cashDG.CanUserAddRows = false;
 
-                // For Department Total.
-                SqlConnection conTotal = new SqlConnection(conString);
-                string queryDGTotal = "select sum(Price) as Amount,sum(TaxRate) as TaxRate from Department Join SalesItem On Department.Department = SalesItem.Descripation where DayClose between @fromDate2 and @toDate2";
-                SqlCommand cmdDGTotal = new SqlCommand(queryDGTotal, conTotal);
-                cmdDGTotal.Parameters.AddWithValue("@fromDate2", Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd"));
-                cmdDGTotal.Parameters.AddWithValue("@toDate2", Convert.ToDateTime(toDate).ToString("yyyy-MM-dd"));
-                SqlDataAdapter sdaDGTotal = new SqlDataAdapter(cmdDGTotal);
-                DataTable dtTotal = new DataTable();
-                conTotal.Open();
-                sdaDGTotal.Fill(dtTotal);
-                conTotal.Close();
-
-                // For Cash Total.
-                SqlConnection conTotal1 = new SqlConnection(conString);
-                string queryDGTotal1 = "select sum(Tender.Amount) as Amount from Tender  where DayClose between @fromDate12 and @toDate12 union all select max(expence.Amount) as Amount from expence  where expence.DayClose between @fromDate12 and @toDate12";
-                SqlCommand cmdDGTotal1 = new SqlCommand(queryDGTotal1, conTotal1);
-                cmdDGTotal1.Parameters.AddWithValue("@fromDate12", Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd"));
-                cmdDGTotal1.Parameters.AddWithValue("@toDate12", Convert.ToDateTime(toDate).ToString("yyyy-MM-dd"));
-                SqlDataAdapter sdaDGTotal1 = new SqlDataAdapter(cmdDGTotal1);
-                DataTable dtTotal1 = new DataTable();
-                conTotal1.Open();
-                sdaDGTotal1.Fill(dtTotal1);
-                conTotal1.Close();
-
-                amountTotal.Content = dtTotal.Rows[0]["Amount"].ToString();
-                taxTotal.Content = dtTotal.Rows[0]["TaxRate"].ToString();
-                var _amountTaxTotal = Convert.ToDecimal(amountTotal.Content) + Convert.ToDecimal(taxTotal.Content);
-                amountTaxTotal.Content = _amountTaxTotal.ToString();
-                cashamountTotal.Content = dtTotal1.Rows[0]["Amount"].ToString();
+                compareTotal.Content = compareTotal1;
             }
             catch (Exception ex)
             {

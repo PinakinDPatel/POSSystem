@@ -64,7 +64,7 @@
 
             <DataGrid Name="deprtDG" Grid.Row="3" Grid.RowSpan="6" AutoGenerateColumns="False" Background="{x:Null}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Department}"  Header="Department" Width="60*"  IsReadOnly="True"/>
+                    <DataGridTextColumn Binding="{Binding Description}"  Header="Department" Width="60*"  IsReadOnly="True"/>
                     <DataGridTextColumn Binding="{Binding Amount}"  Header="Amount" Width="40*"  IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>
@@ -78,16 +78,12 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Label Content="TotalAmount" ></Label>
-                <Label Name="amountTotal" Grid.Column="1"/>
-                <Label Content="Total Tax" Grid.Row="1"/>
-                <Label Name="taxTotal"  Grid.Row="1" Grid.Column="1"/>
-                <Label Content="Grand Total" Grid.Row="2"/>
-                <Label Name="amountTaxTotal" Grid.Row="2" Grid.Column="1"></Label>
+                <Label Content="Short Over" Grid.Row="2"/>
+                <Label Name="compareTotal" Grid.Row="2" Grid.Column="1"></Label>
             </Grid>
             <DataGrid Name="cashDG" Grid.Row="3" Grid.Column="1" Grid.RowSpan="8" Background="{x:Null}" AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding TenderCode}"  Header="TenderCode" Width="60*"  IsReadOnly="True"/>
+                    <DataGridTextColumn Binding="{Binding Description}"  Header="TenderCode" Width="60*"  IsReadOnly="True"/>
                     <DataGridTextColumn Binding="{Binding Amount}"  Header="Amount" Width="40*"  IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>

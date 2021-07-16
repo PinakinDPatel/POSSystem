@@ -4,12 +4,12 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:POSSystem"
-      mc:Ignorable="d" Height="523.985" Width="414.666" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
+      mc:Ignorable="d" Height="650.985" Width="414.666" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
     <!--d:DesignHeight="750" d:DesignWidth="600"-->
     <Grid Background="#FFB28661">
         <Grid.RowDefinitions>
             <RowDefinition Height="20*"/>
-            <RowDefinition Height="351*"/>
+            <RowDefinition Height="1200*"/>
         </Grid.RowDefinitions>
         <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Close_Click" >
             <Button.Effect>
@@ -27,7 +27,13 @@
             <TextBox HorizontalAlignment="Left" Name="txtUser" Height="34" Margin="30,216,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="345" FontSize="18"/>
             <Label Content="Password" HorizontalAlignment="Left" Margin="30,284,0,0" VerticalAlignment="Top" Height="33" Width="240" FontSize="20" FontWeight="Bold"/>
             <TextBox HorizontalAlignment="Left" Height="34" Margin="30,322,0,0" TextWrapping="Wrap" Name="txtPassword" VerticalAlignment="Top" Width="345" FontSize="18"/>
-            <Button Content="Create" Margin="100,381,111,72" FontSize="36" Foreground="#FFFDFDFD" Click="Button_Click"/>
+
+            <Label Content="Role" HorizontalAlignment="Left" Margin="30,400,0,0" VerticalAlignment="Top" Height="33" Width="240" FontSize="20" FontWeight="Bold"/>
+            <ComboBox Text="Is not open" HorizontalAlignment="Left" Height="34" Margin="30,450,0,0"  Name="txtRole" VerticalAlignment="Top" Width="345" FontSize="18">
+                <ComboBoxItem Name="Manager">Manager</ComboBoxItem>
+                <ComboBoxItem Name="Cashier">Cashier</ComboBoxItem>
+            </ComboBox>
+            <Button Content="Create" Margin="100,500,111,72" FontSize="36" Foreground="#FFFDFDFD" Click="Button_Click"/>
         </Grid>
     </Grid>
 </Window>
