@@ -95,7 +95,7 @@ namespace POSSystem
                     {
                         if (dt.Rows.Count > 0)
                         {
-                            MessageBox.Show("UserName Or Password Already Exist!");
+                            MessageBox.Show("Account Already Exist!");
                         }
                         else
                         {
@@ -126,7 +126,7 @@ namespace POSSystem
                     {
                         if (dt.Rows.Count > 0)
                         {
-                            MessageBox.Show("UserName Or Password Already Exist!");
+                            MessageBox.Show("Account Already Exist!");
                         }
                         else
                         {

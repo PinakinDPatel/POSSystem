@@ -49,7 +49,6 @@ namespace POSSystem
                 SqlConnection con = new SqlConnection(conString);
                 string query = "select Scancode,description,unitretail,TaxRate from item where Scancode=@password ";
                 SqlCommand cmd = new SqlCommand(query, con);
-
                 cmd.Parameters.AddWithValue("@password", textBox1.Text);
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
 

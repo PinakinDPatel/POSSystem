@@ -26,12 +26,12 @@ namespace POSSystem
         string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "Expence.cs";
-        string username = "SS";// App.Current.Properties["username"].ToString();
+        string username = App.Current.Properties["username"].ToString();
         DataTable dtDG = new DataTable();
         public Expence()
         {
             InitializeComponent();
-            txtDate.Text = DateTime.Now.ToString("MM-dd-yyyy");
+            txtDate.SelectedDate = DateTime.Now;
             ComboBox();
             Datable();
         }
@@ -55,7 +55,7 @@ namespace POSSystem
                     SqlConnection con = new SqlConnection(conString);
                     int lbl = Convert.ToInt32(lblExpenceid.Content);
                     string vt = "Expence";
-                    string time = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
+                    string time = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt");
                     string query = "";
                     if (lbl == 0)
                     {

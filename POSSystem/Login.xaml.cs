@@ -33,6 +33,7 @@ namespace POSSystem
             try
             {
                 InitializeComponent();
+                TxtPassword.Focus();
             }
             catch (Exception ex)
             {
@@ -86,7 +87,7 @@ namespace POSSystem
                     App.Current.Properties["username"] = dt.Rows[0]["UserName"].ToString();
                     App.Current.Properties["Role"] = dt.Rows[0]["RoleName"].ToString();
 
-                    if (App.Current.Properties["Role"].ToString() == "Admin1")
+                    if (App.Current.Properties["Role"].ToString() == "Admin")
                     {
                         MainWindow frm = new MainWindow();
                         frm.Show();

@@ -57,7 +57,7 @@ namespace POSSystem
                     SqlConnection con = new SqlConnection(conString);
                     int lbl = Convert.ToInt32(lblReceiveid.Content);
                     string vt = "Receive";
-                    string time = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
+                    string time = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt");
                     string query = "";
                     if (lbl == 0)
                     {

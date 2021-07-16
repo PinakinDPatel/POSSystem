@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:POSSystem"
         mc:Ignorable="d"  WindowStartupLocation="CenterScreen" WindowState="Maximized" d:DesignWidth="1374" d:DesignHeight="738"  WindowStyle="None">
-    <Grid Background="#FFB28661">
+    <Grid Background="#FFB28661" Margin="0,0,10,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="14*"/>
             <RowDefinition Height="351*"/>
@@ -47,9 +47,9 @@
             <UniformGrid Grid.Column="0" Grid.Row="2"  Name="sp02"></UniformGrid>
             <StackPanel Grid.Column="0" Grid.Row="2" Height="Auto" Name="cashTxtPanel" Visibility="Hidden">
                 <Label Content="Cash-Receive" Name="lblCashReceive" HorizontalAlignment="Center" Margin="0,20" FontFamily="Arial Black" FontSize="18" />
-                <TextBox Name="TxtCashReceive" GotFocus="textbox_GotFocus" Margin="10,-15,10,0" Height="41" FontSize="24" FontFamily="Arial Black" KeyDown="TxtCashReceive_KeyDown"/>
+                <TextBox Name="TxtCashReceive" GotFocus="textbox_GotFocus" Margin="10,-15,10,0" Height="41" TextAlignment="Right" FontSize="24" FontFamily="Arial Black" KeyDown="TxtCashReceive_KeyDown"/>
                 <Label Content="Cash-Return" Name="lblCashReturn" HorizontalAlignment="Center" Margin="0,20" FontFamily="Arial Black" FontSize="18"/>
-                <TextBox Name="TxtCashReturn" Margin="10,-15,10,0" Height="41" FontSize="24" TextAlignment="Center" FontFamily="Arial Black"/>
+                <TextBox Name="TxtCashReturn" Margin="10,-15,10,0" Height="41" FontSize="24" TextAlignment="Right" FontFamily="Arial Black"/>
             </StackPanel>
             <StackPanel Grid.Column="0" Grid.Row="2"  Height="Auto" Name="customerTxtPanel" Visibility="Hidden" >
                 <Label Content="Select Customer" HorizontalAlignment="Center"></Label>
@@ -58,7 +58,7 @@
             </StackPanel>
             <StackPanel Grid.Column="0" Grid.Row="2"  Height="Auto" Name="checkTxtPanel" Visibility="Hidden">
                 <Label Content="Enter Check No."  HorizontalAlignment="Center"></Label>
-                <TextBox KeyDown="TxtCheck_KeyDown" Margin="5,5,5,5" GotFocus="textbox_GotFocus" Height="30" Name="TxtCheck"></TextBox>
+                <TextBox KeyDown="TxtCheck_KeyDown" Margin="5,5,5,5" FontSize="24" GotFocus="textbox_GotFocus" Height="32" Name="TxtCheck"></TextBox>
             </StackPanel>
             <Grid Grid.Row="1" Grid.Column="0">
                 <Grid.RowDefinitions>
@@ -175,7 +175,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <!--<Button Content="Delete" Click="JdGrid_delete_click" Command="Delete"/>-->
-                                    <Button Click="JdGrid_delete_click" Background="White" Width="30" Height="22">
+                                    <Button Click="JdGrid_delete_click" Background="{x:Null}" Width="30" Height="22">
                                         <Image Source="Image/Delete.png" Width="25" Height="23"/>
                                     </Button>
                                 </DataTemplate>
@@ -360,24 +360,11 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Button Content="Go Back" Grid.Column="4" Click="Button_Click_Go_Back" ></Button>
-                <Label Name="lblDepartment" Grid.ColumnSpan="2" Grid.Row="2" Margin="5,5,5,5" FontSize="25" HorizontalAlignment="Right"></Label>
+                <Label Name="lblDepartment" Grid.ColumnSpan="2" Grid.Row="2" Margin="5,5,5,5" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Right"></Label>
                 <Label Name="lblTaxRate" Visibility="Hidden"/>
-                <TextBox Name="txtDeptAmt" GotFocus="textbox_GotFocus" Grid.Row="2" Grid.Column="2" Margin="5,5,5,5"  Text="{Binding LimitedDouble,StringFormat={}{0:00.00}}" FontSize="30"></TextBox>
-                <Button Content="Save" Grid.Column="3" Grid.Row="2" Margin="5,5,5,5" Click="Button_Click_Sale_Save"></Button>
+                <TextBox Name="txtDeptAmt" GotFocus="textbox_GotFocus" Grid.Row="2" Height="36" Grid.Column="2" Margin="5,5,5,5"  Text="{Binding LimitedDouble,StringFormat={}{0:00.00}}" FontSize="30"></TextBox>
+                <Button Content="Save" Grid.Column="3" Grid.Row="2" Height="36" Margin="5,5,5,5"  Click="Button_Click_Sale_Save"></Button>
             </Grid>
-            <!--<Grid Grid.Row="2" Grid.Column="2" Background="#FFF7F7F7">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition ></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="176*" ></RowDefinition>
-                <RowDefinition Height="61*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Button Content="LogOut" Grid.Column="1"  Grid.Row="1" FontSize="33" FontWeight="Bold" Foreground="White" Margin="5,5,5,5" Click="Button_Click_2"></Button>
-            <Button Content="Setting"  Grid.Row="1" FontSize="33" FontWeight="Bold" Foreground="White" Margin="5,5,5,5" Click="Button_Click_3"></Button>
-
-        </Grid>-->
         </Grid>
     </Grid>
 </Window>

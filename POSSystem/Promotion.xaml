@@ -11,7 +11,7 @@
             <RowDefinition Height="14*"/>
             <RowDefinition Height="351*"/>
         </Grid.RowDefinitions>
-        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Close_Click">
+        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,15,0" Click="Close_Click">
             <Button.Effect>
                 <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
             </Button.Effect>
@@ -25,14 +25,14 @@
                 <RowDefinition Height="53*"/>
                 <RowDefinition Height="461*"/>
             </Grid.RowDefinitions>
-            <Label Content="Promotion" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <Button Name="btnAddItem" Height="40" Width="40" FontSize="30" FontFamily="Arial Black" HorizontalAlignment="Right" VerticalAlignment="Center" Background="{x:Null}" Margin="0,0,10,0" FontWeight="Bold" Click="BtnAddItem_Click">
+            <Label Content="Promotion" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="35"/>
+            <Button Name="btnAddItem" Height="40" Width="40" FontSize="30" FontFamily="Arial Black" HorizontalAlignment="Right" VerticalAlignment="Center" Background="{x:Null}" Margin="0,0,20,0" FontWeight="Bold" Click="BtnAddItem_Click">
                 <Image Source="Image/Add2.png" Width="40" Height="40" Cursor="Hand"/>
                 <Button.Effect>
                     <DropShadowEffect BlurRadius="0" ShadowDepth="0" />
                 </Button.Effect>
             </Button>
-            <DataGrid Name="dgAccount" Grid.Row="1" AutoGenerateColumns="False" FontSize="14"  Background="{x:Null}" >
+            <DataGrid Name="dgAccount" Grid.Row="1" AutoGenerateColumns="False" FontSize="14"  Background="{x:Null}" Margin="0,0,10,0">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="PromotionName" Width="100*" Binding="{Binding PromotionName}"/>
                     <DataGridTextColumn Header="Description" Width="100*" Binding="{Binding Description}"/>

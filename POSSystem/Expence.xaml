@@ -53,14 +53,14 @@
                     <Label Content="Expence :" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     <Label Content="Amount :" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     <Label Content="Comment :" Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                    <TextBox Name="txtDate" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Height="35" Width="180" Margin="5,5,5,5"/>
+                    <DatePicker Name="txtDate" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Height="35" Width="180" FontSize="20" Margin="5,5,5,5"/>
                     <ComboBox Name="cbExpence" ItemsSource="{Binding Name}"  Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Height="35" Width="180" Margin="5,5,5,5" Background="White"/>
                     <TextBox Name="txtAmount" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Width="180" Height="35" Margin="5,5,5,5"/>
                     <TextBox Name="txtcomment" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Width="180" Height="35" Margin="5,5,5,5"/>
                     <Button Name="btnSave" Content="Save" HorizontalAlignment="Center" Grid.Row="5" Width="180" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="5,5,5,5" Click="Button_Click"/>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <DataGrid Name="dgExpence" Background="{x:Null}" AutoGenerateColumns="False" Margin="5,5,5,5" Foreground="#FF6368D6">
+                    <DataGrid Name="dgExpence" Background="{x:Null}" AutoGenerateColumns="False" Margin="5,5,5,5" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Expence}" Header="Expence" Width="100*"/>
                             <DataGridTextColumn Binding="{Binding Amount}" Header="Amount" Width="50*"/>

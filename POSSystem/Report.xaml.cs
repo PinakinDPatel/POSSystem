@@ -170,6 +170,12 @@ namespace POSSystem
             R.Show();
         }
 
+        private void BtnExpense_Click(object sender, RoutedEventArgs e)
+        {
+            Expence E = new Expence();
+            E.Show();
+        }
+
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             try

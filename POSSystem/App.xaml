@@ -11,6 +11,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="FontWeight" Value="Bold"/>
+
+
+        </Style>
          <Style TargetType="{x:Type Label}">
             <Setter Property="Effect">
                 <Setter.Value>

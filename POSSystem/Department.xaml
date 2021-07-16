@@ -10,7 +10,7 @@
             <RowDefinition Height="14*"/>
             <RowDefinition Height="351*"/>
         </Grid.RowDefinitions>
-        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Close_Click" >
+        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,15,0" Click="Close_Click" >
             <Button.Effect>
                 <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
             </Button.Effect>
@@ -25,9 +25,10 @@
                 <RowDefinition Height="20*"></RowDefinition>
                 <RowDefinition Height="65*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Content="Department" FontSize="32" Grid.ColumnSpan="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Label Content="Department" FontSize="42" Grid.ColumnSpan="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             <Grid Grid.Row="1" Margin="10,0,0,0">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
@@ -38,29 +39,30 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Label Content="Department Name :-" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontSize="14"/>
-                <TextBox Name="TxtDepartment" FontSize="14" Grid.Row="1" Margin="5">
+                <Label Content="Department Name :-" HorizontalAlignment="Left"  VerticalAlignment="Bottom" FontSize="20"/>
+                <TextBox Name="TxtDepartment" FontSize="20" Grid.Row="1" Margin="5">
                     <TextBox.Effect>
                         <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFE6D4FD"/>
                     </TextBox.Effect>
                 </TextBox>
                 <Label Name="lblDeptId" Visibility="Hidden"></Label>
                 <Button Name="btnDeptSave" Content="Save" Foreground="White" Grid.Column="4" Grid.Row="1" Margin="5" FontSize="28" Click="Button_Click"/>
-                <Label Content="Department Code :-"  VerticalAlignment="Bottom" FontSize="14" Grid.Column="1" HorizontalAlignment="Center"/>
-                <TextBox x:Name="TxtDepartment_Code" FontSize="14" Grid.Column="1" Grid.Row="1" Margin="5">
+                <Label Content="Department Code :-"  VerticalAlignment="Bottom" FontSize="20" Grid.Column="1" HorizontalAlignment="Left"/>
+                <TextBox x:Name="TxtDepartment_Code" FontSize="20" Grid.Column="1" Grid.Row="1" Margin="5">
                     <TextBox.Effect>
                         <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFE6D4FD"/>
                     </TextBox.Effect>
                 </TextBox>
-                <TextBox x:Name="TxtTaxRate" FontSize="14" Grid.Column="2" Grid.Row="1" Margin="5">
+                <TextBox x:Name="TxtTaxRate" FontSize="20" Grid.Column="2" Grid.Row="1" Margin="5">
                     <TextBox.Effect>
                         <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFE6D4FD"/>
                     </TextBox.Effect>
                 </TextBox>
-                <Label Content="TaxRate :-" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14" Grid.Column="2"/>
-                <Label Content="Image :-" Grid.Column="3" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="14"/>
-                <ComboBox Name="drpimg" FontSize="14" Grid.Row="1" Grid.Column="3" Margin="5">
+                <Label Content="TaxRate :-" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" Grid.Column="2"/>
+                <Label Content="Image :-" Grid.Column="3" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20"/>
+                <ComboBox Name="drpimg" FontSize="20" Grid.Row="1" Grid.Column="3" Margin="5">
                     <ComboBoxItem Content="Bread.jpg" />
                     <ComboBoxItem Content="Beer.jpg" />
                     <ComboBoxItem Content="Drinks.jpeg" />
@@ -72,31 +74,10 @@
                     <ComboBoxItem Content="Produce.jpg" />
                     <ComboBoxItem Content="Tabacco.jpg" />
                     <ComboBoxItem Content="NonFood.jpg" />
-                    <!--<ComboBoxItem IsSelected="True" >
-                    <Button Width="30" Height="30" >
-                        <Button.Template>
-                            <ControlTemplate>
-                                <Image Height="25" Source="Image/Beer.jpg"></Image>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                </ComboBoxItem>
-                <ComboBoxItem >
-                    <WrapPanel>
-                        <TextBlock Text="Item 2 " VerticalAlignment="Center" />
-                        <Button Width="30" Height="30" >
-                            <Button.Template>
-                                <ControlTemplate>
-                                    <Image Height="25" Source="Image/Drinks.jpeg"></Image>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                    </WrapPanel>
-                </ComboBoxItem>-->
                 </ComboBox>
             </Grid>
             <Label Name="lblusername" Visibility="Hidden"/>
-            <DataGrid Name="DeptGrid" Grid.Row="2" HorizontalAlignment="Center"   VerticalAlignment="Top" AutoGenerateColumns="False" Background="{x:Null}">
+            <DataGrid Name="DeptGrid" Grid.Row="2" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Top" Margin="0,0,11,0" AutoGenerateColumns="False" Background="{x:Null}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Department}" ClipboardContentBinding="{x:Null}" Header="Name" Width="110*"/>
                     <DataGridTextColumn Binding="{Binding DepartmentCode}" ClipboardContentBinding="{x:Null}" Header="Code" Width="40*"/>
@@ -105,7 +86,7 @@
                     <DataGridTemplateColumn Header="Edit" Width="50*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Click="onEdit" Background="White" Width="25" Height="25">
+                                <Button Click="onEdit" Background="{x:Null}" Width="25" Height="25">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Source="Image/Edit1.png"/>
                                     </StackPanel>
@@ -116,7 +97,7 @@
                     <DataGridTemplateColumn Header="Delete" Width="50*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Click="onDelete" Background="White" Width="22" Height="24">
+                                <Button Click="onDelete" Background="{x:Null}" Width="22" Height="24">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Source="Image/Delete.png"/>
                                     </StackPanel>

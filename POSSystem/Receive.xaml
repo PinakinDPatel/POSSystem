@@ -60,7 +60,7 @@
                     <Button Name="btnSave" Content="Save" HorizontalAlignment="Center" Grid.Row="5" Width="180" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="5,5,5,5" Click="Button_Click"/>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <DataGrid Name="dgReceive" Background="{x:Null}" AutoGenerateColumns="False" Margin="5,5,5,5" Foreground="#FF6368D6">
+                    <DataGrid Name="dgReceive" Background="{x:Null}" AutoGenerateColumns="False" Margin="5,5,5,5" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Receive}" Header="Receive" Width="100*"/>
                             <DataGridTextColumn Binding="{Binding Amount}" Header="Amount" Width="50*"/>

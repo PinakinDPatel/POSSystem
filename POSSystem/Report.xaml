@@ -58,6 +58,15 @@
                 <Button Content="Promotion" Margin="10" Grid.Column="2" Click="BtnPromotion_Click"/>
                 <Button Content="Receive" Margin="10" Grid.Column="3" Click="BtnReceive_Click"/>
             </Grid>
+            <Grid Grid.Row="3" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Content="Expense" Margin="10" Click="BtnExpense_Click"/>
+            </Grid>
         </Grid>
     </Grid>
 </Window>
