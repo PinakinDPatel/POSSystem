@@ -164,6 +164,12 @@ namespace POSSystem
             P.Show();
         }
 
+        private void BtnReceive_Click(object sender, RoutedEventArgs e)
+        {
+            Receive R = new Receive();
+            R.Show();
+        }
+
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             try
