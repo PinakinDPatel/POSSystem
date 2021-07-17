@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:POSSystem"
         mc:Ignorable="d"  WindowStartupLocation="CenterScreen" WindowState="Maximized" d:DesignWidth="1374" d:DesignHeight="738"  WindowStyle="None">
-    <Grid Background="#FFB28661" Margin="0,0,10,0">
+    <Grid Background="#FFB28661">
         <Grid.RowDefinitions>
             <RowDefinition Height="14*"/>
             <RowDefinition Height="351*"/>
         </Grid.RowDefinitions>
-        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Button_Click_6" >
+        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,15,0" Click="Button_Click_6" >
             <Button.Effect>
                 <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
             </Button.Effect>
