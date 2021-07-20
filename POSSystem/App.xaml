@@ -28,7 +28,7 @@
         </Style>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Foreground" Value="White" />
-            <Setter Property="FontSize" Value="33" />
+            <Setter Property="FontSize" Value="28" />
             <Setter Property="FontFamily" Value="Cambria" />
             <Setter Property="SnapsToDevicePixels" Value="True" />
             <Setter Property="Effect">
