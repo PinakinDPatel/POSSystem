@@ -83,10 +83,18 @@ namespace POSSystem
 
                 for (int i = 0; i < dtdep.Rows.Count; ++i)
                 {
-                    Button button = new Button()
+                    Button button = new Button();
+                    //{
+                    //    Content = dtdep.Rows[i].ItemArray[0],
+                    //    Tag = i
+                    //};
+                    
+                    button.Content = new TextBlock()
                     {
-                        Content = dtdep.Rows[i].ItemArray[0],
-                        Tag = i
+                        FontSize = 25,
+                        Text = dtdep.Rows[i].ItemArray[0].ToString(),
+                        TextAlignment = TextAlignment.Center,
+                        TextWrapping = TextWrapping.Wrap
                     };
                     if (dtdep.Rows[i].ItemArray[2].ToString() != "")
                     {
@@ -96,7 +104,7 @@ namespace POSSystem
                         button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
                     }
                     button.Foreground = new SolidColorBrush(Colors.White);
-                    button.FontSize = 30;
+                    button.FontSize = 26;
                     button.FontWeight = FontWeights.Bold;
                     //button.Effect = new DropShadowEffect()
                     //{ Color = Colors.BlueViolet };
@@ -498,11 +506,11 @@ namespace POSSystem
                 //cbcustomer.DisplayMemberPath = "Name";
 
                 graphics = e.Graphics;
-                Font minifont = new Font("Arial", 5);
-                Font itemfont = new Font("Arial", 6);
-                Font smallfont = new Font("Arial", 8);
-                Font mediumfont = new Font("Arial", 10);
-                Font largefont = new Font("Arial", 12);
+                Font minifont = new Font("Arial", 7);
+                Font itemfont = new Font("Arial", 8);
+                Font smallfont = new Font("Arial", 10);
+                Font mediumfont = new Font("Arial", 12);
+                Font largefont = new Font("Arial", 14);
                 Font headerfont = new Font("Arial", 16);
                 int Offset = 10;
                 int smallinc = 10, mediuminc = 12, largeinc = 15;
@@ -544,7 +552,7 @@ namespace POSSystem
 
                 Offset = Offset + largeinc;
 
-                InsertHeaderStyleItem("Name. ", "quantity", "Amount. ", Offset);
+                InsertHeaderStyleItem("Name. ", "Qty", "Amount. ", Offset);
 
                 Offset = Offset + largeinc;
                 for (int i = 0; i < dt.Rows.Count; i++)
@@ -586,7 +594,7 @@ namespace POSSystem
 
                 Offset = Offset + largeinc;
                 string DrawnBy = "PSPCStore: 0312-0459491 - OR - 0321-6228321";
-                DrawSimpleString(DrawnBy, minifont, Offset, 15);
+                DrawSimpleString(DrawnBy, itemfont, Offset, 15);
             }
             catch (Exception ex)
             {
@@ -615,7 +623,7 @@ namespace POSSystem
             {
                 int startX = 10;
                 int startY = 5;
-                Font minifont = new Font("Arial", 5);
+                Font minifont = new Font("Arial", 8);
 
                 graphics.DrawString(text, minifont,
                          new SolidBrush(Color.Black), startX + 5, startY + Offset);
@@ -629,7 +637,7 @@ namespace POSSystem
         {
             try
             {
-                Font minifont = new Font("Arial", 5);
+                Font minifont = new Font("Arial", 8);
                 int startX = 10;
                 int startY = 5;
 
@@ -649,7 +657,7 @@ namespace POSSystem
             {
                 int startX = 10;
                 int startY = 5;
-                Font itemfont = new Font("Arial", 6, System.Drawing.FontStyle.Bold);
+                Font itemfont = new Font("Arial", 8, System.Drawing.FontStyle.Bold);
 
                 graphics.DrawString(key, itemfont,
                              new SolidBrush(Color.Black), startX + 5, startY + Offset);

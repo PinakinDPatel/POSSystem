@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:POSSystem"
       mc:Ignorable="d"
-      Title="Account" ResizeMode="NoResize"  WindowStartupLocation="CenterScreen" WindowState="Maximized" WindowStyle="None">
+      Title="Account" ResizeMode="NoResize"  WindowStartupLocation="CenterScreen" WindowState="Maximized" WindowStyle="None" d:DesignWidth="1374" d:DesignHeight="738">
     <Grid Background="#FFB28661">
         <Grid.RowDefinitions>
             <RowDefinition Height="14*"/>
@@ -65,7 +65,7 @@
                 </DataGrid>
                 <Grid Grid.Column="0" Margin="0,0,20,0">
                     <Grid.ColumnDefinitions>
-                    
+
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -84,14 +84,14 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Label Content="Account Name :-" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20"/>
-                    <TextBox Name="txtaccount" TextChanged="textBox_txtaccount" VerticalAlignment="Top" FontSize="20" Grid.Row="1">
+                    <Label Content="Account Name :-" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" Margin="10,0,0,0"/>
+                    <TextBox Name="txtaccount" TextChanged="textBox_txtaccount" FontSize="20" Grid.Row="1" Margin="10,0,0,12">
                         <TextBox.Effect>
-                            <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFD7C9F3"/>
+                            <DropShadowEffect BlurRadius="2" ShadowDepth="3"/>
                         </TextBox.Effect>
                     </TextBox>
-                    <Label Content="Head :-" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" Grid.Row="2"/>
-                    <Border Name="cmb1BorderHead" BorderThickness="1" Grid.Row="3">
+                    <Label Content="Head :-" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" Grid.Row="2" Margin="10,0,0,0"/>
+                    <Border Name="cmb1BorderHead" BorderThickness="1" Grid.Row="3" Margin="10,0,0,12">
                         <ComboBox Name="drphead" SelectionChanged="drphead_SelectionChanged" FontSize="20">
                             <ComboBoxItem Content="Tender" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
                             <ComboBoxItem Content="Customers" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
@@ -99,28 +99,32 @@
                             <ComboBoxItem Content="Expence" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
                             <ComboBoxItem Content="Income" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
                             <ComboBoxItem Content="Employee" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
+
+                            <ComboBox.Effect>
+                                <DropShadowEffect BlurRadius="2" ShadowDepth="3"/>
+                            </ComboBox.Effect>
                         </ComboBox>
                     </Border>
-                    <Label Content="Address :-" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" Grid.Row="4"/>
-                    <TextBox Name="txtAddress" TextChanged="textBox_txtAddress" FontSize="20" Grid.Row="5" Margin="12" >
+                    <Label Content="Address :-" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" Grid.Row="4" Margin="10,0,0,0"/>
+                    <TextBox Name="txtAddress" TextChanged="textBox_txtAddress" FontSize="20" Grid.Row="5" Margin="10,0,0,12" >
                         <TextBox.Effect>
-                            <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFD7C9F3"/>
+                            <DropShadowEffect BlurRadius="2" ShadowDepth="3"/>
                         </TextBox.Effect>
                     </TextBox>
-                    <Label Content="Mobile No. :-" HorizontalAlignment="Left" VerticalAlignment="Bottom"  FontSize="20" Grid.Row="6" />
-                    <TextBox Name="txtMobile" TextChanged="textBox_txtMobile" FontSize="20" Grid.Row="7" Margin="12">
+                    <Label Content="Mobile No. :-" HorizontalAlignment="Left" VerticalAlignment="Bottom"  FontSize="20" Grid.Row="6" Margin="10,0,0,0"/>
+                    <TextBox Name="txtMobile" TextChanged="textBox_txtMobile" FontSize="20" Grid.Row="7" Margin="10,0,0,12">
                         <TextBox.Effect>
-                            <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFD7C9F3"/>
+                            <DropShadowEffect BlurRadius="2" ShadowDepth="3"/>
                         </TextBox.Effect>
                     </TextBox>
                     <Label Name="lblAccountId" Visibility="Hidden"></Label>
-                    <Label Content="Email :-" HorizontalAlignment="Left" VerticalAlignment="Top"  FontSize="20" Grid.Row="8"/>
-                    <TextBox Name="txtEmail" TextChanged="textBox_txtEmail" FontSize="20" Grid.Row="9" Margin="12" >
+                    <Label Content="Email :-" HorizontalAlignment="Left" VerticalAlignment="Bottom"  FontSize="20" Grid.Row="8" Margin="10,0,0,0"/>
+                    <TextBox Name="txtEmail" TextChanged="textBox_txtEmail" FontSize="20" Grid.Row="9" Margin="10,0,0,12">
                         <TextBox.Effect>
-                            <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFD7C9F3"/>
+                            <DropShadowEffect BlurRadius="2" ShadowDepth="3"/>
                         </TextBox.Effect>
                     </TextBox>
-                    <Button Content="Save" Name="btnSave" FontSize="25" Grid.Row="10" Grid.ColumnSpan="2" Click="Button_Click" Margin="70,10,70,10"/>
+                    <Button Content="Save" Name="btnSave" FontSize="25" Grid.Row="11" Grid.ColumnSpan="2" Click="Button_Click" Margin="70,5,70,5"/>
                 </Grid>
             </Grid>
         </Grid>

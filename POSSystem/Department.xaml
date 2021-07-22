@@ -44,20 +44,20 @@
                 <Label Content="Department Name :-" HorizontalAlignment="Left"  VerticalAlignment="Bottom" FontSize="20"/>
                 <TextBox Name="TxtDepartment" FontSize="20" Grid.Row="1" Margin="5">
                     <TextBox.Effect>
-                        <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFE6D4FD"/>
+                        <DropShadowEffect BlurRadius="2" ShadowDepth="3"/>
                     </TextBox.Effect>
                 </TextBox>
                 <Label Name="lblDeptId" Visibility="Hidden"></Label>
-                <Button Name="btnDeptSave" Content="Save" Foreground="White" Grid.Column="4" Grid.Row="1" Margin="5" FontSize="28" Click="Button_Click"/>
+                <Button Name="btnDeptSave" Content="Save" Foreground="White" Grid.Column="4" Grid.Row="1" Margin="5" FontSize="25" Click="Button_Click"/>
                 <Label Content="Department Code :-"  VerticalAlignment="Bottom" FontSize="20" Grid.Column="1" HorizontalAlignment="Left"/>
                 <TextBox x:Name="TxtDepartment_Code" FontSize="20" Grid.Column="1" Grid.Row="1" Margin="5">
                     <TextBox.Effect>
-                        <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFE6D4FD"/>
+                        <DropShadowEffect BlurRadius="2" ShadowDepth="3"/>
                     </TextBox.Effect>
                 </TextBox>
                 <TextBox x:Name="TxtTaxRate" FontSize="20" Grid.Column="2" Grid.Row="1" Margin="5">
                     <TextBox.Effect>
-                        <DropShadowEffect BlurRadius="2" ShadowDepth="3" Color="#FFE6D4FD"/>
+                        <DropShadowEffect BlurRadius="2" ShadowDepth="3"/>
                     </TextBox.Effect>
                 </TextBox>
                 <Label Content="TaxRate :-" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" Grid.Column="2"/>
@@ -74,6 +74,10 @@
                     <ComboBoxItem Content="Produce.jpg" />
                     <ComboBoxItem Content="Tabacco.jpg" />
                     <ComboBoxItem Content="NonFood.jpg" />
+
+                    <ComboBox.Effect>
+                        <DropShadowEffect BlurRadius="2" ShadowDepth="3" />
+                    </ComboBox.Effect>
                 </ComboBox>
             </Grid>
             <Label Name="lblusername" Visibility="Hidden"/>

@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:POSSystem"
         mc:Ignorable="d"  WindowStartupLocation="CenterScreen" WindowState="Maximized" d:DesignWidth="1374" d:DesignHeight="738"  WindowStyle="None">
-    <Grid Background="#FFB28661" Margin="0,0,10,0">
+    <Grid Background="#FFB28661">
         <Grid.RowDefinitions>
             <RowDefinition Height="14*"/>
             <RowDefinition Height="351*"/>
         </Grid.RowDefinitions>
-        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Button_Click_6" >
+        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,15,0" Click="Button_Click_6" >
             <Button.Effect>
                 <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
             </Button.Effect>
@@ -32,7 +32,7 @@
                 <ColumnDefinition Width="604*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" Grid.Row="0" >
-                <Label Content="PSPCStore" FontWeight="Bold" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="38">
+                <Label Content="PSPCStore" FontWeight="Bold" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="34">
                     <!--<Label.Effect>
                     <DropShadowEffect ShadowDepth="2"/>
                 </Label.Effect>
@@ -67,7 +67,7 @@
                     <RowDefinition ></RowDefinition>
                     <RowDefinition ></RowDefinition>
                 </Grid.RowDefinitions>
-                <Button Content="Cash" Margin="10,10,10,10" Foreground="White" FontSize="33" Click="Tender_Click" FontWeight="Bold">
+                <Button Content="Cash" Margin="10,10,10,10" Foreground="White" FontSize="28" Click="Tender_Click" FontWeight="Bold">
                     <Button.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FF6C3A0F" Offset="0"/>
@@ -75,7 +75,7 @@
                         </LinearGradientBrush>
                     </Button.Background>
                 </Button>
-                <Button Content="Card" Grid.Row="1" Margin="10,10,10,10" Foreground="White" FontSize="33" FontWeight="Bold" Click="Tender_Click">
+                <Button Content="Card" Grid.Row="1" Margin="10,10,10,10" Foreground="White" FontSize="28" FontWeight="Bold" Click="Tender_Click">
                     <Button.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FF6C3A0F" Offset="0"/>
@@ -83,7 +83,7 @@
                         </LinearGradientBrush>
                     </Button.Background>
                 </Button>
-                <Button Content="Customer" Grid.Row="2" Margin="10,10,10,10" Foreground="White" FontSize="33" FontWeight="Bold" Click="Tender_Click">
+                <Button Content="Customer" Grid.Row="2" Margin="10,10,10,10" Foreground="White" FontSize="28" FontWeight="Bold" Click="Tender_Click">
                     <Button.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FF6C3A0F" Offset="0"/>
@@ -91,7 +91,7 @@
                         </LinearGradientBrush>
                     </Button.Background>
                 </Button>
-                <Button Content="Check" Grid.Row="3" Margin="10,10,10,10" Foreground="White" FontSize="33" FontWeight="Bold" Click="Tender_Click">
+                <Button Content="Check" Grid.Row="3" Margin="10,10,10,10" Foreground="White" FontSize="28" FontWeight="Bold" Click="Tender_Click">
                     <Button.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FF6C3A0F" Offset="0"/>
@@ -114,8 +114,8 @@
                 <Label Content="Transaction ID" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
                 <Label Grid.Row="1" Name="lblTranid"  VerticalAlignment="Top" HorizontalAlignment="Center"/>
                 <Label Name="lblusername" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-                <Button Grid.Column="2" Grid.RowSpan="2" FontSize="33" FontWeight="Bold" Foreground="White" Margin="120,10,10,10" Click="Button_Click_2" Background="{x:Null}">
-                    <Image Source="Image/logout2.png" Height="60" Width="60" RenderTransformOrigin="0.5,0.5">
+                <Button Grid.Column="2" Grid.RowSpan="2" FontSize="33" FontWeight="Bold" Foreground="White" HorizontalAlignment="Right" Click="Button_Click_2" Background="{x:Null}">
+                    <Image Source="Image/logout2.png" Height="50" Width="50" RenderTransformOrigin="0.5,0.5">
                         <Image.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -137,7 +137,7 @@
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <Label Content="Barcode :-" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
-                <TextBox Name="textBox1" GotFocus="textbox_GotFocus"  KeyDown="OnKeyDownHandler" HorizontalAlignment="Center" Height="29" TextWrapping="Wrap" VerticalAlignment="Top" Width="202" BorderBrush="Black" Grid.Row="1" />
+                <TextBox Name="textBox1" GotFocus="textbox_GotFocus"  KeyDown="OnKeyDownHandler" TextWrapping="Wrap" BorderBrush="Black" Grid.Row="1" Margin="10,0,10,10"/>
                 <Label Name="lblDate" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1"  Grid.RowSpan="2"/>
             </Grid>
             <Grid Grid.Row="1" Grid.Column="1" Background="White">
@@ -339,7 +339,7 @@
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Button Grid.Column="1" Content="Shift Close" Margin="5" FontSize="33" FontWeight="Bold" Foreground="White" Click="Button_Click_5"/>
-                    <Button Content="Setting"  FontSize="33" FontWeight="Bold" Foreground="White" Margin="5,5,5,5" Click="Button_Click_3"/>
+                    <Button Content="Setting"  FontSize="33" FontWeight="Bold" Foreground="White" Margin="5" Click="Button_Click_3"/>
                 </Grid>
             </Grid>
             <Grid Grid.Column="2" Grid.Row="1" Visibility="Hidden" Name="TxtBxStackPanel2">

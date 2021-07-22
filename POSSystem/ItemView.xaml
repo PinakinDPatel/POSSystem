@@ -87,8 +87,8 @@
                 <TextBox Name="txtDescription" Grid.Row="1" Grid.Column="1" Margin="5" FontSize="20"/>
                 <TextBox Name="txtDepartment" Grid.Row="1" Grid.Column="2" Margin="5" FontSize="20"/>
                 <TextBox Name="txtPayee" Grid.Row="1" Grid.Column="3" Margin="5" FontSize="20"/>
-                <Button Name="btnSearch" Content="Search" Grid.Row="1" Grid.Column="4" Click="BtnSearch_Click_Search" Margin="10,10,10,10"></Button>
-                <Button Name="btnExportCSV" Content="Export CSV" Click="BtnSearch_Click_ExportCSV"  Grid.Column="5" Grid.Row="1" Margin="10,10,10,10"/>
+                <Button Name="btnSearch" Content="Search" Grid.Row="1" Grid.Column="4" Click="BtnSearch_Click_Search" FontSize="25" Margin="5"></Button>
+                <Button Name="btnExportCSV" Content="Export CSV" Click="BtnSearch_Click_ExportCSV"  Grid.Column="5" Grid.Row="1" FontSize="25" Margin="5"/>
             </Grid>
             <Grid Name="grupload" Grid.Row="1"  Visibility="Hidden">
                 <Grid.ColumnDefinitions>
