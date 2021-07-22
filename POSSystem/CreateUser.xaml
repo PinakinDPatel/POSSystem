@@ -4,36 +4,57 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:POSSystem"
-      mc:Ignorable="d" Height="650.985" Width="414.666" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
+      mc:Ignorable="d" Height="480.985" Width="414.666" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True" Background="Transparent">
     <!--d:DesignHeight="750" d:DesignWidth="600"-->
-    <Grid Background="#FFB28661">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20*"/>
-            <RowDefinition Height="1200*"/>
-        </Grid.RowDefinitions>
-        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Close_Click" >
-            <Button.Effect>
-                <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
-            </Button.Effect>
-            <Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>
-        </Button>
-        <Grid Grid.Row="1">
-            <Grid.Background>
-                <ImageBrush ImageSource="Image/background.jpg"/>
-            </Grid.Background>
-            <Label Content="Create User" FontSize="36" HorizontalAlignment="Center" Margin="83,66,57,0" Width="275" FontWeight="Bold" FontFamily="Arial Black" Height="55" VerticalAlignment="Top">
-            </Label>
-            <Label Content="UserName" HorizontalAlignment="Left" Margin="30,178,0,0" VerticalAlignment="Top" Height="33" Width="240" FontSize="20"  FontWeight="Bold"/>
-            <TextBox HorizontalAlignment="Left" Name="txtUser" Height="34" Margin="30,216,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="345" FontSize="18"/>
-            <Label Content="Password" HorizontalAlignment="Left" Margin="30,284,0,0" VerticalAlignment="Top" Height="33" Width="240" FontSize="20" FontWeight="Bold"/>
-            <TextBox HorizontalAlignment="Left" Height="34" Margin="30,322,0,0" TextWrapping="Wrap" Name="txtPassword" VerticalAlignment="Top" Width="345" FontSize="18"/>
+    <Border Margin="10">
+        <Border.Effect>
+            <DropShadowEffect Color="Black"
+                              Direction="270"
+                              BlurRadius="10"
+                              ShadowDepth="3" />
+        </Border.Effect>
+        <Grid Background="#FFB28661">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70*"/>
+                <RowDefinition Height="1200*"/>
+            </Grid.RowDefinitions>
+            <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Close_Click" >
+                <Button.Effect>
+                    <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
+                </Button.Effect>
+                <Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>
+            </Button>
+            <Grid Grid.Row="1" Margin="5">
+                <Grid.Background>
+                    <ImageBrush ImageSource="Image/background.jpg"/>
+                </Grid.Background>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Content="Create User" Grid.Row="1" FontSize="28" HorizontalAlignment="Center" FontWeight="Bold" FontFamily="Arial Black" VerticalAlignment="Center"/>
+                <Label Content="UserName" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" Margin="60,0,0,0"/>
+                <TextBox Grid.Row="4" Name="txtUser" TextWrapping="Wrap" FontSize="18" Margin="60,0,60,10"/>
+                <Label Content="Password" Grid.Row="5" HorizontalAlignment="Left" Margin="60,0,0,0" VerticalAlignment="Bottom" FontSize="20"/>
+                <TextBox Margin="60,0,60,10" Grid.Row="6" TextWrapping="Wrap" Name="txtPassword" FontSize="18"/>
 
-            <Label Content="Role" HorizontalAlignment="Left" Margin="30,400,0,0" VerticalAlignment="Top" Height="33" Width="240" FontSize="20" FontWeight="Bold"/>
-            <ComboBox Text="Is not open" HorizontalAlignment="Left" Height="34" Margin="30,450,0,0"  Name="txtRole" VerticalAlignment="Top" Width="345" FontSize="18">
-                <ComboBoxItem Name="Manager">Manager</ComboBoxItem>
-                <ComboBoxItem Name="Cashier">Cashier</ComboBoxItem>
-            </ComboBox>
-            <Button Content="Create" Margin="100,500,111,72" FontSize="36" Foreground="#FFFDFDFD" Click="Button_Click"/>
+                <Label Content="Role" Grid.Row="7" HorizontalAlignment="Left" Margin="60,0,0,0" VerticalAlignment="Bottom" FontSize="20"/>
+                <ComboBox Text="Is not open" Grid.Row="8" Margin="60,0,60,10"  Name="txtRole" FontSize="18">
+                    <ComboBoxItem Name="Manager">Manager</ComboBoxItem>
+                    <ComboBoxItem Name="Cashier">Cashier</ComboBoxItem>
+                </ComboBox>
+                <Button Grid.Row="10" Content="Create" FontSize="20" Margin="120,0,120,10" Foreground="#FFFDFDFD" Click="Button_Click"/>
+            </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </Window>
