@@ -176,6 +176,11 @@ namespace POSSystem
             E.Show();
         }
 
+        private void Button_Click_Shift_Close(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             try
@@ -222,6 +227,49 @@ namespace POSSystem
             {
                 CreateUser user = new CreateUser();
                 user.Show();
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
+
+        private void Button_Click_Reports(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Report_.Visibility = Visibility;
+                setting.Visibility = Visibility.Hidden;
+                Entry.Visibility = Visibility.Hidden;
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
+        private void Button_Click_Setting(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                setting.Visibility = Visibility;
+                Report_.Visibility = Visibility.Hidden;
+                Entry.Visibility = Visibility.Hidden;
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
+        private void Button_Click_Entry(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Entry.Visibility = Visibility;
+                setting.Visibility = Visibility.Hidden;
+                Report_.Visibility = Visibility.Hidden;
             }
             catch (Exception ex)
             {

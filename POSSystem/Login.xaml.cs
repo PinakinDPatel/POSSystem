@@ -7,6 +7,7 @@ using System.Windows.Navigation;
 using System.Configuration;
 using System.IO;
 using System.Security.Permissions;
+using System.Windows.Input;
 
 namespace POSSystem
 {
@@ -32,13 +33,21 @@ namespace POSSystem
         {
             try
             {
+                TextBox tb = new TextBox();
                 InitializeComponent();
+                tb.KeyDown += new KeyEventHandler(OnKeyDownHandler);
                 TxtPassword.Focus();
             }
             catch (Exception ex)
             {
                 SendErrorToText(ex, errorFileName);
             }
+        }
+
+        private void OnKeyDownHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter || e.Key == Key.Tab)
+                TxtSignIn_Click(sender, e);
         }
 
         private void btnclick(object sender, RoutedEventArgs e)

@@ -6,67 +6,98 @@
         xmlns:local="clr-namespace:POSSystem"
         mc:Ignorable="d"
         Title="Report" WindowStartupLocation="CenterScreen" WindowState="Maximized" WindowStyle="None">
+
     <Grid Background="#FFB28661">
         <Grid.RowDefinitions>
             <RowDefinition Height="14*"/>
             <RowDefinition Height="351*"/>
         </Grid.RowDefinitions>
-        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Close_Click">
+        <Button  HorizontalAlignment="Right" VerticalAlignment="Top"  Click="Close_Click" Margin="0,0,15,0">
             <Button.Effect>
                 <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
             </Button.Effect>
-            <Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>
+            <Image Source="Image/close.png" Height="25" Width="25" />
         </Button>
         <Grid Grid.Row="1">
             <Grid.Background>
                 <ImageBrush ImageSource="Image/background.jpg"/>
             </Grid.Background>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition/>
-                <RowDefinition />
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
-            <Button Content="Shift Close" Click="Button_Click" Margin="10,10,10,10" />
-            <Button Content="Day Close" Grid.Column="1" Margin="10,10,10,10" Click="Button_Click_1"/>
-            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition/>
+                    <RowDefinition />
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Button Content="Shift Close" Margin="10" Click="Button_Click"/>
+                <Button Content="Day Close" Grid.Row="1" Margin="10" Click="Button_Click_1"/>
+                <Button Content="Settings"  Grid.Row="2" Margin="10" Click="Button_Click_Setting" />
+                <Button Content="Reports"  Grid.Row="3" Margin="10" Click="Button_Click_Reports" />
+                <Button Content="Entry" Grid.Row="4" Margin="10" Click="Button_Click_Entry" />
+            </Grid>
+            <Grid Grid.Column="1" Name="setting" Visibility="Hidden">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
-                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button Content="Department" Margin="10" Click="Button_Click_2"/>
-                <Button Content="Account" Grid.Column="1" Margin="10" Click="Button_Click_3" />
-                <Button Content="Reports" Grid.Column="2" Margin="10" Click="Button_Click_7"/>
-                <Button Content="Item" Grid.Column="3" Margin="10" Click="Button_Click_4"/>
+                <Button Content="Department" Grid.Column="1" Margin="10" Click="Button_Click_2"/>
+                <Button Content="Account" Grid.Column="1" Grid.Row="1" Margin="10" Click="Button_Click_3" />
+                <Button Content="Item" Grid.Column="1" Grid.Row="2" Margin="10" Click="Button_Click_4"/>
+                <Button Content="User" Grid.Column="1" Grid.Row="3" Margin="10" Click="Button_Click_5"/>
+                <Button Content="Store" Grid.Column="1" Grid.Row="4" Margin="10"  Click="Button_Click_6"/>
             </Grid>
-            <Grid Grid.Row="2" Grid.ColumnSpan="2">
+            <Grid Grid.Column="1" Name="Entry" Visibility="Hidden" >
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
-                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button Content="User" Margin="10" Click="Button_Click_5"/>
-                <Button Content="Store" Margin="10" Grid.Column="1" Click="Button_Click_6"/>
-                <Button Content="Promotion" Margin="10" Grid.Column="2" Click="BtnPromotion_Click"/>
-                <Button Content="Receive" Margin="10" Grid.Column="3" Click="BtnReceive_Click"/>
+                <Button Content="Receive" Grid.Column="1" Margin="10" Click="BtnReceive_Click"/>
+                <Button Content="Expence" Grid.Row="1" Grid.Column="1" Margin="10" Click="BtnExpense_Click"/>
+                <Button Content="Promotion" Grid.Column="1"  Grid.Row="2" Margin="10" Click="BtnPromotion_Click" />
+
             </Grid>
-            <Grid Grid.Row="3" Grid.ColumnSpan="2">
+            <Grid Grid.Column="1" Name="Report_" Visibility="Hidden" >
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
-                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button Content="Expense" Margin="10" Click="BtnExpense_Click"/>
+                <Button Content="DailyReport" Grid.Column="1" Margin="10" Click="Button_Click_2"/>
+
             </Grid>
+
         </Grid>
     </Grid>
 </Window>

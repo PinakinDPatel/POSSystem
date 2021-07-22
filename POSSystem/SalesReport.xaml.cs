@@ -43,6 +43,9 @@ namespace POSSystem
                 sdaDG.Fill(dt);
                 con.Close();
 
+                deprtDG.ItemsSource = null;
+                cashDG.ItemsSource = null;
+
                 DataTable deptDT = (from row in dt.AsEnumerable() where row.Field<string>("Type") == "In" select row).CopyToDataTable();
                 DataTable cashDT = (from row in dt.AsEnumerable() where row.Field<string>("Type") == "Out" select row).CopyToDataTable();
 
@@ -50,8 +53,8 @@ namespace POSSystem
                 string cashAmtTotal = cashDT.AsEnumerable().Sum(x => Convert.ToDecimal(x["Amount"])).ToString();
                 string compareTotal1 = (Convert.ToDecimal(deptAmtTotal) - Convert.ToDecimal(cashAmtTotal)).ToString();
 
-                deptDT.Rows.Add("Total", deptAmtTotal);
-                cashDT.Rows.Add("Total", cashAmtTotal);
+                //deptDT.Rows.Add("Total", deptAmtTotal);
+                //cashDT.Rows.Add("Total", cashAmtTotal);
 
                 deprtDG.ItemsSource = deptDT.DefaultView;
                 deprtDG.CanUserAddRows = false;
@@ -59,7 +62,9 @@ namespace POSSystem
                 cashDG.ItemsSource = cashDT.DefaultView;
                 cashDG.CanUserAddRows = false;
 
-                compareTotal.Content = compareTotal1;
+                inAmtTotal.Content = deptAmtTotal;
+                outAmtTotal.Content = cashAmtTotal;
+                //compareTotal.Content = compareTotal1;
             }
             catch (Exception ex)
             {
@@ -67,25 +72,30 @@ namespace POSSystem
             }
         }
 
-        private void from_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var fromdate = fromDate.SelectedDate.ToString();
-            var todate = toDate.SelectedDate.ToString();
-            if (fromdate != "" && todate != "")
-            {
-                Datable(fromDate.SelectedDate.Value.ToString(), toDate.SelectedDate.Value.ToString());
-            }
+        //private void from_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    var fromdate = fromDate.SelectedDate.ToString();
+        //    var todate = toDate.SelectedDate.ToString();
+        //    if (fromdate != "" && todate != "")
+        //    {
+        //        Datable(fromDate.SelectedDate.Value.ToString(), toDate.SelectedDate.Value.ToString());
+        //    }
 
-        }
+        //}
 
-        private void to_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        //private void to_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    var fromdate = fromDate.SelectedDate.ToString();
+        //    var todate = toDate.SelectedDate.ToString();
+        //    if (fromdate != "" && todate != "")
+        //    {
+        //        Datable(fromDate.SelectedDate.Value.ToString(), toDate.SelectedDate.Value.ToString());
+        //    }
+        //}
+
+        private void btn_click_daterange(object sender, RoutedEventArgs e)
         {
-            var fromdate = fromDate.SelectedDate.ToString();
-            var todate = toDate.SelectedDate.ToString();
-            if (fromdate != "" && todate != "")
-            {
-                Datable(fromDate.SelectedDate.Value.ToString(), toDate.SelectedDate.Value.ToString());
-            }
+            Datable(fromDate.SelectedDate.Value.ToString(), toDate.SelectedDate.Value.ToString());
         }
 
         public static void SendErrorToText(Exception ex, string errorFileName)

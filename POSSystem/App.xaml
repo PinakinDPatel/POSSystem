@@ -13,10 +13,8 @@
         </Style>
         <Style TargetType="{x:Type DataGridColumnHeader}">
             <Setter Property="FontWeight" Value="Bold"/>
-
-
         </Style>
-         <Style TargetType="{x:Type Label}">
+        <Style TargetType="{x:Type Label}">
             <Setter Property="Effect">
                 <Setter.Value>
                     <DropShadowEffect BlurRadius="2" Color="#264f96" ShadowDepth="1"  />

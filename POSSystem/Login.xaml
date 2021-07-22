@@ -30,7 +30,7 @@
             </Label>
             <Label Content="Login" HorizontalAlignment="Left" Margin="143,90,0,0" VerticalAlignment="Top" FontSize="36" FontFamily="Arial Black"/>
             <Label Content="Enter Your Password" HorizontalAlignment="Left" Margin="125,158,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" />
-            <TextBox HorizontalAlignment="Left" Name="TxtPassword" Height="40" Margin="113,198,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171" BorderBrush="#FF6C0FF1" Padding="5,5,0,0" FontSize="20" />
+            <TextBox HorizontalAlignment="Left" Name="TxtPassword" KeyDown="OnKeyDownHandler" Height="40" Margin="113,198,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171" BorderBrush="#FF6C0FF1" Padding="5,5,0,0" FontSize="20" />
             <Button Content="Sign In" Name="TxtSignIn" HorizontalAlignment="Left" FontSize="18" FontWeight="Bold" Margin="123,253,0,0" VerticalAlignment="Top" Width="150" Height="42" Foreground="White" Click="TxtSignIn_Click"/>
             <Button Content="1" Name="Txt1" HorizontalAlignment="Left" Margin="360,88,0,0" VerticalAlignment="Top" Width="75" Height="47" Foreground="White" FontSize="36" Padding="0,-5,0,0" Click="btnclick">
                 <Button.Background>
