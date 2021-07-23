@@ -159,9 +159,11 @@ namespace POSSystem
         {
             try
             {
+
                 var btnContent = sender as Button;
+                var tb = (TextBlock)btnContent.Content;
                 taxrate = abc;
-                lblDepartment.Content = btnContent.Content;
+                lblDepartment.Content = tb.Text;
                 TxtBxStackPanel2.Visibility = Visibility.Visible;
                 sp21.Visibility = Visibility.Hidden;
             }
@@ -759,22 +761,23 @@ namespace POSSystem
                                         {
                                             if (itemDT["ScanCode"].ToString() == itemDT1["ScanCode"].ToString())
                                             {
-                                                if ((e.Row.Item as DataRowView).Row[0].ToString() == itemDT1["ScanCode"].ToString())
-                                                {
+                                                //if ((e.Row.Item as DataRowView).Row[0].ToString() == itemDT1["ScanCode"].ToString())
+                                                //{
                                                     decimal price = 0;
 
                                                     for (int i = 1; i <= dtCount; i++)
                                                     {
+                                                    int z = sumCount/ Convert.ToInt32(itemDT1["Quantity"]);
                                                         if (Convert.ToInt32(itemDT["Quantity"]) > 1)
                                                         {
-                                                            int j = i - 1;
-                                                            if (Convert.ToInt32(sumCount) >= Convert.ToInt32(itemDT1["Quantity"]) * i && dt.AsEnumerable().Count() >= i)
+                                                            //int j = i - 1;
+                                                            if (Convert.ToInt32(sumCount) >= Convert.ToInt32(itemDT1["Quantity"]) * z)
                                                             {
                                                                 var dfg = itemDT1["NewPrice"].ToString();
                                                                 if (itemDT1["NewPrice"].ToString() != "")
                                                                 {
-                                                                    decimal price1 = i * Convert.ToDecimal(itemDT1["NewPrice"]);
-                                                                    decimal price2 = (Convert.ToInt32(sumCount) - Convert.ToInt32(itemDT1["Quantity"]) * i) * Convert.ToDecimal(itemDT["Oprice"]);
+                                                                    decimal price1 = z * Convert.ToDecimal(itemDT1["NewPrice"]);
+                                                                    decimal price2 = (Convert.ToInt32(sumCount) - Convert.ToInt32(itemDT1["Quantity"]) * z) * Convert.ToDecimal(itemDT["Oprice"]);
                                                                     price = (price1 + price2) / Convert.ToInt32(sumCount);
                                                                 }
                                                                 else
@@ -795,7 +798,7 @@ namespace POSSystem
                                                             }
                                                         }
                                                     }
-                                                }
+                                                //}
                                             }
                                         }
                                     }
@@ -977,7 +980,7 @@ namespace POSSystem
             dt.AcceptChanges();
             newGrid.ItemsSource = dt.DefaultView;
             dt = ((DataView)newGrid.ItemsSource).ToTable();
-
+            
             if (dt.AsEnumerable().Count() != 0)
             {
                 DataTable dt1 = new DataTable();

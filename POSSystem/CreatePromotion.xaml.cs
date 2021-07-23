@@ -71,6 +71,9 @@ namespace POSSystem
                 TxtPriceReduce.Text = "";
                 TxtQuantity.Text = "";
                 btnsave.Content = "Save";
+                Promotion pro = new Promotion();
+                pro.Show();
+                this.Close();
             }
             else
             {

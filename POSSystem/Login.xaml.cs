@@ -94,18 +94,18 @@ namespace POSSystem
                 if (dt.Rows.Count > 0)
                 {
                     App.Current.Properties["username"] = dt.Rows[0]["UserName"].ToString();
-                    App.Current.Properties["Role"] = dt.Rows[0]["RoleName"].ToString();
+                    //App.Current.Properties["Role"] = dt.Rows[0]["RoleName"].ToString();
 
-                    if (App.Current.Properties["Role"].ToString() == "Admin")
-                    {
+                    //if (App.Current.Properties["Role"].ToString() == "Admin")
+                    //{
                         MainWindow frm = new MainWindow();
                         frm.Show();
                         this.Close();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid Role.");
-                    }
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show("Invalid Role.");
+                    //}
                 }
                 else
                 {
