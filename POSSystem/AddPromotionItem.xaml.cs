@@ -45,12 +45,14 @@ namespace POSSystem
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+            Promotion Pro = new Promotion();
+            Pro.Show();
         }
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter || e.Key == Key.Tab)
             {
-                string time = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
+                string time = DateTime.Now.ToString();
                 //string code = textBox1.Text.Remove(textBox1.Text.Length - 1, 1);
                 SqlConnection con = new SqlConnection(conString);
                 string query = "insert into PromotionGroup(PromotionName,ScanCode,Description,Enterby,EnterOn) select @proname,ScanCode, Description,@enterby,@enteron from Item where ScanCode = @password";

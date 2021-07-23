@@ -48,7 +48,7 @@ namespace POSSystem
         {
             if (proid == "")
             {
-                string time = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
+                string time = DateTime.Now.ToString();
                 SqlConnection con = new SqlConnection(conString);
                 string queryI = "Insert into Promotion(PromotionName,Description,NewPrice,PriceReduce,Quantity,StartDate,EndDate,ScanData,EnterBy,EnterOn)Values(@promotionname,@description,@newprice,@pricereduce,@quantity,@startdate,@enddate,@scandata,@enterby,@enteron)";
                 SqlCommand cmdI = new SqlCommand(queryI, con);
@@ -57,8 +57,8 @@ namespace POSSystem
                 cmdI.Parameters.AddWithValue("@newprice", TxtNewPrice.Text);
                 cmdI.Parameters.AddWithValue("@pricereduce", TxtPriceReduce.Text);
                 cmdI.Parameters.AddWithValue("@quantity", TxtQuantity.Text);
-                cmdI.Parameters.AddWithValue("@startdate", Convert.ToDateTime(DatePickerStart.Text).ToString("MM/dd/yyyy"));
-                cmdI.Parameters.AddWithValue("@enddate", Convert.ToDateTime(DatePickerEnd.Text).ToString("MM/dd/yyyy"));
+                cmdI.Parameters.AddWithValue("@startdate", DatePickerStart.Text);
+                cmdI.Parameters.AddWithValue("@enddate", DatePickerEnd.Text);
                 cmdI.Parameters.AddWithValue("@scandata", txtScanData.Text);
                 cmdI.Parameters.AddWithValue("@enterby", username);
                 cmdI.Parameters.AddWithValue("@enteron", time);
@@ -77,7 +77,7 @@ namespace POSSystem
             }
             else
             {
-                string time = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
+                string time = DateTime.Now.ToString();
                 SqlConnection con = new SqlConnection(conString);
                 string queryI = "Update Promotion set PromotionName=@promotionname,Description=@description,NewPrice=@newprice,PriceReduce=@pricereduce,Quantity=@quantity,StartDate=@startdate,EndDate=@enddate,ScanData=@scandata,EnterBy=@enterby,EnterOn=@enteron where PromotionId =@id";
                 SqlCommand cmdI = new SqlCommand(queryI, con);

@@ -8,6 +8,8 @@ using System.Configuration;
 using System.IO;
 using System.Security.Permissions;
 using System.Windows.Input;
+using System.Deployment.Application;
+using System.Reflection;
 
 namespace POSSystem
 {
@@ -37,13 +39,25 @@ namespace POSSystem
                 InitializeComponent();
                 tb.KeyDown += new KeyEventHandler(OnKeyDownHandler);
                 TxtPassword.Focus();
+
+                lblVersion.Content = "POSSystem " + getRunningVersion();
             }
             catch (Exception ex)
             {
                 SendErrorToText(ex, errorFileName);
             }
         }
-
+        private Version getRunningVersion()
+        {
+            try
+            {
+                return ApplicationDeployment.CurrentDeployment.CurrentVersion;
+            }
+            catch (Exception)
+            {
+                return Assembly.GetExecutingAssembly().GetName().Version;
+            }
+        }
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter || e.Key == Key.Tab)
