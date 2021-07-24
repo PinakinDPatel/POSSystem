@@ -8,6 +8,8 @@ using System.Configuration;
 using System.IO;
 using System.Security.Permissions;
 using System.Windows.Input;
+using System.Deployment.Application;
+using System.Reflection;
 
 namespace POSSystem
 {
@@ -35,13 +37,25 @@ namespace POSSystem
                 InitializeComponent();
                 tb.KeyDown += new KeyEventHandler(OnKeyDownHandler);
                 TxtPassword.Focus();
+
+                lblVersion.Content = "POSSystem " + getRunningVersion();
             }
             catch (Exception ex)
             {
                 SendErrorToText(ex, errorFileName);
             }
         }
-
+        private Version getRunningVersion()
+        {
+            try
+            {
+                return ApplicationDeployment.CurrentDeployment.CurrentVersion;
+            }
+            catch (Exception)
+            {
+                return Assembly.GetExecutingAssembly().GetName().Version;
+            }
+        }
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter || e.Key == Key.Tab)
@@ -92,18 +106,18 @@ namespace POSSystem
                 if (dt.Rows.Count > 0)
                 {
                     App.Current.Properties["username"] = dt.Rows[0]["UserName"].ToString();
-                    App.Current.Properties["Role"] = dt.Rows[0]["RoleName"].ToString();
+                    //App.Current.Properties["Role"] = dt.Rows[0]["RoleName"].ToString();
 
-                    if (App.Current.Properties["Role"].ToString() == "Admin")
-                    {
+                    //if (App.Current.Properties["Role"].ToString() == "Admin")
+                    //{
                         MainWindow frm = new MainWindow();
                         frm.Show();
                         this.Close();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid Role.");
-                    }
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show("Invalid Role.");
+                    //}
                 }
                 else
                 {
