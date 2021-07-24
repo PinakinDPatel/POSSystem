@@ -26,16 +26,15 @@ namespace POSSystem
     /// </summary>
     public partial class Account : Window
     {
-        // string constring = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
-        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
-
+        string conString = "";
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "Account.cs";
 
         DataTable dtDG = new DataTable();
-        string username =App.Current.Properties["username"].ToString();
+        string username = App.Current.Properties["username"].ToString();
         public Account()
         {
+            conString = App.Current.Properties["ConString"].ToString();
             InitializeComponent();
             dtDG.Reset();
             Datable();

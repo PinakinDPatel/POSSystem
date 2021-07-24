@@ -17,10 +17,7 @@ namespace POSSystem
 
     public partial class Login : Window
     {
-        //string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
-        //string conString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=F:\DesktopApplication\POSSystem\Database1.mdf;Integrated Security=True";
-        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
-
+        string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "Login.cs";
 
@@ -33,6 +30,7 @@ namespace POSSystem
         {
             try
             {
+                App.Current.Properties["ConString"] = conString;
                 TextBox tb = new TextBox();
                 InitializeComponent();
                 tb.KeyDown += new KeyEventHandler(OnKeyDownHandler);
