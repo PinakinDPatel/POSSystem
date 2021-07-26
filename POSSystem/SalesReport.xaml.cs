@@ -14,7 +14,7 @@ namespace POSSystem
     /// </summary>
     public partial class SalesReport : Window
     {
-        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
+        string conString = App.Current.Properties["ConString"].ToString();
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "SalesReport.cs";
 

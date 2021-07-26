@@ -10,10 +10,9 @@ namespace POSSystem
 {
     public partial class Department : Window
     {
+        string conString = App.Current.Properties["ConString"].ToString();
         DataTable dt = new DataTable();
-        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
         string username = App.Current.Properties["username"].ToString();
-
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "Department.cs";
 

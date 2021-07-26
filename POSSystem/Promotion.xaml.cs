@@ -23,7 +23,7 @@ namespace POSSystem
     /// </summary>
     public partial class Promotion : Window
     {
-        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
+        string conString = App.Current.Properties["ConString"].ToString();
         string username = App.Current.Properties["username"].ToString();
         DataTable dt = new DataTable();
         private static String ErrorlineNo, Errormsg, errorFileName, extype, ErrorLocation, exurl, hostIp;

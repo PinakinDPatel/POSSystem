@@ -24,12 +24,12 @@ namespace POSSystem
 {
     public partial class MainWindow : Window
     {
+        string conString = App.Current.Properties["ConString"].ToString();
         private PrintDocument PrintDocument;
         private Graphics graphics;
         string tenderCode = "";
         DataTable dt = new DataTable();
         DataTable dtdep = new DataTable();
-        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
         string username = App.Current.Properties["username"].ToString();
 
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
@@ -98,7 +98,7 @@ namespace POSSystem
                     };
                     if (dtdep.Rows[i].ItemArray[2].ToString() != "")
                     {
-                        var Path = Directory.GetParent(Assembly.GetExecutingAssembly().Location);
+                        var Path = System.AppDomain.CurrentDomain.BaseDirectory;
                         var path = dtdep.Rows[i].ItemArray[2].ToString();
                         var fullpath = Path + "\\Image\\" + path;
                         button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
@@ -137,7 +137,7 @@ namespace POSSystem
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 conn.Open();
-                string query1 = "SELECT TOP 1 * FROM Transactions ORDER BY TransactionId DESC";
+                string query1 = "SELECT TOP 1 Tran_id FROM Transactions where DayClose is null ORDER BY Tran_id DESC";
                 using (SqlCommand cmd2 = new SqlCommand(query1, conn))
                 {
                     SqlDataReader data = cmd2.ExecuteReader();
@@ -398,7 +398,7 @@ namespace POSSystem
                 string cashReturn = TxtCashReturn.Text;
                 string tranid = Convert.ToInt32(lblTranid.Content).ToString();
 
-                string transaction = "insert into Transactions(EndDate,EndTime,GrossAmount,TaxAmount,GrandAmount,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + totalAmt + "','" + tax + "','" + grandTotalAmt + "','" + username + "','" + date + "')";
+                string transaction = "insert into Transactions(Tran_id,EndDate,EndTime,GrossAmount,TaxAmount,GrandAmount,CreateBy,CreateOn)Values('" + tranid + "','" + onlydate + "','" + onlytime + "','" + totalAmt + "','" + tax + "','" + grandTotalAmt + "','" + username + "','" + date + "')";
                 SqlCommand cmd = new SqlCommand(transaction, con);
                 con.Open();
                 cmd.ExecuteNonQuery();
@@ -804,7 +804,7 @@ namespace POSSystem
                                     }
                                 }
                             }
-
+                            dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
                             if (dt.AsEnumerable().Count() > Convert.ToInt32(dtCount))
                                 dt = ScanCodeFunction(dt);
 
@@ -863,12 +863,15 @@ namespace POSSystem
             try
             {
                 string filepath = System.AppDomain.CurrentDomain.BaseDirectory;
+                string errorpath = filepath + "\\ErrorFiles\\";
 
                 if (!Directory.Exists(filepath))
                 {
                     Directory.CreateDirectory(filepath);
                 }
-                filepath = filepath + "log.txt";   //Text File Name
+
+                filepath = filepath + "log.txt";
+
                 if (!File.Exists(filepath))
                 {
                     File.Create(filepath).Dispose();

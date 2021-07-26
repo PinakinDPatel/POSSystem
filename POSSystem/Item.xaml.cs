@@ -14,10 +14,8 @@ namespace POSSystem
     /// </summary>
     public partial class Item : Window
     {
-        //string constring = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
-        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
+        string conString = App.Current.Properties["ConString"].ToString();
         string username = App.Current.Properties["username"].ToString();
-
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "Item.cs";
 

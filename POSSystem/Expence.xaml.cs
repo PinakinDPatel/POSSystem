@@ -23,7 +23,7 @@ namespace POSSystem
     /// </summary>
     public partial class Expence : Window
     {
-        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
+        string conString = App.Current.Properties["ConString"].ToString();
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "Expence.cs";
         string username = App.Current.Properties["username"].ToString();

@@ -19,7 +19,7 @@ namespace POSSystem
 {
     public partial class CreatePromotion : Window
     {
-        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
+        string conString = App.Current.Properties["ConString"].ToString();
         string username = App.Current.Properties["username"].ToString();
         public CreatePromotion()
         {

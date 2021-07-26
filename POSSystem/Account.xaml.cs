@@ -26,7 +26,7 @@ namespace POSSystem
     /// </summary>
     public partial class Account : Window
     {
-        string conString = "";
+        string conString = App.Current.Properties["ConString"].ToString();
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "Account.cs";
 
@@ -34,7 +34,6 @@ namespace POSSystem
         string username = App.Current.Properties["username"].ToString();
         public Account()
         {
-            conString = App.Current.Properties["ConString"].ToString();
             InitializeComponent();
             dtDG.Reset();
             Datable();

@@ -23,10 +23,8 @@ namespace POSSystem
     /// </summary>
     public partial class DayClose : Window
     {
+        string conString = App.Current.Properties["ConString"].ToString();
         DataTable dt = new DataTable();
-        //string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
-        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
-
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "DayClose.cs";
 

@@ -23,9 +23,7 @@ namespace POSSystem
     /// </summary>
     public partial class ItemView : Window
     {
-        //string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
-        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
-
+        string conString = App.Current.Properties["ConString"].ToString();
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "ItemView.cs";
 
@@ -35,7 +33,7 @@ namespace POSSystem
             try
             {
                 InitializeComponent();
-                ItemLoad();
+                //ItemLoad();
             }
             catch (Exception ex)
             {
@@ -106,7 +104,8 @@ namespace POSSystem
                 Item item = new Item();
                 item.Show();
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 SendErrorToText(ex, errorFileName);
             }
         }
@@ -120,6 +119,7 @@ namespace POSSystem
 
                 Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
                 Nullable<bool> result = openFileDlg.ShowDialog();
+
                 if (result == true)
                 {
                     FileNameTextBox.Text = openFileDlg.FileName;
@@ -148,7 +148,7 @@ namespace POSSystem
 
                     if (extension == ".xlsx")
                     {
-                        reader = ExcelReaderFactory.CreateBinaryReader(stream);
+                        reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
                         var dataSet = reader.AsDataSet(new ExcelDataSetConfiguration()
                         {
                             ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
@@ -198,12 +198,17 @@ namespace POSSystem
                 dgImport.ItemsSource = dt.DefaultView;
                 dgImport.AutoGenerateColumns = true;
                 dgImport.CanUserAddRows = false;
+
+                DataGridCheckBoxColumn checkBoxColumn = new DataGridCheckBoxColumn();
+                checkBoxColumn.Header = "Select";
+                dgImport.Columns.Insert(0, checkBoxColumn);
             }
             catch (Exception ex)
             {
                 SendErrorToText(ex, errorFileName);
             }
         }
+
         private void dataGrid1_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             try
@@ -211,7 +216,7 @@ namespace POSSystem
                 var dropDown = new ComboBox()
                 {
                     ItemsSource = new string[] { "Description", "ScanCode", "Quantity", "Department", "Manufacturer",
-                                             "UnitCase","CostAfterDiscount","Rate","UnitRetail","CaseDiscount","Payee"}
+                                             "UnitCase","CostAfterDiscount","Rate","UnitRetail","CaseDiscount","Payee","CaseCost"}
                 };
                 dropDown.Name = e.Column.Header.ToString();
                 dropDown.SelectionChanged += new SelectionChangedEventHandler(ComboBox_SelectionChanged);
@@ -246,7 +251,16 @@ namespace POSSystem
             {
                 DataTable dt = new DataTable();
                 DataGrid dg = new DataGrid();
+                int selectedIndex = dgImport.SelectedIndex;
                 dt = ((DataView)dgImport.ItemsSource).ToTable();
+
+                if (selectedIndex >= 0)
+                {
+                    DataRow row = dt.Rows[selectedIndex];
+                    dt.Rows.Remove(row);
+                    dt.AcceptChanges();
+                }
+
                 for (int i = 0; i < strList2.Count; i++)
                 {
                     if (i != 0)
@@ -258,6 +272,15 @@ namespace POSSystem
                     string getVal = strList2[i];
                     dt.Columns[getCol].ColumnName = getVal;
                     dg.ItemsSource = dt.DefaultView;
+                }
+
+
+                foreach (var item in dt.AsEnumerable())
+                {
+                    if (item["UnitRetail"].ToString().Contains("$"))
+                    {
+                        item["UnitRetail"] = item["UnitRetail"].ToString().Split('$')[1];
+                    }
                 }
 
                 var bulk = new BulkOperations();
@@ -302,6 +325,17 @@ namespace POSSystem
             try
             {
                 DataTable dt = new DataTable();
+                if (txtScanCode.Text == "")
+                {
+                    string commandText = "SELECT * FROM Item";
+                    SqlConnection connection = new SqlConnection(conString);
+                    SqlCommand command = new SqlCommand(commandText, connection);
+                    command.Parameters.AddWithValue("@scanode", txtScanCode.Text);
+                    connection.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(command);
+                    da.Fill(dt);
+                    connection.Close();
+                }
                 if (txtScanCode.Text != "")
                 {
                     string commandText = "SELECT* FROM Item WHERE ScanCode = @scanode";
@@ -516,6 +550,7 @@ namespace POSSystem
             {
             }
         }
+
     }
 }
 

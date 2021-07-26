@@ -23,19 +23,18 @@ namespace POSSystem
     /// </summary>
     public partial class AddPromotionItem : Window
     {
-        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
+        string conString = App.Current.Properties["ConString"].ToString();
         string username = App.Current.Properties["username"].ToString();
         DataTable dt = new DataTable();
         public AddPromotionItem()
         {
             InitializeComponent();
-
             TextBox tb = new TextBox();
             tb.KeyDown += new KeyEventHandler(OnKeyDownHandler);
         }
         int proid = 0;
         string name = "";
-        public AddPromotionItem(int id,string proname):this()
+        public AddPromotionItem(int id, string proname) : this()
         {
             proid = id;
             name = proname;
@@ -76,7 +75,7 @@ namespace POSSystem
             SqlCommand cmd = new SqlCommand(queryS, con);
             cmd.Parameters.AddWithValue("@proname", name);
             SqlDataAdapter sda = new SqlDataAdapter(cmd);
-           
+
             sda.Fill(dt);
             dgPromotionItem.CanUserAddRows = false;
             this.dgPromotionItem.ItemsSource = dt.AsDataView();

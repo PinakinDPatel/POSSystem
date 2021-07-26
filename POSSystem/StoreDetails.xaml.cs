@@ -22,8 +22,8 @@ namespace POSSystem
     /// </summary>
     public partial class StoreDetails : Window
     {
+        string conString = App.Current.Properties["ConString"].ToString();
         DataTable dt = new DataTable();
-        string conString = ConfigurationManager.ConnectionStrings["MegaPixelBizConn"].ToString();
         string username = App.Current.Properties["username"].ToString();
 
         public StoreDetails()
