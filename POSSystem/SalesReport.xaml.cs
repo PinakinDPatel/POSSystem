@@ -64,7 +64,7 @@ namespace POSSystem
 
                 inAmtTotal.Content = deptAmtTotal;
                 outAmtTotal.Content = cashAmtTotal;
-                //compareTotal.Content = compareTotal1;
+                lblShortOver.Content = compareTotal1;
             }
             catch (Exception ex)
             {
