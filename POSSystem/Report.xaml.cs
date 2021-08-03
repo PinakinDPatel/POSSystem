@@ -219,6 +219,11 @@ namespace POSSystem
 
         }
 
+        private void Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
             try

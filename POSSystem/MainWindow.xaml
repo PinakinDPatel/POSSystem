@@ -333,13 +333,18 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <UniformGrid Name="sp21" Grid.RowSpan="9" ></UniformGrid>
+                <UniformGrid Name="sp22" Grid.RowSpan="9" ></UniformGrid>
+                <UniformGrid Name="sp23" Grid.RowSpan="9" ></UniformGrid>
                 <Grid Grid.Row="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition ></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="1" Content="Shift Close" Margin="5" FontSize="33" FontWeight="Bold" Foreground="White" Click="Button_Click_5"/>
-                    <Button Content="Setting"  FontSize="33" FontWeight="Bold" Foreground="White" Margin="5" Click="Button_Click_3"/>
+                    <Button Grid.Column="2" Content="Shift Close" Margin="5" FontWeight="Bold" Foreground="White" Click="Button_Click_5"/>
+                    <Button Content="Setting" Grid.Column="1" FontWeight="Bold" Foreground="White" Margin="5" Click="Button_Click_3"/>
+                    <Button Name="btnDept" Visibility="Hidden" Content="Department" FontWeight="Bold" Foreground="White" Margin="5" Click="Department_Button_Click"/>
+                    <Button Name="btnShortKey" Content="Shortcut Key" FontWeight="Bold" Foreground="White" Margin="5" Click="ShortcutKey_Button_Click"/>
                 </Grid>
             </Grid>
             <Grid Grid.Column="2" Grid.Row="1" Visibility="Hidden" Name="TxtBxStackPanel2">

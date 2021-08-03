@@ -243,11 +243,17 @@ namespace POSSystem
                     foreach (DataRow distrinctRow in distrinctPromotionName.AsEnumerable())
                     {
                         int sumCount = 0;
-                        for (int i = 0; i < dt1.AsEnumerable().Count(); i++)
+                        for (int j = 0; j < dt1.AsEnumerable().Count(); j++)
                         {
-                            if (dt1.Rows[i]["PromotionName"].ToString() == distrinctRow["PromotionName"].ToString())
+                            for (int i = 0; i < dt.AsEnumerable().Count(); i++)
                             {
-                                sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
+                                if (dt1.Rows[j]["PromotionName"].ToString() == distrinctRow["PromotionName"].ToString())
+                                {
+                                    if (dt1.Rows[j]["ScanCode"].ToString() == dt.Rows[i]["ScanCode"].ToString())
+                                    {
+                                        sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
+                                    }
+                                }
                             }
                         }
 
@@ -746,13 +752,28 @@ namespace POSSystem
                             foreach (DataRow distrinctRow in distrinctPromotionName.AsEnumerable())
                             {
                                 int sumCount = 0;
-                                for (int i = 0; i < dt1.AsEnumerable().Count(); i++)
+                                //for (int i = 0; i < dt1.AsEnumerable().Count(); i++)
+                                //{
+                                //    if (dt1.Rows[i]["PromotionName"].ToString() == distrinctRow["PromotionName"].ToString())
+                                //    {
+                                //        sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
+                                //    }
+                                //}
+
+                                for (int j = 0; j < dt1.AsEnumerable().Count(); j++)
                                 {
-                                    if (dt1.Rows[i]["PromotionName"].ToString() == distrinctRow["PromotionName"].ToString())
+                                    for (int i = 0; i < dt.AsEnumerable().Count(); i++)
                                     {
-                                        sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
+                                        if (dt1.Rows[j]["PromotionName"].ToString() == distrinctRow["PromotionName"].ToString())
+                                        {
+                                            if (dt1.Rows[j]["ScanCode"].ToString() == dt.Rows[i]["ScanCode"].ToString())
+                                            {
+                                                sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
+                                            }
+                                        }
                                     }
                                 }
+
                                 foreach (DataRow itemDT in dt.AsEnumerable())
                                 {
                                     foreach (DataRow itemDT1 in dt1.AsEnumerable())
@@ -973,6 +994,64 @@ namespace POSSystem
             }
         }
 
+        private void Department_Button_Click(object sender, RoutedEventArgs e)
+        {
+            btnShortKey.Visibility = Visibility.Visible;
+            btnDept.Visibility = Visibility.Hidden;
+            sp21.Visibility = Visibility.Visible;
+            sp22.Visibility = Visibility.Hidden;
+            sp23.Visibility = Visibility.Hidden;
+        }
+
+        private void ShortcutKey_Button_Click(object sender, RoutedEventArgs e)
+        {
+            btnShortKey.Visibility = Visibility.Hidden;
+            btnDept.Visibility = Visibility.Visible;
+            sp21.Visibility = Visibility.Hidden;
+            sp23.Visibility = Visibility.Hidden;
+            TxtBxStackPanel2.Visibility = Visibility.Hidden;
+            sp22.Visibility = Visibility.Visible;
+
+            sp22.Children.Clear();
+            SqlConnection con = new SqlConnection(conString);
+            string queryS = "select category from category group by category";
+            SqlCommand cmd1 = new SqlCommand(queryS, con);
+            SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
+            DataTable dtCat = new DataTable();
+            sda1.Fill(dtCat);
+
+            for (int i = 0; i < dtCat.Rows.Count; i++)
+            {
+                Button button = new Button();
+                button.Content = new TextBlock()
+                {
+                    FontSize = 25,
+                    Text = dtCat.Rows[i].ItemArray[0].ToString(),
+                    TextAlignment = TextAlignment.Center,
+                    TextWrapping = TextWrapping.Wrap
+                };
+                if (dtCat.Rows[i].ItemArray[0].ToString() != "")
+                {
+                    //var Path = System.AppDomain.CurrentDomain.BaseDirectory;
+                    var path = dtCat.Rows[i].ItemArray[0].ToString();
+                    //var fullpath = Path + "\\Image\\" + path;
+                    //button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
+                }
+                button.Foreground = new SolidColorBrush(Colors.White);
+                button.FontSize = 26;
+                button.FontWeight = FontWeights.Bold;
+                button.Effect = new DropShadowEffect()
+                { Color = Colors.BlueViolet };
+                button.Margin = new Thickness(5, 5, 5, 5);
+                string abc = dtCat.Rows[i].ItemArray[0].ToString();
+                button.Click += new RoutedEventHandler(button_Click_Category);
+                //button.Click += (sender, e) => { button_Click_CategoryDescription(sender, e); };
+                this.sp22.Children.Add(button);
+            }
+            sp23.Children.Clear();
+            dtCat = null;
+        }
+
         private void JdGrid_delete_click(object sender, RoutedEventArgs e)
         {
 
@@ -1013,10 +1092,24 @@ namespace POSSystem
                 int qutCount = 0;
                 foreach (var item in distrinctPromotionName.AsEnumerable())
                 {
-                    for (int i = 0; i < dt1.AsEnumerable().Count(); i++)
+                    //for (int i = 0; i < dt1.AsEnumerable().Count(); i++)
+                    //{
+                    //    if (item["PromotionName"].ToString() == dt1.Rows[i]["PromotionName"].ToString())
+                    //        qutCount = Convert.ToInt32(qutCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
+                    //}
+
+                    for (int j = 0; j < dt1.AsEnumerable().Count(); j++)
                     {
-                        if (item["PromotionName"].ToString() == dt1.Rows[i]["PromotionName"].ToString())
-                            qutCount = Convert.ToInt32(qutCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
+                        for (int i = 0; i < dt.AsEnumerable().Count(); i++)
+                        {
+                            if (dt1.Rows[j]["PromotionName"].ToString() == item["PromotionName"].ToString())
+                            {
+                                if (dt1.Rows[j]["ScanCode"].ToString() == dt.Rows[i]["ScanCode"].ToString())
+                                {
+                                    qutCount = Convert.ToInt32(qutCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
+                                }
+                            }
+                        }
                     }
 
                     foreach (DataRow itemDT in dt.AsEnumerable())
@@ -1137,8 +1230,11 @@ namespace POSSystem
                         cmd.Parameters.AddWithValue("@password", datatable.Rows[i]["ScanCode"].ToString());
                         SqlDataAdapter sda = new SqlDataAdapter(cmd);
                         sda.Fill(dt2);
-                        datatable.Rows[i]["UnitRetail"] = dt2.Rows[0]["UnitRetail"];
-                        datatable.Rows[i]["Amount"] = dt2.Rows[0]["Amount"];
+                        if (dt2.AsEnumerable().Count() != 0)
+                        {
+                            datatable.Rows[i]["UnitRetail"] = dt2.Rows[0]["UnitRetail"];
+                            datatable.Rows[i]["Amount"] = dt2.Rows[0]["Amount"];
+                        }
                     }
                 }
             }
@@ -1201,6 +1297,76 @@ namespace POSSystem
                 }
             }
             return datatable;
+        }
+
+        void button_Click_Category(object sender, RoutedEventArgs e)
+        {
+            var btnContent = sender as Button;
+            var tb = (TextBlock)btnContent.Content;
+
+            btnShortKey.Visibility = Visibility.Hidden;
+            btnDept.Visibility = Visibility.Visible;
+            sp21.Visibility = Visibility.Hidden;
+            sp22.Visibility = Visibility.Hidden;
+            sp23.Visibility = Visibility.Visible;
+
+            sp23.Children.Clear();
+            SqlConnection con = new SqlConnection(conString);
+            string queryS = "select Description from category where category = '" + tb.Text + "' ";
+            SqlCommand cmd1 = new SqlCommand(queryS, con);
+            SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
+            DataTable dtCatDescr = new DataTable();
+            sda1.Fill(dtCatDescr);
+
+            for (int i = 0; i < dtCatDescr.Rows.Count; i++)
+            {
+                Button button = new Button();
+                button.Content = new TextBlock()
+                {
+                    FontSize = 25,
+                    Text = dtCatDescr.Rows[i].ItemArray[0].ToString(),
+                    TextAlignment = TextAlignment.Center,
+                    TextWrapping = TextWrapping.Wrap
+                };
+                if (dtCatDescr.Rows[i].ItemArray[0].ToString() != "")
+                {
+                    //var Path = System.AppDomain.CurrentDomain.BaseDirectory;
+                    var path = dtCatDescr.Rows[i].ItemArray[0].ToString();
+                    //var fullpath = Path + "\\Image\\" + path;
+                    //button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
+                }
+                button.Foreground = new SolidColorBrush(Colors.White);
+                button.FontSize = 26;
+                button.FontWeight = FontWeights.Bold;
+                button.Effect = new DropShadowEffect()
+                { Color = Colors.BlueViolet };
+                button.Margin = new Thickness(5, 5, 5, 5);
+                string abc = dtCatDescr.Rows[i].ItemArray[0].ToString();
+                button.Click += new RoutedEventHandler(button_Click_Category_Description);
+                this.sp23.Children.Add(button);
+            }
+            sp22.Children.Clear();
+            dtCatDescr = null;
+        }
+
+        void button_Click_Category_Description(object sender, RoutedEventArgs e)
+        {
+            var btnContent = sender as Button;
+            var tb = (TextBlock)btnContent.Content;
+
+            SqlConnection con = new SqlConnection(conString);
+            string query = "select ScanCode,Description + ' ' + Category as Description,Rate as UnitRetail,Rate as TaxRate,@qty as Quantity,Rate as Amount from category where Description = @Description";
+            SqlCommand cmd = new SqlCommand(query, con);
+            cmd.Parameters.AddWithValue("@Description", tb.Text);
+            cmd.Parameters.AddWithValue("@qty", 1);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            con.Open();
+            sda.Fill(dt);
+            con.Close();
+
+            JRDGrid.ItemsSource = dt.DefaultView;
+
+            TotalEvent();
         }
     }
 }
