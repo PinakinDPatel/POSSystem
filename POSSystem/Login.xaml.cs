@@ -19,7 +19,9 @@ namespace POSSystem
 
     public partial class Login : Window
     {
-        string conString = "Server=184.168.194.64;Database=db_POS; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        string ServerName = ConfigurationManager.AppSettings["ServerName"];
+        string DBName = ConfigurationManager.AppSettings["DBName"];
+        string conString = "";
 
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "Login.cs";
@@ -33,6 +35,7 @@ namespace POSSystem
         {
             try
             {
+                conString = "Server=" + ServerName + ";Database=" + DBName + "; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
                 App.Current.Properties["ConString"] = conString;
                 TextBox tb = new TextBox();
                 InitializeComponent();
@@ -111,9 +114,9 @@ namespace POSSystem
 
                     //if (App.Current.Properties["Role"].ToString() == "Admin")
                     //{
-                        MainWindow frm = new MainWindow();
-                        frm.Show();
-                        this.Close();
+                    MainWindow frm = new MainWindow();
+                    frm.Show();
+                    this.Close();
                     //}
                     //else
                     //{
