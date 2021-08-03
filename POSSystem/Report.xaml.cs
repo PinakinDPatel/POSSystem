@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 using System.Configuration;
 using System.IO;
 using System.Data;
+using System.Net;
+using System.Net.Mail;
 
 namespace POSSystem
 {
@@ -137,6 +139,41 @@ namespace POSSystem
             {
                 shiftClose();
                 Dayclose();
+                Send_Email();
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
+        private void Send_Email()
+        {
+            try
+            {
+                var fromAddress = new MailAddress("pspcstore@gmail.com", "From Name");
+                var toAddress = new MailAddress("remotedeskop1111@gmail.com", "To Name");
+                const string fromPassword = "9898926070";
+                const string subject = "Subject";
+                string body = "this is first line" + "\n" + "this is second line";
+
+                var smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                };
+                using (var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = subject,
+                    Body = body
+                })
+                {
+                    smtp.Send(message);
+                }
             }
             catch (Exception ex)
             {
@@ -217,6 +254,18 @@ namespace POSSystem
                 SendErrorToText(ex, errorFileName);
             }
 
+        }
+
+        private void UserWiseSale_Button_Click(object sender, RoutedEventArgs e)
+        {
+            UserWiseSaleReport UWSR = new UserWiseSaleReport();
+            UWSR.Show();
+        }
+
+        private void TranDetails_Button_Click(object sender, RoutedEventArgs e)
+        {
+            TransactionDetails TD = new TransactionDetails();
+            TD.Show();
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)

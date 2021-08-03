@@ -156,6 +156,12 @@
     <Compile Include="StoreDetails.xaml.cs">
       <DependentUpon>StoreDetails.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TransactionDetails.xaml.cs">
+      <DependentUpon>TransactionDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserWiseSaleReport.xaml.cs">
+      <DependentUpon>UserWiseSaleReport.xaml</DependentUpon>
+    </Compile>
     <Page Include="Account.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -243,6 +249,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="StoreDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TransactionDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserWiseSaleReport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
