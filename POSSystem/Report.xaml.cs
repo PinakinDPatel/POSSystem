@@ -256,6 +256,11 @@ namespace POSSystem
 
         }
 
+        private void Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void UserWiseSale_Button_Click(object sender, RoutedEventArgs e)
         {
             UserWiseSaleReport UWSR = new UserWiseSaleReport();

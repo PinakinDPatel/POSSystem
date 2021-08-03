@@ -132,6 +132,9 @@
     <Compile Include="AddPromotionItem.xaml.cs">
       <DependentUpon>AddPromotionItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Category.xaml.cs">
+      <DependentUpon>Category.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CreatePromotion.xaml.cs">
       <DependentUpon>CreatePromotion.xaml</DependentUpon>
     </Compile>
@@ -169,6 +172,10 @@
     <Page Include="AddPromotionItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Category.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CreatePromotion.xaml">
       <Generator>MSBuild:Compile</Generator>
