@@ -41,7 +41,7 @@ namespace POSSystem
                 SqlConnection con = new SqlConnection(conString);
                 string queryDG = "select Tran_id,transactions.EndDate,Transactions.EndTime,GrossAmount,TaxAmount,GrandAmount,transactions.CreateBy,ScanCode,descripation,quantity,price,salesitem.amount,TenderCode,(tender.Amount-Change)as TenderAmount from transactions inner join salesitem on transactions.Tran_id=SalesItem.TransactionId and Transactions.EndDate=SalesItem.EndDate inner join Tender on transactions.Tran_id=tender.TransactionId and Transactions.EndDate=tender.EndDate where Transactions.EndDate=@fromDate and Tran_id=@tranid";
                 SqlCommand cmdDG = new SqlCommand(queryDG, con);
-                cmdDG.Parameters.AddWithValue("@fromDate", Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd"));
+                cmdDG.Parameters.AddWithValue("@fromDate", Convert.ToDateTime(fromDate).ToString("yyyy/MM/dd"));
                 cmdDG.Parameters.AddWithValue("@tranid", TxtTranId);
                 SqlDataAdapter sdaDG = new SqlDataAdapter(cmdDG);
                 DataTable dt = new DataTable();
@@ -104,8 +104,8 @@ namespace POSSystem
                 }
                 using (StreamWriter sw = File.AppendText(filepath))
                 {
-                    string error = "Log Written Date:" + " " + DateTime.Now.ToString() + line + "File Name :" + errorFileName + line + "Error Line No :" + " " + ErrorlineNo + line + "Error Message:" + " " + Errormsg + line + "Exception Type:" + " " + extype + line + "Error Location :" + " " + ErrorLocation + line + " Error Page Url:" + " " + exurl + line + "User Host IP:" + " " + hostIp + line;
-                    sw.WriteLine("-----------Exception Details on " + " " + DateTime.Now.ToString() + "-----------------");
+                    string error = "Log Written Date:" + " " + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt") + line + "File Name :" + errorFileName + line + "Error Line No :" + " " + ErrorlineNo + line + "Error Message:" + " " + Errormsg + line + "Exception Type:" + " " + extype + line + "Error Location :" + " " + ErrorLocation + line + " Error Page Url:" + " " + exurl + line + "User Host IP:" + " " + hostIp + line;
+                    sw.WriteLine("-----------Exception Details on " + " " + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt") + "-----------------");
                     sw.WriteLine("-------------------------------------------------------------------------------------");
                     sw.WriteLine(line);
                     sw.WriteLine(error);

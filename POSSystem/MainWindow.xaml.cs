@@ -31,7 +31,7 @@ namespace POSSystem
         DataTable dt = new DataTable();
         DataTable dtdep = new DataTable();
         string username = App.Current.Properties["username"].ToString();
-
+        string date = DateTime.Now.ToString("yyyy/MM/dd").Replace("-", "/");
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "MainWindow.cs";
 
@@ -41,7 +41,7 @@ namespace POSSystem
             try
             {
                 InitializeComponent();
-                lblDate.Content = DateTime.Now.ToString("yyyy-MM-dd HH:MM:ss");
+                lblDate.Content = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt");
                 lblusername.Content = username;
                 TextBox tb = new TextBox();
                 tb.KeyDown += new KeyEventHandler(OnKeyDownHandler);
@@ -61,7 +61,7 @@ namespace POSSystem
                 dt.Columns.Add("TransactionId");
                 dt.Columns.Add("CreateBy");
                 dt.Columns.Add("CreateOn");
-
+                dt.Columns.Add("PromotionName");
                 //con.Close();
                 textBox1.Focus();
 
@@ -69,26 +69,10 @@ namespace POSSystem
                 SqlCommand cmd1 = new SqlCommand(queryS, con);
                 SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
                 sda1.Fill(dtdep);
-                //con.Open();
-                //cmd1.ExecuteNonQuery();
-                //con.Close();
-
-                //Shadow Effect Of Button
-                //DropShadowEffect newDropShadowEffect = new DropShadowEffect();
-                //newDropShadowEffect.BlurRadius = 5;
-                //newDropShadowEffect.Direction = 100;
-                //newDropShadowEffect.Opacity = 95;
-                //newDropShadowEffect.ShadowDepth = 5;
-
 
                 for (int i = 0; i < dtdep.Rows.Count; ++i)
                 {
                     Button button = new Button();
-                    //{
-                    //    Content = dtdep.Rows[i].ItemArray[0],
-                    //    Tag = i
-                    //};
-
                     button.Content = new TextBlock()
                     {
                         FontSize = 25,
@@ -106,8 +90,6 @@ namespace POSSystem
                     button.Foreground = new SolidColorBrush(Colors.White);
                     button.FontSize = 26;
                     button.FontWeight = FontWeights.Bold;
-                    //button.Effect = new DropShadowEffect()
-                    //{ Color = Colors.BlueViolet };
                     button.Margin = new Thickness(5, 5, 5, 5);
                     string abc = dtdep.Rows[i].ItemArray[1].ToString();
                     button.Click += (sender, e) => { button_Click(sender, e, abc); };
@@ -149,7 +131,6 @@ namespace POSSystem
                     {
                         lblTranid.Content = 1;
                     }
-
                 }
                 conn.Close();
             }
@@ -159,7 +140,6 @@ namespace POSSystem
         {
             try
             {
-
                 var btnContent = sender as Button;
                 var tb = (TextBlock)btnContent.Content;
                 taxrate = abc;
@@ -215,6 +195,7 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
+
                 if (e.Key == Key.Enter || e.Key == Key.Tab)
                 {
                     string query = "select Scancode,Description,UnitRetail,@qty as quantity,UnitRetail as Amount,Department.TaxRate,UnitRetail as Oprice from Item inner join Department on item.Department=Department.Department where Scancode=@password ";
@@ -229,21 +210,23 @@ namespace POSSystem
                     DataTable dt1 = new DataTable();
                     foreach (DataRow row in dt.AsEnumerable())
                     {
+
                         string _scancode = row["ScanCode"].ToString();
                         string query1 = "select promotiongroup.ScanCode, promotiongroup.PromotionName,promotion.NewPrice,promotion.Quantity,promotion.PriceReduce  from promotiongroup inner join promotion on promotiongroup.promotionname =  promotion.promotionname  where promotiongroup.ScanCode = @_scancode and @datetime between promotion.StartDate and promotion.EndDate";
                         SqlCommand cmd1 = new SqlCommand(query1, con);
                         cmd1.Parameters.AddWithValue("@_scancode", _scancode);
-                        cmd1.Parameters.AddWithValue("@datetime", DateTime.Now.ToString("MM-dd-yyyy"));
+                        cmd1.Parameters.AddWithValue("@datetime", date);
                         SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
                         con.Open();
                         sda1.Fill(dt1);
                         con.Close();
                     }
                     DataTable distrinctPromotionName = dt1.DefaultView.ToTable(true, "PromotionName");
+                    int distCount = distrinctPromotionName.AsEnumerable().Count();
                     foreach (DataRow distrinctRow in distrinctPromotionName.AsEnumerable())
                     {
                         int sumCount = 0;
-                        for (int j = 0; j < dt1.AsEnumerable().Count(); j++)
+                        for (int j = 0; j < distCount; j++)
                         {
                             for (int i = 0; i < dt.AsEnumerable().Count(); i++)
                             {
@@ -275,6 +258,7 @@ namespace POSSystem
                                                 if (price == "")
                                                     price = (Convert.ToDecimal(itemDT["Oprice"]) - (Convert.ToDecimal(itemDT["Oprice"]) * Convert.ToDecimal(itemDT1["PriceReduce"]) / 100)).ToString();
 
+                                                itemDT["PromotionName"] = itemDT1["PromotionName"];
                                                 itemDT["UnitRetail"] = price;
                                                 itemDT["Amount"] = Convert.ToDecimal(itemDT["UnitRetail"]) * Convert.ToDecimal(itemDT["Quantity"]);
                                             }
@@ -393,7 +377,7 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                string date = DateTime.Now.ToString("yyyy-MM-dd HH:MM:ss");
+                string date = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
                 string onlydate = date.Substring(0, 10);
                 string onlytime = date.Substring(11);
                 string totalAmt = txtTotal.Text.Replace("$", "");
@@ -454,8 +438,6 @@ namespace POSSystem
                     dataRow[8] = tranid;
                     dataRow[9] = username;
                     dataRow[10] = date;
-                    //dataRow[11] = 0;
-                    //dataRow[12] = 0;
                 }
 
                 SqlBulkCopy objbulk = new SqlBulkCopy(con);
@@ -467,6 +449,7 @@ namespace POSSystem
                 objbulk.ColumnMappings.Add("Amount", "Amount");
                 objbulk.ColumnMappings.Add("Date", "EndDate");
                 objbulk.ColumnMappings.Add("Time", "EndTime");
+                objbulk.ColumnMappings.Add("PromotionName", "PromotionName");
                 objbulk.ColumnMappings.Add("TransactionId", "TransactionId");
                 objbulk.ColumnMappings.Add("CreateBy", "CreateBy");
                 objbulk.ColumnMappings.Add("CreateOn", "CreateOn");
@@ -484,7 +467,7 @@ namespace POSSystem
                 //txtQty.Text = "";
                 grandTotal.Text = "";
                 taxtTotal.Text = "";
-                lblDate.Content = DateTime.Now.ToString("yyyy-MM-dd HH:MM:ss");
+                lblDate.Content = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
                 dt.Clear();
                 JRDGrid.Items.Refresh();
 
@@ -734,7 +717,7 @@ namespace POSSystem
                                 string query1 = "select promotiongroup.ScanCode, promotiongroup.PromotionName,promotion.NewPrice,promotion.Quantity,promotion.PriceReduce  from promotiongroup inner join promotion on promotiongroup.promotionname =  promotion.promotionname  where promotiongroup.ScanCode = @_scancode and @datetime between promotion.StartDate and promotion.EndDate";
                                 SqlCommand cmd1 = new SqlCommand(query1, con);
                                 cmd1.Parameters.AddWithValue("@_scancode", _scancode);
-                                cmd1.Parameters.AddWithValue("@datetime", DateTime.Now.ToString("MM-dd-yyyy"));
+                                cmd1.Parameters.AddWithValue("@datetime", date);
                                 SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
                                 con.Open();
                                 sda1.Fill(dt1);
@@ -752,14 +735,6 @@ namespace POSSystem
                             foreach (DataRow distrinctRow in distrinctPromotionName.AsEnumerable())
                             {
                                 int sumCount = 0;
-                                //for (int i = 0; i < dt1.AsEnumerable().Count(); i++)
-                                //{
-                                //    if (dt1.Rows[i]["PromotionName"].ToString() == distrinctRow["PromotionName"].ToString())
-                                //    {
-                                //        sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
-                                //    }
-                                //}
-
                                 for (int j = 0; j < dt1.AsEnumerable().Count(); j++)
                                 {
                                     for (int i = 0; i < dt.AsEnumerable().Count(); i++)
@@ -782,20 +757,15 @@ namespace POSSystem
                                         {
                                             if (itemDT["ScanCode"].ToString() == itemDT1["ScanCode"].ToString())
                                             {
-                                                //if ((e.Row.Item as DataRowView).Row[0].ToString() == itemDT1["ScanCode"].ToString())
-                                                //{
                                                 decimal price = 0;
-
                                                 for (int i = 1; i <= dtCount; i++)
                                                 {
-
                                                     int z = sumCount / Convert.ToInt32(itemDT1["Quantity"]);
                                                     if (Convert.ToInt32(itemDT["Quantity"]) > 1)
                                                     {
-                                                        //int j = i - 1;
                                                         if (Convert.ToInt32(sumCount) >= Convert.ToInt32(itemDT1["Quantity"]) * z && z > 0)
                                                         {
-                                                            var dfg = itemDT1["NewPrice"].ToString();
+                                                            //var dfg = itemDT1["NewPrice"].ToString();
                                                             if (itemDT1["NewPrice"].ToString() != "")
                                                             {
                                                                 decimal price1 = z * Convert.ToDecimal(itemDT1["NewPrice"]);
@@ -808,9 +778,9 @@ namespace POSSystem
                                                                 decimal price4 = (sumCount - Convert.ToInt32(itemDT1["Quantity"]) * z) * Convert.ToDecimal(itemDT["Oprice"]);
                                                                 price = (price3 + price4) / sumCount;
                                                             }
-
+                                                            itemDT["PromotionName"] = itemDT1["PromotionName"];
                                                             itemDT["UnitRetail"] = Convert.ToDecimal(price).ToString("0.00");
-                                                            itemDT["Amount"] = Convert.ToDecimal(Convert.ToDecimal(price) * Convert.ToDecimal(itemDT["Quantity"])).ToString("0.00");
+                                                            itemDT["Amount"] = Convert.ToDecimal(price * Convert.ToDecimal(itemDT["Quantity"])).ToString("0.00");
                                                         }
                                                         else if (dt.AsEnumerable().Count() >= i)
                                                         {
@@ -819,13 +789,12 @@ namespace POSSystem
                                                         }
                                                     }
                                                 }
-                                                //}
                                             }
                                         }
                                     }
                                 }
                             }
-                            dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
+                            //dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
                             if (dt.AsEnumerable().Count() > Convert.ToInt32(dtCount))
                                 dt = ScanCodeFunction(dt);
 
@@ -899,8 +868,8 @@ namespace POSSystem
                 }
                 using (StreamWriter sw = File.AppendText(filepath))
                 {
-                    string error = "Log Written Date:" + " " + DateTime.Now.ToString() + line + "File Name :" + errorFileName + line + "Error Line No :" + " " + ErrorlineNo + line + "Error Message:" + " " + Errormsg + line + "Exception Type:" + " " + extype + line + "Error Location :" + " " + ErrorLocation + line + " Error Page Url:" + " " + exurl + line + "User Host IP:" + " " + hostIp + line;
-                    sw.WriteLine("-----------Exception Details on " + " " + DateTime.Now.ToString() + "-----------------");
+                    string error = "Log Written Date:" + " " + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt") + line + "File Name :" + errorFileName + line + "Error Line No :" + " " + ErrorlineNo + line + "Error Message:" + " " + Errormsg + line + "Exception Type:" + " " + extype + line + "Error Location :" + " " + ErrorLocation + line + " Error Page Url:" + " " + exurl + line + "User Host IP:" + " " + hostIp + line;
+                    sw.WriteLine("-----------Exception Details on " + " " + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt") + "-----------------");
                     sw.WriteLine("-------------------------------------------------------------------------------------");
                     sw.WriteLine(line);
                     sw.WriteLine(error);
@@ -908,7 +877,6 @@ namespace POSSystem
                     sw.WriteLine(line);
                     sw.Flush();
                     sw.Close();
-
                 }
             }
 
@@ -1073,7 +1041,7 @@ namespace POSSystem
                     string query1 = "select promotiongroup.ScanCode, promotiongroup.PromotionName,promotion.NewPrice,promotion.Quantity,promotion.PriceReduce  from promotiongroup inner join promotion on promotiongroup.promotionname =  promotion.promotionname  where promotiongroup.ScanCode = @_scancode and @datetime between promotion.StartDate and promotion.EndDate";
                     SqlCommand cmd1 = new SqlCommand(query1, con);
                     cmd1.Parameters.AddWithValue("@_scancode", _scancode);
-                    cmd1.Parameters.AddWithValue("@datetime", DateTime.Now.ToString("MM-dd-yyyy"));
+                    cmd1.Parameters.AddWithValue("@datetime", date);
                     SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
                     con.Open();
                     sda1.Fill(dt1);
@@ -1088,17 +1056,11 @@ namespace POSSystem
                                select dtRow).ToList();
 
                 int dtCount = dtWhere.Count();
-
+                int distCount = distrinctPromotionName.AsEnumerable().Count();
                 int qutCount = 0;
                 foreach (var item in distrinctPromotionName.AsEnumerable())
                 {
-                    //for (int i = 0; i < dt1.AsEnumerable().Count(); i++)
-                    //{
-                    //    if (item["PromotionName"].ToString() == dt1.Rows[i]["PromotionName"].ToString())
-                    //        qutCount = Convert.ToInt32(qutCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
-                    //}
-
-                    for (int j = 0; j < dt1.AsEnumerable().Count(); j++)
+                    for (int j = 0; j < distCount; j++)
                     {
                         for (int i = 0; i < dt.AsEnumerable().Count(); i++)
                         {
@@ -1152,21 +1114,15 @@ namespace POSSystem
                                             }
                                         }
                                     }
-
-
                                 }
                             }
                         }
                     }
                 }
-
                 if (dt.AsEnumerable().Count() > Convert.ToInt32(dtCount))
                     dt = ScanCodeFunction(dt);
             }
-
-
             JRDGrid.ItemsSource = dt.DefaultView;
-
             TotalEvent();
         }
 
@@ -1181,7 +1137,6 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-
                 SendErrorToText(ex, errorFileName);
             }
         }
@@ -1214,88 +1169,193 @@ namespace POSSystem
         public DataTable ScanCodeFunction(DataTable datatable)
         {
             SqlConnection con = new SqlConnection(conString);
-            //if (datatable) {
+            int index = datatable.AsEnumerable().Count();
 
-            //}
-            for (int i = 0; i < datatable.AsEnumerable().Count(); i++)
+            DataTable distrinctPromotionName = datatable.DefaultView.ToTable(true, "PromotionName");
+            int dtdCount;
+            foreach (var item in distrinctPromotionName.AsEnumerable())
             {
-                if (Convert.ToInt32(datatable.Rows[i]["Quantity"]) == 1)
+                dtdCount = 0;
+                var dtd = from _dt in datatable.AsEnumerable()
+                          where Convert.ToInt32(_dt.Field<int>("Quantity")) == 1
+                          && _dt.Field<string>("PromotionName") == item["PromotionName"].ToString()
+                          select _dt;
+
+                dtdCount = dtd.Count();
+
+                DataTable distrinctScanCode = datatable.DefaultView.ToTable(true, "ScanCode");
+
+                DataTable dt1 = new DataTable();
+                foreach (DataRow row in distrinctScanCode.AsEnumerable())
                 {
+                    string _scancode = row["ScanCode"].ToString();
+                    string query1 = "select promotiongroup.ScanCode, promotiongroup.PromotionName,promotion.NewPrice,promotion.Quantity,promotion.PriceReduce  from promotiongroup inner join promotion on promotiongroup.promotionname =  promotion.promotionname  where promotiongroup.ScanCode = @_scancode and @datetime between promotion.StartDate and promotion.EndDate";
+                    SqlCommand cmd1 = new SqlCommand(query1, con);
+                    cmd1.Parameters.AddWithValue("@_scancode", _scancode);
+                    cmd1.Parameters.AddWithValue("@datetime", date);
+                    SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
+                    con.Open();
+                    sda1.Fill(dt1);
+                    con.Close();
+                }
+                //int xyz = dtdCount / Convert.ToInt32(dt1.Rows[0]["Quantity"]);
+                int d = dtdCount;
+                for (int i = 0; i < dtdCount; i++)
+                {
+                    if (d >= dtdCount)
+                        d = d - Convert.ToInt32(dt1.Rows[0]["Quantity"]);
+                }
+
+                for (int i = 0; i <= d; i++)
+                {
+                    index = index - i;
                     DataTable dt2 = new DataTable();
-                    var sc = datatable.Rows[i]["ScanCode"].ToString();
-                    if (sc != "0")
+                    string query = "select UnitRetail,UnitRetail as Amount from Item inner join Department on item.Department=Department.Department where Scancode=@password ";
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@password", datatable.Rows[i]["ScanCode"].ToString());
+                    SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                    sda.Fill(dt2);
+                    if (dt2.AsEnumerable().Count() != 0)
                     {
-                        string query = "select UnitRetail,UnitRetail as Amount from Item inner join Department on item.Department=Department.Department where Scancode=@password ";
-                        SqlCommand cmd = new SqlCommand(query, con);
-                        cmd.Parameters.AddWithValue("@password", datatable.Rows[i]["ScanCode"].ToString());
-                        SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                        sda.Fill(dt2);
-                        if (dt2.AsEnumerable().Count() != 0)
-                        {
-                            datatable.Rows[i]["UnitRetail"] = dt2.Rows[0]["UnitRetail"];
-                            datatable.Rows[i]["Amount"] = dt2.Rows[0]["Amount"];
-                        }
-                    }
-                }
-            }
-
-            DataTable dt1 = new DataTable();
-            foreach (DataRow row in datatable.AsEnumerable())
-            {
-                string _scancode = row["ScanCode"].ToString();
-                string query1 = "select promotiongroup.ScanCode, promotiongroup.PromotionName,promotion.NewPrice,promotion.Quantity,promotion.PriceReduce  from promotiongroup inner join promotion on promotiongroup.promotionname =  promotion.promotionname  where promotiongroup.ScanCode = @_scancode and @datetime between promotion.StartDate and promotion.EndDate";
-                SqlCommand cmd1 = new SqlCommand(query1, con);
-                cmd1.Parameters.AddWithValue("@_scancode", _scancode);
-                cmd1.Parameters.AddWithValue("@datetime", DateTime.Now.ToString("MM-dd-yyyy"));
-                SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
-                sda1.Fill(dt1);
-            }
-            DataTable distrinctPromotionName = dt1.DefaultView.ToTable(true, "PromotionName");
-            foreach (DataRow distrinctRow in distrinctPromotionName.AsEnumerable())
-            {
-                int sumCount = 0;
-                for (int i = 0; i < dt1.AsEnumerable().Count(); i++)
-                {
-                    if (dt1.Rows[i]["PromotionName"].ToString() == distrinctRow["PromotionName"].ToString())
-                    {
-                        sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(datatable.Rows[i]["Quantity"]);
+                        datatable.Rows[index]["UnitRetail"] = dt2.Rows[0]["UnitRetail"];
+                        datatable.Rows[index]["Amount"] = dt2.Rows[0]["Amount"];
                     }
                 }
 
-                foreach (DataRow itemDT in datatable.AsEnumerable())
-                {
-                    foreach (DataRow itemDT1 in dt1.AsEnumerable())
-                    {
-                        if (itemDT1["PromotionName"].ToString() == distrinctRow["PromotionName"].ToString())
-                        {
-                            if (itemDT["ScanCode"].ToString() == itemDT1["ScanCode"].ToString())
-                            {
+                //for (int q = Convert.ToInt32(dt1.Rows[0]["Quantity"]); q >= xyz; q--)
+                //{
 
-                                //DataTable newDT = new DataTable();
-                                //string query = "select UnitRetail from Item inner join Department on item.Department=Department.Department where Scancode=@password ";
-                                //SqlCommand cmd = new SqlCommand(query, con);
-                                //cmd.Parameters.AddWithValue("@password", itemDT["ScanCode"].ToString());
-                                //SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                                //sda.Fill(newDT);
+                //}
 
-                                for (int i = 1; i <= sumCount; i++)
-                                    if (sumCount == Convert.ToInt32(itemDT1["Quantity"]) * i)
-                                    {
-                                        string price = "";
-                                        if (itemDT1["NewPrice"].ToString() != "")
-                                            price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Quantity"])).ToString();
-
-                                        if (price == "")
-                                            price = (Convert.ToDecimal(itemDT["Oprice"]) - (Convert.ToDecimal(itemDT["Oprice"]) * Convert.ToDecimal(itemDT1["PriceReduce"]) / 100)).ToString();
-
-                                        itemDT["UnitRetail"] = price;
-                                        itemDT["Amount"] = Convert.ToDecimal(itemDT["UnitRetail"]) * Convert.ToDecimal(itemDT["Quantity"]);
-                                    }
-                            }
-                        }
-                    }
-                }
             }
+
+
+
+
+            //for (int i = 0; i < datatable.AsEnumerable().Count(); i++)
+            //{
+            //    if (Convert.ToInt32(datatable.Rows[i]["Quantity"]) == 1)
+            //    {
+            //        DataTable dt2 = new DataTable();
+            //        var sc = datatable.Rows[i]["ScanCode"].ToString();
+            //        if (sc != "0")
+            //        {
+            //            string query = "select UnitRetail,UnitRetail as Amount from Item inner join Department on item.Department=Department.Department where Scancode=@password ";
+            //            SqlCommand cmd = new SqlCommand(query, con);
+            //            cmd.Parameters.AddWithValue("@password", datatable.Rows[i]["ScanCode"].ToString());
+            //            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            //            sda.Fill(dt2);
+            //            if (dt2.AsEnumerable().Count() != 0)
+            //            {
+            //                datatable.Rows[i]["UnitRetail"] = dt2.Rows[0]["UnitRetail"];
+            //                datatable.Rows[i]["Amount"] = dt2.Rows[0]["Amount"];
+            //            }
+            //        }
+            //    }
+            //}
+
+
+            ////DataTable dt1 = new DataTable();
+            //foreach (DataRow row in datatable.AsEnumerable())
+            //{
+
+            //    string _scancode = row["ScanCode"].ToString();
+            //    string query1 = "select promotiongroup.ScanCode, promotiongroup.PromotionName,promotion.NewPrice,promotion.Quantity,promotion.PriceReduce  from promotiongroup inner join promotion on promotiongroup.promotionname =  promotion.promotionname  where promotiongroup.ScanCode = @_scancode and @datetime between promotion.StartDate and promotion.EndDate";
+            //    SqlCommand cmd1 = new SqlCommand(query1, con);
+            //    cmd1.Parameters.AddWithValue("@_scancode", _scancode);
+            //    cmd1.Parameters.AddWithValue("@datetime", date);
+            //    SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
+            //    con.Open();
+            //    sda1.Fill(dt1);
+            //    con.Close();
+            //}
+
+            //int distCount = distrinctPromotionName.AsEnumerable().Count();
+            //foreach (DataRow distrinctRow in distrinctPromotionName.AsEnumerable())
+            //{
+            //    int sumCount = 0;
+            //    for (int j = 0; j < distCount; j++)
+            //    {
+            //        for (int i = 0; i < datatable.AsEnumerable().Count(); i++)
+            //        {
+            //            if (dt1.Rows[j]["PromotionName"].ToString() == distrinctRow["PromotionName"].ToString())
+            //            {
+            //                if (dt1.Rows[j]["ScanCode"].ToString() == datatable.Rows[i]["ScanCode"].ToString())
+            //                {
+            //                    sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(datatable.Rows[i]["Quantity"]);
+            //                }
+            //            }
+            //        }
+            //    }
+
+            //    foreach (DataRow itemDT in datatable.AsEnumerable())
+            //    {
+            //        foreach (DataRow itemDT1 in dt1.AsEnumerable())
+            //        {
+            //            if (itemDT1["PromotionName"].ToString() == distrinctRow["PromotionName"].ToString())
+            //            {
+            //                if (itemDT["ScanCode"].ToString() == itemDT1["ScanCode"].ToString())
+            //                {
+            //                    for (int i = 1; i <= sumCount; i++)
+            //                        if (sumCount == Convert.ToInt32(itemDT1["Quantity"]) * i)
+            //                        {
+            //                            string price = "";
+            //                            if (itemDT1["NewPrice"].ToString() != "")
+            //                                price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Quantity"])).ToString();
+
+            //                            if (price == "")
+            //                                price = (Convert.ToDecimal(itemDT["Oprice"]) - (Convert.ToDecimal(itemDT["Oprice"]) * Convert.ToDecimal(itemDT1["PriceReduce"]) / 100)).ToString();
+
+            //                            itemDT["PromotionName"] = itemDT1["PromotionName"];
+            //                            itemDT["UnitRetail"] = price;
+            //                            itemDT["Amount"] = Convert.ToDecimal(itemDT["UnitRetail"]) * Convert.ToDecimal(itemDT["Quantity"]);
+            //                        }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+
+
+            //DataTable distrinctPromotionName = dt1.DefaultView.ToTable(true, "PromotionName");
+            //foreach (DataRow distrinctRow in distrinctPromotionName.AsEnumerable())
+            //{
+            //    int sumCount = 0;
+            //    for (int i = 0; i < dt1.AsEnumerable().Count(); i++)
+            //    {
+            //        if (dt1.Rows[i]["PromotionName"].ToString() == distrinctRow["PromotionName"].ToString())
+            //        {
+            //            sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(datatable.Rows[i]["Quantity"]);
+            //        }
+            //    }
+
+            //    foreach (DataRow itemDT in datatable.AsEnumerable())
+            //    {
+            //        foreach (DataRow itemDT1 in dt1.AsEnumerable())
+            //        {
+            //            if (itemDT1["PromotionName"].ToString() == distrinctRow["PromotionName"].ToString())
+            //            {
+            //                if (itemDT["ScanCode"].ToString() == itemDT1["ScanCode"].ToString())
+            //                {
+            //                    for (int i = 1; i <= sumCount; i++)
+            //                        if (sumCount == Convert.ToInt32(itemDT1["Quantity"]) * i)
+            //                        {
+            //                            string price = "";
+            //                            if (itemDT1["NewPrice"].ToString() != "")
+            //                                price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Quantity"])).ToString();
+
+            //                            if (price == "")
+            //                                price = (Convert.ToDecimal(itemDT["Oprice"]) - (Convert.ToDecimal(itemDT["Oprice"]) * Convert.ToDecimal(itemDT1["PriceReduce"]) / 100)).ToString();
+
+            //                            itemDT["PromotionName"] = itemDT1["PromotionName"];
+            //                            itemDT["UnitRetail"] = price;
+            //                            itemDT["Amount"] = Convert.ToDecimal(itemDT["UnitRetail"]) * Convert.ToDecimal(itemDT["Quantity"]);
+            //                        }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
             return datatable;
         }
 
@@ -1345,7 +1405,7 @@ namespace POSSystem
                 button.Click += new RoutedEventHandler(button_Click_Category_Description);
                 this.sp23.Children.Add(button);
             }
-            sp22.Children.Clear();
+            //sp22.Children.Clear();
             dtCatDescr = null;
         }
 
@@ -1355,7 +1415,7 @@ namespace POSSystem
             var tb = (TextBlock)btnContent.Content;
 
             SqlConnection con = new SqlConnection(conString);
-            string query = "select ScanCode,Description + ' ' + Category as Description,Rate as UnitRetail,Rate as TaxRate,@qty as Quantity,Rate as Amount from category where Description = @Description";
+            string query = "select Category.ScanCode,Category.Description,item.UnitRetail,Department.TaxRate,@qty as Quantity,item.UnitRetail as Amount  from Category join Item on Category.scancode = Item.scancode join Department on Item.Department = Department.Department where Item.Description = @Description";
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.Parameters.AddWithValue("@Description", tb.Text);
             cmd.Parameters.AddWithValue("@qty", 1);
@@ -1363,9 +1423,9 @@ namespace POSSystem
             con.Open();
             sda.Fill(dt);
             con.Close();
-
             JRDGrid.ItemsSource = dt.DefaultView;
-
+            sp23.Visibility = Visibility.Hidden;
+            sp22.Visibility = Visibility.Visible;
             TotalEvent();
         }
     }

@@ -48,7 +48,7 @@ namespace POSSystem
         {
             if (proid == "")
             {
-                string time = DateTime.Now.ToString();
+                string time = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt");
                 SqlConnection con = new SqlConnection(conString);
                 string queryI = "Insert into Promotion(PromotionName,Description,NewPrice,PriceReduce,Quantity,StartDate,EndDate,ScanData,EnterBy,EnterOn)Values(@promotionname,@description,@newprice,@pricereduce,@quantity,@startdate,@enddate,@scandata,@enterby,@enteron)";
                 SqlCommand cmdI = new SqlCommand(queryI, con);
@@ -77,7 +77,7 @@ namespace POSSystem
             }
             else
             {
-                string time = DateTime.Now.ToString();
+                string time = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt");
                 SqlConnection con = new SqlConnection(conString);
                 string queryI = "Update Promotion set PromotionName=@promotionname,Description=@description,NewPrice=@newprice,PriceReduce=@pricereduce,Quantity=@quantity,StartDate=@startdate,EndDate=@enddate,ScanData=@scandata,EnterBy=@enterby,EnterOn=@enteron where PromotionId =@id";
                 SqlCommand cmdI = new SqlCommand(queryI, con);

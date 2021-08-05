@@ -92,7 +92,7 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                var date = DateTime.Now.ToString("yyyy-MM-dd");
+                var date = DateTime.Now.ToString("yyyy/MM/dd");
                 string tenderQ = "Update tender set DayClose=@NowDate Where DayClose is null or DayClose=''";
                 SqlCommand tenderCMD = new SqlCommand(tenderQ, con);
                 tenderCMD.Parameters.AddWithValue("@NowDate", date);
@@ -126,7 +126,7 @@ namespace POSSystem
             con.Open();
             SqlCommand sql_cmnd = new SqlCommand("sp_DayClose", con);
             sql_cmnd.CommandType = CommandType.StoredProcedure;
-            sql_cmnd.Parameters.AddWithValue("@enterOn", SqlDbType.NVarChar).Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+            sql_cmnd.Parameters.AddWithValue("@enterOn", SqlDbType.NVarChar).Value = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
             sql_cmnd.Parameters.AddWithValue("@enterBy", SqlDbType.NVarChar).Value = username;
             sql_cmnd.ExecuteNonQuery();
             con.Close();
@@ -258,6 +258,15 @@ namespace POSSystem
 
         private void Category_Button_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                Category category = new Category();
+                category.Show();
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
 
         }
 
@@ -357,8 +366,8 @@ namespace POSSystem
                 }
                 using (StreamWriter sw = File.AppendText(filepath))
                 {
-                    string error = "Log Written Date:" + " " + DateTime.Now.ToString() + line + "File Name :" + errorFileName + line + "Error Line No :" + " " + ErrorlineNo + line + "Error Message:" + " " + Errormsg + line + "Exception Type:" + " " + extype + line + "Error Location :" + " " + ErrorLocation + line + " Error Page Url:" + " " + exurl + line + "User Host IP:" + " " + hostIp + line;
-                    sw.WriteLine("-----------Exception Details on " + " " + DateTime.Now.ToString() + "-----------------");
+                    string error = "Log Written Date:" + " " + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt") + line + "File Name :" + errorFileName + line + "Error Line No :" + " " + ErrorlineNo + line + "Error Message:" + " " + Errormsg + line + "Exception Type:" + " " + extype + line + "Error Location :" + " " + ErrorLocation + line + " Error Page Url:" + " " + exurl + line + "User Host IP:" + " " + hostIp + line;
+                    sw.WriteLine("-----------Exception Details on " + " " + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt") + "-----------------");
                     sw.WriteLine("-------------------------------------------------------------------------------------");
                     sw.WriteLine(line);
                     sw.WriteLine(error);

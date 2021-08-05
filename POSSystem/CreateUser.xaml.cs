@@ -66,7 +66,7 @@ namespace POSSystem
                 }
                 else
                 {
-                    string time = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
+                    string time = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt");
                     string queryI = "Insert into UserRegi(UserName,Password,CreateOn,RoleName)Values(@userName,@password,@time,@roleName)";
                     SqlCommand cmdI = new SqlCommand(queryI, con);
                     cmdI.Parameters.AddWithValue("@userName", txtUser.Text);
@@ -114,8 +114,8 @@ namespace POSSystem
                 }
                 using (StreamWriter sw = File.AppendText(filepath))
                 {
-                    string error = "Log Written Date:" + " " + DateTime.Now.ToString() + line + "File Name :" + errorFileName + line + "Error Line No :" + " " + ErrorlineNo + line + "Error Message:" + " " + Errormsg + line + "Exception Type:" + " " + extype + line + "Error Location :" + " " + ErrorLocation + line + " Error Page Url:" + " " + exurl + line + "User Host IP:" + " " + hostIp + line;
-                    sw.WriteLine("-----------Exception Details on " + " " + DateTime.Now.ToString() + "-----------------");
+                    string error = "Log Written Date:" + " " + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt") + line + "File Name :" + errorFileName + line + "Error Line No :" + " " + ErrorlineNo + line + "Error Message:" + " " + Errormsg + line + "Exception Type:" + " " + extype + line + "Error Location :" + " " + ErrorLocation + line + " Error Page Url:" + " " + exurl + line + "User Host IP:" + " " + hostIp + line;
+                    sw.WriteLine("-----------Exception Details on " + " " + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt") + "-----------------");
                     sw.WriteLine("-------------------------------------------------------------------------------------");
                     sw.WriteLine(line);
                     sw.WriteLine(error);

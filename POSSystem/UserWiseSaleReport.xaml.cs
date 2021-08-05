@@ -43,8 +43,8 @@ namespace POSSystem
                 SqlConnection con = new SqlConnection(conString);
                 string queryDG = "[dbo].[sp_UserWiseSaleReport] @startdate,@enddate";
                 SqlCommand cmdDG = new SqlCommand(queryDG, con);
-                cmdDG.Parameters.AddWithValue("@startdate", Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd"));
-                cmdDG.Parameters.AddWithValue("@enddate", Convert.ToDateTime(toDate).ToString("yyyy-MM-dd"));
+                cmdDG.Parameters.AddWithValue("@startdate", Convert.ToDateTime(fromDate).ToString("yyyy/MM/dd"));
+                cmdDG.Parameters.AddWithValue("@enddate", Convert.ToDateTime(toDate).ToString("yyyy/MM/dd"));
                 SqlDataAdapter sdaDG = new SqlDataAdapter(cmdDG);
                 DataTable dt = new DataTable();
                 con.Open();
@@ -111,8 +111,8 @@ namespace POSSystem
                 }
                 using (StreamWriter sw = File.AppendText(filepath))
                 {
-                    string error = "Log Written Date:" + " " + DateTime.Now.ToString() + line + "File Name :" + errorFileName + line + "Error Line No :" + " " + ErrorlineNo + line + "Error Message:" + " " + Errormsg + line + "Exception Type:" + " " + extype + line + "Error Location :" + " " + ErrorLocation + line + " Error Page Url:" + " " + exurl + line + "User Host IP:" + " " + hostIp + line;
-                    sw.WriteLine("-----------Exception Details on " + " " + DateTime.Now.ToString() + "-----------------");
+                    string error = "Log Written Date:" + " " + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt") + line + "File Name :" + errorFileName + line + "Error Line No :" + " " + ErrorlineNo + line + "Error Message:" + " " + Errormsg + line + "Exception Type:" + " " + extype + line + "Error Location :" + " " + ErrorLocation + line + " Error Page Url:" + " " + exurl + line + "User Host IP:" + " " + hostIp + line;
+                    sw.WriteLine("-----------Exception Details on " + " " + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt") + "-----------------");
                     sw.WriteLine("-------------------------------------------------------------------------------------");
                     sw.WriteLine(line);
                     sw.WriteLine(error);
