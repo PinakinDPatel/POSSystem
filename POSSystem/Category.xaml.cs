@@ -51,8 +51,8 @@ namespace POSSystem
                 sda.Fill(dt);
                 CategoryGrid.CanUserAddRows = false;
                 CategoryGrid.ItemsSource = dt.DefaultView;
-
-                string queryC = "Select * from AddCategory";
+                CbCategory.Items.Clear();
+                string queryC = "Select Category from AddCategory union all select description from Category where scancode is null";
                 SqlCommand cmdC = new SqlCommand(queryC, con);
                 SqlDataAdapter sdaC = new SqlDataAdapter(cmdC);
                 DataTable dtC = new DataTable();
@@ -62,6 +62,7 @@ namespace POSSystem
                 {
                     CbCategory.Items.Add(_dr["Category"].ToString());
                 }
+                
             }
             catch (Exception ex)
             {
@@ -76,40 +77,51 @@ namespace POSSystem
         {
             SqlConnection con = new SqlConnection(conString);
             string descr = "", rate = "";
-
-            string queryD = "Select Description from Item where Scancode = '" + TxtItem.Text + "'";
-            SqlCommand cmd = new SqlCommand(queryD, con);
-            SqlDataAdapter sda = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
-            sda.Fill(dt);
-
-            if (dt.AsEnumerable().Count() != 0)
-            {
-                descr = dt.Rows[0]["Description"].ToString();
-
-            }
-
             string time = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt");
-            string queryI = "Insert into Category(Category,ScanCode,Description,CreateOn,CreateBy)Values(@Category,@ScanCode,@Description,@time,@CreateBy)";
-            SqlCommand cmdI = new SqlCommand(queryI, con);
-            cmdI.Parameters.AddWithValue("@Category", CbCategory.Text);
-            cmdI.Parameters.AddWithValue("@ScanCode", TxtItem.Text);
-            cmdI.Parameters.AddWithValue("@Description", descr);
-            cmdI.Parameters.AddWithValue("@CreateBy", username);
-            cmdI.Parameters.AddWithValue("@time", time);
-            con.Open();
-            cmdI.ExecuteNonQuery();
-            con.Close();
-            TxtItem.Text = "";
-            CbCategory.Text = "";
 
-            string queryC = "Select * from Category";
-            SqlCommand cmdC = new SqlCommand(queryC, con);
-            SqlDataAdapter sdaC = new SqlDataAdapter(cmdC);
-            DataTable dtC = new DataTable();
-            sdaC.Fill(dtC);
-            CategoryGrid.CanUserAddRows = false;
-            CategoryGrid.ItemsSource = dtC.DefaultView;
+            if ((TxtItem.Text == "" || txtSubCate.Text == "") && CbCategory.Text != "")
+            {
+                if (TxtItem.Text != "")
+                {
+                    string queryD = "Select Description from Item where Scancode = '" + TxtItem.Text + "'";
+                    SqlCommand cmd = new SqlCommand(queryD, con);
+                    SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    sda.Fill(dt);
+
+                    if (dt.AsEnumerable().Count() != 0)
+                    {
+                        descr = dt.Rows[0]["Description"].ToString();
+                    }
+
+                    string queryI1 = "Insert into Category(Category,ScanCode,Description,CreateOn,CreateBy)Values(@Category,@ScanCode,@Description,@time,@CreateBy)";
+                    SqlCommand cmdI1 = new SqlCommand(queryI1, con);
+                    cmdI1.Parameters.AddWithValue("@Category", CbCategory.Text);
+                    cmdI1.Parameters.AddWithValue("@ScanCode", TxtItem.Text);
+                    cmdI1.Parameters.AddWithValue("@Description", descr);
+                    cmdI1.Parameters.AddWithValue("@CreateBy", username);
+                    cmdI1.Parameters.AddWithValue("@time", time);
+                    con.Open();
+                    cmdI1.ExecuteNonQuery();
+                    con.Close();
+                }
+                else
+                {
+                    string queryI = "Insert into Category(Category,Description,CreateOn,CreateBy)Values(@Category,@Description,@time,@CreateBy)";
+                    SqlCommand cmdI = new SqlCommand(queryI, con);
+                    cmdI.Parameters.AddWithValue("@Category", CbCategory.Text);
+                    cmdI.Parameters.AddWithValue("@Description", txtSubCate.Text);
+                    cmdI.Parameters.AddWithValue("@CreateBy", username);
+                    cmdI.Parameters.AddWithValue("@time", time);
+                    con.Open();
+                    cmdI.ExecuteNonQuery();
+                    con.Close();
+                }
+                CateGridView();
+            }
+            CbCategory.Text = "";
+            TxtItem.Text = "";
+            txtSubCate.Text = "";
         }
         private void btnAdd_Click_Category(object sender, RoutedEventArgs e)
         {
@@ -147,22 +159,15 @@ namespace POSSystem
         {
             SqlConnection con = new SqlConnection(conString);
             DataRowView row = (DataRowView)CategoryGrid.SelectedItem;
-
-            string query = "Delete from Category where Scancode =@ScanCode and Category = @Category";
+            
+            string query = "Delete from Category where Categoryid =@ScanCode";
             SqlCommand cmdI = new SqlCommand(query, con);
-            cmdI.Parameters.AddWithValue("@Category", row.Row.ItemArray[1]);
-            cmdI.Parameters.AddWithValue("@ScanCode", row.Row.ItemArray[2]);
+            cmdI.Parameters.AddWithValue("@ScanCode", row.Row.ItemArray[0]);
             con.Open();
             cmdI.ExecuteNonQuery();
             con.Close();
 
-            string queryD = "Select * from Category";
-            SqlCommand cmd = new SqlCommand(queryD, con);
-            SqlDataAdapter sda = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
-            sda.Fill(dt);
-            CategoryGrid.CanUserAddRows = false;
-            CategoryGrid.ItemsSource = dt.DefaultView;
+            CateGridView();
         }
 
         public static void SendErrorToText(Exception ex, string errorFileName)

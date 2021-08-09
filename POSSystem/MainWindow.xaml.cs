@@ -856,7 +856,7 @@ namespace POSSystem
                             //}
                             //dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
                             //if (dt.AsEnumerable().Count() > Convert.ToInt32(dtCount))
-                           
+
                             dt = ScanCodeFunction(dt, rowIndex);
 
                             JRDGrid.ItemsSource = dt.DefaultView;
@@ -1043,7 +1043,7 @@ namespace POSSystem
 
             sp22.Children.Clear();
             SqlConnection con = new SqlConnection(conString);
-            string queryS = "select category from category group by category";
+            string queryS = "select category from addcategory";
             SqlCommand cmd1 = new SqlCommand(queryS, con);
             SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
             DataTable dtCat = new DataTable();
@@ -1343,9 +1343,9 @@ namespace POSSystem
 
         public DataTable ScanCodeFunction(DataTable datatable, int rowindex)
         {
-           // datatable.DefaultView.Sort = "Quantity DESC,ScanCode";
-           // datatable = datatable.DefaultView.ToTable();
-            datatable.DefaultView.Sort = "ScanCode" ;
+            // datatable.DefaultView.Sort = "Quantity DESC,ScanCode";
+            // datatable = datatable.DefaultView.ToTable();
+            datatable.DefaultView.Sort = "ScanCode";
             datatable = datatable.DefaultView.ToTable();
             SqlConnection con = new SqlConnection(conString);
 
@@ -1532,7 +1532,7 @@ namespace POSSystem
                 //                        itemDT["PromotionName"] = itemDT1["PromotionName"];
                 //                        itemDT["UnitRetail"] = price;
                 //                        itemDT["Amount"] = Convert.ToDecimal(itemDT["UnitRetail"]) * Convert.ToDecimal(itemDT["Quantity"]);
-                                        
+
                 //                        DataRow newRow = dt.NewRow();
                 //                        newRow["ScanCode"] = dt.Rows[i]["ScanCode"];
                 //                        newRow["Description"] = dt.Rows[i]["Description"];
@@ -1599,28 +1599,38 @@ namespace POSSystem
                 button.Click += new RoutedEventHandler(button_Click_Category_Description);
                 this.sp23.Children.Add(button);
             }
-            //sp22.Children.Clear();
-            dtCatDescr = null;
         }
 
         void button_Click_Category_Description(object sender, RoutedEventArgs e)
         {
             var btnContent = sender as Button;
             var tb = (TextBlock)btnContent.Content;
-
             SqlConnection con = new SqlConnection(conString);
-            string query = "select Category.ScanCode,Category.Description,item.UnitRetail,Department.TaxRate,@qty as Quantity,item.UnitRetail as Amount  from Category join Item on Category.scancode = Item.scancode join Department on Item.Department = Department.Department where Item.Description = @Description";
-            SqlCommand cmd = new SqlCommand(query, con);
-            cmd.Parameters.AddWithValue("@Description", tb.Text);
-            cmd.Parameters.AddWithValue("@qty", 1);
-            SqlDataAdapter sda = new SqlDataAdapter(cmd);
-            con.Open();
-            sda.Fill(dt);
-            con.Close();
-            JRDGrid.ItemsSource = dt.DefaultView;
-            sp23.Visibility = Visibility.Hidden;
-            sp22.Visibility = Visibility.Visible;
-            TotalEvent();
+            string querya = "select CATEGORY  from Category  where Category = @Description";
+            SqlCommand cmda = new SqlCommand(querya, con);
+            cmda.Parameters.AddWithValue("@Description", tb.Text);
+            cmda.Parameters.AddWithValue("@qty", 1);
+            SqlDataAdapter sdaa = new SqlDataAdapter(cmda);
+            DataTable dta = new DataTable();
+            sdaa.Fill(dta);
+            int A = dta.Rows.Count;
+            if (A != 0)
+                button_Click_Category(sender, e);
+            else
+            {
+                string query = "select Category.ScanCode,Category.Description,item.UnitRetail,Department.TaxRate,@qty as Quantity,item.UnitRetail as Amount  from Category join Item on Category.scancode = Item.scancode join Department on Item.Department = Department.Department where Item.Description = @Description";
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@Description", tb.Text);
+                cmd.Parameters.AddWithValue("@qty", 1);
+                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                con.Open();
+                sda.Fill(dt);
+                con.Close();
+                JRDGrid.ItemsSource = dt.DefaultView;
+                sp23.Visibility = Visibility.Hidden;
+                sp22.Visibility = Visibility.Visible;
+                TotalEvent();
+            }
         }
     }
 }
