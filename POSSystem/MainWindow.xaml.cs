@@ -1087,23 +1087,26 @@ namespace POSSystem
                                 d = d - Convert.ToInt32(dt12.Rows[k]["Quantity"]);
                         }
 
-                        if (d == -1)
-                            d = 1;
-
-                        for (int i = 0; i < d; i++)
+                        if (d > 0)
                         {
-                            int j = i + 1;
-                            int ind = index - j;
-                            DataTable dt2 = new DataTable();
-                            string query = "select UnitRetail,UnitRetail as Amount from Item inner join Department on item.Department=Department.Department where Scancode=@password ";
-                            SqlCommand cmd = new SqlCommand(query, con);
-                            cmd.Parameters.AddWithValue("@password", dt.Rows[ind]["ScanCode"].ToString());
-                            SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                            sda.Fill(dt2);
-                            if (dt2.AsEnumerable().Count() != 0)
+                            if (d == -1)
+                                d = 1;
+
+                            for (int i = 0; i < d; i++)
                             {
-                                dt.Rows[ind]["UnitRetail"] = dt2.Rows[0]["UnitRetail"];
-                                dt.Rows[ind]["Amount"] = dt2.Rows[0]["Amount"];
+                                int j = i + 1;
+                                int ind = index - j;
+                                DataTable dt2 = new DataTable();
+                                string query = "select UnitRetail,UnitRetail as Amount from Item inner join Department on item.Department=Department.Department where Scancode=@password ";
+                                SqlCommand cmd = new SqlCommand(query, con);
+                                cmd.Parameters.AddWithValue("@password", dt.Rows[ind]["ScanCode"].ToString());
+                                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                                sda.Fill(dt2);
+                                if (dt2.AsEnumerable().Count() != 0)
+                                {
+                                    dt.Rows[ind]["UnitRetail"] = dt2.Rows[0]["UnitRetail"];
+                                    dt.Rows[ind]["Amount"] = dt2.Rows[0]["Amount"];
+                                }
                             }
                         }
                     }
