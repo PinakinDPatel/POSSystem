@@ -207,38 +207,46 @@ namespace POSSystem
                     sda.Fill(dt);
                     con.Close();
 
+                    int dCount = dt.AsEnumerable().Count() - 1;
 
-                    DataTable distrinctPromotion = dt.DefaultView.ToTable(true, "PROName");
-                    foreach (DataRow distinct in distrinctPromotion.AsEnumerable())
+                    if (dt.Rows[dCount]["PROName"].ToString() != "")
                     {
-                        int sumCount = (from row in dt.AsEnumerable()
-                                        where row.Field<string>("PROName") == distinct["PROName"].ToString()
-                                        select row).Sum(r => Convert.ToInt32(r.Field<string>("Quantity")));
-                        foreach (var itemdt in dt.AsEnumerable())
+                        DataTable distrinctPromotion = dt.DefaultView.ToTable(true, "PROName", "Qty", "NewPrice", "PriceReduce");
+
+                        foreach (DataRow distinct in distrinctPromotion.AsEnumerable())
                         {
-                            if (itemdt["PROName"].ToString() == distinct["PROName"].ToString())
+                            if (distinct["PROName"].ToString() != "")
                             {
-                                for (int i = 1; i <= dt.AsEnumerable().Count(); i++)
-                                    if (sumCount == Convert.ToInt32(itemdt["Qty"]) * i)
+                                int sumCount = (from row in dt.AsEnumerable()
+                                                where row.Field<string>("PROName") == distinct["PROName"].ToString()
+                                                select row).Sum(r => Convert.ToInt32(r.Field<string>("Quantity")));
+                                foreach (var itemdt in dt.AsEnumerable())
+                                {
+                                    if (itemdt["PROName"].ToString() == distinct["PROName"].ToString())
                                     {
-                                        string price = "";
-                                        if (itemdt["NewPrice"].ToString() != "")
-                                            price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString();
+                                        for (int i = 1; i <= dt.AsEnumerable().Count(); i++)
+                                            if (sumCount == Convert.ToInt32(distinct["Qty"]) * i)
+                                            {
+                                                string price = "";
+                                                if (itemdt["NewPrice"].ToString() != "")
+                                                    price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString();
 
-                                        if (price == "")
-                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - (Convert.ToDecimal(itemdt["Oprice"]) * Convert.ToDecimal(itemdt["PriceReduce"]) / 100)).ToString();
+                                                if (price == "")
+                                                    price = (Convert.ToDecimal(itemdt["Oprice"]) - (Convert.ToDecimal(itemdt["Oprice"]) * Convert.ToDecimal(itemdt["PriceReduce"]) / 100)).ToString();
 
-                                        itemdt["PromotionName"] = itemdt["PROName"];
-                                        itemdt["UnitRetail"] = price;
-                                        itemdt["Amount"] = Convert.ToDecimal(itemdt["UnitRetail"]) * Convert.ToDecimal(itemdt["Quantity"]);
+                                                itemdt["PromotionName"] = itemdt["PROName"];
+                                                itemdt["UnitRetail"] = price;
+                                                itemdt["Amount"] = Convert.ToDecimal(itemdt["UnitRetail"]) * Convert.ToDecimal(itemdt["Quantity"]);
+                                            }
                                     }
+                                }
                             }
                         }
                     }
-
                     JRDGrid.ItemsSource = dt.DefaultView;
                     JRDGrid.Items.Refresh();
                     TotalEvent();
+
                     textBox1.Text = "";
                 }
             }
@@ -681,32 +689,53 @@ namespace POSSystem
                                 var el = e.EditingElement as TextBox;
                                 DataRow dataRow = dt.Rows[rowIndex];
                                 dt.Rows[rowIndex]["Quantity"] = el.Text;
-
-                                int qDT = Convert.ToInt32(dt.Rows[rowIndex]["Quantity"]);
-                                int qDT1 = Convert.ToInt32(dt.Rows[rowIndex]["Qty"]);
-
-                                if (qDT >= qDT1)
+                                if (dt.Rows[rowIndex]["PROName"].ToString() != "")
                                 {
-                                    //int Q = qDT / qDT1;
-                                    int QA = qDT1 * (qDT / qDT1);
-                                    if (dt.Rows[rowIndex]["NewPrice"].ToString() != "")
+                                    int qDT = Convert.ToInt32(dt.Rows[rowIndex]["Quantity"]);
+                                    int qDT1 = Convert.ToInt32(dt.Rows[rowIndex]["Qty"]);
+
+                                    if (qDT >= qDT1)
                                     {
-                                        dt.Rows[rowIndex]["PromotionName"] = dt.Rows[rowIndex]["PROName"];
-                                        dt.Rows[rowIndex]["Quantity"] = QA;
-                                        dt.Rows[rowIndex]["UnitRetail"] = Convert.ToDecimal(dt.Rows[rowIndex]["NewPrice"]) / qDT1;
-                                        dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
+                                        //int Q = qDT / qDT1;
+                                        int QA = qDT1 * (qDT / qDT1);
+                                        if (dt.Rows[rowIndex]["NewPrice"].ToString() != "")
+                                        {
+                                            dt.Rows[rowIndex]["PromotionName"] = dt.Rows[rowIndex]["PROName"];
+                                            dt.Rows[rowIndex]["Quantity"] = QA;
+                                            dt.Rows[rowIndex]["UnitRetail"] = Convert.ToDecimal(dt.Rows[rowIndex]["NewPrice"]) / qDT1;
+                                            dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
+                                        }
+                                        else
+                                        {
+                                            dt.Rows[rowIndex]["PromotionName"] = dt.Rows[rowIndex]["PROName"];
+                                            dt.Rows[rowIndex]["Quantity"] = QA;
+                                            dt.Rows[rowIndex]["UnitRetail"] = Convert.ToDecimal(dt.Rows[rowIndex]["OPrice"]) - (Convert.ToDecimal(dt.Rows[rowIndex]["OPrice"]) * Convert.ToDecimal(dt.Rows[rowIndex]["PriceReduce"]) / 100);
+                                            dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
+                                        }
+                                        int QB = qDT - QA;
+                                        if (QB != 0)
+                                        {
+                                            for (int a = 0; a < QB; a++)
+                                            {
+                                                DataRow newRow = dt.NewRow();
+                                                newRow["ScanCode"] = dt.Rows[rowIndex]["ScanCode"];
+                                                newRow["Description"] = dt.Rows[rowIndex]["Description"];
+                                                newRow["Quantity"] = 1;
+                                                newRow["UnitRetail"] = dt.Rows[rowIndex]["OPrice"];
+                                                newRow["Amount"] = Convert.ToInt32(newRow["Quantity"]) * Convert.ToDecimal(newRow["UnitRetail"]);
+                                                newRow["OPrice"] = dt.Rows[rowIndex]["OPrice"];
+                                                newRow["TaxRate"] = dt.Rows[rowIndex]["TaxRate"];
+                                                newRow["PROName"] = dt.Rows[rowIndex]["PROName"];
+                                                newRow["Qty"] = dt.Rows[rowIndex]["Qty"];
+                                                newRow["NewPrice"] = dt.Rows[rowIndex]["NewPrice"];
+                                                newRow["PriceReduce"] = dt.Rows[rowIndex]["PriceReduce"];
+                                                dt.Rows.Add(newRow);
+                                            }
+                                        }
                                     }
                                     else
                                     {
-                                        dt.Rows[rowIndex]["PromotionName"] = dt.Rows[rowIndex]["PROName"];
-                                        dt.Rows[rowIndex]["Quantity"] = QA;
-                                        dt.Rows[rowIndex]["UnitRetail"] = Convert.ToDecimal(dt.Rows[rowIndex]["OPrice"]) - (Convert.ToDecimal(dt.Rows[rowIndex]["OPrice"]) * Convert.ToDecimal(dt.Rows[rowIndex]["PriceReduce"]) / 100);
-                                        dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
-                                    }
-                                    int QB = qDT - QA;
-                                    if (QB != 0)
-                                    {
-                                        for (int a = 0; a < QB; a++)
+                                        for (int a = 0; a < Convert.ToInt32(dt.Rows[rowIndex]["Quantity"]); a++)
                                         {
                                             DataRow newRow = dt.NewRow();
                                             newRow["ScanCode"] = dt.Rows[rowIndex]["ScanCode"];
@@ -720,12 +749,28 @@ namespace POSSystem
                                             newRow["Qty"] = dt.Rows[rowIndex]["Qty"];
                                             newRow["NewPrice"] = dt.Rows[rowIndex]["NewPrice"];
                                             newRow["PriceReduce"] = dt.Rows[rowIndex]["PriceReduce"];
+
                                             dt.Rows.Add(newRow);
                                         }
+                                        DataRow dr = dt.Rows[rowIndex];
+                                        dt.Rows.Remove(dr);
+                                        dt.AcceptChanges();
+
+
+                                    }
+                                    int intv = qDT1 * (qDT / qDT1);
+                                    decimal ab = qDT / qDT1;
+                                    decimal decv = Convert.ToDecimal(qDT1) * Convert.ToDecimal(qDT) / Convert.ToDecimal(qDT1);
+
+                                    if (intv < Convert.ToInt32(decv))
+                                    {
+                                        dt = ScanCodeFunction(dt, rowIndex);
                                     }
                                 }
-                                dt = ScanCodeFunction(dt, rowIndex);
-
+                                else
+                                {
+                                    dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
+                                }
                                 JRDGrid.ItemsSource = dt.DefaultView;
                                 TotalEvent();
                             }
@@ -959,112 +1004,16 @@ namespace POSSystem
             // Remove Record.
             DataGrid newGrid = new DataGrid();
             DataRowView row = (DataRowView)JRDGrid.SelectedItem;
+            string str = row["PromotionName"].ToString();
             dt.Rows.Remove(row.Row);
             dt.AcceptChanges();
             newGrid.ItemsSource = dt.DefaultView;
             dt = ((DataView)newGrid.ItemsSource).ToTable();
-
-            if (dt.AsEnumerable().Count() != 0)
+            if (str != "")
             {
-                DataTable dt1 = new DataTable();
-                foreach (DataRow row1 in dt.AsEnumerable())
+                if (dt.AsEnumerable().Count() != 0)
                 {
-                    string _scancode = row1["ScanCode"].ToString();
-                    string query1 = "select promotiongroup.ScanCode, promotiongroup.PromotionName,promotion.NewPrice,promotion.Quantity,promotion.PriceReduce  from promotiongroup inner join promotion on promotiongroup.promotionname =  promotion.promotionname  where promotiongroup.ScanCode = @_scancode and @datetime between promotion.StartDate and promotion.EndDate";
-                    SqlCommand cmd1 = new SqlCommand(query1, con);
-                    cmd1.Parameters.AddWithValue("@_scancode", _scancode);
-                    cmd1.Parameters.AddWithValue("@datetime", date);
-                    SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
-                    con.Open();
-                    sda1.Fill(dt1);
-                    con.Close();
-                }
-
-
-                DataTable distrinctPromotionName = dt1.DefaultView.ToTable(true, "PromotionName");
-
-                var dtWhere = (from dtRow in dt.AsEnumerable()
-                               where Convert.ToInt32(dtRow.Field<string>("Quantity")) > 1
-                               select dtRow).ToList();
-
-                int dtCount = dtWhere.Count();
-                int distCount = distrinctPromotionName.AsEnumerable().Count();
-                int qutCount = 0;
-                foreach (var item in distrinctPromotionName.AsEnumerable())
-                {
-                    for (int j = 0; j < distCount; j++)
-                    {
-                        for (int i = 0; i < dt.AsEnumerable().Count(); i++)
-                        {
-                            if (dt1.Rows[j]["PromotionName"].ToString() == item["PromotionName"].ToString())
-                            {
-                                if (dt1.Rows[j]["ScanCode"].ToString() == dt.Rows[i]["ScanCode"].ToString())
-                                {
-                                    qutCount = Convert.ToInt32(qutCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
-                                }
-                            }
-                        }
-                    }
-
-                    foreach (DataRow itemDT in dt.AsEnumerable())
-                    {
-                        foreach (DataRow itemDT1 in dt1.AsEnumerable())
-                        {
-                            if (item["PromotionName"].ToString() == itemDT1["PromotionName"].ToString())
-                            {
-                                if (itemDT["ScanCode"].ToString() == itemDT1["ScanCode"].ToString())
-                                {
-                                    decimal price = 0;
-
-
-                                    for (int i = 1; i <= qutCount; i++)
-                                    {
-                                        int z = Convert.ToInt32(itemDT["quantity"]) / Convert.ToInt32(itemDT1["Quantity"]);
-                                        if (Convert.ToInt32(itemDT["Quantity"]) > 1)
-                                        {
-                                            int j = i - 1;
-                                            if (Convert.ToInt32(qutCount) >= Convert.ToInt32(itemDT1["Quantity"]) * z && z > 0)
-                                            {
-                                                if (itemDT1["NewPrice"].ToString() != "")
-                                                {
-                                                    decimal price1 = z * Convert.ToDecimal(itemDT1["NewPrice"]);
-                                                    decimal price2 = (Convert.ToInt32(itemDT["quantity"]) - Convert.ToInt32(itemDT1["Quantity"]) * z) * Convert.ToDecimal(itemDT["Oprice"]);
-                                                    price = (price1 + price2) / Convert.ToInt32(itemDT["quantity"]);
-                                                }
-                                                else
-                                                {
-                                                    decimal price3 = z * Convert.ToInt32(itemDT1["Quantity"]) * (Convert.ToDecimal(itemDT["Oprice"]) - (Convert.ToDecimal(itemDT["Oprice"]) * Convert.ToDecimal(itemDT1["PriceReduce"]) / 100));
-                                                    decimal price4 = (Convert.ToInt32(itemDT["quantity"]) - Convert.ToInt32(itemDT1["Quantity"]) * z) * Convert.ToDecimal(itemDT["Oprice"]);
-                                                    price = (price3 + price4) / Convert.ToInt32(itemDT["quantity"]);
-                                                }
-                                                itemDT["UnitRetail"] = Convert.ToDecimal(price).ToString("0.00");
-                                                itemDT["Amount"] = Convert.ToDecimal(Convert.ToDecimal(price) * Convert.ToDecimal(itemDT["Quantity"])).ToString("0.00");
-                                            }
-                                            else if (dt.AsEnumerable().Count() >= i)
-                                            {
-                                                itemDT["UnitRetail"] = Convert.ToDecimal(itemDT["Oprice"]).ToString("0.00");
-                                                itemDT["Amount"] = Convert.ToDecimal(Convert.ToDecimal(itemDT["UnitRetail"]) * Convert.ToDecimal(itemDT["Quantity"])).ToString("0.00");
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (dt.AsEnumerable().Count() > Convert.ToInt32(dtCount))
-                {
-                    int index = dt.AsEnumerable().Count();
-                    int quCount = 0;
-
-                    foreach (var item in dt.AsEnumerable())
-                    {
-                        if (item["Quantity"].ToString() == "1")
-                            quCount++;
-                    }
-
-                    DataTable dt12 = new DataTable();
+                    DataTable dt1 = new DataTable();
                     foreach (DataRow row1 in dt.AsEnumerable())
                     {
                         string _scancode = row1["ScanCode"].ToString();
@@ -1074,103 +1023,203 @@ namespace POSSystem
                         cmd1.Parameters.AddWithValue("@datetime", date);
                         SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
                         con.Open();
-                        sda1.Fill(dt12);
+                        sda1.Fill(dt1);
                         con.Close();
                     }
 
-                    for (int k = 0; k < quCount; k++)
+
+                    DataTable distrinctPromotionName = dt1.DefaultView.ToTable(true, "PromotionName");
+
+                    var dtWhere = (from dtRow in dt.AsEnumerable()
+                                   where Convert.ToInt32(dtRow.Field<string>("Quantity")) > 1
+                                   select dtRow).ToList();
+
+                    int dtCount = dtWhere.Count();
+                    int distCount = distrinctPromotionName.AsEnumerable().Count();
+                    int qutCount = 0;
+                    foreach (var item in distrinctPromotionName.AsEnumerable())
                     {
-                        int d = quCount;
-                        for (int i = 0; i < quCount; i++)
+                        for (int j = 0; j < distCount; j++)
                         {
-                            if (d >= Convert.ToInt32(dt12.Rows[k]["Quantity"]))
-                                d = d - Convert.ToInt32(dt12.Rows[k]["Quantity"]);
+                            for (int i = 0; i < dt.AsEnumerable().Count(); i++)
+                            {
+                                if (dt1.Rows[j]["PromotionName"].ToString() == item["PromotionName"].ToString())
+                                {
+                                    if (dt1.Rows[j]["ScanCode"].ToString() == dt.Rows[i]["ScanCode"].ToString())
+                                    {
+                                        qutCount = Convert.ToInt32(qutCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
+                                    }
+                                }
+                            }
                         }
 
-                        if (d > 0)
+                        foreach (DataRow itemDT in dt.AsEnumerable())
                         {
-                            if (d == -1)
-                                d = 1;
-
-                            for (int i = 0; i < d; i++)
+                            foreach (DataRow itemDT1 in dt1.AsEnumerable())
                             {
-                                int j = i + 1;
-                                int ind = index - j;
-                                DataTable dt2 = new DataTable();
-                                string query = "select UnitRetail,UnitRetail as Amount from Item inner join Department on item.Department=Department.Department where Scancode=@password ";
-                                SqlCommand cmd = new SqlCommand(query, con);
-                                cmd.Parameters.AddWithValue("@password", dt.Rows[ind]["ScanCode"].ToString());
-                                SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                                sda.Fill(dt2);
-                                if (dt2.AsEnumerable().Count() != 0)
+                                if (item["PromotionName"].ToString() == itemDT1["PromotionName"].ToString())
                                 {
-                                    dt.Rows[ind]["UnitRetail"] = dt2.Rows[0]["UnitRetail"];
-                                    dt.Rows[ind]["Amount"] = dt2.Rows[0]["Amount"];
+                                    if (itemDT["ScanCode"].ToString() == itemDT1["ScanCode"].ToString())
+                                    {
+                                        decimal price = 0;
+
+
+                                        for (int i = 1; i <= qutCount; i++)
+                                        {
+                                            int z = Convert.ToInt32(itemDT["quantity"]) / Convert.ToInt32(itemDT1["Quantity"]);
+                                            if (Convert.ToInt32(itemDT["Quantity"]) > 1)
+                                            {
+                                                int j = i - 1;
+                                                if (Convert.ToInt32(qutCount) >= Convert.ToInt32(itemDT1["Quantity"]) * z && z > 0)
+                                                {
+                                                    if (itemDT1["NewPrice"].ToString() != "")
+                                                    {
+                                                        decimal price1 = z * Convert.ToDecimal(itemDT1["NewPrice"]);
+                                                        decimal price2 = (Convert.ToInt32(itemDT["quantity"]) - Convert.ToInt32(itemDT1["Quantity"]) * z) * Convert.ToDecimal(itemDT["Oprice"]);
+                                                        price = (price1 + price2) / Convert.ToInt32(itemDT["quantity"]);
+                                                    }
+                                                    else
+                                                    {
+                                                        decimal price3 = z * Convert.ToInt32(itemDT1["Quantity"]) * (Convert.ToDecimal(itemDT["Oprice"]) - (Convert.ToDecimal(itemDT["Oprice"]) * Convert.ToDecimal(itemDT1["PriceReduce"]) / 100));
+                                                        decimal price4 = (Convert.ToInt32(itemDT["quantity"]) - Convert.ToInt32(itemDT1["Quantity"]) * z) * Convert.ToDecimal(itemDT["Oprice"]);
+                                                        price = (price3 + price4) / Convert.ToInt32(itemDT["quantity"]);
+                                                    }
+                                                    itemDT["UnitRetail"] = Convert.ToDecimal(price).ToString("0.00");
+                                                    itemDT["Amount"] = Convert.ToDecimal(Convert.ToDecimal(price) * Convert.ToDecimal(itemDT["Quantity"])).ToString("0.00");
+                                                }
+                                                else if (dt.AsEnumerable().Count() >= i)
+                                                {
+                                                    itemDT["UnitRetail"] = Convert.ToDecimal(itemDT["Oprice"]).ToString("0.00");
+                                                    itemDT["Amount"] = Convert.ToDecimal(Convert.ToDecimal(itemDT["UnitRetail"]) * Convert.ToDecimal(itemDT["Quantity"])).ToString("0.00");
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
+
+                    if (dt.AsEnumerable().Count() > Convert.ToInt32(dtCount))
+                    {
+                        int index = dt.AsEnumerable().Count();
+                        int quCount = 0;
+
+                        foreach (var item in dt.AsEnumerable())
+                        {
+                            if (item["Quantity"].ToString() == "1")
+                                quCount++;
+                        }
+
+                        DataTable dt12 = new DataTable();
+                        foreach (DataRow row1 in dt.AsEnumerable())
+                        {
+                            string _scancode = row1["ScanCode"].ToString();
+                            string query1 = "select promotiongroup.ScanCode, promotiongroup.PromotionName,promotion.NewPrice,promotion.Quantity,promotion.PriceReduce  from promotiongroup inner join promotion on promotiongroup.promotionname =  promotion.promotionname  where promotiongroup.ScanCode = @_scancode and @datetime between promotion.StartDate and promotion.EndDate";
+                            SqlCommand cmd1 = new SqlCommand(query1, con);
+                            cmd1.Parameters.AddWithValue("@_scancode", _scancode);
+                            cmd1.Parameters.AddWithValue("@datetime", date);
+                            SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
+                            con.Open();
+                            sda1.Fill(dt12);
+                            con.Close();
+                        }
+
+                        for (int k = 0; k < quCount; k++)
+                        {
+                            int d = quCount;
+                            for (int i = 0; i < quCount; i++)
+                            {
+                                if (d >= Convert.ToInt32(dt12.Rows[k]["Quantity"]))
+                                    d = d - Convert.ToInt32(dt12.Rows[k]["Quantity"]);
+
+                            }
+
+                            if (d > 0)
+                            {
+                                if (d == -1)
+                                    d = 1;
+
+                                for (int i = 0; i < d; i++)
+                                {
+                                    int j = i + 1;
+                                    int ind = index - j;
+                                    DataTable dt2 = new DataTable();
+                                    string query = "select UnitRetail,UnitRetail as Amount from Item inner join Department on item.Department=Department.Department where Scancode=@password ";
+                                    SqlCommand cmd = new SqlCommand(query, con);
+                                    cmd.Parameters.AddWithValue("@password", dt.Rows[ind]["ScanCode"].ToString());
+                                    SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                                    sda.Fill(dt2);
+                                    if (dt2.AsEnumerable().Count() != 0)
+                                    {
+                                        dt.Rows[ind]["UnitRetail"] = dt2.Rows[0]["UnitRetail"];
+                                        dt.Rows[ind]["Amount"] = dt2.Rows[0]["Amount"];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    //if (dt.AsEnumerable().Count() > Convert.ToInt32(dtCount))
+                    //{
+                    //    int index = dt.AsEnumerable().Count();
+
+                    //    DataTable distrinctPromotionName1 = dt.DefaultView.ToTable(true, "PromotionName");
+                    //    int dtdCount;
+                    //    foreach (var item in distrinctPromotionName1.AsEnumerable())
+                    //    {
+                    //        dtdCount = 0;
+
+                    //        foreach (var item1 in dt.AsEnumerable())
+                    //        {
+                    //            if (item1["PromotionName"] == item["PromotionName"] && item1["Quantity"].ToString() == "1")
+                    //                dtdCount++;
+                    //        }
+
+                    //        DataTable distrinctScanCode = dt.DefaultView.ToTable(true, "ScanCode");
+
+                    //        DataTable dt12 = new DataTable();
+                    //        foreach (DataRow row1 in distrinctScanCode.AsEnumerable())
+                    //        {
+                    //            string _scancode = row1["ScanCode"].ToString();
+                    //            string query1 = "select promotiongroup.ScanCode, promotiongroup.PromotionName,promotion.NewPrice,promotion.Quantity,promotion.PriceReduce  from promotiongroup inner join promotion on promotiongroup.promotionname =  promotion.promotionname  where promotiongroup.ScanCode = @_scancode and @datetime between promotion.StartDate and promotion.EndDate";
+                    //            SqlCommand cmd1 = new SqlCommand(query1, con);
+                    //            cmd1.Parameters.AddWithValue("@_scancode", _scancode);
+                    //            cmd1.Parameters.AddWithValue("@datetime", date);
+                    //            SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
+                    //            con.Open();
+                    //            sda1.Fill(dt12);
+                    //            con.Close();
+
+                    //            int d = dtdCount;
+                    //            for (int i = 0; i < dtdCount; i++)
+                    //            {
+                    //                if (d >= Convert.ToInt32(dt12.Rows[0]["Quantity"]))
+                    //                    d = d - Convert.ToInt32(dt12.Rows[0]["Quantity"]);
+                    //            }
+
+                    //            if (d == -1)
+                    //                d = 1;
+
+                    //            for (int i = 0; i < d; i++)
+                    //            {
+                    //                int j = i + 1;
+                    //                int ind = index - j;
+                    //                DataTable dt2 = new DataTable();
+                    //                string query = "select UnitRetail,UnitRetail as Amount from Item inner join Department on item.Department=Department.Department where Scancode=@password ";
+                    //                SqlCommand cmd = new SqlCommand(query, con);
+                    //                cmd.Parameters.AddWithValue("@password", dt.Rows[i]["ScanCode"].ToString());
+                    //                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                    //                sda.Fill(dt2);
+                    //                if (dt2.AsEnumerable().Count() != 0)
+                    //                {
+                    //                    dt.Rows[ind]["UnitRetail"] = dt2.Rows[0]["UnitRetail"];
+                    //                    dt.Rows[ind]["Amount"] = dt2.Rows[0]["Amount"];
+                    //                }
+                    //            }
+                    //        }
+                    //    }
+                    //}
                 }
-                //if (dt.AsEnumerable().Count() > Convert.ToInt32(dtCount))
-                //{
-                //    int index = dt.AsEnumerable().Count();
-
-                //    DataTable distrinctPromotionName1 = dt.DefaultView.ToTable(true, "PromotionName");
-                //    int dtdCount;
-                //    foreach (var item in distrinctPromotionName1.AsEnumerable())
-                //    {
-                //        dtdCount = 0;
-
-                //        foreach (var item1 in dt.AsEnumerable())
-                //        {
-                //            if (item1["PromotionName"] == item["PromotionName"] && item1["Quantity"].ToString() == "1")
-                //                dtdCount++;
-                //        }
-
-                //        DataTable distrinctScanCode = dt.DefaultView.ToTable(true, "ScanCode");
-
-                //        DataTable dt12 = new DataTable();
-                //        foreach (DataRow row1 in distrinctScanCode.AsEnumerable())
-                //        {
-                //            string _scancode = row1["ScanCode"].ToString();
-                //            string query1 = "select promotiongroup.ScanCode, promotiongroup.PromotionName,promotion.NewPrice,promotion.Quantity,promotion.PriceReduce  from promotiongroup inner join promotion on promotiongroup.promotionname =  promotion.promotionname  where promotiongroup.ScanCode = @_scancode and @datetime between promotion.StartDate and promotion.EndDate";
-                //            SqlCommand cmd1 = new SqlCommand(query1, con);
-                //            cmd1.Parameters.AddWithValue("@_scancode", _scancode);
-                //            cmd1.Parameters.AddWithValue("@datetime", date);
-                //            SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
-                //            con.Open();
-                //            sda1.Fill(dt12);
-                //            con.Close();
-
-                //            int d = dtdCount;
-                //            for (int i = 0; i < dtdCount; i++)
-                //            {
-                //                if (d >= Convert.ToInt32(dt12.Rows[0]["Quantity"]))
-                //                    d = d - Convert.ToInt32(dt12.Rows[0]["Quantity"]);
-                //            }
-
-                //            if (d == -1)
-                //                d = 1;
-
-                //            for (int i = 0; i < d; i++)
-                //            {
-                //                int j = i + 1;
-                //                int ind = index - j;
-                //                DataTable dt2 = new DataTable();
-                //                string query = "select UnitRetail,UnitRetail as Amount from Item inner join Department on item.Department=Department.Department where Scancode=@password ";
-                //                SqlCommand cmd = new SqlCommand(query, con);
-                //                cmd.Parameters.AddWithValue("@password", dt.Rows[i]["ScanCode"].ToString());
-                //                SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                //                sda.Fill(dt2);
-                //                if (dt2.AsEnumerable().Count() != 0)
-                //                {
-                //                    dt.Rows[ind]["UnitRetail"] = dt2.Rows[0]["UnitRetail"];
-                //                    dt.Rows[ind]["Amount"] = dt2.Rows[0]["Amount"];
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
             }
             JRDGrid.ItemsSource = dt.DefaultView;
             TotalEvent();
@@ -1240,95 +1289,35 @@ namespace POSSystem
 
                 foreach (DataRow distrinctRow in distrinctPromotionName.AsEnumerable())
                 {
-                    int sumCount = 0;
-                    for (int j = 0; j < distrinctSCANCODE.AsEnumerable().Count(); j++)
+                    if (distrinctRow["PROName"].ToString() != "")
                     {
-                        for (int i = 0; i < datatable.Rows.Count; i++)
+                        int sumCount = 0;
+                        for (int j = 0; j < distrinctSCANCODE.AsEnumerable().Count(); j++)
                         {
-                            if (distrinctSCANCODE.Rows[j]["PROName"].ToString() == distrinctRow["PROName"].ToString())
+                            if (distrinctSCANCODE.Rows[j]["PROName"].ToString() != "")
                             {
-                                if (distrinctSCANCODE.Rows[j]["ScanCode"].ToString() == datatable.Rows[i]["ScanCode"].ToString())
+                                for (int i = 0; i < datatable.Rows.Count; i++)
                                 {
-                                    sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(datatable.Rows[i]["Quantity"]);
-                                    foreach (DataRow itemDT in datatable.AsEnumerable())
+                                    if (distrinctSCANCODE.Rows[j]["PROName"].ToString() == distrinctRow["PROName"].ToString())
                                     {
-                                        foreach (DataRow itemDT1 in distrinctSCANCODE.AsEnumerable())
+                                        if (distrinctSCANCODE.Rows[j]["ScanCode"].ToString() == datatable.Rows[i]["ScanCode"].ToString())
                                         {
-                                            if (itemDT1["PROName"].ToString() == distrinctRow["PROName"].ToString())
+                                            sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(datatable.Rows[i]["Quantity"]);
+                                            for (int K = 0; K < datatable.Rows.Count; K++)
+                                            //foreach (DataRow itemDT in datatable.AsEnumerable())
                                             {
-                                                if (datatable.Rows[i]["ScanCode"].ToString() == itemDT1["ScanCode"].ToString())
+                                                foreach (DataRow itemDT1 in distrinctSCANCODE.AsEnumerable())
                                                 {
-                                                    int Y = sumCount / Convert.ToInt32(itemDT1["Qty"]);
-                                                    for (int x = 1; x <= Y; x++)
+                                                    if (itemDT1["PROName"].ToString() == distrinctRow["PROName"].ToString())
                                                     {
-                                                        if (sumCount == Convert.ToInt32(itemDT1["Qty"]) * x)
+                                                        if (datatable.Rows[i]["ScanCode"].ToString() == itemDT1["ScanCode"].ToString())
                                                         {
-                                                            for (int z = 0; z <= i; z++)
+                                                            int Y = sumCount / Convert.ToInt32(itemDT1["Qty"]);
+                                                            for (int x = 1; x <= Y; x++)
                                                             {
-                                                                string price = "";
-                                                                if (itemDT1["NewPrice"].ToString() != "")
-                                                                    price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
-
-                                                                if (price == "")
-                                                                    price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) * Convert.ToDecimal(itemDT1["PriceReduce"]) / 100)).ToString();
-
-                                                                datatable.Rows[z]["PromotionName"] = itemDT1["PROName"];
-                                                                datatable.Rows[z]["UnitRetail"] = price;
-                                                                datatable.Rows[z]["Amount"] = Convert.ToDecimal(datatable.Rows[z]["UnitRetail"]) * Convert.ToDecimal(datatable.Rows[z]["Quantity"]);
-                                                            }
-
-                                                        }
-
-                                                        else if (sumCount > Convert.ToInt32(itemDT1["Qty"]) * x)
-                                                        {
-                                                            int q1 = sumCount - Convert.ToInt32(datatable.Rows[i]["Quantity"]);
-                                                            int oldqty = Convert.ToInt32(datatable.Rows[i]["Quantity"]);
-                                                            int q2 = Convert.ToInt32(itemDT1["Qty"]) - q1;
-                                                            int finalqty = oldqty - q2;
-                                                            if (datatable.Rows.Count == rowindex + 1)
-                                                            {
-                                                                for (int z = 0; z <= i; z++)
+                                                                if (sumCount == Convert.ToInt32(itemDT1["Qty"]) * x)
                                                                 {
-                                                                    if (z == i)
-                                                                    {
-                                                                        if (q2 > 0)
-                                                                        {
-                                                                            string price = "";
-                                                                            if (itemDT1["NewPrice"].ToString() != "")
-                                                                                price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
-
-                                                                            if (price == "")
-                                                                                price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) * Convert.ToDecimal(itemDT1["PriceReduce"]) / 100)).ToString();
-
-                                                                            datatable.Rows[z]["Quantity"] = q2;
-                                                                            datatable.Rows[z]["PromotionName"] = itemDT1["PROName"];
-                                                                            datatable.Rows[z]["UnitRetail"] = price;
-                                                                            datatable.Rows[z]["Amount"] = Convert.ToDecimal(datatable.Rows[z]["UnitRetail"]) * Convert.ToDecimal(datatable.Rows[z]["Quantity"]);
-
-                                                                            DataRow newRow = datatable.NewRow();
-                                                                            newRow["ScanCode"] = datatable.Rows[z]["ScanCode"];
-                                                                            newRow["Description"] = datatable.Rows[z]["Description"];
-                                                                            newRow["Quantity"] = oldqty - q2;
-                                                                            newRow["UnitRetail"] = datatable.Rows[z]["OPrice"];
-                                                                            newRow["Amount"] = Convert.ToInt32(newRow["Quantity"]) * Convert.ToDecimal(newRow["UnitRetail"]);
-                                                                            newRow["OPrice"] = datatable.Rows[z]["OPrice"];
-                                                                            newRow["TaxRate"] = datatable.Rows[z]["TaxRate"];
-                                                                            newRow["PROName"] = dt.Rows[z]["PROName"];
-                                                                            newRow["Qty"] = dt.Rows[z]["Qty"];
-                                                                            newRow["NewPrice"] = dt.Rows[z]["NewPrice"];
-                                                                            newRow["PriceReduce"] = dt.Rows[z]["PriceReduce"];
-                                                                            datatable.Rows.Add(newRow);
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            datatable.Rows[z]["UnitRetail"] = datatable.Rows[z]["OPrice"];
-                                                                            datatable.Rows[z]["Amount"] = Convert.ToDecimal(datatable.Rows[z]["UnitRetail"]) * Convert.ToDecimal(datatable.Rows[z]["Quantity"]);
-                                                                        }
-
-                                                                        //return datatable;
-
-                                                                    }
-                                                                    else
+                                                                    for (int z = 0; z <= i; z++)
                                                                     {
                                                                         string price = "";
                                                                         if (itemDT1["NewPrice"].ToString() != "")
@@ -1341,6 +1330,73 @@ namespace POSSystem
                                                                         datatable.Rows[z]["UnitRetail"] = price;
                                                                         datatable.Rows[z]["Amount"] = Convert.ToDecimal(datatable.Rows[z]["UnitRetail"]) * Convert.ToDecimal(datatable.Rows[z]["Quantity"]);
                                                                     }
+
+                                                                }
+
+                                                                else if (sumCount > Convert.ToInt32(itemDT1["Qty"]) * x)
+                                                                {
+                                                                    int q1 = sumCount - Convert.ToInt32(datatable.Rows[i]["Quantity"]);
+                                                                    int oldqty = Convert.ToInt32(datatable.Rows[i]["Quantity"]);
+                                                                    int q2 = Convert.ToInt32(itemDT1["Qty"]) - q1;
+                                                                    int finalqty = oldqty - q2;
+                                                                    if (datatable.Rows.Count == rowindex + 1)
+                                                                    {
+                                                                        for (int z = 0; z <= i; z++)
+                                                                        {
+                                                                            if (z == i)
+                                                                            {
+                                                                                if (q2 > 0)
+                                                                                {
+                                                                                    string price = "";
+                                                                                    if (itemDT1["NewPrice"].ToString() != "")
+                                                                                        price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
+
+                                                                                    if (price == "")
+                                                                                        price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) * Convert.ToDecimal(itemDT1["PriceReduce"]) / 100)).ToString();
+
+                                                                                    datatable.Rows[z]["Quantity"] = q2;
+                                                                                    datatable.Rows[z]["PromotionName"] = itemDT1["PROName"];
+                                                                                    datatable.Rows[z]["UnitRetail"] = price;
+                                                                                    datatable.Rows[z]["Amount"] = Convert.ToDecimal(datatable.Rows[z]["UnitRetail"]) * Convert.ToDecimal(datatable.Rows[z]["Quantity"]);
+
+                                                                                    DataRow newRow = datatable.NewRow();
+                                                                                    newRow["ScanCode"] = datatable.Rows[z]["ScanCode"];
+                                                                                    newRow["Description"] = datatable.Rows[z]["Description"];
+                                                                                    newRow["Quantity"] = oldqty - q2;
+                                                                                    newRow["UnitRetail"] = datatable.Rows[z]["OPrice"];
+                                                                                    newRow["Amount"] = Convert.ToInt32(newRow["Quantity"]) * Convert.ToDecimal(newRow["UnitRetail"]);
+                                                                                    newRow["OPrice"] = datatable.Rows[z]["OPrice"];
+                                                                                    newRow["TaxRate"] = datatable.Rows[z]["TaxRate"];
+                                                                                    newRow["PROName"] = dt.Rows[z]["PROName"];
+                                                                                    newRow["Qty"] = dt.Rows[z]["Qty"];
+                                                                                    newRow["NewPrice"] = dt.Rows[z]["NewPrice"];
+                                                                                    newRow["PriceReduce"] = dt.Rows[z]["PriceReduce"];
+                                                                                    datatable.Rows.Add(newRow);
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    datatable.Rows[z]["UnitRetail"] = datatable.Rows[z]["OPrice"];
+                                                                                    datatable.Rows[z]["Amount"] = Convert.ToDecimal(datatable.Rows[z]["UnitRetail"]) * Convert.ToDecimal(datatable.Rows[z]["Quantity"]);
+                                                                                }
+
+                                                                                //return datatable;
+
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                string price = "";
+                                                                                if (itemDT1["NewPrice"].ToString() != "")
+                                                                                    price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
+
+                                                                                if (price == "")
+                                                                                    price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) * Convert.ToDecimal(itemDT1["PriceReduce"]) / 100)).ToString();
+
+                                                                                datatable.Rows[z]["PromotionName"] = itemDT1["PROName"];
+                                                                                datatable.Rows[z]["UnitRetail"] = price;
+                                                                                datatable.Rows[z]["Amount"] = Convert.ToDecimal(datatable.Rows[z]["UnitRetail"]) * Convert.ToDecimal(datatable.Rows[z]["Quantity"]);
+                                                                            }
+                                                                        }
+                                                                    }
                                                                 }
                                                             }
                                                         }
@@ -1350,53 +1406,52 @@ namespace POSSystem
                                         }
                                     }
                                 }
+
                             }
+
+
+                            //    }
+
+                            //foreach (DataRow itemDT in dt.AsEnumerable())
+                            //{
+                            //    foreach (DataRow itemDT1 in dt1.AsEnumerable())
+                            //    {
+                            //        if (itemDT1["PromotionName"].ToString() == distrinctRow["PromotionName"].ToString())
+                            //        {
+                            //            if (itemDT["ScanCode"].ToString() == itemDT1["ScanCode"].ToString())
+                            //            {
+                            //                int Y = sumCount / Convert.ToInt32(itemDT1["Quantity"]);
+                            //                for (int i = 1; i <= sumCount; i++)
+                            //                {
+                            //                    if (sumCount > Convert.ToInt32(itemDT1["Quantity"]) * i)
+                            //                    {
+                            //                        int q1 = sumCount - Convert.ToInt32(datatable.Rows[i]["Quantity"]);
+                            //                        int oldqty = Convert.ToInt32(datatable.Rows[i]["Quantity"]);
+                            //                        int q2 = Convert.ToInt32(itemDT1["Quantity"]) - q1;
+                            //                        int finalqty = oldqty - q2;
+
+
+                            //                        string price = "";
+                            //                        if (itemDT1["NewPrice"].ToString() != "")
+                            //                            price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Quantity"])).ToString();
+
+                            //                        if (price == "")
+                            //                            price = (Convert.ToDecimal(itemDT["Oprice"]) - (Convert.ToDecimal(itemDT["Oprice"]) * Convert.ToDecimal(itemDT1["PriceReduce"]) / 100)).ToString();
+                            //                        itemDT["Quantity"] = q2;
+                            //                        itemDT["PromotionName"] = itemDT1["PromotionName"];
+                            //                        itemDT["UnitRetail"] = price;
+                            //                        itemDT["Amount"] = Convert.ToDecimal(itemDT["UnitRetail"]) * Convert.ToDecimal(itemDT["Quantity"]);
+
+                            //                        DataRow newRow = dt.NewRow();
+                            //                        newRow["ScanCode"] = dt.Rows[i]["ScanCode"];
+                            //                        newRow["Description"] = dt.Rows[i]["Description"];
+                            //                        newRow["Quantity"] = oldqty - q2;
+                            //                        newRow["UnitRetail"] = dt.Rows[i]["OPrice"];
+                            //                        newRow["Amount"] = Convert.ToInt32(newRow["Quantity"]) * Convert.ToDecimal(newRow["UnitRetail"]);
+                            //                        newRow["OPrice"] = dt.Rows[i]["OPrice"];
+                            //                        newRow["TaxRate"] = dt.Rows[i]["TaxRate"];
+                            //                        dt.Rows.Add(newRow);
                         }
-
-
-
-
-                        //    }
-
-                        //foreach (DataRow itemDT in dt.AsEnumerable())
-                        //{
-                        //    foreach (DataRow itemDT1 in dt1.AsEnumerable())
-                        //    {
-                        //        if (itemDT1["PromotionName"].ToString() == distrinctRow["PromotionName"].ToString())
-                        //        {
-                        //            if (itemDT["ScanCode"].ToString() == itemDT1["ScanCode"].ToString())
-                        //            {
-                        //                int Y = sumCount / Convert.ToInt32(itemDT1["Quantity"]);
-                        //                for (int i = 1; i <= sumCount; i++)
-                        //                {
-                        //                    if (sumCount > Convert.ToInt32(itemDT1["Quantity"]) * i)
-                        //                    {
-                        //                        int q1 = sumCount - Convert.ToInt32(datatable.Rows[i]["Quantity"]);
-                        //                        int oldqty = Convert.ToInt32(datatable.Rows[i]["Quantity"]);
-                        //                        int q2 = Convert.ToInt32(itemDT1["Quantity"]) - q1;
-                        //                        int finalqty = oldqty - q2;
-
-
-                        //                        string price = "";
-                        //                        if (itemDT1["NewPrice"].ToString() != "")
-                        //                            price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Quantity"])).ToString();
-
-                        //                        if (price == "")
-                        //                            price = (Convert.ToDecimal(itemDT["Oprice"]) - (Convert.ToDecimal(itemDT["Oprice"]) * Convert.ToDecimal(itemDT1["PriceReduce"]) / 100)).ToString();
-                        //                        itemDT["Quantity"] = q2;
-                        //                        itemDT["PromotionName"] = itemDT1["PromotionName"];
-                        //                        itemDT["UnitRetail"] = price;
-                        //                        itemDT["Amount"] = Convert.ToDecimal(itemDT["UnitRetail"]) * Convert.ToDecimal(itemDT["Quantity"]);
-
-                        //                        DataRow newRow = dt.NewRow();
-                        //                        newRow["ScanCode"] = dt.Rows[i]["ScanCode"];
-                        //                        newRow["Description"] = dt.Rows[i]["Description"];
-                        //                        newRow["Quantity"] = oldqty - q2;
-                        //                        newRow["UnitRetail"] = dt.Rows[i]["OPrice"];
-                        //                        newRow["Amount"] = Convert.ToInt32(newRow["Quantity"]) * Convert.ToDecimal(newRow["UnitRetail"]);
-                        //                        newRow["OPrice"] = dt.Rows[i]["OPrice"];
-                        //                        newRow["TaxRate"] = dt.Rows[i]["TaxRate"];
-                        //                        dt.Rows.Add(newRow);
                     }
                 }
 
@@ -1488,5 +1543,21 @@ namespace POSSystem
                 TotalEvent();
             }
         }
+
+
+
+        public bool isDecimal(string value)
+        {
+            try
+            {
+                Decimal.Parse(value);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
     }
 }
