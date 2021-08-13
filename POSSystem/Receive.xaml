@@ -53,7 +53,7 @@
                     <Label Content="Receive :" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     <Label Content="Amount :" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     <Label Content="Comment :" Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                    <DatePicker Name="txtDate" Grid.Row="1" Grid.Column="1" FontSize="20" Margin="5,8,32,8"/>
+                    <DatePicker Name="txtDate" Grid.Row="1" Grid.Column="1" FontSize="20"  HorizontalAlignment="Left" Width="180" Height="35" Margin="5,5,5,5"/>
                     <ComboBox Name="cbReceive" ItemsSource="{Binding Name}"  Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Height="35" Width="180" Margin="5,5,5,5" Background="White"/>
                     <TextBox Name="txtAmount" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Width="180" Height="35" Margin="5,5,5,5"/>
                     <TextBox Name="txtcomment" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Width="180" Height="35" Margin="5,5,5,5"/>

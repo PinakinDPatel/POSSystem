@@ -41,7 +41,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Label Content="Department Name :-" HorizontalAlignment="Left"  VerticalAlignment="Bottom" FontSize="20"/>
+                <Label Content="Name :-" HorizontalAlignment="Left"  VerticalAlignment="Bottom" FontSize="20"/>
                 <TextBox Name="TxtDepartment" FontSize="20" Grid.Row="1" Margin="5">
                     <TextBox.Effect>
                         <DropShadowEffect BlurRadius="2" ShadowDepth="3"/>
@@ -49,7 +49,7 @@
                 </TextBox>
                 <Label Name="lblDeptId" Visibility="Hidden"></Label>
                 <Button Name="btnDeptSave" Content="Save" Foreground="White" Grid.Column="4" Grid.Row="1" Margin="5" FontSize="25" Click="Button_Click"/>
-                <Label Content="Department Code :-"  VerticalAlignment="Bottom" FontSize="20" Grid.Column="1" HorizontalAlignment="Left"/>
+                <Label Content="Code :-"  VerticalAlignment="Bottom" FontSize="20" Grid.Column="1" HorizontalAlignment="Left"/>
                 <TextBox x:Name="TxtDepartment_Code" FontSize="20" Grid.Column="1" Grid.Row="1" Margin="5">
                     <TextBox.Effect>
                         <DropShadowEffect BlurRadius="2" ShadowDepth="3"/>
@@ -60,7 +60,7 @@
                         <DropShadowEffect BlurRadius="2" ShadowDepth="3"/>
                     </TextBox.Effect>
                 </TextBox>
-                <Label Content="TaxRate :-" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" Grid.Column="2"/>
+                <Label Content="Tax Rate :-" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" Grid.Column="2"/>
                 <Label Content="Image :-" Grid.Column="3" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20"/>
                 <ComboBox Name="drpimg" FontSize="20" Grid.Row="1" Grid.Column="3" Margin="5">
                     <ComboBoxItem Content="Bread.jpg" />

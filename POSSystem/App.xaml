@@ -20,7 +20,7 @@
                     <DropShadowEffect BlurRadius="2" Color="#264f96" ShadowDepth="1"  />
                 </Setter.Value>
             </Setter>
-            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontSize" Value="19"/>
             <Setter Property="Foreground" Value="#FFBB7D33"/>
             <Setter Property="FontFamily" Value="Cambria"/>
         </Style>
