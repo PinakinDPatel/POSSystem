@@ -1036,7 +1036,7 @@ namespace POSSystem
 
             sp22.Children.Clear();
             SqlConnection con = new SqlConnection(conString);
-            string queryS = "select category from addcategory";
+            string queryS = "select category,CategoryImage from addcategory";
             SqlCommand cmd1 = new SqlCommand(queryS, con);
             SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
             DataTable dtCat = new DataTable();
@@ -1054,10 +1054,13 @@ namespace POSSystem
                 };
                 if (dtCat.Rows[i].ItemArray[0].ToString() != "")
                 {
-                    //var Path = System.AppDomain.CurrentDomain.BaseDirectory;
-                    var path = dtCat.Rows[i].ItemArray[0].ToString();
-                    //var fullpath = Path + "\\Image\\" + path;
-                    //button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
+                    var Path = System.AppDomain.CurrentDomain.BaseDirectory;
+                    var path = dtCat.Rows[i].ItemArray[1].ToString();
+                    if (path != "")
+                    {
+                        var fullpath = Path + "\\Image\\" + path;
+                        button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
+                    }
                 }
                 button.Foreground = new SolidColorBrush(Colors.White);
                 button.FontSize = 26;
@@ -1594,7 +1597,7 @@ namespace POSSystem
 
             sp23.Children.Clear();
             SqlConnection con = new SqlConnection(conString);
-            string queryS = "select Description from category where category = '" + tb.Text + "' ";
+            string queryS = "select Description,categoryimage from category where category = '" + tb.Text + "'";
             SqlCommand cmd1 = new SqlCommand(queryS, con);
             SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
             DataTable dtCatDescr = new DataTable();
@@ -1612,10 +1615,13 @@ namespace POSSystem
                 };
                 if (dtCatDescr.Rows[i].ItemArray[0].ToString() != "")
                 {
-                    //var Path = System.AppDomain.CurrentDomain.BaseDirectory;
-                    var path = dtCatDescr.Rows[i].ItemArray[0].ToString();
-                    //var fullpath = Path + "\\Image\\" + path;
-                    //button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
+                    var Path = System.AppDomain.CurrentDomain.BaseDirectory;
+                    var path = dtCatDescr.Rows[i].ItemArray[1].ToString();
+                    if (path != "")
+                    {
+                        var fullpath = Path + "\\Image\\" + path;
+                        button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
+                    }
                 }
                 button.Foreground = new SolidColorBrush(Colors.White);
                 button.FontSize = 26;

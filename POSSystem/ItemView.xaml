@@ -65,7 +65,7 @@
                     <!--<Button Name="btnClose" Content="X" Grid.Column="2" Height="30" Width="30" FontSize="30" FontFamily="Arial Black" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White" BorderBrush="White" Foreground="#FFF50929" FontWeight="Bold" Click="Button_Click"/>-->
                 </Grid>
             </Grid>
-            <Grid Grid.Row="1" Name="grdSecondPart"  >
+            <Grid Grid.Row="1" Name="grdSecondPart" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -90,7 +90,7 @@
                 <Button Name="btnSearch" Content="Search" Grid.Row="1" Grid.Column="4" Click="BtnSearch_Click_Search" FontSize="25" Margin="5"></Button>
                 <Button Name="btnExportCSV" Content="Export CSV" Click="BtnSearch_Click_ExportCSV"  Grid.Column="5" Grid.Row="1" FontSize="25" Margin="5"/>
             </Grid>
-            <Grid Name="grupload" Grid.Row="1"  Visibility="Hidden">
+            <Grid Name="grupload" Grid.Row="1" Visibility="Hidden" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition ></ColumnDefinition>
                     <ColumnDefinition ></ColumnDefinition>
@@ -100,28 +100,32 @@
                 <Grid.RowDefinitions>
                     <RowDefinition ></RowDefinition>
                     <RowDefinition ></RowDefinition>
+                    <RowDefinition ></RowDefinition>
+                    <RowDefinition ></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBox TextWrapping="Wrap" Name="FileNameTextBox" Grid.Column="1" Margin="20"/>
+                <TextBox TextWrapping="Wrap" Name="FileNameTextBox" Grid.Column="1" FontSize="20"/>
                 <Button x:Name="BrowseButton" Content="Browse a file" Click="BrowseButton_Click"   
-                 Grid.Column="2" Margin="20" />
-                <Button Name="btnsave" Content="Save" Grid.Column="2" Click="Button_Click_Save_ImportFile"  Margin="10,10,10,10" Visibility="Hidden"/>
+                 Grid.Column="2" FontSize="20" />
+                <Button Name="btnsave" Content="Save" Grid.Column="2" Click="Button_Click_Save_ImportFile" Visibility="Hidden"/>
             </Grid>
             <Grid Name="grdSecondPart2" Grid.Row="1" Grid.ColumnSpan="3" Visibility="Hidden">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition ></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Label Content="Fild" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="40"></Label>
-                <Label Content="Value" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="40"></Label>
-                <Border Name="cmb1Border"  Grid.Row="1">
-                    <ComboBox Name="cmbHeader" SelectionChanged="ComboBox_SelectionChanged_Field" Height="50" Width="350">
+                <Label Content="Field" VerticalAlignment="Center" HorizontalAlignment="Center" ></Label>
+                <Label Content="Value" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"></Label>
+                <Border Name="cmb1Border"  Grid.Row="1" Margin="5">
+                    <ComboBox Name="cmbHeader" SelectionChanged="ComboBox_SelectionChanged_Field" FontSize="16">
                         <ComboBoxItem Name="cbi1">ItemCode</ComboBoxItem>
                         <ComboBoxItem Name="cbi2">ScanCode</ComboBoxItem>
                         <ComboBoxItem Name="cbi3">Description</ComboBoxItem>
@@ -138,9 +142,8 @@
                         <ComboBoxItem Name="cbi14">MessureIn</ComboBoxItem>
                     </ComboBox>
                 </Border>
-                <TextBox Name="txtChangeValue" Grid.Column="1" Grid.Row="1"  BorderThickness="2" TextChanged="textBox_TextChanged_Value" Height="50" Width="350"></TextBox>
-                <Button Name="btnChangeValue" Content="Change" Grid.Row="1" Grid.Column="2" Click="BtnSearch_Click_ChangeValue" Height="50" Width="350"/>
-
+                <TextBox Name="txtChangeValue" Margin="5" Grid.Column="1" Grid.Row="1"  BorderThickness="2" FontSize="16" TextChanged="textBox_TextChanged_Value" ></TextBox>
+                <Button Name="btnChangeValue" Content="Change" Margin="5" FontSize="20" Grid.Row="1" Grid.Column="2" Click="BtnSearch_Click_ChangeValue"/>
             </Grid>
 
             <DataGrid Name="dgitem" Grid.Row="2" Grid.RowSpan="4" FontSize="18" AutoGenerateColumns="False" Background="{x:Null}" Margin="0,0,10,0">
