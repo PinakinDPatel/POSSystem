@@ -56,7 +56,6 @@ namespace POSSystem
                 {
                     SqlConnection con = new SqlConnection(conString);
                     int lbl = Convert.ToInt32(lblReceiveid.Content);
-                    string vt = "Receive";
                     string time = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt");
                     string query = "";
                     if (lbl == 0)
@@ -72,7 +71,7 @@ namespace POSSystem
                     cmdI.Parameters.AddWithValue("@expence", cbReceive.Text);
                     cmdI.Parameters.AddWithValue("@amount", txtAmount.Text);
                     cmdI.Parameters.AddWithValue("@comment", txtcomment.Text);
-                    cmdI.Parameters.AddWithValue("@voucherType", vt);
+                    cmdI.Parameters.AddWithValue("@voucherType", cbType.Text);
                     cmdI.Parameters.AddWithValue("@time", time);
                     cmdI.Parameters.AddWithValue("@user", username);
                     con.Open();

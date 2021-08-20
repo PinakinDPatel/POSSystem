@@ -74,11 +74,15 @@ namespace POSSystem
                 string expQ = "Update Expence set shiftClose=@username Where shiftClose is null";
                 SqlCommand expCMD = new SqlCommand(expQ, con);
                 expCMD.Parameters.AddWithValue("@username", username);
+                string RECQ = "Update Recieve set shiftClose=@Now Where shiftClose is null";
+                SqlCommand RECCMD = new SqlCommand(RECQ, con);
+                RECCMD.Parameters.AddWithValue("@username", username);
                 con.Open();
                 tenderCMD.ExecuteNonQuery();
                 transCMD.ExecuteNonQuery();
                 itemCMD.ExecuteNonQuery();
                 expCMD.ExecuteNonQuery();
+                RECCMD.ExecuteNonQuery();
                 con.Close();
             }
             catch (Exception ex)
@@ -91,6 +95,7 @@ namespace POSSystem
         {
             try
             {
+                InsertQuery();
                 SqlConnection con = new SqlConnection(conString);
                 var date = DateTime.Now.ToString("yyyy/MM/dd");
                 string tenderQ = "Update tender set DayClose=@NowDate Where DayClose is null or DayClose=''";
@@ -102,17 +107,19 @@ namespace POSSystem
                 string itemQ = "Update SalesItem set DayClose=@Now Where DayClose is null or DayClose=''";
                 SqlCommand itemCMD = new SqlCommand(itemQ, con);
                 itemCMD.Parameters.AddWithValue("@Now", date);
-                //string expeQ = "Update SalesItem set DayClose=@Now Where DayClose is null";
-                //SqlCommand expCMD = new SqlCommand(expeQ, con);
-                //expCMD.Parameters.AddWithValue("@Now", date);
+                string expeQ = "Update Expence set DayClose=@Now Where DayClose is null";
+                SqlCommand expCMD = new SqlCommand(expeQ, con);
+                expCMD.Parameters.AddWithValue("@Now", date);
+                string RECQ = "Update Receive set DayClose=@Now Where DayClose is null";
+                SqlCommand RECCMD = new SqlCommand(RECQ, con);
+                RECCMD.Parameters.AddWithValue("@Now", date);
                 con.Open();
                 tenderCMD.ExecuteNonQuery();
                 transCMD.ExecuteNonQuery();
                 itemCMD.ExecuteNonQuery();
-                //expCMD.ExecuteNonQuery();
+                expCMD.ExecuteNonQuery();
+                RECCMD.ExecuteNonQuery();
                 con.Close();
-                InsertQuery();
-
             }
             catch (Exception ex)
             {

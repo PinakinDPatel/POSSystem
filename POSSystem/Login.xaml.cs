@@ -3,10 +3,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Navigation;
 using System.Configuration;
 using System.IO;
-using System.Security.Permissions;
 using System.Windows.Input;
 using System.Deployment.Application;
 using System.Reflection;
@@ -178,5 +176,6 @@ namespace POSSystem
             {
             }
         }
+
     }
 }

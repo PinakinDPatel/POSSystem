@@ -144,7 +144,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition ></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <DataGrid Name="JRDGrid" AutoGenerateColumns="False"  HorizontalAlignment="Center" VerticalAlignment="Top" CanUserAddRows="False" Background="White" CellEditEnding="JRDGrid_CellEditEnding">
+                <DataGrid Name="JRDGrid" AutoGenerateColumns="False"  HorizontalAlignment="Center" VerticalAlignment="Top" CanUserAddRows="False" Background="White" SelectedCellsChanged="selectedCellsChanged" CellEditEnding="JRDGrid_CellEditEnding">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding Scancode}"  Header="ScanCode" Width="100*"  IsReadOnly="True"></DataGridTextColumn>
                         <DataGridTextColumn Binding="{Binding description}" Header="Description" Width="155*"  IsReadOnly="True"/>
@@ -309,7 +309,15 @@
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>
-                    <Button Content="Clear" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="3" Margin="5,5,5,5" Click="Button_Click_4">
+                    <Button Content="Clear" Grid.ColumnSpan="1" Grid.Column="1" Grid.Row="3" Margin="5,5,5,5" Click="Button_Click_4">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF955912"/>
+                                <GradientStop Color="#FFDAC3A7" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button Content="Enter" Grid.ColumnSpan="1" Grid.Column="2" Grid.Row="3" Margin="5,5,5,5" Click="Button_Click_Enter">
                         <Button.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="#FF955912"/>
