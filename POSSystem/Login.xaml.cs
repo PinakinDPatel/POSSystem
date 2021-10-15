@@ -11,15 +11,12 @@ using System.Reflection;
 
 namespace POSSystem
 {
-    /// <summary>
-    /// Interaction logic for Login.xaml
-    /// </summary>
-
     public partial class Login : Window
     {
         string ServerName = ConfigurationManager.AppSettings["ServerName"];
         string DBName = ConfigurationManager.AppSettings["DBName"];
         string conString = "";
+        string userConString = "Server=184.168.194.64; Database=POS_User; User ID = POS_User; Password=09#Prem#24; Trusted_Connection=false;MultipleActiveResultSets=true";
 
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "Login.cs";
@@ -33,8 +30,6 @@ namespace POSSystem
         {
             try
             {
-                conString = "Server=" + ServerName + ";Database=" + DBName + "; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
-                App.Current.Properties["ConString"] = conString;
                 TextBox tb = new TextBox();
                 InitializeComponent();
                 tb.KeyDown += new KeyEventHandler(OnKeyDownHandler);
@@ -93,10 +88,10 @@ namespace POSSystem
         {
             try
             {
-                SqlConnection con = new SqlConnection(conString);
+                //SqlConnection con = new SqlConnection(conString);
+                SqlConnection con = new SqlConnection(userConString);
                 string query = "select * from userregi where password=@password ";
                 SqlCommand cmd = new SqlCommand(query, con);
-
                 cmd.Parameters.AddWithValue("@password", TxtPassword.Text);
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
@@ -107,19 +102,24 @@ namespace POSSystem
 
                 if (dt.Rows.Count > 0)
                 {
-                    App.Current.Properties["username"] = dt.Rows[0]["UserName"].ToString();
+                    App.Current.Properties["username"] = dt.Rows[0]["Name"].ToString();
+                    App.Current.Properties["StoreId"] = dt.Rows[0]["StoreId"].ToString();
                     //App.Current.Properties["Role"] = dt.Rows[0]["RoleName"].ToString();
+                    var s = App.Current.Properties["StoreId"].ToString();
+                    if (App.Current.Properties["StoreId"].ToString() != "" || App.Current.Properties["StoreId"].ToString() != null)
+                    {
 
-                    //if (App.Current.Properties["Role"].ToString() == "Admin")
-                    //{
-                    MainWindow frm = new MainWindow();
-                    frm.Show();
-                    this.Close();
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show("Invalid Role.");
-                    //}
+                        conString = "Server=" + ServerName + ";Database=" + DBName + "; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+                        App.Current.Properties["ConString"] = conString;
+
+                        MainWindow frm = new MainWindow();
+                        frm.Show();
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please Insert StoreDetails.");
+                    }
                 }
                 else
                 {

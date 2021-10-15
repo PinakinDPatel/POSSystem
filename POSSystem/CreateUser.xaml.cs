@@ -26,6 +26,7 @@ namespace POSSystem
     {
         string conString = App.Current.Properties["ConString"].ToString();
         string username = App.Current.Properties["username"].ToString();
+        string StoreId = App.Current.Properties["StoreId"].ToString();
 
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "CreateUser.cs";
@@ -33,8 +34,10 @@ namespace POSSystem
         public CreateUser()
         {
             try
-            {
-                InitializeComponent();
+            {if (StoreId != "" || StoreId != null)
+                {
+                    InitializeComponent();
+                }
             }
             catch (Exception ex)
             {
@@ -49,8 +52,9 @@ namespace POSSystem
         {
             try
             {
-                SqlConnection con = new SqlConnection(conString);
-                string queryS = "Select UserName,PassWord from UserRegi where UserName=@userName or Password=@password";
+                string userConString = "Server=184.168.194.64; Database=POS_User; User ID = POS_User; Password=09#Prem#24; Trusted_Connection=false;MultipleActiveResultSets=true";
+                SqlConnection con = new SqlConnection(userConString);
+                string queryS = "Select Name,PassWord from UserRegi where Name=@userName or Password=@password";
                 SqlCommand cmd = new SqlCommand(queryS, con);
                 cmd.Parameters.AddWithValue("@userName", txtUser.Text);
                 cmd.Parameters.AddWithValue("@password", txtPassword.Text);
@@ -66,12 +70,14 @@ namespace POSSystem
                 }
                 else
                 {
+                    
                     string time = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt");
-                    string queryI = "Insert into UserRegi(UserName,Password,CreateOn,RoleName)Values(@userName,@password,@time,@roleName)";
+                    string queryI = "Insert into UserRegi(Name,Password,CreateOn,StoreId,RoleName)Values(@userName,@password,@time,@storeId,@roleName)";
                     SqlCommand cmdI = new SqlCommand(queryI, con);
                     cmdI.Parameters.AddWithValue("@userName", txtUser.Text);
                     cmdI.Parameters.AddWithValue("@password", txtPassword.Text);
                     cmdI.Parameters.AddWithValue("@time", time);
+                    cmdI.Parameters.AddWithValue("@storeId", StoreId);
                     cmdI.Parameters.AddWithValue("@roleName", txtRole.Text);
                     con.Open();
                     cmdI.ExecuteNonQuery();

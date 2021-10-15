@@ -5,7 +5,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Windows;
-
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace POSSystem
 {
@@ -16,6 +17,7 @@ namespace POSSystem
     {
         string conString = App.Current.Properties["ConString"].ToString();
         string username = App.Current.Properties["username"].ToString();
+
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "Item.cs";
 
@@ -24,6 +26,9 @@ namespace POSSystem
             try
             {
                 InitializeComponent();
+                TextBox tb = new TextBox();
+                tb.KeyDown += new KeyEventHandler(OnKeyDownHandler);
+                TxtScanCode.Focus();
                 lblusername.Content = username.ToString();
                 List<string> cmbList = new List<string>();
                 SqlConnection con = new SqlConnection(conString);
@@ -44,6 +49,61 @@ namespace POSSystem
                 SendErrorToText(ex, errorFileName);
             }
         }
+
+        private void OnKeyDownHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter || e.Key == Key.Tab)
+            {
+                var code = TxtScanCode.Text;
+                var length = code.Length;
+                if (length == 12)
+                {
+                    code = code.Remove(code.Length - 1);
+                }
+                if (length == 8)
+                {
+                    var last = code.Substring(code.Length - 1);
+                    var first3 = code.Remove(code.Length - 5);
+                    var last5 = code.Substring(code.Length - 5);
+                    var second3 = last5.Remove(last5.Length - 2);
+                    if (Convert.ToInt32(last) == 0 || Convert.ToInt32(last) == 1 || Convert.ToInt32(last) == 2 || Convert.ToInt32(last) == 3 || Convert.ToInt32(last) == 4 || Convert.ToInt32(last) == 5)
+                    {
+                        code = first3 + 10000 + second3;
+                    }
+                    else
+                    {
+                        int num = 0;
+                        code = first3 + num + num + num + num + num + second3;
+                    }
+                }
+
+                SqlConnection con = new SqlConnection(conString);
+                string queryi = "select * from Item right outer join (select '" + code + "' as code)as x on item.ScanCode=x.code";
+                SqlCommand cmdi = new SqlCommand(queryi, con);
+                SqlDataAdapter sdai = new SqlDataAdapter(cmdi);
+                DataTable dti = new DataTable();
+                sdai.Fill(dti);
+                TxtScanCode.Text = dti.Rows[0].ItemArray[18].ToString();
+                TxtDescription.Text = dti.Rows[0].ItemArray[3].ToString();
+                drpDepartment.Text = dti.Rows[0].ItemArray[4].ToString();
+                TxtMenufacturer.Text = dti.Rows[0].ItemArray[5].ToString();
+                TxtUnitCase.Text = dti.Rows[0].ItemArray[9].ToString();
+                TxtCaseCost.Text = dti.Rows[0].ItemArray[10].ToString();
+                TxtUnitRetail.Text = dti.Rows[0].ItemArray[11].ToString();
+                TxtCashDiscount.Text = dti.Rows[0].ItemArray[12].ToString();
+                TxtMinAge.Text = dti.Rows[0].ItemArray[8].ToString();
+                TxtTaxRate.Text = dti.Rows[0].ItemArray[13].ToString();
+                int foodstamp;
+                if (dti.Rows[0].ItemArray[7].ToString() == "")
+                    foodstamp = 0;
+                else
+                    foodstamp = Convert.ToInt32(dti.Rows[0].ItemArray[7].ToString());
+                if (foodstamp == 1)
+                    TxtFoodStamp.IsChecked = true;
+                TxtPayee.Text = dti.Rows[0].ItemArray[6].ToString();
+            }
+
+        }
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -63,20 +123,43 @@ namespace POSSystem
                 con.Open();
                 if (dt.Rows.Count > 0)
                 {
-                    MessageBox.Show("ScanCode Already Exist!");
-                }
-
-                else
-                {
-                    string queryI = "Insert into item(ScanCode,Description,Department,Manufacturer,Payee,FoodStamp,UnitCase,CaseCost,UnitRetail,CaseDiscount,TaxRate,CreateBy,CreateOn)Values(@ScanCode,@Description,@Department,@Manufacturer,@Payee,@FoodStamp,@UnitCase,@CaseCost,@UnitRetail,@CaseDiscount,@TaxRate,@CreateBy,@CreateOn)";
+                    string queryI = "Update item set ScanCode=@ScanCode,Description=@Description,Department=@Department,MinAge=@MinAge,Manufacturer=@Manufacturer,Payee=@Payee,FoodStamp=@FoodStamp,UnitCase=@UnitCase,CaseCost=@CaseCost,UnitRetail=@UnitRetail,CaseDiscount=@CaseDiscount,TaxRate=@TaxRate,CreateBy=@CreateBy,CreateOn=@CreateOn where ScanCode=@ScanCode";
                     SqlCommand cmdI = new SqlCommand(queryI, con);
                     cmdI.Parameters.AddWithValue("@ScanCode", TxtScanCode.Text);
                     cmdI.Parameters.AddWithValue("@Description", TxtDescription.Text);
                     cmdI.Parameters.AddWithValue("@Department", drpDepartment.Text);
                     cmdI.Parameters.AddWithValue("@Manufacturer", TxtMenufacturer.Text);
                     cmdI.Parameters.AddWithValue("@Payee", TxtPayee.Text);
-                    cmdI.Parameters.AddWithValue("@FoodStamp", TxtFoodStamp.Text);
-                    //cmdI.Parameters.AddWithValue("@MinAge", TxtMinAge.Text);
+                    if (TxtFoodStamp.IsChecked == true)
+                        cmdI.Parameters.AddWithValue("@FoodStamp", 1);
+                    else
+                        cmdI.Parameters.AddWithValue("@FoodStamp", 0);
+                    cmdI.Parameters.AddWithValue("@MinAge", TxtMinAge.Text);
+                    cmdI.Parameters.AddWithValue("@UnitCase", TxtUnitCase.Text);
+                    cmdI.Parameters.AddWithValue("@CaseCost", TxtCaseCost.Text);
+                    cmdI.Parameters.AddWithValue("@UnitRetail", TxtUnitRetail.Text);
+                    cmdI.Parameters.AddWithValue("@CaseDiscount", TxtCashDiscount.Text);
+                    cmdI.Parameters.AddWithValue("@TaxRate", TxtTaxRate.Text);
+                    cmdI.Parameters.AddWithValue("@CreateBy", lblusername.Content);
+                    cmdI.Parameters.AddWithValue("@CreateOn", date);
+                    cmdI.ExecuteNonQuery();
+                    con.Close();
+                }
+
+                else
+                {
+                    string queryI = "Insert into item(ScanCode,Description,Department,Manufacturer,Payee,FoodStamp,UnitCase,CaseCost,UnitRetail,CaseDiscount,TaxRate,CreateBy,CreateOn,MinAge)Values(@ScanCode,@Description,@Department,@Manufacturer,@Payee,@FoodStamp,@UnitCase,@CaseCost,@UnitRetail,@CaseDiscount,@TaxRate,@CreateBy,@CreateOn,@MinAge)";
+                    SqlCommand cmdI = new SqlCommand(queryI, con);
+                    cmdI.Parameters.AddWithValue("@ScanCode", TxtScanCode.Text);
+                    cmdI.Parameters.AddWithValue("@Description", TxtDescription.Text);
+                    cmdI.Parameters.AddWithValue("@Department", drpDepartment.Text);
+                    cmdI.Parameters.AddWithValue("@Manufacturer", TxtMenufacturer.Text);
+                    cmdI.Parameters.AddWithValue("@Payee", TxtPayee.Text);
+                    if (TxtFoodStamp.IsChecked == true)
+                        cmdI.Parameters.AddWithValue("@FoodStamp", 1);
+                    else
+                        cmdI.Parameters.AddWithValue("@FoodStamp", 0);
+                    cmdI.Parameters.AddWithValue("@MinAge", TxtMinAge.Text);
                     cmdI.Parameters.AddWithValue("@UnitCase", TxtUnitCase.Text);
                     cmdI.Parameters.AddWithValue("@CaseCost", TxtCaseCost.Text);
                     cmdI.Parameters.AddWithValue("@UnitRetail", TxtUnitRetail.Text);
@@ -87,18 +170,20 @@ namespace POSSystem
                     cmdI.ExecuteNonQuery();
                     con.Close();
 
-                    TxtScanCode.Text = "";
-                    TxtDescription.Text = "";
-                    drpDepartment.Text = "";
-                    TxtMenufacturer.Text = "";
-                    TxtPayee.Text = "";
-                    TxtFoodStamp.Text = "";
-                    TxtUnitCase.Text = "";
-                    TxtCaseCost.Text = "";
-                    TxtUnitRetail.Text = "";
-                    TxtCashDiscount.Text = "";
-                    TxtTaxRate.Text = "";
+
                 }
+                TxtScanCode.Text = "";
+                TxtDescription.Text = "";
+                drpDepartment.Text = "";
+                TxtMenufacturer.Text = "";
+                TxtMinAge.Text = "";
+                TxtPayee.Text = "";
+                TxtFoodStamp.IsChecked = false;
+                TxtUnitCase.Text = "";
+                TxtCaseCost.Text = "";
+                TxtUnitRetail.Text = "";
+                TxtCashDiscount.Text = "";
+                TxtTaxRate.Text = "";
             }
             catch (Exception ex)
             {

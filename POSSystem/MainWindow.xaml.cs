@@ -76,7 +76,7 @@ namespace POSSystem
                     {
                         FontSize = 25,
                         Text = dtdep.Rows[i].ItemArray[0].ToString(),
-                        TextAlignment = TextAlignment.Center,
+                        TextAlignment = TextAlignment.Left,
                         TextWrapping = TextWrapping.Wrap
                     };
                     if (dtdep.Rows[i].ItemArray[2].ToString() != "")
@@ -86,12 +86,22 @@ namespace POSSystem
                         var fullpath = Path + "\\Image\\" + path;
                         button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
                     }
+                    button.Width = 200;
+                    button.Height = 200;
+                    button.HorizontalAlignment = HorizontalAlignment.Left;
+                    button.VerticalAlignment = VerticalAlignment.Top;
                     button.Foreground = new SolidColorBrush(Colors.White);
                     button.FontSize = 26;
                     button.FontWeight = FontWeights.Bold;
-                    button.Margin = new Thickness(5, 5, 5, 5);
+                    button.Margin = new Thickness(5);
+
                     string abc = dtdep.Rows[i].ItemArray[1].ToString();
                     button.Click += (sender, e) => { button_Click(sender, e, abc); };
+                    this.sp21.HorizontalAlignment = HorizontalAlignment.Left;
+                    this.sp21.VerticalAlignment = VerticalAlignment.Top;
+                    //ColumnDefinition cd = new ColumnDefinition();
+                    //cd.Width = GridLength.Auto;
+                    this.sp21.Columns = 4;
                     this.sp21.Children.Add(button);
                 }
 
@@ -197,9 +207,33 @@ namespace POSSystem
 
                 if (e.Key == Key.Enter || e.Key == Key.Tab)
                 {
+                    var code = textBox1.Text;
+                    var length = code.Length;
+                    if (length == 12)
+                    {
+                        code = code.Remove(code.Length - 1);
+                    }
+                    if (length == 8)
+                    {
+                        var last = code.Substring(code.Length - 1);
+                        var first3 = code.Remove(code.Length - 5);
+                        var last5 = code.Substring(code.Length - 5);
+                        var second3 = last5.Remove(last5.Length - 2);
+                        if (Convert.ToInt32(last) == 0|| Convert.ToInt32(last) == 1 || Convert.ToInt32(last) == 2 || Convert.ToInt32(last) == 3 || Convert.ToInt32(last) == 4 || Convert.ToInt32(last) == 5)
+                        {
+                            code = first3 + 10000 + second3;
+                        }
+                        else
+                        {
+                            int num = 0;
+                            code = first3 + num + num + num + num + num + second3;
+                        }
+                    }
+                    textBox1.Text = code;
+
                     string query = "select item.Scancode,item.Description,UnitRetail,1 as quantity,UnitRetail as Amount,Department.TaxRate,UnitRetail as Oprice,x.PromotionName AS PROName,x.Quantity as Qty,newprice,pricereduce from Item inner join Department on item.Department=Department.Department left join(select scancode, Promotion.promotionName, newprice, Quantity, pricereduce from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotionname where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate))as x on item.scancode = x.scancode where Item.Scancode=@password ";
                     SqlCommand cmd = new SqlCommand(query, con);
-                    cmd.Parameters.AddWithValue("@password", textBox1.Text);
+                    cmd.Parameters.AddWithValue("@password", code);
                     cmd.Parameters.AddWithValue("@qty", 1);
                     SqlDataAdapter sda = new SqlDataAdapter(cmd);
                     con.Open();
@@ -568,7 +602,7 @@ namespace POSSystem
                 DrawLine(underLine, largefont, Offset, 2);
 
                 Offset = Offset + largeinc;
-               
+
                 Offset = Offset + smallinc;
                 InsertHeaderStyleItem("Sub Total", "", txtTotal.Text, Offset);
                 Offset = Offset + smallinc;
@@ -724,7 +758,7 @@ namespace POSSystem
 
                                     if (qDT >= qDT1)
                                     {
-                                       
+
                                         int QA = qDT1 * (qDT / qDT1);
                                         if (dt.Rows[rowIndex]["NewPrice"].ToString() != "")
                                         {
@@ -762,13 +796,13 @@ namespace POSSystem
                                             }
                                         }
                                     }
-                               
+
                                     int intv = qDT1 * (qDT / qDT1);
                                     decimal ab = qDT / qDT1;
                                     decimal decv = Convert.ToDecimal(qDT1) * Convert.ToDecimal(qDT) / Convert.ToDecimal(qDT1);
 
                                     dt = ScanCodeFunction(dt, rowIndex);
-                                   
+
                                 }
                                 else
                                 {

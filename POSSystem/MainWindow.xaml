@@ -340,7 +340,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <UniformGrid Name="sp21" Grid.RowSpan="9" ></UniformGrid>
+                <UniformGrid Name="sp21" Grid.RowSpan="9"  ></UniformGrid>
                 <UniformGrid Name="sp22" Grid.RowSpan="9" ></UniformGrid>
                 <UniformGrid Name="sp23" Grid.RowSpan="9" ></UniformGrid>
                 <Grid Grid.Row="10">
