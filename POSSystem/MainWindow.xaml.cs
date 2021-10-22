@@ -215,18 +215,38 @@ namespace POSSystem
                     }
                     if (length == 8)
                     {
-                        var last = code.Substring(code.Length - 1);
+                        var last1 = code.Remove(code.Length - 1);
+                        var last2 = last1.Substring(last1.Length - 1);
                         var first3 = code.Remove(code.Length - 5);
+                        var first4 = code.Remove(code.Length - 4);
                         var last5 = code.Substring(code.Length - 5);
                         var second3 = last5.Remove(last5.Length - 2);
-                        if (Convert.ToInt32(last) == 0|| Convert.ToInt32(last) == 1 || Convert.ToInt32(last) == 2 || Convert.ToInt32(last) == 3 || Convert.ToInt32(last) == 4 || Convert.ToInt32(last) == 5)
+                        var last4 = code.Substring(code.Length - 4);
+                        var second2 = last4.Remove(last4.Length - 2);
+                        if (Convert.ToInt32(last2) == 0)
                         {
-                            code = first3 + 10000 + second3;
+                            code = first3 + "00000" + second3;
+                        }
+                        else if(Convert.ToInt32(last2) == 1)
+                        {
+                            code = first3 + "10000" + second3;
+                        }
+                        else if (Convert.ToInt32(last2) == 3)
+                        {
+                            code = first4 + "00000" + second2;
+                        }
+                        else if (Convert.ToInt32(last2) == 4)
+                        {
+                            code = code.Remove(code.Length - 3) + "00000" + code.Substring(code.Length - 3).Remove(code.Substring(code.Length - 3).Length - 2);
+                        }
+                        else if (Convert.ToInt32(last2) == 2)
+                        {
+                            code = first3 + "20000" + second3;
                         }
                         else
                         {
                             int num = 0;
-                            code = first3 + num + num + num + num + num + second3;
+                            code = code.Remove(code.Length - 2) + num + num + num + num + last2;
                         }
                     }
                     textBox1.Text = code;
