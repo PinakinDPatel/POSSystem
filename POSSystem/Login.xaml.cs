@@ -109,7 +109,7 @@ namespace POSSystem
                     if (App.Current.Properties["StoreId"].ToString() != "" || App.Current.Properties["StoreId"].ToString() != null)
                     {
 
-                        conString = "Server=" + ServerName + ";Database=" + DBName + "; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+                        conString = "Server=" + ServerName + ";Database=" + DBName + "; User ID=pinakin;Password=POS123456; Trusted_Connection=false;MultipleActiveResultSets=true";
                         App.Current.Properties["ConString"] = conString;
 
                         MainWindow frm = new MainWindow();

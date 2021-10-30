@@ -104,9 +104,9 @@ namespace POSSystem
                 DataTable dti = new DataTable();
                 sdai.Fill(dti);
                 TxtScanCode.Text = dti.Rows[0].ItemArray[18].ToString();
-                TxtDescription.Text = dti.Rows[0].ItemArray[3].ToString();
-                drpDepartment.Text = dti.Rows[0].ItemArray[4].ToString();
-                TxtMenufacturer.Text = dti.Rows[0].ItemArray[5].ToString();
+                TxtDescription.Text = dti.Rows[0].ItemArray[3].ToString().Trim();
+                drpDepartment.Text = dti.Rows[0].ItemArray[4].ToString().Trim();
+                TxtMenufacturer.Text = dti.Rows[0].ItemArray[5].ToString().Trim();
                 TxtUnitCase.Text = dti.Rows[0].ItemArray[9].ToString();
                 TxtCaseCost.Text = dti.Rows[0].ItemArray[10].ToString();
                 TxtUnitRetail.Text = dti.Rows[0].ItemArray[11].ToString();
@@ -120,7 +120,7 @@ namespace POSSystem
                     foodstamp = Convert.ToInt32(dti.Rows[0].ItemArray[7].ToString());
                 if (foodstamp == 1)
                     TxtFoodStamp.IsChecked = true;
-                TxtPayee.Text = dti.Rows[0].ItemArray[6].ToString();
+                TxtPayee.Text = dti.Rows[0].ItemArray[6].ToString().Trim();
             }
 
         }

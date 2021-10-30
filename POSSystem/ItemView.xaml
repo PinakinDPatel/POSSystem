@@ -146,7 +146,7 @@
                 <Button Name="btnChangeValue" Content="Change" Margin="5" FontSize="20" Grid.Row="1" Grid.Column="2" Click="BtnSearch_Click_ChangeValue"/>
             </Grid>
 
-            <DataGrid Name="dgitem" Grid.Row="2" Grid.RowSpan="4" FontSize="18" AutoGenerateColumns="False" Background="{x:Null}" Margin="0,0,10,0">
+            <DataGrid Name="dgitem" Grid.Row="2" Grid.RowSpan="4" FontSize="18" AutoGenerateColumns="False" Background="{x:Null}" Margin="0,0,10,0" SelectionChanged="Dgitem_SelectionChanged">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding ScanCode}" Header="ScanCode" Width="120*"/>
                     <DataGridTextColumn Binding="{Binding Description}" ClipboardContentBinding="{x:Null}" Header="Description" Width="200*"/>

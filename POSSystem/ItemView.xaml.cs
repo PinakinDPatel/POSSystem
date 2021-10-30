@@ -244,6 +244,18 @@ namespace POSSystem
                 SendErrorToText(ex3, errorFileName);
             }
         }
+        public static void trimData(DataTable dt)
+        {
+            foreach (DataColumn c in dt.Columns)
+                if (c.DataType == typeof(string))
+                    foreach (DataRow r in dt.Rows)
+                        try
+                        {
+                            r[c.ColumnName] = r[c.ColumnName].ToString().Trim();
+                        }
+                        catch
+                        { }
+        }
 
         private void Button_Click_Save_ImportFile(object sender, RoutedEventArgs e)
         {
@@ -282,6 +294,7 @@ namespace POSSystem
                         item["UnitRetail"] = item["UnitRetail"].ToString().Split('$')[1];
                     }
                 }
+                trimData(dt);
 
                 var bulk = new BulkOperations();
                 SqlConnection conn = new SqlConnection(conString);
@@ -349,7 +362,7 @@ namespace POSSystem
                 }
                 if (txtDescription.Text != "")
                 {
-                    string commandText = "SELECT* FROM Item WHERE Description = @Description";
+                    string commandText = "SELECT* FROM Item WHERE trim(Description) = @Description";
                     SqlConnection connection = new SqlConnection(conString);
                     SqlCommand command = new SqlCommand(commandText, connection);
                     command.Parameters.AddWithValue("@Description", txtDescription.Text);
@@ -360,7 +373,7 @@ namespace POSSystem
                 }
                 if (txtDepartment.Text != "")
                 {
-                    string commandText = "SELECT* FROM Item WHERE Department = @Department";
+                    string commandText = "SELECT* FROM Item WHERE trim(Department) = @Department";
                     SqlConnection connection = new SqlConnection(conString);
                     SqlCommand command = new SqlCommand(commandText, connection);
                     command.Parameters.AddWithValue("@Department", txtDepartment.Text);
@@ -371,7 +384,7 @@ namespace POSSystem
                 }
                 if (txtPayee.Text != "")
                 {
-                    string commandText = "SELECT* FROM Item WHERE Payee = @Payee";
+                    string commandText = "SELECT* FROM Item WHERE trim(Payee) = @Payee";
                     SqlConnection connection = new SqlConnection(conString);
                     SqlCommand command = new SqlCommand(commandText, connection);
                     command.Parameters.AddWithValue("@Payee", txtPayee.Text);
@@ -405,6 +418,11 @@ namespace POSSystem
             AddExport.Visibility = Visibility.Visible;
             grdSecondPart2.Visibility = Visibility.Hidden;
             btnback.Visibility = Visibility.Hidden;
+        }
+
+        private void Dgitem_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
 
         private void BtnSearch_Click_ChangeValue(object sender, RoutedEventArgs e)

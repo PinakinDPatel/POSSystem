@@ -251,7 +251,7 @@ namespace POSSystem
                     }
                     textBox1.Text = code;
 
-                    string query = "select item.Scancode,item.Description,UnitRetail,1 as quantity,UnitRetail as Amount,Department.TaxRate,UnitRetail as Oprice,x.PromotionName AS PROName,x.Quantity as Qty,newprice,pricereduce from Item inner join Department on item.Department=Department.Department left join(select scancode, Promotion.promotionName, newprice, Quantity, pricereduce from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotionname where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate))as x on item.scancode = x.scancode where Item.Scancode=@password ";
+                    string query = "select item.Scancode,item.Description,UnitRetail,1 as quantity,UnitRetail as Amount,Department.TaxRate,UnitRetail as Oprice,x.PromotionName AS PROName,x.Quantity as Qty,newprice,pricereduce from Item inner join Department on trim(item.Department)=trim(Department.Department) left join(select scancode, Promotion.promotionName, newprice, Quantity, pricereduce from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotionname where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate))as x on item.scancode = x.scancode where Item.Scancode=@password ";
                     SqlCommand cmd = new SqlCommand(query, con);
                     cmd.Parameters.AddWithValue("@password", code);
                     cmd.Parameters.AddWithValue("@qty", 1);
@@ -315,7 +315,7 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                string query = "select item.Scancode,item.Description,UnitRetail,1 as quantity,UnitRetail as Amount,Department.TaxRate,UnitRetail as Oprice,x.PromotionName AS PROName,x.Quantity as Qty,newprice,pricereduce from Item inner join Department on item.Department=Department.Department left join(select scancode, Promotion.promotionName, newprice, Quantity, pricereduce from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotionname where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate))as x on item.scancode = x.scancode where Item.Scancode=@password ";
+                string query = "select item.Scancode,item.Description,UnitRetail,1 as quantity,UnitRetail as Amount,Department.TaxRate,UnitRetail as Oprice,x.PromotionName AS PROName,x.Quantity as Qty,newprice,pricereduce from Item inner join Department on trim(item.Department)=trim(Department.Department) left join(select scancode, Promotion.promotionName, newprice, Quantity, pricereduce from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotionname where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate))as x on item.scancode = x.scancode where Item.Scancode=@password ";
                 SqlCommand cmd = new SqlCommand(query, con);
                 cmd.Parameters.AddWithValue("@password", textBox1.Text);
                 cmd.Parameters.AddWithValue("@qty", 1);
