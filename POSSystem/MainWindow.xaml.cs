@@ -86,8 +86,8 @@ namespace POSSystem
                         var fullpath = Path + "\\Image\\" + path;
                         button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
                     }
-                    button.Width = 200;
-                    button.Height = 200;
+                    button.Width = 135;
+                    button.Height = 135;
                     button.HorizontalAlignment = HorizontalAlignment.Left;
                     button.VerticalAlignment = VerticalAlignment.Top;
                     button.Foreground = new SolidColorBrush(Colors.White);
