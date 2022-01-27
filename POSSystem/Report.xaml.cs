@@ -217,6 +217,11 @@ namespace POSSystem
             Expence E = new Expence();
             E.Show();
         }
+        private void BtnPurchase_Click(object sender, RoutedEventArgs e)
+        {
+            Purchase purchase = new Purchase();
+            purchase.Show();
+        }
 
         private void Button_Click_Shift_Close(object sender, RoutedEventArgs e)
         {

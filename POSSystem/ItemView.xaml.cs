@@ -215,8 +215,8 @@ namespace POSSystem
             {
                 var dropDown = new ComboBox()
                 {
-                    ItemsSource = new string[] { "Description", "ScanCode", "Quantity", "Department", "Manufacturer",
-                                             "UnitCase","CostAfterDiscount","Rate","UnitRetail","CaseDiscount","Payee","CaseCost"}
+                    ItemsSource = new string[] { "Description", "ScanCode", "Department", "Manufacturer","UnitCase","TaxRate",
+                        "UnitRetail","CaseDiscount","Payee","CaseCost","PriceGroup","FoodStamp","MinAge","MessureIn"}
                 };
                 dropDown.Name = e.Column.Header.ToString();
                 dropDown.SelectionChanged += new SelectionChangedEventHandler(ComboBox_SelectionChanged);
@@ -589,6 +589,7 @@ public class ItemModel
     public string CaseDiscount { get; set; }
     public string TaxRate { get; set; }
     public string MessureIn { get; set; }
+    public string PriceGroup { get; set; }
     public string StoreId { get; set; }
     public string CreateOn { get; set; }
     public string CreateBy { get; set; }

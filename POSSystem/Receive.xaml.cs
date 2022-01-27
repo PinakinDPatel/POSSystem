@@ -119,7 +119,7 @@ namespace POSSystem
                 dtDG.Reset();
                 var date = Convert.ToDateTime(txtDate.SelectedDate).ToString("yyyy/MM/dd");
                 SqlConnection con = new SqlConnection(conString);
-                string queryDG = "Select * from Receive where Date='" + date + "'";
+                string queryDG = "Select * from Receive where Convert(date,Date)=Convert(date,'" + date + "')";
                 SqlCommand cmdDG = new SqlCommand(queryDG, con);
                 SqlDataAdapter sdaDG = new SqlDataAdapter(cmdDG);
                 sdaDG.Fill(dtDG);

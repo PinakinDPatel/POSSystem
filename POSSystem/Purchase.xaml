@@ -1,0 +1,176 @@
+﻿<Window x:Class="POSSystem.Purchase"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:POSSystem"
+        mc:Ignorable="d"
+        Title="Purchase"  WindowState="Maximized" ShowInTaskbar="False" WindowStyle="None">
+    <Grid Background="#FFB28661">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="14*"/>
+            <RowDefinition Height="351*"/>
+        </Grid.RowDefinitions>
+        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Close_Click" >
+            <Button.Effect>
+                <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
+            </Button.Effect>
+            <Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>
+        </Button>
+        <Grid Grid.Row="1">
+            <Grid.Background>
+                <ImageBrush ImageSource="Image/background.jpg"/>
+            </Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="8*"/>
+                <RowDefinition Height="12*"/>
+                <RowDefinition Height="90*"/>
+            </Grid.RowDefinitions>
+            <Label Content="Purchase" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"></Label>
+            <Grid Name="gDate" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Date :" FontFamily="Arial Black" FontSize="16" HorizontalAlignment="right" Margin="0,7,0,0"/>
+                <DatePicker Name="txtDate" Grid.Column="1" FontSize="22" FontWeight="Bold" Width="180" Height="35" HorizontalAlignment="Left" SelectedDateChanged="TxtDate_SelectedDateChanged"/>
+                <Button Content="Go Back" Name="btnGoBack" Grid.Column="1" Grid.Row="1" Click="Button_Click_Goback" Width="130" HorizontalAlignment="Right" Margin="3" Visibility="Hidden"/>
+            </Grid>
+            <!--add button-->
+            <Grid Grid.Row="2" Name="add" Visibility="Visible">
+                <Button Name="addButton" Margin="0,0,20,0"  HorizontalAlignment="Right" Click="AddButton_Click" Background="{x:Null}">
+                    <Image Source="Image/Add2.png" Width="40" Height="40" Cursor="Hand"/>
+                    <Button.Effect>
+                        <DropShadowEffect BlurRadius="0" ShadowDepth="0" />
+                    </Button.Effect>
+                </Button>
+            </Grid>
+            <!--purchase entry-->
+            <Grid Grid.Row="2" Name="addpurchase" Visibility="Hidden">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="15*"/>
+                    <RowDefinition Height="20*"/>
+                </Grid.RowDefinitions>
+                <Label Content="" Name="lblPurchaseId" Visibility="Hidden"/>
+                
+                <Label Content="Vendor :" Grid.Column="0" FontFamily="Arial Black" FontSize="16" VerticalAlignment="Bottom"  Margin="5,0,0,0"/>
+                <ComboBox Name="cbVendor" Grid.Column="0" Grid.Row="1" Margin="2" Height="35" Width="180"/>
+                <Label Content="Invoice No :" Grid.Column="1" FontFamily="Arial Black" FontSize="16" VerticalAlignment="Bottom" Margin="5,0,0,0"/>
+                <TextBox Name="txtInvoiceno" Grid.Column="1" Grid.Row="1" Margin="2" Width="150" Height="35"/>
+                <Label Content="Amount :" Grid.Column="2" FontFamily="Arial Black" FontSize="16" VerticalAlignment="Bottom" Margin="5,0,0,0"/>
+                <TextBox Name="txtAmount" Grid.Column="2" Grid.Row="1" Margin="2" Width="150" Height="35"/>
+                <Label Content="Type :" Grid.Column="3" FontFamily="Arial Black" FontSize="16" VerticalAlignment="Bottom" Margin="5,0,0,0"/>
+                <Border Name="cmb1BorderHead" BorderThickness="1" Grid.Column="3" Grid.Row="1" Width="150" Height="35">
+                    <ComboBox Name="cbType" FontSize="20">
+                        <ComboBoxItem Content="Credit" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
+                        <ComboBoxItem Content="Cash" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
+                        <ComboBoxItem Content="Check" HorizontalAlignment="Left" Width="190" FontFamily="Arial Black" Foreground="#FF6549C7"/>
+                    </ComboBox>
+                </Border>
+                <Button Grid.Column="4" Grid.Row="1" Margin="4" Content="Save" Height="35" Name="btnsave" Click="Button_Click"/>
+            </Grid>
+            <Grid Name="addRetailentry" Grid.Row="2" Visibility="Hidden">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Scan Code" FontFamily="Arial Black" FontSize="16"/>
+                <TextBox Name="txtScancode" Grid.Row="1" KeyDown="OnKeyDownHandler" Margin="4"/>
+                <Label Content="Quantity" Grid.Column="1" FontFamily="Arial Black" FontSize="16"/>
+                <TextBox Name="txtQty" Grid.Column="1" Grid.Row="1" Margin="4"/>
+                <Label Content="Cost" Grid.Column="2" FontFamily="Arial Black" FontSize="16"/>
+                <TextBox Name="txtCost" Grid.Column="2" Grid.Row="1" Margin="4"/>
+                <Label Content="Amount" Grid.Column="3" FontFamily="Arial Black" FontSize="16"/>
+                <TextBox Name="txtRAmount" Grid.Column="3" Grid.Row="1" Margin="4"/>
+                <Button Content="Retail" Grid.Column="4" Grid.Row="1" Click="Button_Click_1" Margin="3"/>
+                <Button Content="Import" Grid.Column="5" Grid.Row="1" Click="Button_Click_Import" Margin="3"/>
+            </Grid>
+            <Grid Name="grupload" Grid.Row="2" Visibility="Hidden" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition ></ColumnDefinition>
+                    <ColumnDefinition ></ColumnDefinition>
+                    <ColumnDefinition ></ColumnDefinition>
+                    <ColumnDefinition ></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition ></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Name="purchaseId" Visibility="Hidden"/>
+                <TextBox TextWrapping="Wrap" Name="FileNameTextBox" Grid.Column="1" FontSize="20" Height="28"/>
+                <Button x:Name="BrowseButton" Content="Browse a file" Click="BrowseButton_Click"   
+                 Grid.Column="2" FontSize="20" Height="28" Margin="5"/>
+                <Button Name="btnImport" Content="Save" Grid.Column="3" Click="Button_Click_Save_ImportFile" Visibility="Hidden" Height="25" Width="180"/>
+            </Grid>
+            <DataGrid Grid.Row="3" Name="dgPurchase" Background="{x:Null}" AutoGenerateColumns="False" Margin="5,5,5,5" Visibility="Visible">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Date}" Header="Date" Width="80*"/>
+                    <DataGridTextColumn Binding="{Binding Vendor}" Header="Vendor" Width="150*"/>
+                    <DataGridTextColumn Binding="{Binding InvoiceNo}" Header="Invoice No" Width="70*"/>
+                    <DataGridTextColumn Binding="{Binding Amount}" Header="Amount" Width="100*"/>
+                    <DataGridTextColumn Binding="{Binding Type}" Header="Type" Width="80*"/>
+                    <DataGridTemplateColumn Header="Edit" Width="40*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Click="onEdit" Background="{x:Null}" Width="22" Height="25">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="Image/Edit1.png"/>
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Delete" Width="40*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Click="onDelete" Background="{x:Null}" Width="20" Height="25">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="Image/Delete.png" Width="22"/>
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Retail" Width="40*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Click="onRetail" Width="20" Height="25" Background="{x:Null}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="Image/add2.png" Width="22"/>
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <DataGrid Grid.Row="3" Name="dgRetail" Background="{x:Null}" AutoGenerateColumns="False" Margin="5" Visibility="Hidden">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding ScanCode}" Header="Scan Code" Width="150*"/>
+                    <DataGridTextColumn Binding="{Binding Description}" Header="Scan Code" Width="150*"/>
+                    <DataGridTextColumn Binding="{Binding Quantity}" Header="Quantity" Width="100*"/>
+                    <DataGridTextColumn Binding="{Binding Cost}" Header="Cost" Width="100*"/>
+                    <DataGridTextColumn Binding="{Binding Amount}" Header="Retail" Width="100*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <DataGrid Grid.Row="3" Name="dgImport" Background="{x:Null}" AutoGenerateColumns="True" Margin="5,5,5,5" Visibility="Hidden" AutoGeneratingColumn="DgImport_AutoGeneratingColumn" >
+                
+            </DataGrid>
+        </Grid>
+    </Grid>
+</Window>

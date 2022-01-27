@@ -147,6 +147,9 @@
     <Compile Include="Promotion.xaml.cs">
       <DependentUpon>Promotion.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Purchase.xaml.cs">
+      <DependentUpon>Purchase.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Receive.xaml.cs">
       <DependentUpon>Receive.xaml</DependentUpon>
     </Compile>
@@ -242,6 +245,10 @@
     <Page Include="Promotion.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Purchase.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Receive.xaml">
       <SubType>Designer</SubType>
