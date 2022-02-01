@@ -1054,6 +1054,11 @@ namespace POSSystem
                         button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
                     }
                 }
+                button.Width = 100;
+                button.Height = 100;
+                button.HorizontalAlignment = HorizontalAlignment.Left;
+                button.VerticalAlignment = VerticalAlignment.Top;
+
                 button.Foreground = new SolidColorBrush(Colors.White);
                 button.FontSize = 26;
                 button.FontWeight = FontWeights.Bold;
@@ -1061,8 +1066,11 @@ namespace POSSystem
                 { Color = Colors.BlueViolet };
                 button.Margin = new Thickness(5, 5, 5, 5);
                 string abc = dtCat.Rows[i].ItemArray[0].ToString();
+                this.sp22.HorizontalAlignment = HorizontalAlignment.Left;
+                this.sp22.VerticalAlignment = VerticalAlignment.Top;
                 button.Click += new RoutedEventHandler(button_Click_Category);
                 //button.Click += (sender, e) => { button_Click_CategoryDescription(sender, e); };
+                this.sp22.Columns = 4;
                 this.sp22.Children.Add(button);
             }
             sp23.Children.Clear();
