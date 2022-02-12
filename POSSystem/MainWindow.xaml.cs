@@ -34,6 +34,7 @@ namespace POSSystem
         string date = DateTime.Now.ToString("yyyy/MM/dd").Replace("-", "/");
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "MainWindow.cs";
+        string dataGridSelectedIndex = "";
 
         string txtGotFocusStr = string.Empty;
         int dtInndex = 0;
@@ -47,12 +48,15 @@ namespace POSSystem
                 TextBox tb = new TextBox();
                 tb.KeyDown += new KeyEventHandler(OnKeyDownHandler);
                 tb.KeyDown += new KeyEventHandler(TxtCashReceive_KeyDown);
+                tb.KeyDown += new KeyEventHandler(TxtBarcode_KeyDown);
                 SqlConnection con = new SqlConnection(conString);
                 string query = "select Scancode,description,unitretail,TaxRate from item where Scancode=@password ";
                 SqlCommand cmd = new SqlCommand(query, con);
                 cmd.Parameters.AddWithValue("@password", textBox1.Text);
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
-
+                grandTotal.Content = "Pay $0.00";
+                txtTotal.Content = "$0.00";
+                taxtTotal.Content = "$0.00";
                 sda.Fill(dt);
                 dt.Columns.Add("quantity");
                 dt.Columns.Add("Amount");
@@ -62,6 +66,7 @@ namespace POSSystem
                 dt.Columns.Add("CreateBy");
                 dt.Columns.Add("CreateOn");
                 dt.Columns.Add("PromotionName");
+                dt.Columns.Add("Void");
                 textBox1.Focus();
 
                 string queryS = "Select Department,TaxRate,FilePath from Department";
@@ -72,37 +77,74 @@ namespace POSSystem
                 for (int i = 0; i < dtdep.Rows.Count; ++i)
                 {
                     Button button = new Button();
-                    button.Content = new TextBlock()
-                    {
-                        FontSize = 25,
-                        Text = dtdep.Rows[i].ItemArray[0].ToString(),
-                        TextAlignment = TextAlignment.Left,
-                        TextWrapping = TextWrapping.Wrap
-                    };
-                    if (dtdep.Rows[i].ItemArray[2].ToString() != "")
-                    {
-                        var Path = System.AppDomain.CurrentDomain.BaseDirectory;
-                        var path = dtdep.Rows[i].ItemArray[2].ToString();
-                        var fullpath = Path + "\\Image\\" + path;
-                        button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
-                    }
-                    button.Width = 100;
-                    button.Height = 100;
-                    button.HorizontalAlignment = HorizontalAlignment.Left;
-                    button.VerticalAlignment = VerticalAlignment.Top;
-                    button.Foreground = new SolidColorBrush(Colors.White);
-                    button.FontSize = 26;
-                    button.FontWeight = FontWeights.Bold;
-                    button.Margin = new Thickness(5);
 
-                    string abc = dtdep.Rows[i].ItemArray[1].ToString();
-                    button.Click += (sender, e) => { button_Click(sender, e, abc); };
-                    this.sp21.HorizontalAlignment = HorizontalAlignment.Left;
-                    this.sp21.VerticalAlignment = VerticalAlignment.Top;
-                    //ColumnDefinition cd = new ColumnDefinition();
-                    //cd.Width = GridLength.Auto;
-                    this.sp21.Columns = 4;
-                    this.sp21.Children.Add(button);
+                    var size = System.Windows.SystemParameters.PrimaryScreenWidth;
+                    if (size == 1024)
+                    {
+                        button.Content = new TextBlock()
+                        {
+                            FontSize = 20,
+                            Text = dtdep.Rows[i].ItemArray[0].ToString(),
+                            TextAlignment = TextAlignment.Left,
+                            TextWrapping = TextWrapping.Wrap
+                        };
+                        if (dtdep.Rows[i].ItemArray[2].ToString() != "")
+                        {
+                            var Path = System.AppDomain.CurrentDomain.BaseDirectory;
+                            var path = dtdep.Rows[i].ItemArray[2].ToString();
+                            var fullpath = Path + "\\Image\\" + path;
+                            button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
+                        }
+                        button.Width = 120;
+                        button.Height = 80;
+                        button.HorizontalAlignment = HorizontalAlignment.Left;
+                        button.VerticalAlignment = VerticalAlignment.Top;
+                        button.Foreground = new SolidColorBrush(Colors.Black);
+                        button.FontSize = 15;
+                        button.FontWeight = FontWeights.Bold;
+                        button.Margin = new Thickness(5);
+
+                        string abc = dtdep.Rows[i].ItemArray[1].ToString();
+                        button.Click += (sender, e) => { button_Click(sender, e, abc); };
+                        this.sp21.HorizontalAlignment = HorizontalAlignment.Left;
+                        this.sp21.VerticalAlignment = VerticalAlignment.Top;
+                        //ColumnDefinition cd = new ColumnDefinition();
+                        //cd.Width = GridLength.Auto;
+                        this.sp21.Columns = 5;
+                        this.sp21.Children.Add(button);
+                    }
+                    else if (size > 1900)
+                    {
+                        button.Content = new TextBlock()
+                        {
+                            FontSize = 26,
+                            Text = dtdep.Rows[i].ItemArray[0].ToString(),
+                            TextAlignment = TextAlignment.Left,
+                            TextWrapping = TextWrapping.Wrap
+                        };
+                        if (dtdep.Rows[i].ItemArray[2].ToString() != "")
+                        {
+                            var Path = System.AppDomain.CurrentDomain.BaseDirectory;
+                            var path = dtdep.Rows[i].ItemArray[2].ToString();
+                            var fullpath = Path + "\\Image\\" + path;
+                            button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
+                        }
+                        button.Width = 230;
+                        button.Height = 112;
+                        button.Foreground = new SolidColorBrush(Colors.Black);
+                        button.FontWeight = FontWeights.Bold;
+                        button.Margin = new Thickness(5);
+
+                        string abc = dtdep.Rows[i].ItemArray[1].ToString();
+                        button.Click += (sender, e) => { button_Click(sender, e, abc); };
+                        this.sp21.HorizontalAlignment = HorizontalAlignment.Left;
+                        this.sp21.VerticalAlignment = VerticalAlignment.Top;
+                        //ColumnDefinition cd = new ColumnDefinition();
+                        //cd.Width = GridLength.Auto;
+                        this.sp21.Columns = 5;
+                        this.sp21.Children.Add(button);
+                    }
+
                 }
 
                 //Customer Dropdown.
@@ -125,23 +167,30 @@ namespace POSSystem
 
         private void loadtransactionId()
         {
-            using (SqlConnection conn = new SqlConnection(conString))
+            try
             {
-                conn.Open();
-                string query1 = "SELECT TOP 1 Tran_id FROM Transactions where DayClose is null ORDER BY Tran_id DESC";
-                using (SqlCommand cmd2 = new SqlCommand(query1, conn))
+                using (SqlConnection conn = new SqlConnection(conString))
                 {
-                    SqlDataReader data = cmd2.ExecuteReader();
-                    if (data.Read())
+                    conn.Open();
+                    string query1 = "SELECT TOP 1 Tran_id FROM Transactions where DayClose is null ORDER BY convert(int,Tran_id) DESC";
+                    using (SqlCommand cmd2 = new SqlCommand(query1, conn))
                     {
-                        lblTranid.Content = Convert.ToInt32(data.GetValue(0).ToString()) + 1;
+                        SqlDataReader data = cmd2.ExecuteReader();
+                        if (data.Read())
+                        {
+                            lblTranid.Content = Convert.ToInt32(data.GetValue(0).ToString()) + 1;
+                        }
+                        else
+                        {
+                            lblTranid.Content = 1;
+                        }
                     }
-                    else
-                    {
-                        lblTranid.Content = 1;
-                    }
+                    conn.Close();
                 }
-                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
             }
         }
         string taxrate = "";
@@ -194,7 +243,6 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-
                 SendErrorToText(ex, errorFileName);
             }
         }
@@ -227,7 +275,7 @@ namespace POSSystem
                         {
                             code = first3 + "00000" + second3;
                         }
-                        else if(Convert.ToInt32(last2) == 1)
+                        else if (Convert.ToInt32(last2) == 1)
                         {
                             code = first3 + "10000" + second3;
                         }
@@ -251,7 +299,7 @@ namespace POSSystem
                     }
                     textBox1.Text = code;
 
-                    string query = "select item.Scancode,item.Description,UnitRetail,1 as quantity,UnitRetail as Amount,Department.TaxRate,UnitRetail as Oprice,x.PromotionName AS PROName,x.Quantity as Qty,newprice,pricereduce from Item inner join Department on rtrim(item.Department)=rtrim(Department.Department) left join(select scancode, Promotion.promotionName, newprice, Quantity, pricereduce from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotionname where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate))as x on item.scancode = x.scancode where Item.Scancode=@password ";
+                    string query = "select item.Scancode,item.Description,Convert(decimal(10,2),UnitRetail)as UnitRetail,1 as quantity,Convert(decimal(10,2),UnitRetail) as Amount,Department.TaxRate,Convert(decimal(10,2),UnitRetail) as Oprice,x.PromotionName AS PROName,x.Quantity as Qty,newprice,pricereduce from Item inner join Department on rtrim(item.Department)=rtrim(Department.Department) left join(select scancode, Promotion.promotionName, newprice, Quantity, pricereduce from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotionname where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate))as x on item.scancode = x.scancode where Item.Scancode=@password ";
                     SqlCommand cmd = new SqlCommand(query, con);
                     cmd.Parameters.AddWithValue("@password", code);
                     cmd.Parameters.AddWithValue("@qty", 1);
@@ -314,8 +362,52 @@ namespace POSSystem
         {
             try
             {
+
+                var code = textBox1.Text;
+                var length = code.Length;
+                if (length == 12)
+                {
+                    code = code.Remove(code.Length - 1);
+                }
+                if (length == 8)
+                {
+                    var last1 = code.Remove(code.Length - 1);
+                    var last2 = last1.Substring(last1.Length - 1);
+                    var first3 = code.Remove(code.Length - 5);
+                    var first4 = code.Remove(code.Length - 4);
+                    var last5 = code.Substring(code.Length - 5);
+                    var second3 = last5.Remove(last5.Length - 2);
+                    var last4 = code.Substring(code.Length - 4);
+                    var second2 = last4.Remove(last4.Length - 2);
+                    if (Convert.ToInt32(last2) == 0)
+                    {
+                        code = first3 + "00000" + second3;
+                    }
+                    else if (Convert.ToInt32(last2) == 1)
+                    {
+                        code = first3 + "10000" + second3;
+                    }
+                    else if (Convert.ToInt32(last2) == 3)
+                    {
+                        code = first4 + "00000" + second2;
+                    }
+                    else if (Convert.ToInt32(last2) == 4)
+                    {
+                        code = code.Remove(code.Length - 3) + "00000" + code.Substring(code.Length - 3).Remove(code.Substring(code.Length - 3).Length - 2);
+                    }
+                    else if (Convert.ToInt32(last2) == 2)
+                    {
+                        code = first3 + "20000" + second3;
+                    }
+                    else
+                    {
+                        int num = 0;
+                        code = code.Remove(code.Length - 2) + num + num + num + num + last2;
+                    }
+                }
+                textBox1.Text = code;
                 SqlConnection con = new SqlConnection(conString);
-                string query = "select item.Scancode,item.Description,UnitRetail,1 as quantity,UnitRetail as Amount,Department.TaxRate,UnitRetail as Oprice,x.PromotionName AS PROName,x.Quantity as Qty,newprice,pricereduce from Item inner join Department on trim(item.Department)=trim(Department.Department) left join(select scancode, Promotion.promotionName, newprice, Quantity, pricereduce from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotionname where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate))as x on item.scancode = x.scancode where Item.Scancode=@password ";
+                string query = "select item.Scancode,item.Description,Convert(decimal(10,2),UnitRetail)as UnitRetail,1 as quantity,Convert(decimal(10,2),UnitRetail)as Amount,Department.TaxRate,Convert(decimal(10,2),UnitRetail)as Oprice,x.PromotionName AS PROName,x.Quantity as Qty,newprice,pricereduce from Item inner join Department on rtrim(item.Department)=rtrim(Department.Department) left join(select scancode, Promotion.promotionName, newprice, Quantity, pricereduce from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotionname where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate))as x on item.scancode = x.scancode where Item.Scancode=@password ";
                 SqlCommand cmd = new SqlCommand(query, con);
                 cmd.Parameters.AddWithValue("@password", textBox1.Text);
                 cmd.Parameters.AddWithValue("@qty", 1);
@@ -365,6 +457,7 @@ namespace POSSystem
                 TotalEvent();
 
                 textBox1.Text = "";
+
             }
             catch (Exception ex)
             {
@@ -423,24 +516,28 @@ namespace POSSystem
                 decimal Total = 0;
                 foreach (DataRow dr in dt.Rows)
                 {
+                    string voiditem = dr.ItemArray[17].ToString();
                     string amounnt = dr.ItemArray[5].ToString();
                     string tax = dr.ItemArray[3].ToString();
-                    if (amounnt != "" && tax != "")
+                    if (voiditem != "1")
                     {
-                        sum += decimal.Parse(amounnt);
-                        Taxsum += decimal.Parse(tax) * decimal.Parse(amounnt) / 100;
+                        if (amounnt != "" && tax != "")
+                        {
+                            sum += decimal.Parse(amounnt);
+                            Taxsum += decimal.Parse(tax) * decimal.Parse(amounnt) / 100;
+                        }
+                        else
+                        {
+                            sum = 0;
+                            Taxsum = 0;
+                        }
+                        Qtysum += decimal.Parse(dr.ItemArray[4].ToString());
                     }
-                    else
-                    {
-                        sum = 0;
-                        Taxsum = 0;
-                    }
-                    Qtysum += decimal.Parse(dr.ItemArray[4].ToString());
                 }
                 Total = sum + Taxsum;
-                txtTotal.Text = '$' + sum.ToString("0.00");
-                taxtTotal.Text = '$' + Taxsum.ToString("0.00");
-                grandTotal.Text = '$' + Total.ToString("0.00");
+                txtTotal.Content = '$' + sum.ToString("0.00");
+                taxtTotal.Content = '$' + Taxsum.ToString("0.00");
+                grandTotal.Content = "Pay " + '$' + Total.ToString("0.00");
             }
             catch (Exception ex)
             {
@@ -454,7 +551,8 @@ namespace POSSystem
             {
                 if (e.Key == Key.Tab || e.Key == Key.Enter)
                 {
-                    TxtCashReturn.Text = decimal.Parse(Convert.ToDecimal(decimal.Parse(TxtCashReceive.Text) - decimal.Parse(grandTotal.Text.Replace("$", ""))).ToString("0.00")).ToString("0.00");
+                    var i = grandTotal.Content;
+                    TxtCashReturn.Text = decimal.Parse(Convert.ToDecimal(decimal.Parse(TxtCashReceive.Text) - decimal.Parse(grandTotal.Content.ToString().Replace("Pay $", ""))).ToString("0.00")).ToString("0.00");
                     Button_Click_1();
                 }
             }
@@ -472,11 +570,11 @@ namespace POSSystem
                 string date = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
                 string onlydate = date.Substring(0, 10);
                 string onlytime = date.Substring(11);
-                string totalAmt = txtTotal.Text.Replace("$", "");
-                string tax = taxtTotal.Text.Replace("$", "");
-                string grandTotalAmt = grandTotal.Text.Replace("$", "");
-                string cashRec = TxtCashReceive.Text;
-                string cashReturn = TxtCashReturn.Text;
+                string totalAmt = txtTotal.Content.ToString().Replace("$", "");
+                string tax = taxtTotal.Content.ToString().Replace("$", "");
+                string grandTotalAmt = grandTotal.Content.ToString().Replace("Pay $", "");
+                string cashRec = TxtCashReceive.Text.Replace("$ ", "");
+                string cashReturn = TxtCashReturn.Text.Replace("$ ", "");
                 string tranid = Convert.ToInt32(lblTranid.Content).ToString();
 
                 string transaction = "insert into Transactions(Tran_id,EndDate,EndTime,GrossAmount,TaxAmount,GrandAmount,CreateBy,CreateOn)Values('" + tranid + "','" + onlydate + "','" + onlytime + "','" + totalAmt + "','" + tax + "','" + grandTotalAmt + "','" + username + "','" + date + "')";
@@ -548,18 +646,19 @@ namespace POSSystem
                 TxtCashReceive.Text = "";
                 cbcustomer.Text = "";
                 TxtCheck.Text = "";
-                txtTotal.Text = "";
-                grandTotal.Text = "";
-                taxtTotal.Text = "";
+                txtTotal.Content = "";
+                tenderCode = "";
+                grandTotal.Content = "Pay " + "$" + "0.00";
+                taxtTotal.Content = "";
                 lblDate.Content = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
                 dt.Clear();
                 JRDGrid.Items.Refresh();
 
                 cashTxtPanel.Visibility = Visibility.Hidden;
-                sp02.Visibility = Visibility.Visible;
+                sp21.Visibility = Visibility.Visible;
                 customerTxtPanel.Visibility = Visibility.Hidden;
                 checkTxtPanel.Visibility = Visibility.Hidden;
-
+                grPayment.Visibility = Visibility.Hidden;
                 loadtransactionId();
             }
             catch (Exception ex)
@@ -601,7 +700,7 @@ namespace POSSystem
                 DrawAtStart(dtstr.Rows[0]["PhoneNumber"].ToString(), Offset);
 
                 Offset = Offset + mediuminc;
-                DrawAtStart("Date: " + DateTime.Now, Offset);
+                DrawAtStart("Date: " + lblDate.Content, Offset);
 
                 Offset = Offset + smallinc;
                 underLine = "-----------------------------------";
@@ -624,11 +723,11 @@ namespace POSSystem
                 Offset = Offset + largeinc;
 
                 Offset = Offset + smallinc;
-                InsertHeaderStyleItem("Sub Total", "", txtTotal.Text, Offset);
+                InsertHeaderStyleItem("Sub Total", "", txtTotal.Content.ToString(), Offset);
                 Offset = Offset + smallinc;
-                InsertHeaderStyleItem("Tax", "", taxtTotal.Text, Offset);
+                InsertHeaderStyleItem("Tax", "", taxtTotal.Content.ToString(), Offset);
                 Offset = Offset + smallinc;
-                InsertHeaderStyleItem("Amount Payble", "", grandTotal.Text, Offset);
+                InsertHeaderStyleItem("Amount Payble", "", grandTotal.Content.ToString().Replace("Pay ", ""), Offset);
 
                 Offset = Offset + 7;
                 underLine = "-------------------------------------";
@@ -656,11 +755,14 @@ namespace POSSystem
         {
             try
             {
-                App.Current.Properties["username"] = "";
-                lblusername.Content = "";
-                Login login = new Login();
-                this.Close();
-                login.Show();
+                if (dt.Rows.Count == 0)
+                {
+                    App.Current.Properties["username"] = "";
+                    lblusername.Content = "";
+                    Login login = new Login();
+                    this.Close();
+                    login.Show();
+                }
             }
             catch (Exception ex)
             {
@@ -865,6 +967,11 @@ namespace POSSystem
                     string textBox1Str = TxtCheck.Text;
                     TxtCheck.Text = textBox1Str + number;
                 }
+                if (txtGotFocusStr == "txtBarcode")
+                {
+                    string textBox1Str = txtBarcode.Text;
+                    txtBarcode.Text = textBox1Str + number;
+                }
                 if (txtGotFocusStr == "txtDeptAmt")
                 {
                     string textBox1Str = txtDeptAmt.Text;
@@ -928,28 +1035,47 @@ namespace POSSystem
         }
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            Report rpt = new Report();
-            rpt.Show();
+            try
+            {
+                Report rpt = new Report();
+                rpt.Show();
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            if (txtGotFocusStr == "textBox1")
+            try
             {
-                textBox1.Text = "";
+                if (txtGotFocusStr == "textBox1")
+                {
+                    textBox1.Text = "";
+                }
+                if (txtGotFocusStr == "TxtCashReceive")
+                {
+                    TxtCashReceive.Text = "";
+                }
+                if (txtGotFocusStr == "TxtCheck")
+                {
+                    TxtCheck.Text = "";
+                }
+                if (txtGotFocusStr == "txtDeptAmt")
+                {
+                    txtDeptAmt.Text = "";
+                }
+                if (txtGotFocusStr == "txtBarcode")
+                {
+                    txtBarcode.Text = "";
+                }
             }
-            if (txtGotFocusStr == "TxtCashReceive")
+            catch (Exception ex)
             {
-                TxtCashReceive.Text = "";
+                SendErrorToText(ex, errorFileName);
             }
-            if (txtGotFocusStr == "TxtCheck")
-            {
-                TxtCheck.Text = "";
-            }
-            if (txtGotFocusStr == "txtDeptAmt")
-            {
-                txtDeptAmt.Text = "";
-            }
+
         }
 
         //Shift close
@@ -989,7 +1115,14 @@ namespace POSSystem
         //page close
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            try
+            {
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void textbox_GotFocus(object sender, RoutedEventArgs e)
@@ -1010,166 +1143,189 @@ namespace POSSystem
 
         private void Department_Button_Click(object sender, RoutedEventArgs e)
         {
-            btnShortKey.Visibility = Visibility.Visible;
-            btnDept.Visibility = Visibility.Hidden;
-            sp21.Visibility = Visibility.Visible;
-            sp22.Visibility = Visibility.Hidden;
-            sp23.Visibility = Visibility.Hidden;
+            try
+            {
+                btnShortKey.Visibility = Visibility.Visible;
+                btnDept.Visibility = Visibility.Hidden;
+                sp21.Visibility = Visibility.Visible;
+                sp22.Visibility = Visibility.Hidden;
+                sp23.Visibility = Visibility.Hidden;
+                gReceipt.Visibility = Visibility.Hidden;
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void ShortcutKey_Button_Click(object sender, RoutedEventArgs e)
         {
-            btnShortKey.Visibility = Visibility.Hidden;
-            btnDept.Visibility = Visibility.Visible;
-            sp21.Visibility = Visibility.Hidden;
-            sp23.Visibility = Visibility.Hidden;
-            TxtBxStackPanel2.Visibility = Visibility.Hidden;
-            sp22.Visibility = Visibility.Visible;
-
-            sp22.Children.Clear();
-            SqlConnection con = new SqlConnection(conString);
-            string queryS = "select category,CategoryImage from addcategory";
-            SqlCommand cmd1 = new SqlCommand(queryS, con);
-            SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
-            DataTable dtCat = new DataTable();
-            sda1.Fill(dtCat);
-
-            for (int i = 0; i < dtCat.Rows.Count; i++)
+            try
             {
-                Button button = new Button();
-                button.Content = new TextBlock()
-                {
-                    FontSize = 25,
-                    Text = dtCat.Rows[i].ItemArray[0].ToString(),
-                    TextAlignment = TextAlignment.Center,
-                    TextWrapping = TextWrapping.Wrap
-                };
-                if (dtCat.Rows[i].ItemArray[0].ToString() != "")
-                {
-                    var Path = System.AppDomain.CurrentDomain.BaseDirectory;
-                    var path = dtCat.Rows[i].ItemArray[1].ToString();
-                    if (path != "")
-                    {
-                        var fullpath = Path + "\\Image\\" + path;
-                        button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
-                    }
-                }
-                button.Width = 100;
-                button.Height = 100;
-                button.HorizontalAlignment = HorizontalAlignment.Left;
-                button.VerticalAlignment = VerticalAlignment.Top;
+                btnShortKey.Visibility = Visibility.Hidden;
+                btnDept.Visibility = Visibility.Visible;
+                sp21.Visibility = Visibility.Hidden;
+                sp23.Visibility = Visibility.Hidden;
+                TxtBxStackPanel2.Visibility = Visibility.Hidden;
+                sp22.Visibility = Visibility.Visible;
+                gReceipt.Visibility = Visibility.Hidden;
 
-                button.Foreground = new SolidColorBrush(Colors.White);
-                button.FontSize = 26;
-                button.FontWeight = FontWeights.Bold;
-                button.Effect = new DropShadowEffect()
-                { Color = Colors.BlueViolet };
-                button.Margin = new Thickness(5, 5, 5, 5);
-                string abc = dtCat.Rows[i].ItemArray[0].ToString();
-                this.sp22.HorizontalAlignment = HorizontalAlignment.Left;
-                this.sp22.VerticalAlignment = VerticalAlignment.Top;
-                button.Click += new RoutedEventHandler(button_Click_Category);
-                //button.Click += (sender, e) => { button_Click_CategoryDescription(sender, e); };
-                this.sp22.Columns = 4;
-                this.sp22.Children.Add(button);
+                sp22.Children.Clear();
+                SqlConnection con = new SqlConnection(conString);
+                string queryS = "select category,CategoryImage from addcategory";
+                SqlCommand cmd1 = new SqlCommand(queryS, con);
+                SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
+                DataTable dtCat = new DataTable();
+                sda1.Fill(dtCat);
+
+                for (int i = 0; i < dtCat.Rows.Count; i++)
+                {
+                    Button button = new Button();
+                    button.Content = new TextBlock()
+                    {
+                        FontSize = 25,
+                        Text = dtCat.Rows[i].ItemArray[0].ToString(),
+                        TextAlignment = TextAlignment.Center,
+                        TextWrapping = TextWrapping.Wrap
+                    };
+                    if (dtCat.Rows[i].ItemArray[0].ToString() != "")
+                    {
+                        var Path = System.AppDomain.CurrentDomain.BaseDirectory;
+                        var path = dtCat.Rows[i].ItemArray[1].ToString();
+                        if (path != "")
+                        {
+                            var fullpath = Path + "\\Image\\" + path;
+                            button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
+                        }
+                    }
+                    button.Width = 97;
+                    button.Height = 80;
+                    button.HorizontalAlignment = HorizontalAlignment.Left;
+                    button.VerticalAlignment = VerticalAlignment.Top;
+
+                    button.Foreground = new SolidColorBrush(Colors.White);
+                    button.FontSize = 26;
+                    button.FontWeight = FontWeights.Bold;
+                    button.Effect = new DropShadowEffect()
+                    { Color = Colors.BlueViolet };
+                    button.Margin = new Thickness(5, 5, 5, 5);
+                    string abc = dtCat.Rows[i].ItemArray[0].ToString();
+                    this.sp22.HorizontalAlignment = HorizontalAlignment.Left;
+                    this.sp22.VerticalAlignment = VerticalAlignment.Top;
+                    button.Click += new RoutedEventHandler(button_Click_Category);
+                    //button.Click += (sender, e) => { button_Click_CategoryDescription(sender, e); };
+                    this.sp22.Columns = 6;
+                    this.sp22.Children.Add(button);
+                }
+                sp23.Children.Clear();
+                dtCat = null;
             }
-            sp23.Children.Clear();
-            dtCat = null;
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void JdGrid_delete_click(object sender, RoutedEventArgs e)
         {
-            SqlConnection con = new SqlConnection(conString);
-            // Remove Record.
-            DataGrid newGrid = new DataGrid();
-            DataRowView row = (DataRowView)JRDGrid.SelectedItem;
-            string str = row["PromotionName"].ToString();
-            int removeRowQut = Convert.ToInt32(row["Quantity"]);
-            dt.Rows.Remove(row.Row);
-            dt.AcceptChanges();
-            newGrid.ItemsSource = dt.DefaultView;
-            dt = ((DataView)newGrid.ItemsSource).ToTable();
-            if (str != "")
+            try
             {
-                if (dt.AsEnumerable().Count() != 0)
+                SqlConnection con = new SqlConnection(conString);
+                // Remove Record.
+                DataGrid newGrid = new DataGrid();
+                DataRowView row = (DataRowView)JRDGrid.SelectedItem;
+                string str = row["PromotionName"].ToString();
+                int removeRowQut = Convert.ToInt32(row["Quantity"]);
+                dt.Rows.Remove(row.Row);
+                dt.AcceptChanges();
+                newGrid.ItemsSource = dt.DefaultView;
+                dt = ((DataView)newGrid.ItemsSource).ToTable();
+                if (str != "")
                 {
-                    dt = dt.DefaultView.ToTable();
-                    for (int i = 0; i < dt.AsEnumerable().Count(); i++)
+                    if (dt.AsEnumerable().Count() != 0)
                     {
-                        if (Convert.ToInt32(dt.Rows[i]["Quantity"]) == 1)
+                        dt = dt.DefaultView.ToTable();
+                        for (int i = 0; i < dt.AsEnumerable().Count(); i++)
                         {
-                            dt.Rows[i]["PromotionName"] = "";
-                            dt.Rows[i]["UnitRetail"] = dt.Rows[i]["OPrice"];
-                            dt.Rows[i]["Amount"] = Convert.ToDecimal(dt.Rows[i]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[i]["Quantity"]);
-                        }
-                    }
-
-                    DataTable distrinctPromotionName = dt.DefaultView.ToTable(true, "PROName");
-                    DataTable distrinctSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "PROName", "Qty", "NewPrice", "PriceReduce");
-                    foreach (DataRow distrinctRow in distrinctPromotionName.AsEnumerable())
-                    {
-                        if (distrinctRow["PROName"].ToString() != "")
-                        {
-                            int sumCount = 0;
-                            for (int j = 0; j < distrinctSCANCODE.AsEnumerable().Count(); j++)
+                            if (Convert.ToInt32(dt.Rows[i]["Quantity"]) == 1)
                             {
-                                if (distrinctSCANCODE.Rows[j]["PROName"].ToString() != "")
+                                dt.Rows[i]["PromotionName"] = "";
+                                dt.Rows[i]["UnitRetail"] = dt.Rows[i]["OPrice"];
+                                dt.Rows[i]["Amount"] = Convert.ToDecimal(dt.Rows[i]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[i]["Quantity"]);
+                            }
+                        }
+
+                        DataTable distrinctPromotionName = dt.DefaultView.ToTable(true, "PROName");
+                        DataTable distrinctSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "PROName", "Qty", "NewPrice", "PriceReduce");
+                        foreach (DataRow distrinctRow in distrinctPromotionName.AsEnumerable())
+                        {
+                            if (distrinctRow["PROName"].ToString() != "")
+                            {
+                                int sumCount = 0;
+                                for (int j = 0; j < distrinctSCANCODE.AsEnumerable().Count(); j++)
                                 {
-                                    for (int i = 0; i < dt.Rows.Count; i++)
+                                    if (distrinctSCANCODE.Rows[j]["PROName"].ToString() != "")
                                     {
-                                        if (distrinctSCANCODE.Rows[j]["PROName"].ToString() == distrinctRow["PROName"].ToString())
+                                        for (int i = 0; i < dt.Rows.Count; i++)
                                         {
-                                            if (distrinctSCANCODE.Rows[j]["ScanCode"].ToString() == dt.Rows[i]["ScanCode"].ToString())
+                                            if (distrinctSCANCODE.Rows[j]["PROName"].ToString() == distrinctRow["PROName"].ToString())
                                             {
-                                                sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
-                                                for (int K = 0; K < dt.Rows.Count; K++)
+                                                if (distrinctSCANCODE.Rows[j]["ScanCode"].ToString() == dt.Rows[i]["ScanCode"].ToString())
                                                 {
-                                                    foreach (DataRow itemDT1 in distrinctSCANCODE.AsEnumerable())
+                                                    sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
+                                                    for (int K = 0; K < dt.Rows.Count; K++)
                                                     {
-                                                        if (itemDT1["PROName"].ToString() == distrinctRow["PROName"].ToString())
+                                                        foreach (DataRow itemDT1 in distrinctSCANCODE.AsEnumerable())
                                                         {
-                                                            int Y = sumCount / Convert.ToInt32(itemDT1["Qty"]);
-                                                            for (int x = 1; x <= Y; x++)
+                                                            if (itemDT1["PROName"].ToString() == distrinctRow["PROName"].ToString())
                                                             {
-                                                                if (sumCount == Convert.ToInt32(itemDT1["Qty"]) * x)
+                                                                int Y = sumCount / Convert.ToInt32(itemDT1["Qty"]);
+                                                                for (int x = 1; x <= Y; x++)
                                                                 {
-                                                                    for (int z = 0; z <= i; z++)
+                                                                    if (sumCount == Convert.ToInt32(itemDT1["Qty"]) * x)
                                                                     {
-                                                                        string dtProName = dt.Rows[z]["PROName"].ToString();
-                                                                        string disProName = distrinctRow["PROName"].ToString();
-                                                                        if (dtProName == disProName)
+                                                                        for (int z = 0; z <= i; z++)
                                                                         {
-                                                                            string price = "";
-                                                                            if (itemDT1["NewPrice"].ToString() != "")
-                                                                                price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
+                                                                            string dtProName = dt.Rows[z]["PROName"].ToString();
+                                                                            string disProName = distrinctRow["PROName"].ToString();
+                                                                            if (dtProName == disProName)
+                                                                            {
+                                                                                string price = "";
+                                                                                if (itemDT1["NewPrice"].ToString() != "")
+                                                                                    price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
 
-                                                                            if (price == "")
-                                                                                price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - (Convert.ToDecimal(dt.Rows[z]["Oprice"]) * Convert.ToDecimal(itemDT1["PriceReduce"]) / 100)).ToString();
+                                                                                if (price == "")
+                                                                                    price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - (Convert.ToDecimal(dt.Rows[z]["Oprice"]) * Convert.ToDecimal(itemDT1["PriceReduce"]) / 100)).ToString();
 
-                                                                            dt.Rows[z]["PromotionName"] = itemDT1["PROName"];
-                                                                            dt.Rows[z]["UnitRetail"] = price;
-                                                                            dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
+                                                                                dt.Rows[z]["PromotionName"] = itemDT1["PROName"];
+                                                                                dt.Rows[z]["UnitRetail"] = price;
+                                                                                dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
+                                                                            }
                                                                         }
+
                                                                     }
 
                                                                 }
-
                                                             }
                                                         }
                                                     }
                                                 }
                                             }
                                         }
-                                    }
 
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                JRDGrid.ItemsSource = dt.DefaultView;
+                TotalEvent();
             }
-            JRDGrid.ItemsSource = dt.DefaultView;
-            TotalEvent();
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void TxtCheck_KeyDown(object sender, KeyEventArgs e)
@@ -1377,158 +1533,877 @@ namespace POSSystem
 
         void button_Click_Category(object sender, RoutedEventArgs e)
         {
-            var btnContent = sender as Button;
-            var tb = (TextBlock)btnContent.Content;
-
-            btnShortKey.Visibility = Visibility.Hidden;
-            btnDept.Visibility = Visibility.Visible;
-            sp21.Visibility = Visibility.Hidden;
-            sp22.Visibility = Visibility.Hidden;
-            sp23.Visibility = Visibility.Visible;
-
-            sp23.Children.Clear();
-            SqlConnection con = new SqlConnection(conString);
-            string queryS = "select Description,categoryimage from category where category = '" + tb.Text + "'";
-            SqlCommand cmd1 = new SqlCommand(queryS, con);
-            SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
-            DataTable dtCatDescr = new DataTable();
-            sda1.Fill(dtCatDescr);
-
-            for (int i = 0; i < dtCatDescr.Rows.Count; i++)
+            try
             {
-                Button button = new Button();
-                button.Content = new TextBlock()
+                var btnContent = sender as Button;
+                var tb = (TextBlock)btnContent.Content;
+
+                btnShortKey.Visibility = Visibility.Hidden;
+                btnDept.Visibility = Visibility.Visible;
+                sp21.Visibility = Visibility.Hidden;
+                sp22.Visibility = Visibility.Hidden;
+                sp23.Visibility = Visibility.Visible;
+
+                sp23.Children.Clear();
+                SqlConnection con = new SqlConnection(conString);
+                string queryS = "select Description,categoryimage from category where category = '" + tb.Text + "'";
+                SqlCommand cmd1 = new SqlCommand(queryS, con);
+                SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
+                DataTable dtCatDescr = new DataTable();
+                sda1.Fill(dtCatDescr);
+
+                for (int i = 0; i < dtCatDescr.Rows.Count; i++)
                 {
-                    FontSize = 25,
-                    Text = dtCatDescr.Rows[i].ItemArray[0].ToString(),
-                    TextAlignment = TextAlignment.Center,
-                    TextWrapping = TextWrapping.Wrap
-                };
-                if (dtCatDescr.Rows[i].ItemArray[0].ToString() != "")
-                {
-                    var Path = System.AppDomain.CurrentDomain.BaseDirectory;
-                    var path = dtCatDescr.Rows[i].ItemArray[1].ToString();
-                    if (path != "")
+                    Button button = new Button();
+                    button.Content = new TextBlock()
                     {
-                        var fullpath = Path + "\\Image\\" + path;
-                        button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
+                        FontSize = 25,
+                        Text = dtCatDescr.Rows[i].ItemArray[0].ToString(),
+                        TextAlignment = TextAlignment.Center,
+                        TextWrapping = TextWrapping.Wrap
+                    };
+                    if (dtCatDescr.Rows[i].ItemArray[0].ToString() != "")
+                    {
+                        var Path = System.AppDomain.CurrentDomain.BaseDirectory;
+                        var path = dtCatDescr.Rows[i].ItemArray[1].ToString();
+                        if (path != "")
+                        {
+                            var fullpath = Path + "\\Image\\" + path;
+                            button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
+                        }
                     }
+                    button.Foreground = new SolidColorBrush(Colors.White);
+                    button.FontSize = 26;
+                    button.FontWeight = FontWeights.Bold;
+                    button.Effect = new DropShadowEffect()
+                    { Color = Colors.BlueViolet };
+                    button.Margin = new Thickness(5, 5, 5, 5);
+                    string abc = dtCatDescr.Rows[i].ItemArray[0].ToString();
+                    button.Click += new RoutedEventHandler(button_Click_Category_Description);
+                    this.sp23.Children.Add(button);
                 }
-                button.Foreground = new SolidColorBrush(Colors.White);
-                button.FontSize = 26;
-                button.FontWeight = FontWeights.Bold;
-                button.Effect = new DropShadowEffect()
-                { Color = Colors.BlueViolet };
-                button.Margin = new Thickness(5, 5, 5, 5);
-                string abc = dtCatDescr.Rows[i].ItemArray[0].ToString();
-                button.Click += new RoutedEventHandler(button_Click_Category_Description);
-                this.sp23.Children.Add(button);
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
             }
         }
 
-        void button_Click_Category_Description(object sender, RoutedEventArgs e)
+        private void GrandTotal_Click(object sender, RoutedEventArgs e)
         {
-            var btnContent = sender as Button;
-            var tb = (TextBlock)btnContent.Content;
-            SqlConnection con = new SqlConnection(conString);
-            string querya = "select CATEGORY  from Category  where Category = @Description";
-            SqlCommand cmda = new SqlCommand(querya, con);
-            cmda.Parameters.AddWithValue("@Description", tb.Text);
-            cmda.Parameters.AddWithValue("@qty", 1);
-            SqlDataAdapter sdaa = new SqlDataAdapter(cmda);
-            DataTable dta = new DataTable();
-            sdaa.Fill(dta);
-            int A = dta.Rows.Count;
-            if (A != 0)
-                button_Click_Category(sender, e);
-            else
+            try
             {
-                string query = "select Category.ScanCode,Category.Description,item.UnitRetail,Department.TaxRate,@qty as Quantity,item.UnitRetail as Amount  from Category join Item on Category.scancode = Item.scancode join Department on Item.Department = Department.Department where Item.Description = @Description";
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@Description", tb.Text);
-                cmd.Parameters.AddWithValue("@qty", 1);
-                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                decimal gransTotali = Convert.ToDecimal(grandTotal.Content.ToString().Replace("Pay $", ""));
+                if (gransTotali != 0)
+                {
+                    sp21.Visibility = Visibility.Hidden;
+                    grPayment.Visibility = Visibility.Visible;
+                }
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
+        private void Plus_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (dataGridSelectedIndex != "")
+                {
+                    int i = Convert.ToInt32(dataGridSelectedIndex);
+                    dt.Rows[i]["Quantity"] = Convert.ToDecimal(dt.Rows[i]["Quantity"]) + 1;
+                    if (dt.Rows[i]["PROName"].ToString() != "")
+                    {
+                        int qDT = Convert.ToInt32(dt.Rows[i]["Quantity"]);
+                        int qDT1 = Convert.ToInt32(dt.Rows[i]["Qty"]);
+
+                        if (qDT >= qDT1)
+                        {
+
+                            int QA = qDT1 * (qDT / qDT1);
+                            if (dt.Rows[i]["NewPrice"].ToString() != "")
+                            {
+                                dt.Rows[i]["PromotionName"] = dt.Rows[i]["PROName"];
+                                dt.Rows[i]["Quantity"] = QA;
+                                dt.Rows[i]["UnitRetail"] = Convert.ToDecimal(dt.Rows[i]["NewPrice"]) / qDT1;
+                                dt.Rows[i]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[i]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[i]["Quantity"])).ToString("0.00");
+                            }
+                            else
+                            {
+                                dt.Rows[i]["PromotionName"] = dt.Rows[i]["PROName"];
+                                dt.Rows[i]["Quantity"] = QA;
+                                dt.Rows[i]["UnitRetail"] = Convert.ToDecimal(dt.Rows[i]["OPrice"]) - (Convert.ToDecimal(dt.Rows[i]["OPrice"]) * Convert.ToDecimal(dt.Rows[i]["PriceReduce"]) / 100);
+                                dt.Rows[i]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[i]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[i]["Quantity"])).ToString("0.00");
+                            }
+                            int QB = qDT - QA;
+                            if (QB != 0)
+                            {
+                                for (int a = 0; a < QB; a++)
+                                {
+                                    DataRow newRow = dt.NewRow();
+                                    newRow["ScanCode"] = dt.Rows[i]["ScanCode"];
+                                    newRow["Description"] = dt.Rows[i]["Description"];
+                                    newRow["Quantity"] = 1;
+                                    newRow["UnitRetail"] = dt.Rows[i]["OPrice"];
+                                    newRow["Amount"] = Convert.ToInt32(newRow["Quantity"]) * Convert.ToDecimal(newRow["UnitRetail"]);
+                                    newRow["OPrice"] = dt.Rows[i]["OPrice"];
+                                    newRow["PromotionName"] = "";
+                                    newRow["TaxRate"] = dt.Rows[i]["TaxRate"];
+                                    newRow["PROName"] = dt.Rows[i]["PROName"];
+                                    newRow["Qty"] = dt.Rows[i]["Qty"];
+                                    newRow["NewPrice"] = dt.Rows[i]["NewPrice"];
+                                    newRow["PriceReduce"] = dt.Rows[i]["PriceReduce"];
+                                    dt.Rows.Add(newRow);
+                                }
+                            }
+                        }
+
+                        int intv = qDT1 * (qDT / qDT1);
+                        decimal ab = qDT / qDT1;
+                        decimal decv = Convert.ToDecimal(qDT1) * Convert.ToDecimal(qDT) / Convert.ToDecimal(qDT1);
+
+                        dt = ScanCodeFunction(dt, i);
+
+                    }
+                    else
+                    {
+                        dt.Rows[i]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[i]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[i]["Quantity"])).ToString("0.00");
+                    }
+                    JRDGrid.ItemsSource = dt.DefaultView;
+                    TotalEvent();
+                }
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
+        private void Minus_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (dataGridSelectedIndex != "")
+                {
+                    int i = Convert.ToInt32(dataGridSelectedIndex);
+
+                    dt.Rows[i]["Quantity"] = Convert.ToDecimal(dt.Rows[i]["Quantity"]) - 1;
+                    if (dt.Rows[i]["PROName"].ToString() != "")
+                    {
+                        int qDT = Convert.ToInt32(dt.Rows[i]["Quantity"]);
+                        int qDT1 = Convert.ToInt32(dt.Rows[i]["Qty"]);
+
+                        if (qDT >= qDT1)
+                        {
+
+                            int QA = qDT1 * (qDT / qDT1);
+                            if (dt.Rows[i]["NewPrice"].ToString() != "")
+                            {
+                                dt.Rows[i]["PromotionName"] = dt.Rows[i]["PROName"];
+                                dt.Rows[i]["Quantity"] = QA;
+                                dt.Rows[i]["UnitRetail"] = Convert.ToDecimal(dt.Rows[i]["NewPrice"]) / qDT1;
+                                dt.Rows[i]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[i]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[i]["Quantity"])).ToString("0.00");
+                            }
+                            else
+                            {
+                                dt.Rows[i]["PromotionName"] = dt.Rows[i]["PROName"];
+                                dt.Rows[i]["Quantity"] = QA;
+                                dt.Rows[i]["UnitRetail"] = Convert.ToDecimal(dt.Rows[i]["OPrice"]) - (Convert.ToDecimal(dt.Rows[i]["OPrice"]) * Convert.ToDecimal(dt.Rows[i]["PriceReduce"]) / 100);
+                                dt.Rows[i]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[i]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[i]["Quantity"])).ToString("0.00");
+                            }
+                            int QB = qDT - QA;
+                            if (QB != 0)
+                            {
+                                for (int a = 0; a < QB; a++)
+                                {
+                                    DataRow newRow = dt.NewRow();
+                                    newRow["ScanCode"] = dt.Rows[i]["ScanCode"];
+                                    newRow["Description"] = dt.Rows[i]["Description"];
+                                    newRow["Quantity"] = 1;
+                                    newRow["UnitRetail"] = dt.Rows[i]["OPrice"];
+                                    newRow["Amount"] = Convert.ToInt32(newRow["Quantity"]) * Convert.ToDecimal(newRow["UnitRetail"]);
+                                    newRow["OPrice"] = dt.Rows[i]["OPrice"];
+                                    newRow["PromotionName"] = "";
+                                    newRow["TaxRate"] = dt.Rows[i]["TaxRate"];
+                                    newRow["PROName"] = dt.Rows[i]["PROName"];
+                                    newRow["Qty"] = dt.Rows[i]["Qty"];
+                                    newRow["NewPrice"] = dt.Rows[i]["NewPrice"];
+                                    newRow["PriceReduce"] = dt.Rows[i]["PriceReduce"];
+                                    dt.Rows.Add(newRow);
+                                }
+                            }
+                        }
+
+                        int intv = qDT1 * (qDT / qDT1);
+                        decimal ab = qDT / qDT1;
+                        decimal decv = Convert.ToDecimal(qDT1) * Convert.ToDecimal(qDT) / Convert.ToDecimal(qDT1);
+
+                        dt = ScanCodeFunction(dt, i);
+
+                    }
+                    else
+                    {
+                        dt.Rows[i]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[i]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[i]["Quantity"])).ToString("0.00");
+                    }
+                    JRDGrid.ItemsSource = dt.DefaultView;
+                    TotalEvent();
+                }
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
+        private void CashReceive(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                tenderCode = "Cash";
+                decimal inumber = 0;
+                decimal old = 0;
+                decimal sum = 0;
+                decimal sale = 0;
+                decimal returned = 0;
+                sale = Convert.ToDecimal(grandTotal.Content.ToString().Replace("Pay $", ""));
+                inumber = Convert.ToDecimal((sender as Button).Content.ToString().Replace("$ ", ""));
+                if (TxtCashReceive.Text != "")
+                {
+                    old = Convert.ToDecimal(TxtCashReceive.Text.Replace("$ ", ""));
+                }
+                else { old = 0; }
+
+                sum = old + inumber;
+                returned = sum - sale;
+                TxtCashReceive.Text = "$ " + sum;
+                TxtCashReturn.Text = "$ " + returned;
+                if (sum >= sale)
+                {
+                    Button_Click_1();
+                }
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
+        private void Click_VoidTransaction(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(conString);
+                string date = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
+                string onlydate = date.Substring(0, 10);
+                string onlytime = date.Substring(11);
+                string totalAmt = txtTotal.Content.ToString().Replace("$", "");
+                string tax = taxtTotal.Content.ToString().Replace("$", "");
+                string grandTotalAmt = grandTotal.Content.ToString().Replace("Pay $", "");
+                string cashRec = TxtCashReceive.Text.Replace("$ ", "");
+                string cashReturn = TxtCashReturn.Text.Replace("$ ", "");
+                string tranid = Convert.ToInt32(lblTranid.Content).ToString();
+
+                string transaction = "insert into Transactions(Tran_id,EndDate,EndTime,GrossAmount,TaxAmount,GrandAmount,CreateBy,CreateOn,Void)Values('" + tranid + "','" + onlydate + "','" + onlytime + "','" + totalAmt + "','" + tax + "','" + grandTotalAmt + "','" + username + "','" + date + "','1')";
+                SqlCommand cmd = new SqlCommand(transaction, con);
                 con.Open();
-                sda.Fill(dt);
+                cmd.ExecuteNonQuery();
                 con.Close();
-                JRDGrid.ItemsSource = dt.DefaultView;
+                if (tenderCode == "Cash")
+                {
+                    string tender = "insert into Tender(EndDate,Endtime,TenderCode,Amount,Change,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + cashRec + "','" + cashReturn + "','" + tranid + "','" + username + "','" + date + "')";
+                    SqlCommand cmdTender = new SqlCommand(tender, con);
+                    con.Open();
+                    cmdTender.ExecuteNonQuery();
+                    con.Close();
+                }
+                else if (tenderCode == "Card")
+                {
+                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + username + "','" + date + "')";
+                    SqlCommand cmdTender1 = new SqlCommand(tender1, con);
+                    con.Open();
+                    cmdTender1.ExecuteNonQuery();
+                    con.Close();
+                }
+                else if (tenderCode == "Customer")
+                {
+                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,AccountName,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + cbcustomer.Text + "','" + username + "','" + date + "')";
+                    SqlCommand cmdTender1 = new SqlCommand(tender1, con);
+                    con.Open();
+                    cmdTender1.ExecuteNonQuery();
+                    con.Close();
+                }
+                else if (tenderCode == "Check")
+                {
+                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CheckNo,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + TxtCheck.Text + "','" + username + "','" + date + "')";
+                    SqlCommand cmdTender1 = new SqlCommand(tender1, con);
+                    con.Open();
+                    cmdTender1.ExecuteNonQuery();
+                    con.Close();
+                }
+                foreach (DataRow dataRow in dt.Rows)
+                {
+                    dataRow[6] = onlydate;
+                    dataRow[7] = onlytime;
+                    dataRow[8] = tranid;
+                    dataRow[9] = username;
+                    dataRow[10] = date;
+                    dataRow[17] = '1';
+                }
+
+                SqlBulkCopy objbulk = new SqlBulkCopy(con);
+                objbulk.DestinationTableName = "SalesItem";
+                objbulk.ColumnMappings.Add("scanCode", "ScanCode");
+                objbulk.ColumnMappings.Add("description", "Descripation");
+                objbulk.ColumnMappings.Add("quantity", "Quantity");
+                objbulk.ColumnMappings.Add("unitretail", "Price");
+                objbulk.ColumnMappings.Add("Amount", "Amount");
+                objbulk.ColumnMappings.Add("Date", "EndDate");
+                objbulk.ColumnMappings.Add("Time", "EndTime");
+                objbulk.ColumnMappings.Add("PromotionName", "PromotionName");
+                objbulk.ColumnMappings.Add("TransactionId", "TransactionId");
+                objbulk.ColumnMappings.Add("CreateBy", "CreateBy");
+                objbulk.ColumnMappings.Add("CreateOn", "CreateOn");
+                objbulk.ColumnMappings.Add("Void", "Void");
+                con.Open();
+                objbulk.WriteToServer(dt);
+                con.Close();
+                TxtCashReturn.Text = "";
+                TxtCashReceive.Text = "";
+                cbcustomer.Text = "";
+                TxtCheck.Text = "";
+                txtTotal.Content = "";
+                tenderCode = "";
+                grandTotal.Content = "Pay " + "$" + "0.00";
+                taxtTotal.Content = "";
+                lblDate.Content = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
+                dt.Clear();
+                JRDGrid.Items.Refresh();
+
+                cashTxtPanel.Visibility = Visibility.Hidden;
+                sp21.Visibility = Visibility.Visible;
+                customerTxtPanel.Visibility = Visibility.Hidden;
+                checkTxtPanel.Visibility = Visibility.Hidden;
+                grPayment.Visibility = Visibility.Hidden;
+                loadtransactionId();
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
+        private void OnClick_PriceCheck(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                gRefund.Visibility = Visibility.Hidden;
+                string visibility = gPriceCheck.Visibility.ToString();
+                if (visibility == "Visible") { gPriceCheck.Visibility = Visibility.Hidden; }
+                else
+                    gPriceCheck.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
+        private void TxtBarcode_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(conString);
+
+                if (e.Key == Key.Enter || e.Key == Key.Tab)
+                {
+                    priceCheck();
+                }
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+        private void priceCheck()
+        {
+            SqlConnection con = new SqlConnection(conString);
+            var code = txtBarcode.Text;
+            var length = code.Length;
+            if (length == 12)
+            {
+                code = code.Remove(code.Length - 1);
+            }
+            if (length == 8)
+            {
+                var last1 = code.Remove(code.Length - 1);
+                var last2 = last1.Substring(last1.Length - 1);
+                var first3 = code.Remove(code.Length - 5);
+                var first4 = code.Remove(code.Length - 4);
+                var last5 = code.Substring(code.Length - 5);
+                var second3 = last5.Remove(last5.Length - 2);
+                var last4 = code.Substring(code.Length - 4);
+                var second2 = last4.Remove(last4.Length - 2);
+                if (Convert.ToInt32(last2) == 0)
+                {
+                    code = first3 + "00000" + second3;
+                }
+                else if (Convert.ToInt32(last2) == 1)
+                {
+                    code = first3 + "10000" + second3;
+                }
+                else if (Convert.ToInt32(last2) == 3)
+                {
+                    code = first4 + "00000" + second2;
+                }
+                else if (Convert.ToInt32(last2) == 4)
+                {
+                    code = code.Remove(code.Length - 3) + "00000" + code.Substring(code.Length - 3).Remove(code.Substring(code.Length - 3).Length - 2);
+                }
+                else if (Convert.ToInt32(last2) == 2)
+                {
+                    code = first3 + "20000" + second3;
+                }
+                else
+                {
+                    int num = 0;
+                    code = code.Remove(code.Length - 2) + num + num + num + num + last2;
+                }
+            }
+            txtBarcode.Text = code;
+
+            string query = "select UnitRetail from Item where Item.Scancode=@password ";
+            SqlCommand cmd = new SqlCommand(query, con);
+            cmd.Parameters.AddWithValue("@password", code);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dtprice = new DataTable();
+            sda.Fill(dtprice);
+            lblUnitRetail.Content = Convert.ToString(Convert.ToDecimal(dtprice.Rows[0]["UnitRetail"].ToString()));
+            decimal de = 0;
+            de = Convert.ToDecimal(dtprice.Rows[0]["UnitRetail"]);
+            lblUnitRetail.Content = "$ " + de.ToString("0.00");
+        }
+
+        private void JRDGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                DataGrid dataGrid = sender as DataGrid;
+                if (e.AddedItems != null && e.AddedItems.Count > 0)
+                {
+                    dataGridSelectedIndex = dataGrid.SelectedIndex.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
+        private void Button_Click_VoidItem(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (dataGridSelectedIndex != "")
+                {
+                    int isi = Convert.ToInt32(dataGridSelectedIndex);
+                    string str = dt.Rows[isi]["PromotionName"].ToString();
+                    dt.Rows[isi]["PromotionName"] = "";
+                    dt.Rows[isi]["PROName"] = "";
+                    dt.Rows[isi]["Void"] = "1";
+                    if (str != "")
+                    {
+                        if (dt.AsEnumerable().Count() != 0)
+                        {
+                            dt = dt.DefaultView.ToTable();
+                            for (int i = 0; i < dt.AsEnumerable().Count(); i++)
+                            {
+                                if (Convert.ToInt32(dt.Rows[i]["Quantity"]) == 1)
+                                {
+                                    dt.Rows[i]["PromotionName"] = "";
+                                    dt.Rows[i]["UnitRetail"] = dt.Rows[i]["OPrice"];
+                                    dt.Rows[i]["Amount"] = Convert.ToDecimal(dt.Rows[i]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[i]["Quantity"]);
+                                }
+                            }
+
+                            DataTable distrinctPromotionName = dt.DefaultView.ToTable(true, "PROName");
+                            DataTable distrinctSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "PROName", "Qty", "NewPrice", "PriceReduce");
+                            foreach (DataRow distrinctRow in distrinctPromotionName.AsEnumerable())
+                            {
+                                if (distrinctRow["PROName"].ToString() != "")
+                                {
+                                    int sumCount = 0;
+                                    for (int j = 0; j < distrinctSCANCODE.AsEnumerable().Count(); j++)
+                                    {
+                                        if (distrinctSCANCODE.Rows[j]["PROName"].ToString() != "")
+                                        {
+                                            for (int i = 0; i < dt.Rows.Count; i++)
+                                            {
+                                                if (distrinctSCANCODE.Rows[j]["PROName"].ToString() == distrinctRow["PROName"].ToString())
+                                                {
+                                                    if (distrinctSCANCODE.Rows[j]["ScanCode"].ToString() == dt.Rows[i]["ScanCode"].ToString())
+                                                    {
+                                                        sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
+                                                        for (int K = 0; K < dt.Rows.Count; K++)
+                                                        {
+                                                            foreach (DataRow itemDT1 in distrinctSCANCODE.AsEnumerable())
+                                                            {
+                                                                if (itemDT1["PROName"].ToString() == distrinctRow["PROName"].ToString())
+                                                                {
+                                                                    int Y = sumCount / Convert.ToInt32(itemDT1["Qty"]);
+                                                                    for (int x = 1; x <= Y; x++)
+                                                                    {
+                                                                        if (sumCount == Convert.ToInt32(itemDT1["Qty"]) * x)
+                                                                        {
+                                                                            for (int z = 0; z <= i; z++)
+                                                                            {
+                                                                                string dtProName = dt.Rows[z]["PROName"].ToString();
+                                                                                string disProName = distrinctRow["PROName"].ToString();
+                                                                                if (dtProName == disProName)
+                                                                                {
+                                                                                    string price = "";
+                                                                                    if (itemDT1["NewPrice"].ToString() != "")
+                                                                                        price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
+
+                                                                                    if (price == "")
+                                                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - (Convert.ToDecimal(dt.Rows[z]["Oprice"]) * Convert.ToDecimal(itemDT1["PriceReduce"]) / 100)).ToString();
+
+                                                                                    dt.Rows[z]["PromotionName"] = itemDT1["PROName"];
+                                                                                    dt.Rows[z]["UnitRetail"] = price;
+                                                                                    dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
+                                                                                }
+                                                                            }
+
+                                                                        }
+
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    JRDGrid.ItemsSource = dt.DefaultView;
+                    TotalEvent();
+                }
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+        DataTable dtTrans = new DataTable();
+        private void Button_Click_Receipt(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string visibility = gReceipt.Visibility.ToString();
+                if (visibility == "Visible")
+                {
+                    gReceipt.Visibility = Visibility.Hidden;
+                    Click_ClosegReceipt(e, e);
+                }
+                else
+                {
+                    gReceipt.Visibility = Visibility.Visible;
+                    TxtBxStackPanel2.Visibility = Visibility.Hidden;
+                    grPayment.Visibility = Visibility.Hidden;
+
+                    sp21.Visibility = Visibility.Hidden;
+                    sp23.Visibility = Visibility.Hidden;
+                    TxtBxStackPanel2.Visibility = Visibility.Hidden;
+                    sp22.Visibility = Visibility.Hidden;
+
+                    SqlConnection con = new SqlConnection(conString);
+                    string edate = Convert.ToDateTime(lblDate.Content).ToString("yyyy/MM/dd");
+                    string querytrans = "select Tran_id as TransactionId,EndTime,TaxAmount,GrandAmount from transactions where enddate=@date";
+                    SqlCommand cmdTransaction = new SqlCommand(querytrans, con);
+                    cmdTransaction.Parameters.AddWithValue("@date", edate);
+                    SqlDataAdapter sdatrans = new SqlDataAdapter(cmdTransaction);
+
+                    sdatrans.Fill(dtTrans);
+                    dgTransaction.CanUserAddRows = false;
+                    dgTransaction.ItemsSource = dtTrans.AsDataView();
+                    //dgTransaction.ItemsSource = dtTrans.DefaultView;
+                    //dgTransaction.Items.Refresh();
+                }
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
+        private void DgTransaction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                DataGrid dataGrid = sender as DataGrid;
+                if (e.AddedItems != null && e.AddedItems.Count > 0)
+                {
+                    decimal total = 0;
+                    int it = Convert.ToInt32(dataGrid.SelectedIndex.ToString());
+                    lblTranid.Content = dtTrans.Rows[it]["TransactionId"].ToString();
+                    decimal grandAmount = Convert.ToDecimal(dtTrans.Rows[it]["GrandAmount"].ToString());
+                    decimal tax = Convert.ToDecimal(dtTrans.Rows[it]["TaxAmount"].ToString());
+                    total = grandAmount - tax;
+                    lblDate.Content = Convert.ToDateTime(lblDate.Content).ToString("yyyy/MM/dd") + " " + dtTrans.Rows[it]["EndTime"].ToString();
+                    txtTotal.Content = '$' + Convert.ToDecimal(total).ToString("0.00");
+                    taxtTotal.Content = '$' + Convert.ToDecimal(tax).ToString("0.00");
+                    grandTotal.Content = "Pay " + '$' + Convert.ToDecimal(grandAmount).ToString("0.00");
+
+                    SqlConnection con = new SqlConnection(conString);
+                    string edate = Convert.ToDateTime(lblDate.Content).ToString("yyyy/MM/dd");
+                    string querytrans = "select ScanCode,Descripation as Description,Quantity,Price,Amount from salesItem where TransactionId=@transid";
+                    SqlCommand cmdTransaction = new SqlCommand(querytrans, con);
+                    cmdTransaction.Parameters.AddWithValue("@transid", lblTranid.Content);
+                    SqlDataAdapter sdatrans = new SqlDataAdapter(cmdTransaction);
+                    sdatrans.Fill(dt);
+                    JRDGrid.ItemsSource = dt.DefaultView;
+                    JRDGrid.Items.Refresh();
+                    TotalEvent();
+                    grandTotal.Visibility = Visibility.Hidden;
+                }
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
+        private void BtnPrint_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (Convert.ToString(lblTranid.Content) != "")
+                {
+                    PrintDocument = new PrintDocument();
+                    PrintDocument.PrintPage += new PrintPageEventHandler(FormatPage);
+                    PrintDocument.Print();
+                    lblTranid.Content = "";
+                    lblDate.Content =
+                    txtTotal.Content = '$' + " " + "0.00";
+                    taxtTotal.Content = '$' + " " + "0.00";
+                    grandTotal.Content = "Pay " + '$' + " " + "0.00";
+                    loadtransactionId();
+                    lblDate.Content = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt");
+                    dt.Clear();
+                    JRDGrid.Items.Refresh();
+                    dtTrans.Clear();
+                    dgTransaction.Items.Refresh();
+                    gReceipt.Visibility = Visibility.Hidden;
+                    TxtBxStackPanel2.Visibility = Visibility.Hidden;
+                    grPayment.Visibility = Visibility.Hidden;
+
+                    sp21.Visibility = Visibility.Visible;
+                    sp23.Visibility = Visibility.Hidden;
+                    TxtBxStackPanel2.Visibility = Visibility.Hidden;
+                    sp22.Visibility = Visibility.Hidden;
+                    grandTotal.Visibility = Visibility.Visible;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
+        private void Button_Click_Refund(object sender, RoutedEventArgs e)
+        {
+            gRefund.Visibility = Visibility.Visible;
+            gPriceCheck.Visibility = Visibility.Hidden;
+        }
+
+        private void Click_ClosegReceipt(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                lblTranid.Content = "";
+                lblDate.Content =
+                txtTotal.Content = '$' + " " + "0.00";
+                taxtTotal.Content = '$' + " " + "0.00";
+                grandTotal.Content = "Pay " + '$' + " " + "0.00";
+                loadtransactionId();
+                lblDate.Content = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt");
+                dt.Clear();
+                JRDGrid.Items.Refresh();
+                dtTrans.Clear();
+                dgTransaction.Items.Refresh();
+                gReceipt.Visibility = Visibility.Hidden;
+                TxtBxStackPanel2.Visibility = Visibility.Hidden;
+                grPayment.Visibility = Visibility.Hidden;
+                sp21.Visibility = Visibility.Visible;
                 sp23.Visibility = Visibility.Hidden;
-                sp22.Visibility = Visibility.Visible;
-                TotalEvent();
+                sp22.Visibility = Visibility.Hidden;
+                grandTotal.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
+        private void button_Click_Category_Description(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var btnContent = sender as Button;
+                var tb = (TextBlock)btnContent.Content;
+                SqlConnection con = new SqlConnection(conString);
+                string querya = "select CATEGORY  from Category  where Category = @Description";
+                SqlCommand cmda = new SqlCommand(querya, con);
+                cmda.Parameters.AddWithValue("@Description", tb.Text);
+                cmda.Parameters.AddWithValue("@qty", 1);
+                SqlDataAdapter sdaa = new SqlDataAdapter(cmda);
+                DataTable dta = new DataTable();
+                sdaa.Fill(dta);
+                int A = dta.Rows.Count;
+                if (A != 0)
+                    button_Click_Category(sender, e);
+                else
+                {
+                    string query = "select Category.ScanCode,Category.Description,item.UnitRetail,Department.TaxRate,@qty as Quantity,item.UnitRetail as Amount  from Category join Item on Category.scancode = Item.scancode join Department on Item.Department = Department.Department where Item.Description = @Description";
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@Description", tb.Text);
+                    cmd.Parameters.AddWithValue("@qty", 1);
+                    SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                    con.Open();
+                    sda.Fill(dt);
+                    con.Close();
+                    JRDGrid.ItemsSource = dt.DefaultView;
+                    sp23.Visibility = Visibility.Hidden;
+                    sp22.Visibility = Visibility.Visible;
+                    TotalEvent();
+                }
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
             }
         }
 
         private void Button_Click_Enter(object sender, RoutedEventArgs e)
         {
-            if (txtGotFocusStr == "textBox1")
+            try
             {
-                BarcodeMethod();
+                if (txtGotFocusStr == "textBox1")
+                {
+                    BarcodeMethod();
+                }
+                if (txtGotFocusStr == "TxtCashReceive")
+                {
+                    TxtCashReturn.Text = decimal.Parse(Convert.ToDecimal(decimal.Parse(TxtCashReceive.Text) - decimal.Parse(grandTotal.Content.ToString().Replace("Pay $", ""))).ToString("0.00")).ToString("0.00");
+                    Button_Click_1();
+                }
+                if (txtGotFocusStr == "TxtCheck")
+                {
+                    Button_Click_1();
+                }
+                if (txtGotFocusStr == "CellEditQty")
+                {
+                    CellEditMethod();
+                }
+                if (txtGotFocusStr == "txtBarcode")
+                {
+                    priceCheck();
+                }
             }
-            if (txtGotFocusStr == "TxtCashReceive")
+            catch (Exception ex)
             {
-                TxtCashReturn.Text = decimal.Parse(Convert.ToDecimal(decimal.Parse(TxtCashReceive.Text) - decimal.Parse(grandTotal.Text.Replace("$", ""))).ToString("0.00")).ToString("0.00");
-                Button_Click_1();
-            }
-            if (txtGotFocusStr == "TxtCheck")
-            {
-                Button_Click_1();
-            }
-            if (txtGotFocusStr == "CellEditQty")
-            {
-                CellEditMethod();
+                SendErrorToText(ex, errorFileName);
             }
         }
 
         void selectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
-            if (JRDGrid.CurrentColumn != null)
+            try
             {
-                DataGridColumn column = JRDGrid.CurrentColumn;
-                if (column.Header != null)
+                if (JRDGrid.CurrentColumn != null)
                 {
-                    if (column.Header.ToString() == "Quantity")
+                    DataGridColumn column = JRDGrid.CurrentColumn;
+                    if (column.Header != null)
                     {
-                        txtGotFocusStr = "CellEditQty";
-                        dtInndex = column.DisplayIndex;
+                        if (column.Header.ToString() == "Quantity")
+                        {
+                            txtGotFocusStr = "CellEditQty";
+                            dtInndex = column.DisplayIndex;
 
-                        int i = dt.Rows.Count - 1;
-                        DataRow dataRow = dt.Rows[i];
-                        dt.Rows[i]["Quantity"] = "";
+                            int i = dt.Rows.Count - 1;
+                            DataRow dataRow = dt.Rows[i];
+                            dt.Rows[i]["Quantity"] = "";
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
             }
         }
 
         public void CellEditMethod()
         {
-            int rowIndex = dt.Rows.Count - 1;
-            DataRow dataRow = dt.Rows[rowIndex];
-            if (dt.Rows[rowIndex]["PROName"].ToString() != "")
+            try
             {
-                int qDT = Convert.ToInt32(dt.Rows[rowIndex]["Quantity"]);
-                int qDT1 = Convert.ToInt32(dt.Rows[rowIndex]["Qty"]);
-
-                if (qDT >= qDT1)
+                int rowIndex = dt.Rows.Count - 1;
+                DataRow dataRow = dt.Rows[rowIndex];
+                if (dt.Rows[rowIndex]["PROName"].ToString() != "")
                 {
-                    int QA = qDT1 * (qDT / qDT1);
-                    if (dt.Rows[rowIndex]["NewPrice"].ToString() != "")
+                    int qDT = Convert.ToInt32(dt.Rows[rowIndex]["Quantity"]);
+                    int qDT1 = Convert.ToInt32(dt.Rows[rowIndex]["Qty"]);
+
+                    if (qDT >= qDT1)
                     {
-                        dt.Rows[rowIndex]["PromotionName"] = dt.Rows[rowIndex]["PROName"];
-                        dt.Rows[rowIndex]["Quantity"] = QA;
-                        dt.Rows[rowIndex]["UnitRetail"] = Convert.ToDecimal(dt.Rows[rowIndex]["NewPrice"]) / qDT1;
-                        dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
+                        int QA = qDT1 * (qDT / qDT1);
+                        if (dt.Rows[rowIndex]["NewPrice"].ToString() != "")
+                        {
+                            dt.Rows[rowIndex]["PromotionName"] = dt.Rows[rowIndex]["PROName"];
+                            dt.Rows[rowIndex]["Quantity"] = QA;
+                            dt.Rows[rowIndex]["UnitRetail"] = Convert.ToDecimal(dt.Rows[rowIndex]["NewPrice"]) / qDT1;
+                            dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
+                        }
+                        else
+                        {
+                            dt.Rows[rowIndex]["PromotionName"] = dt.Rows[rowIndex]["PROName"];
+                            dt.Rows[rowIndex]["Quantity"] = QA;
+                            dt.Rows[rowIndex]["UnitRetail"] = Convert.ToDecimal(dt.Rows[rowIndex]["OPrice"]) - (Convert.ToDecimal(dt.Rows[rowIndex]["OPrice"]) * Convert.ToDecimal(dt.Rows[rowIndex]["PriceReduce"]) / 100);
+                            dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
+                        }
+                        int QB = qDT - QA;
+                        if (QB != 0)
+                        {
+                            for (int a = 0; a < QB; a++)
+                            {
+                                DataRow newRow = dt.NewRow();
+                                newRow["ScanCode"] = dt.Rows[rowIndex]["ScanCode"];
+                                newRow["Description"] = dt.Rows[rowIndex]["Description"];
+                                newRow["Quantity"] = 1;
+                                newRow["UnitRetail"] = dt.Rows[rowIndex]["OPrice"];
+                                newRow["Amount"] = Convert.ToInt32(newRow["Quantity"]) * Convert.ToDecimal(newRow["UnitRetail"]);
+                                newRow["OPrice"] = dt.Rows[rowIndex]["OPrice"];
+                                newRow["PromotionName"] = "";
+                                newRow["TaxRate"] = dt.Rows[rowIndex]["TaxRate"];
+                                newRow["PROName"] = dt.Rows[rowIndex]["PROName"];
+                                newRow["Qty"] = dt.Rows[rowIndex]["Qty"];
+                                newRow["NewPrice"] = dt.Rows[rowIndex]["NewPrice"];
+                                newRow["PriceReduce"] = dt.Rows[rowIndex]["PriceReduce"];
+                                dt.Rows.Add(newRow);
+                            }
+                        }
                     }
                     else
                     {
-                        dt.Rows[rowIndex]["PromotionName"] = dt.Rows[rowIndex]["PROName"];
-                        dt.Rows[rowIndex]["Quantity"] = QA;
-                        dt.Rows[rowIndex]["UnitRetail"] = Convert.ToDecimal(dt.Rows[rowIndex]["OPrice"]) - (Convert.ToDecimal(dt.Rows[rowIndex]["OPrice"]) * Convert.ToDecimal(dt.Rows[rowIndex]["PriceReduce"]) / 100);
-                        dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
-                    }
-                    int QB = qDT - QA;
-                    if (QB != 0)
-                    {
-                        for (int a = 0; a < QB; a++)
+                        for (int a = 0; a < Convert.ToInt32(dt.Rows[rowIndex]["Quantity"]); a++)
                         {
                             DataRow newRow = dt.NewRow();
                             newRow["ScanCode"] = dt.Rows[rowIndex]["ScanCode"];
@@ -1537,54 +2412,38 @@ namespace POSSystem
                             newRow["UnitRetail"] = dt.Rows[rowIndex]["OPrice"];
                             newRow["Amount"] = Convert.ToInt32(newRow["Quantity"]) * Convert.ToDecimal(newRow["UnitRetail"]);
                             newRow["OPrice"] = dt.Rows[rowIndex]["OPrice"];
-                            newRow["PromotionName"] = "";
                             newRow["TaxRate"] = dt.Rows[rowIndex]["TaxRate"];
                             newRow["PROName"] = dt.Rows[rowIndex]["PROName"];
+                            newRow["PromotionName"] = "";
                             newRow["Qty"] = dt.Rows[rowIndex]["Qty"];
                             newRow["NewPrice"] = dt.Rows[rowIndex]["NewPrice"];
                             newRow["PriceReduce"] = dt.Rows[rowIndex]["PriceReduce"];
+
                             dt.Rows.Add(newRow);
                         }
+                        DataRow dr = dt.Rows[rowIndex];
+                        dt.Rows.Remove(dr);
+                        dt.AcceptChanges();
+
+
                     }
+                    int intv = qDT1 * (qDT / qDT1);
+                    decimal ab = qDT / qDT1;
+                    decimal decv = Convert.ToDecimal(qDT1) * Convert.ToDecimal(qDT) / Convert.ToDecimal(qDT1);
+
+                    dt = ScanCodeFunction(dt, rowIndex);
                 }
                 else
                 {
-                    for (int a = 0; a < Convert.ToInt32(dt.Rows[rowIndex]["Quantity"]); a++)
-                    {
-                        DataRow newRow = dt.NewRow();
-                        newRow["ScanCode"] = dt.Rows[rowIndex]["ScanCode"];
-                        newRow["Description"] = dt.Rows[rowIndex]["Description"];
-                        newRow["Quantity"] = 1;
-                        newRow["UnitRetail"] = dt.Rows[rowIndex]["OPrice"];
-                        newRow["Amount"] = Convert.ToInt32(newRow["Quantity"]) * Convert.ToDecimal(newRow["UnitRetail"]);
-                        newRow["OPrice"] = dt.Rows[rowIndex]["OPrice"];
-                        newRow["TaxRate"] = dt.Rows[rowIndex]["TaxRate"];
-                        newRow["PROName"] = dt.Rows[rowIndex]["PROName"];
-                        newRow["PromotionName"] = "";
-                        newRow["Qty"] = dt.Rows[rowIndex]["Qty"];
-                        newRow["NewPrice"] = dt.Rows[rowIndex]["NewPrice"];
-                        newRow["PriceReduce"] = dt.Rows[rowIndex]["PriceReduce"];
-
-                        dt.Rows.Add(newRow);
-                    }
-                    DataRow dr = dt.Rows[rowIndex];
-                    dt.Rows.Remove(dr);
-                    dt.AcceptChanges();
-
-
+                    dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
                 }
-                int intv = qDT1 * (qDT / qDT1);
-                decimal ab = qDT / qDT1;
-                decimal decv = Convert.ToDecimal(qDT1) * Convert.ToDecimal(qDT) / Convert.ToDecimal(qDT1);
-
-                dt = ScanCodeFunction(dt, rowIndex);
+                JRDGrid.ItemsSource = dt.DefaultView;
+                TotalEvent();
             }
-            else
+            catch (Exception ex)
             {
-                dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
+                SendErrorToText(ex, errorFileName);
             }
-            JRDGrid.ItemsSource = dt.DefaultView;
-            TotalEvent();
         }
 
         public bool isDecimal(string value)

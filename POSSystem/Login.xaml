@@ -129,7 +129,7 @@
                                 </LinearGradientBrush>
                             </Button.Background>
                         </Button>
-                        <Button Content="8" Name="Txt8" Margin="5" Foreground="White" Click="btnclick" Grid.Row="3" Grid.Column="1">
+                        <Button Content="8" Name="Txt8" Margin="5" Foreground="White" FontSize="28" Click="btnclick" Grid.Row="3" Grid.Column="1">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#FF955912"/>
@@ -137,7 +137,7 @@
                                 </LinearGradientBrush>
                             </Button.Background>
                         </Button>
-                        <Button Content="9" Name="Txt9" Margin="5" Foreground="White" Click="btnclick" Grid.Row="3" Grid.Column="2">
+                        <Button Content="9" Name="Txt9" Margin="5" Foreground="White" FontSize="28" Click="btnclick" Grid.Row="3" Grid.Column="2">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#FF955912"/>
@@ -145,7 +145,7 @@
                                 </LinearGradientBrush>
                             </Button.Background>
                         </Button>
-                        <Button Content="0" Name="Txt0" Margin="5" Foreground="White" Click="btnclick" Grid.Row="4">
+                        <Button Content="0" Name="Txt0" Margin="5" Foreground="White" FontSize="28" Click="btnclick" Grid.Row="4">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#FF955912"/>
@@ -153,7 +153,7 @@
                                 </LinearGradientBrush>
                             </Button.Background>
                         </Button>
-                        <Button Content="Clear" Name="TxtClear" Margin="5" Foreground="White" Click="TxtClear_Click" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2">
+                        <Button Content="Clear" Name="TxtClear" Margin="5" Foreground="White" FontSize="28" Click="TxtClear_Click" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#FF955912"/>
