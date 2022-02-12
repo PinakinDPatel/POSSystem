@@ -62,28 +62,37 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                string tenderQ = "Update tender set shiftClose=@username Where shiftClose is null";
-                SqlCommand tenderCMD = new SqlCommand(tenderQ, con);
-                tenderCMD.Parameters.AddWithValue("@username", username);
-                string transQ = "Update Transactions set shiftClose=@username Where shiftClose is null";
-                SqlCommand transCMD = new SqlCommand(transQ, con);
-                transCMD.Parameters.AddWithValue("@username", username);
-                string itemQ = "Update SalesItem set shiftClose=@username Where shiftClose is null";
-                SqlCommand itemCMD = new SqlCommand(itemQ, con);
-                itemCMD.Parameters.AddWithValue("@username", username);
-                string expQ = "Update Expence set shiftClose=@username Where shiftClose is null";
-                SqlCommand expCMD = new SqlCommand(expQ, con);
-                expCMD.Parameters.AddWithValue("@username", username);
-                string RECQ = "Update Recieve set shiftClose=@Now Where shiftClose is null";
-                SqlCommand RECCMD = new SqlCommand(RECQ, con);
-                RECCMD.Parameters.AddWithValue("@username", username);
-                con.Open();
-                tenderCMD.ExecuteNonQuery();
-                transCMD.ExecuteNonQuery();
-                itemCMD.ExecuteNonQuery();
-                expCMD.ExecuteNonQuery();
-                RECCMD.ExecuteNonQuery();
-                con.Close();
+                string queryHold = "select distinct TrasactionId from Hold";
+                SqlCommand cmdHold = new SqlCommand(queryHold, con);
+                SqlDataAdapter sdaHold = new SqlDataAdapter(cmdHold);
+                DataTable dthold = new DataTable();
+                sdaHold.Fill(dthold);
+                if (dthold.Rows.Count == 0)
+                {
+                    string tenderQ = "Update tender set shiftClose=@username Where shiftClose is null";
+                    SqlCommand tenderCMD = new SqlCommand(tenderQ, con);
+                    tenderCMD.Parameters.AddWithValue("@username", username);
+                    string transQ = "Update Transactions set shiftClose=@username Where shiftClose is null";
+                    SqlCommand transCMD = new SqlCommand(transQ, con);
+                    transCMD.Parameters.AddWithValue("@username", username);
+                    string itemQ = "Update SalesItem set shiftClose=@username Where shiftClose is null";
+                    SqlCommand itemCMD = new SqlCommand(itemQ, con);
+                    itemCMD.Parameters.AddWithValue("@username", username);
+                    string expQ = "Update Expence set shiftClose=@username Where shiftClose is null";
+                    SqlCommand expCMD = new SqlCommand(expQ, con);
+                    expCMD.Parameters.AddWithValue("@username", username);
+                    string RECQ = "Update Recieve set shiftClose=@Now Where shiftClose is null";
+                    SqlCommand RECCMD = new SqlCommand(RECQ, con);
+                    RECCMD.Parameters.AddWithValue("@username", username);
+                    con.Open();
+                    tenderCMD.ExecuteNonQuery();
+                    transCMD.ExecuteNonQuery();
+                    itemCMD.ExecuteNonQuery();
+                    expCMD.ExecuteNonQuery();
+                    RECCMD.ExecuteNonQuery();
+                    con.Close();
+                }
+                else { MessageBox.Show("Please Clear Hold Transaction"); }
             }
             catch (Exception ex)
             {
@@ -95,31 +104,41 @@ namespace POSSystem
         {
             try
             {
-                InsertQuery();
                 SqlConnection con = new SqlConnection(conString);
-                var date = DateTime.Now.ToString("yyyy/MM/dd");
-                string tenderQ = "Update tender set DayClose=@NowDate Where DayClose is null or DayClose=''";
-                SqlCommand tenderCMD = new SqlCommand(tenderQ, con);
-                tenderCMD.Parameters.AddWithValue("@NowDate", date);
-                string transQ = "Update Transactions set DayClose=@Date Where DayClose is null or DayClose=''";
-                SqlCommand transCMD = new SqlCommand(transQ, con);
-                transCMD.Parameters.AddWithValue("@Date", date);
-                string itemQ = "Update SalesItem set DayClose=@Now Where DayClose is null or DayClose=''";
-                SqlCommand itemCMD = new SqlCommand(itemQ, con);
-                itemCMD.Parameters.AddWithValue("@Now", date);
-                string expeQ = "Update Expence set DayClose=@Now Where DayClose is null";
-                SqlCommand expCMD = new SqlCommand(expeQ, con);
-                expCMD.Parameters.AddWithValue("@Now", date);
-                string RECQ = "Update Receive set DayClose=@Now Where DayClose is null";
-                SqlCommand RECCMD = new SqlCommand(RECQ, con);
-                RECCMD.Parameters.AddWithValue("@Now", date);
-                con.Open();
-                tenderCMD.ExecuteNonQuery();
-                transCMD.ExecuteNonQuery();
-                itemCMD.ExecuteNonQuery();
-                expCMD.ExecuteNonQuery();
-                RECCMD.ExecuteNonQuery();
-                con.Close();
+                string queryHold = "select distinct TrasactionId from Hold";
+                SqlCommand cmdHold = new SqlCommand(queryHold, con);
+                SqlDataAdapter sdaHold = new SqlDataAdapter(cmdHold);
+                DataTable dthold = new DataTable();
+                sdaHold.Fill(dthold);
+                if (dthold.Rows.Count == 0)
+                {
+                    InsertQuery();
+                    
+                    var date = DateTime.Now.ToString("yyyy/MM/dd");
+                    string tenderQ = "Update tender set DayClose=@NowDate Where DayClose is null or DayClose=''";
+                    SqlCommand tenderCMD = new SqlCommand(tenderQ, con);
+                    tenderCMD.Parameters.AddWithValue("@NowDate", date);
+                    string transQ = "Update Transactions set DayClose=@Date Where DayClose is null or DayClose=''";
+                    SqlCommand transCMD = new SqlCommand(transQ, con);
+                    transCMD.Parameters.AddWithValue("@Date", date);
+                    string itemQ = "Update SalesItem set DayClose=@Now Where DayClose is null or DayClose=''";
+                    SqlCommand itemCMD = new SqlCommand(itemQ, con);
+                    itemCMD.Parameters.AddWithValue("@Now", date);
+                    string expeQ = "Update Expence set DayClose=@Now Where DayClose is null";
+                    SqlCommand expCMD = new SqlCommand(expeQ, con);
+                    expCMD.Parameters.AddWithValue("@Now", date);
+                    string RECQ = "Update Receive set DayClose=@Now Where DayClose is null";
+                    SqlCommand RECCMD = new SqlCommand(RECQ, con);
+                    RECCMD.Parameters.AddWithValue("@Now", date);
+                    con.Open();
+                    tenderCMD.ExecuteNonQuery();
+                    transCMD.ExecuteNonQuery();
+                    itemCMD.ExecuteNonQuery();
+                    expCMD.ExecuteNonQuery();
+                    RECCMD.ExecuteNonQuery();
+                    con.Close();
+                }
+                else { MessageBox.Show("Please Clear Hold Transaction"); }
             }
             catch (Exception ex)
             {

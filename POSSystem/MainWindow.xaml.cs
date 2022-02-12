@@ -28,6 +28,7 @@ namespace POSSystem
         private PrintDocument PrintDocument;
         private Graphics graphics;
         string tenderCode = "";
+        string refund = "";
         DataTable dt = new DataTable();
         DataTable dtdep = new DataTable();
         string username = App.Current.Properties["username"].ToString();
@@ -79,7 +80,7 @@ namespace POSSystem
                     Button button = new Button();
 
                     var size = System.Windows.SystemParameters.PrimaryScreenWidth;
-                    if (size == 1024)
+                    if (size == 1024 || size == 1366)
                     {
                         button.Content = new TextBlock()
                         {
@@ -157,6 +158,7 @@ namespace POSSystem
                 cbcustomer.DisplayMemberPath = "Name";
 
                 loadtransactionId();
+                loadHold();
 
             }
             catch (Exception ex)
@@ -172,7 +174,7 @@ namespace POSSystem
                 using (SqlConnection conn = new SqlConnection(conString))
                 {
                     conn.Open();
-                    string query1 = "SELECT TOP 1 Tran_id FROM Transactions where DayClose is null ORDER BY convert(int,Tran_id) DESC";
+                    string query1 = "select top 1 Tran_id from(SELECT Tran_id FROM Transactions where DayClose is null union all SELECT distinct TrasactionId FROM Hold) as w ORDER BY convert(int,Tran_id) DESC";
                     using (SqlCommand cmd2 = new SqlCommand(query1, conn))
                     {
                         SqlDataReader data = cmd2.ExecuteReader();
@@ -299,10 +301,13 @@ namespace POSSystem
                     }
                     textBox1.Text = code;
 
-                    string query = "select item.Scancode,item.Description,Convert(decimal(10,2),UnitRetail)as UnitRetail,1 as quantity,Convert(decimal(10,2),UnitRetail) as Amount,Department.TaxRate,Convert(decimal(10,2),UnitRetail) as Oprice,x.PromotionName AS PROName,x.Quantity as Qty,newprice,pricereduce from Item inner join Department on rtrim(item.Department)=rtrim(Department.Department) left join(select scancode, Promotion.promotionName, newprice, Quantity, pricereduce from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotionname where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate))as x on item.scancode = x.scancode where Item.Scancode=@password ";
+                    string query = "select item.Scancode,item.Description,Convert(decimal(10,2),UnitRetail)as UnitRetail,@qty as quantity,(Convert(decimal(10,2),UnitRetail)*@qty) as Amount,Department.TaxRate,Convert(decimal(10,2),UnitRetail) as Oprice,x.PromotionName AS PROName,x.Quantity as Qty,newprice,pricereduce from Item inner join Department on rtrim(item.Department)=rtrim(Department.Department) left join(select scancode, Promotion.promotionName, newprice, Quantity, pricereduce from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotionname where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate))as x on item.scancode = x.scancode where Item.Scancode=@password ";
                     SqlCommand cmd = new SqlCommand(query, con);
                     cmd.Parameters.AddWithValue("@password", code);
-                    cmd.Parameters.AddWithValue("@qty", 1);
+                    if (refund == "")
+                        cmd.Parameters.AddWithValue("@qty", 1);
+                    else if (refund == "Refund")
+                        cmd.Parameters.AddWithValue("@qty", -1);
                     SqlDataAdapter sda = new SqlDataAdapter(cmd);
                     con.Open();
                     sda.Fill(dt);
@@ -362,7 +367,6 @@ namespace POSSystem
         {
             try
             {
-
                 var code = textBox1.Text;
                 var length = code.Length;
                 if (length == 12)
@@ -407,10 +411,13 @@ namespace POSSystem
                 }
                 textBox1.Text = code;
                 SqlConnection con = new SqlConnection(conString);
-                string query = "select item.Scancode,item.Description,Convert(decimal(10,2),UnitRetail)as UnitRetail,1 as quantity,Convert(decimal(10,2),UnitRetail)as Amount,Department.TaxRate,Convert(decimal(10,2),UnitRetail)as Oprice,x.PromotionName AS PROName,x.Quantity as Qty,newprice,pricereduce from Item inner join Department on rtrim(item.Department)=rtrim(Department.Department) left join(select scancode, Promotion.promotionName, newprice, Quantity, pricereduce from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotionname where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate))as x on item.scancode = x.scancode where Item.Scancode=@password ";
+                string query = "select item.Scancode,item.Description,Convert(decimal(10,2),UnitRetail)as UnitRetail,@qty as quantity,(Convert(decimal(10,2),UnitRetail)*@qty)as Amount,Department.TaxRate,Convert(decimal(10,2),UnitRetail)as Oprice,x.PromotionName AS PROName,x.Quantity as Qty,newprice,pricereduce from Item inner join Department on rtrim(item.Department)=rtrim(Department.Department) left join(select scancode, Promotion.promotionName, newprice, Quantity, pricereduce from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotionname where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate))as x on item.scancode = x.scancode where Item.Scancode=@password ";
                 SqlCommand cmd = new SqlCommand(query, con);
                 cmd.Parameters.AddWithValue("@password", textBox1.Text);
-                cmd.Parameters.AddWithValue("@qty", 1);
+                if (refund == "")
+                    cmd.Parameters.AddWithValue("@qty", 1);
+                else if (refund == "Refund")
+                    cmd.Parameters.AddWithValue("@qty", -1);
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
                 con.Open();
                 sda.Fill(dt);
@@ -516,7 +523,7 @@ namespace POSSystem
                 decimal Total = 0;
                 foreach (DataRow dr in dt.Rows)
                 {
-                    string voiditem = dr.ItemArray[17].ToString();
+                    string voiditem = dr.ItemArray[12].ToString();
                     string amounnt = dr.ItemArray[5].ToString();
                     string tax = dr.ItemArray[3].ToString();
                     if (voiditem != "1")
@@ -584,7 +591,11 @@ namespace POSSystem
                 con.Close();
                 if (tenderCode == "Cash")
                 {
-                    string tender = "insert into Tender(EndDate,Endtime,TenderCode,Amount,Change,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + cashRec + "','" + cashReturn + "','" + tranid + "','" + username + "','" + date + "')";
+                    string tender = "";
+                    if (refund == "")
+                        tender = "insert into Tender(EndDate,Endtime,TenderCode,Amount,Change,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + cashRec + "','" + cashReturn + "','" + tranid + "','" + username + "','" + date + "')";
+                    else
+                        tender = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + username + "','" + date + "')";
                     SqlCommand cmdTender = new SqlCommand(tender, con);
                     con.Open();
                     cmdTender.ExecuteNonQuery();
@@ -653,7 +664,7 @@ namespace POSSystem
                 lblDate.Content = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
                 dt.Clear();
                 JRDGrid.Items.Refresh();
-
+                refund = "";
                 cashTxtPanel.Visibility = Visibility.Hidden;
                 sp21.Visibility = Visibility.Visible;
                 customerTxtPanel.Visibility = Visibility.Hidden;
@@ -703,7 +714,7 @@ namespace POSSystem
                 DrawAtStart("Date: " + lblDate.Content, Offset);
 
                 Offset = Offset + smallinc;
-                underLine = "-----------------------------------";
+                underLine = "-------------------------------------";
                 DrawLine(underLine, largefont, Offset, 2);
 
                 Offset = Offset + largeinc;
@@ -714,10 +725,10 @@ namespace POSSystem
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     InsertItem(dt.Rows[i]["description"].ToString() + System.Environment.NewLine + dt.Rows[i]["Scancode"].ToString(), dt.Rows[i]["quantity"].ToString(), dt.Rows[i]["Amount"].ToString(), Offset);
-                    Offset = Offset + largeinc;
+                    Offset = Offset + largeinc + 12;
                 }
 
-                underLine = "-----------------------------------";
+                underLine = "-------------------------------------";
                 DrawLine(underLine, largefont, Offset, 2);
 
                 Offset = Offset + largeinc;
@@ -797,9 +808,9 @@ namespace POSSystem
                              new SolidBrush(Color.Black), startX + 5, startY + Offset);
 
                 graphics.DrawString(value, minifont,
-                         new SolidBrush(Color.Black), startX + 100, startY + Offset);
+                         new SolidBrush(Color.Black), startX + 180, startY + Offset);
                 graphics.DrawString(value1, minifont,
-                        new SolidBrush(Color.Black), startX + 150, startY + Offset);
+                        new SolidBrush(Color.Black), startX + 200, startY + Offset);
             }
             catch (Exception ex) { SendErrorToText(ex, errorFileName); }
         }
@@ -815,9 +826,9 @@ namespace POSSystem
                              new SolidBrush(Color.Black), startX + 5, startY + Offset);
 
                 graphics.DrawString(value, itemfont,
-                         new SolidBrush(Color.Black), startX + 100, startY + Offset);
+                         new SolidBrush(Color.Black), startX + 180, startY + Offset);
                 graphics.DrawString(value1, itemfont,
-                      new SolidBrush(Color.Black), startX + 150, startY + Offset);
+                      new SolidBrush(Color.Black), startX + 200, startY + Offset);
             }
             catch (Exception ex)
             {
@@ -1084,28 +1095,36 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                string tenderQ = "Update tender set shiftClose=@username Where shiftClose is null";
-                SqlCommand tenderCMD = new SqlCommand(tenderQ, con);
-                tenderCMD.Parameters.AddWithValue("@username", username);
-                string transQ = "Update Transactions set shiftClose=@username Where shiftClose is null";
-                SqlCommand transCMD = new SqlCommand(transQ, con);
-                transCMD.Parameters.AddWithValue("@username", username);
-                string itemQ = "Update SalesItem set shiftClose=@username Where shiftClose is null";
-                SqlCommand itemCMD = new SqlCommand(itemQ, con);
-                itemCMD.Parameters.AddWithValue("@username", username);
-                string expQ = "Update Expence set shiftClose=@username Where shiftClose is null";
-                SqlCommand expCMD = new SqlCommand(expQ, con);
-                expCMD.Parameters.AddWithValue("@username", username);
-                string RECQ = "Update Recieve set shiftClose=@username Where shiftClose is null";
-                SqlCommand RECCMD = new SqlCommand(RECQ, con);
-                RECCMD.Parameters.AddWithValue("@username", username);
-                con.Open();
-                tenderCMD.ExecuteNonQuery();
-                transCMD.ExecuteNonQuery();
-                itemCMD.ExecuteNonQuery();
-                expCMD.ExecuteNonQuery();
-                RECCMD.ExecuteNonQuery();
-                con.Close();
+                string queryHold = "select distinct TrasactionId from Hold";
+                SqlCommand cmdHold = new SqlCommand(queryHold, con);
+                SqlDataAdapter sdaHold = new SqlDataAdapter(cmdHold);
+                sdaHold.Fill(dthold);
+                if (dthold.Rows.Count == 0)
+                {
+                    string tenderQ = "Update tender set shiftClose=@username Where shiftClose is null";
+                    SqlCommand tenderCMD = new SqlCommand(tenderQ, con);
+                    tenderCMD.Parameters.AddWithValue("@username", username);
+                    string transQ = "Update Transactions set shiftClose=@username Where shiftClose is null";
+                    SqlCommand transCMD = new SqlCommand(transQ, con);
+                    transCMD.Parameters.AddWithValue("@username", username);
+                    string itemQ = "Update SalesItem set shiftClose=@username Where shiftClose is null";
+                    SqlCommand itemCMD = new SqlCommand(itemQ, con);
+                    itemCMD.Parameters.AddWithValue("@username", username);
+                    string expQ = "Update Expence set shiftClose=@username Where shiftClose is null";
+                    SqlCommand expCMD = new SqlCommand(expQ, con);
+                    expCMD.Parameters.AddWithValue("@username", username);
+                    string RECQ = "Update Recieve set shiftClose=@username Where shiftClose is null";
+                    SqlCommand RECCMD = new SqlCommand(RECQ, con);
+                    RECCMD.Parameters.AddWithValue("@username", username);
+                    con.Open();
+                    tenderCMD.ExecuteNonQuery();
+                    transCMD.ExecuteNonQuery();
+                    itemCMD.ExecuteNonQuery();
+                    expCMD.ExecuteNonQuery();
+                    RECCMD.ExecuteNonQuery();
+                    con.Close();
+                }
+                else { MessageBox.Show("Please Clear Hold Transaction"); }
             }
             catch (Exception ex)
             {
@@ -1596,8 +1615,17 @@ namespace POSSystem
                 decimal gransTotali = Convert.ToDecimal(grandTotal.Content.ToString().Replace("Pay $", ""));
                 if (gransTotali != 0)
                 {
-                    sp21.Visibility = Visibility.Hidden;
-                    grPayment.Visibility = Visibility.Visible;
+                    if (refund == "")
+                    {
+                        sp21.Visibility = Visibility.Hidden;
+                        grPayment.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        tenderCode = "Cash";
+                        if (gransTotali < 0)
+                            Button_Click_1();
+                    }
                 }
             }
             catch (Exception ex)
@@ -1898,7 +1926,6 @@ namespace POSSystem
         {
             try
             {
-                gRefund.Visibility = Visibility.Hidden;
                 string visibility = gPriceCheck.Visibility.ToString();
                 if (visibility == "Visible") { gPriceCheck.Visibility = Visibility.Hidden; }
                 else
@@ -2170,7 +2197,6 @@ namespace POSSystem
                     sdatrans.Fill(dt);
                     JRDGrid.ItemsSource = dt.DefaultView;
                     JRDGrid.Items.Refresh();
-                    TotalEvent();
                     grandTotal.Visibility = Visibility.Hidden;
                 }
             }
@@ -2220,8 +2246,10 @@ namespace POSSystem
 
         private void Button_Click_Refund(object sender, RoutedEventArgs e)
         {
-            gRefund.Visibility = Visibility.Visible;
-            gPriceCheck.Visibility = Visibility.Hidden;
+            if (refund == "Refund")
+                refund = "";
+            else
+                refund = "Refund";
         }
 
         private void Click_ClosegReceipt(object sender, RoutedEventArgs e)
@@ -2253,6 +2281,142 @@ namespace POSSystem
             }
         }
 
+        private void Hold_Click(object sender, RoutedEventArgs e)
+        {
+            SqlConnection con = new SqlConnection(conString);
+            string date = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
+            string onlydate = date.Substring(0, 10);
+            string onlytime = date.Substring(11);
+            string totalAmt = txtTotal.Content.ToString().Replace("$", "");
+            string tax = taxtTotal.Content.ToString().Replace("$", "");
+            string grandTotalAmt = grandTotal.Content.ToString().Replace("Pay $", "");
+            string tranid = Convert.ToInt32(lblTranid.Content).ToString();
+
+            foreach (DataRow dataRow in dt.Rows)
+            {
+                dataRow[6] = onlydate;
+                dataRow[7] = onlytime;
+                dataRow[8] = tranid;
+                dataRow[9] = username;
+                dataRow[10] = date;
+            }
+
+            SqlBulkCopy objbulk = new SqlBulkCopy(con);
+            objbulk.DestinationTableName = "Hold";
+            objbulk.ColumnMappings.Add("Scancode", "ScanCode");
+            objbulk.ColumnMappings.Add("description", "Descripation");
+            objbulk.ColumnMappings.Add("quantity", "Quantity");
+            objbulk.ColumnMappings.Add("unitretail", "Price");
+            objbulk.ColumnMappings.Add("Amount", "Amount");
+            objbulk.ColumnMappings.Add("TaxRate", "TaxRate");
+            objbulk.ColumnMappings.Add("Date", "EndDate");
+            objbulk.ColumnMappings.Add("Time", "EndTime");
+            objbulk.ColumnMappings.Add("PromotionName", "PromotionName");
+            objbulk.ColumnMappings.Add("TransactionId", "TrasactionId");
+            objbulk.ColumnMappings.Add("Void", "Void");
+            objbulk.ColumnMappings.Add("Oprice", "OPrice");
+            objbulk.ColumnMappings.Add("PROName", "ProName");
+            objbulk.ColumnMappings.Add("Qty", "Qty");
+            objbulk.ColumnMappings.Add("newprice", "NewPrice");
+            objbulk.ColumnMappings.Add("pricereduce", "PriceReduce");
+            con.Open();
+            objbulk.WriteToServer(dt);
+            con.Close();
+            TxtCashReturn.Text = "";
+            TxtCashReceive.Text = "";
+            cbcustomer.Text = "";
+            TxtCheck.Text = "";
+            txtTotal.Content = "";
+            tenderCode = "";
+            grandTotal.Content = "Pay " + "$" + "0.00";
+            taxtTotal.Content = "";
+            lblDate.Content = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
+            dt.Clear();
+            JRDGrid.Items.Refresh();
+            refund = "";
+            cashTxtPanel.Visibility = Visibility.Hidden;
+            sp21.Visibility = Visibility.Visible;
+            customerTxtPanel.Visibility = Visibility.Hidden;
+            checkTxtPanel.Visibility = Visibility.Hidden;
+            grPayment.Visibility = Visibility.Hidden;
+            loadtransactionId();
+            loadHold();
+        }
+        DataTable dthold = new DataTable();
+        private void loadHold()
+        {
+            
+            SqlConnection con = new SqlConnection(conString);
+            string queryS = "Select distinct trasactionId from Hold";
+            SqlCommand cmd1 = new SqlCommand(queryS, con);
+            SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
+            sda1.Fill(dthold);
+
+            for (int i = 0; i < dthold.Rows.Count; ++i)
+            {
+                Button button = new Button();
+
+                var size = System.Windows.SystemParameters.PrimaryScreenWidth;
+
+                button.Content = new TextBlock()
+                {
+                    FontSize = 20,
+                    Text = dthold.Rows[i].ItemArray[0].ToString(),
+                    TextAlignment = TextAlignment.Left,
+                    TextWrapping = TextWrapping.Wrap
+                };
+
+                button.Width = 70;
+                button.Height = 50;
+                button.HorizontalAlignment = HorizontalAlignment.Center;
+                button.VerticalAlignment = VerticalAlignment.Top;
+                button.Foreground = new SolidColorBrush(Colors.Black);
+                button.FontSize = 15;
+                button.FontWeight = FontWeights.Bold;
+                button.Margin = new Thickness(5);
+
+                string abc = dthold.Rows[i].ItemArray[0].ToString();
+                button.Click += (sender, e) => { button_Click_Hold(sender, e, abc); };
+                this.sp21.HorizontalAlignment = HorizontalAlignment.Center;
+                this.sp21.VerticalAlignment = VerticalAlignment.Top;
+                //ColumnDefinition cd = new ColumnDefinition();
+                //cd.Width = GridLength.Auto;
+                this.uGHold.Columns = 4;
+                this.uGHold.Children.Add(button);
+            }
+        }
+        private void button_Click_Hold(object sender, RoutedEventArgs e, string abc)
+        {
+            try
+            {
+                var btnContent = sender as Button;
+                var tb = ((TextBlock)btnContent.Content).Text;
+                lblTranid.Content = tb;
+
+                SqlConnection con = new SqlConnection(conString);
+                string edate = Convert.ToDateTime(lblDate.Content).ToString("yyyy/MM/dd");
+                string queryHold = "select Scancode,Descripation as description,quantity,Price as unitretail,Amount,TaxRate,EndDate as Date,EndTime as Time,PromotionName,TrasactionId as TransactionId,Void,Oprice,PROName,Qty,newprice,pricereduce from Hold where TrasactionId=@transid";
+                SqlCommand cmdHold = new SqlCommand(queryHold, con);
+                cmdHold.Parameters.AddWithValue("@transid", tb);
+                SqlDataAdapter sdaHold = new SqlDataAdapter(cmdHold);
+                sdaHold.Fill(dt);
+                JRDGrid.ItemsSource = dt.DefaultView;
+                JRDGrid.Items.Refresh();
+                TotalEvent();
+                string qholdDelete = "Delete from Hold where TrasactionId=@transid";
+                SqlCommand cmdHoldDelete = new SqlCommand(qholdDelete, con);
+                cmdHoldDelete.Parameters.AddWithValue("@transid", tb);
+                con.Open();
+                cmdHoldDelete.ExecuteNonQuery();
+                con.Close();
+                dthold.Clear();
+                loadHold();
+            }
+            catch(Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
         private void button_Click_Category_Description(object sender, RoutedEventArgs e)
         {
             try
