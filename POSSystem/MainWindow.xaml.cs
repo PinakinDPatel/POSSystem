@@ -228,6 +228,14 @@ namespace POSSystem
         {
             try
             {
+                if (!dt.Columns.Contains("Oprice"))
+                {
+                    dt.Columns.Add("Oprice");
+                    dt.Columns.Add("PROName");
+                    dt.Columns.Add("Qty");
+                    dt.Columns.Add("newprice");
+                    dt.Columns.Add("pricereduce");
+                }
                 DataRow dr = dt.NewRow();
                 dr[0] = 0;
                 dr[1] = lblDepartment.Content.ToString();
@@ -1591,6 +1599,11 @@ namespace POSSystem
                             button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
                         }
                     }
+                    button.Width = 97;
+                    button.Height = 80;
+                    button.HorizontalAlignment = HorizontalAlignment.Left;
+                    button.VerticalAlignment = VerticalAlignment.Top;
+                    button.Margin = new Thickness(5);
                     button.Foreground = new SolidColorBrush(Colors.White);
                     button.FontSize = 26;
                     button.FontWeight = FontWeights.Bold;
@@ -1599,6 +1612,7 @@ namespace POSSystem
                     button.Margin = new Thickness(5, 5, 5, 5);
                     string abc = dtCatDescr.Rows[i].ItemArray[0].ToString();
                     button.Click += new RoutedEventHandler(button_Click_Category_Description);
+                    this.sp23.Columns = 6;
                     this.sp23.Children.Add(button);
                 }
             }
@@ -2345,7 +2359,7 @@ namespace POSSystem
         DataTable dthold = new DataTable();
         private void loadHold()
         {
-            
+            dthold.Reset();
             SqlConnection con = new SqlConnection(conString);
             string queryS = "Select distinct trasactionId from Hold";
             SqlCommand cmd1 = new SqlCommand(queryS, con);
@@ -2355,7 +2369,7 @@ namespace POSSystem
             for (int i = 0; i < dthold.Rows.Count; ++i)
             {
                 Button button = new Button();
-
+                lblHoldTransaction.Content = "Hold Transaction";
                 var size = System.Windows.SystemParameters.PrimaryScreenWidth;
 
                 button.Content = new TextBlock()
@@ -2383,6 +2397,7 @@ namespace POSSystem
                 //cd.Width = GridLength.Auto;
                 this.uGHold.Columns = 4;
                 this.uGHold.Children.Add(button);
+                lblHoldTransaction.Content = "";
             }
         }
         private void button_Click_Hold(object sender, RoutedEventArgs e, string abc)
@@ -2409,10 +2424,11 @@ namespace POSSystem
                 con.Open();
                 cmdHoldDelete.ExecuteNonQuery();
                 con.Close();
-                dthold.Clear();
+                Button SelectedButton = (Button)sender;
+                uGHold.Children.Remove(SelectedButton);
                 loadHold();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 SendErrorToText(ex, errorFileName);
             }

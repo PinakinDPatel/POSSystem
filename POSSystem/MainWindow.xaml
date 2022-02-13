@@ -172,9 +172,9 @@
                                 <Button Content="$ 50" Grid.Column="3" Height="60" Margin="5" Click="CashReceive"></Button>
                             </Grid>
                             <Label Content="Cash-Receive" Name="lblCashReceive" HorizontalAlignment="Center" Margin="0,20" FontFamily="Arial Black" FontSize="18" />
-                            <TextBox Name="TxtCashReceive" GotFocus="textbox_GotFocus" Margin="10,-15,10,0" Height="41" TextAlignment="Right" FontSize="24" FontFamily="Arial Black" KeyDown="TxtCashReceive_KeyDown"/>
+                            <TextBox Name="TxtCashReceive" GotFocus="textbox_GotFocus" Margin="10,0,10,0" Width="180" Height="41" TextAlignment="Right" FontSize="24" FontFamily="Arial Black" KeyDown="TxtCashReceive_KeyDown"/>
                             <Label Content="Change" Name="lblCashReturn" HorizontalAlignment="Center" Margin="0,20" FontFamily="Arial Black" FontSize="18"/>
-                            <TextBox Name="TxtCashReturn" Margin="10,-15,10,0" Height="41" FontSize="24" TextAlignment="Right" FontFamily="Arial Black"/>
+                            <TextBox Name="TxtCashReturn" Margin="10,-15,10,0" Height="41" FontSize="24" Width="180" TextAlignment="Right" FontFamily="Arial Black"/>
                         </StackPanel>
                         <StackPanel Grid.Column="0" Grid.Row="2"  Height="Auto" Name="customerTxtPanel" Visibility="Hidden" VerticalAlignment="Center">
                             <Label Content="Select Customer" HorizontalAlignment="Center"></Label>
@@ -344,7 +344,7 @@
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="3*"/>
                     </Grid.RowDefinitions>
-                    <Label Content="Hold Transaction" HorizontalContentAlignment="Center" FontSize="24"/>
+                    <Label Name="lblHoldTransaction" HorizontalContentAlignment="Center" FontSize="24"/>
                     <UniformGrid Grid.Row="1" Name="uGHold" Visibility="Visible"></UniformGrid>
                 </Grid>
                 <Grid Grid.Row="1" Grid.Column="1">
