@@ -655,6 +655,7 @@ namespace POSSystem
                 objbulk.ColumnMappings.Add("TransactionId", "TransactionId");
                 objbulk.ColumnMappings.Add("CreateBy", "CreateBy");
                 objbulk.ColumnMappings.Add("CreateOn", "CreateOn");
+                objbulk.ColumnMappings.Add("Void", "Void");
                 con.Open();
                 objbulk.WriteToServer(dt);
                 con.Close();
@@ -1210,7 +1211,7 @@ namespace POSSystem
                     Button button = new Button();
                     button.Content = new TextBlock()
                     {
-                        FontSize = 25,
+                        FontSize = 20,
                         Text = dtCat.Rows[i].ItemArray[0].ToString(),
                         TextAlignment = TextAlignment.Center,
                         TextWrapping = TextWrapping.Wrap
@@ -1231,7 +1232,7 @@ namespace POSSystem
                     button.VerticalAlignment = VerticalAlignment.Top;
 
                     button.Foreground = new SolidColorBrush(Colors.White);
-                    button.FontSize = 26;
+                    button.FontSize = 15;
                     button.FontWeight = FontWeights.Bold;
                     button.Effect = new DropShadowEffect()
                     { Color = Colors.BlueViolet };
@@ -1584,7 +1585,7 @@ namespace POSSystem
                     Button button = new Button();
                     button.Content = new TextBlock()
                     {
-                        FontSize = 25,
+                        FontSize = 20,
                         Text = dtCatDescr.Rows[i].ItemArray[0].ToString(),
                         TextAlignment = TextAlignment.Center,
                         TextWrapping = TextWrapping.Wrap
@@ -1605,7 +1606,7 @@ namespace POSSystem
                     button.VerticalAlignment = VerticalAlignment.Top;
                     button.Margin = new Thickness(5);
                     button.Foreground = new SolidColorBrush(Colors.White);
-                    button.FontSize = 26;
+                    button.FontSize = 15;
                     button.FontWeight = FontWeights.Bold;
                     button.Effect = new DropShadowEffect()
                     { Color = Colors.BlueViolet };
@@ -2460,9 +2461,18 @@ namespace POSSystem
                     con.Open();
                     sda.Fill(dt);
                     con.Close();
+                    if (!dt.Columns.Contains("Oprice"))
+                    {
+                        dt.Columns.Add("Oprice");
+                        dt.Columns.Add("PROName");
+                        dt.Columns.Add("Qty");
+                        dt.Columns.Add("newprice");
+                        dt.Columns.Add("pricereduce");
+                    }
                     JRDGrid.ItemsSource = dt.DefaultView;
                     sp23.Visibility = Visibility.Hidden;
-                    sp22.Visibility = Visibility.Visible;
+                    sp22.Visibility = Visibility.Hidden;
+                    sp21.Visibility = Visibility.Visible;
                     TotalEvent();
                 }
             }
