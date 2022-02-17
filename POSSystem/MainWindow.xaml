@@ -339,13 +339,20 @@
                     <Label Grid.Row="2" Content="Unit Retail" HorizontalContentAlignment="Center" FontSize="25"></Label>
                     <Label Grid.Row="2" Grid.Column="1" Name="lblUnitRetail" HorizontalContentAlignment="Left" FontSize="30"></Label>
                 </Grid>
-                <Grid Grid.Row="1" Margin="30,10,30,10">
+                <Grid Grid.Row="1" Margin="30,0,30,0">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="1.2*"/>
                         <RowDefinition Height="1*"/>
-                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="2.8*"/>
                     </Grid.RowDefinitions>
-                    <Label Name="lblHoldTransaction" HorizontalContentAlignment="Center" FontSize="24"/>
-                    <UniformGrid Grid.Row="1" Name="uGHold" Visibility="Visible"></UniformGrid>
+                    <Button Background="{x:Null}" x:Name="LeftArrow" Click="LeftArrow_Click" HorizontalAlignment="Left" Margin="5">
+                        <fa:ImageAwesome Icon="ArrowLeft" Height="36"/>
+                    </Button>
+                    <Button Background="{x:Null}" x:Name="RightArrow" Click="RightArrow_Click" HorizontalAlignment="Right" Margin="5">
+                        <fa:ImageAwesome Icon="ArrowRight" Height="36"/>
+                    </Button>
+                    <Label Name="lblHoldTransaction" Grid.Row="1" HorizontalContentAlignment="Center" FontSize="24"/>
+                    <UniformGrid Grid.Row="2" Name="uGHold" Visibility="Visible"></UniformGrid>
                 </Grid>
                 <Grid Grid.Row="1" Grid.Column="1">
                     <Grid.ColumnDefinitions>
