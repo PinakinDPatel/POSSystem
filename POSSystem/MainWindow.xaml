@@ -151,6 +151,8 @@
                 <UniformGrid Name="sp21" Grid.ColumnSpan="2"></UniformGrid>
                 <UniformGrid Name="sp22" Grid.ColumnSpan="2"></UniformGrid>
                 <UniformGrid Name="sp23" Grid.ColumnSpan="2"></UniformGrid>
+                <UniformGrid Name="addcategory2" Grid.ColumnSpan="2"></UniformGrid>
+                <UniformGrid Name="category2" Grid.ColumnSpan="2"></UniformGrid>
                 <Grid Name="grPayment" Visibility="Hidden" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*"/>
@@ -252,7 +254,7 @@
                     </Button>
                     <Label Name="lblDepartment" Grid.ColumnSpan="2" Grid.Row="3" Margin="5,5,5,5" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Right"></Label>
                     <Label Name="lblTaxRate" Visibility="Hidden"/>
-                    <TextBox Name="txtDeptAmt" GotFocus="textbox_GotFocus" Grid.Row="3" Height="36" Grid.Column="2" Margin="5,5,5,5"  Text="{Binding LimitedDouble,StringFormat={}{0:00.00}}" FontSize="30"></TextBox>
+                    <TextBox Name="txtDeptAmt" GotFocus="textbox_GotFocus" Grid.Row="3" Height="36" Grid.Column="2" Margin="5,5,5,5" FontSize="30" HorizontalContentAlignment="Right"></TextBox>
                     <Button Content="Save" Grid.Column="3" Grid.Row="3" Height="36" Margin="5,5,5,5"  Click="Button_Click_Sale_Save"></Button>
                 </Grid>
                 <Grid Name="gReceipt" Visibility="Hidden">
@@ -347,6 +349,9 @@
                     </Grid.RowDefinitions>
                     <Button Background="{x:Null}" x:Name="LeftArrow" Click="LeftArrow_Click" HorizontalAlignment="Left" Margin="5">
                         <fa:ImageAwesome Icon="ArrowLeft" Height="36"/>
+                    </Button>
+                    <Button x:Name="GoBack" Content="Goback" VerticalAlignment="Center" Height="32" Width="100" Click="GoBack_Click" HorizontalAlignment="Center" Margin="5">
+                       
                     </Button>
                     <Button Background="{x:Null}" x:Name="RightArrow" Click="RightArrow_Click" HorizontalAlignment="Right" Margin="5">
                         <fa:ImageAwesome Icon="ArrowRight" Height="36"/>

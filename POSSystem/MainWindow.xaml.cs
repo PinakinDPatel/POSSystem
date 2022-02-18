@@ -29,6 +29,7 @@ namespace POSSystem
         private Graphics graphics;
         string tenderCode = "";
         string refund = "";
+        string goBack = "";
         DataTable dt = new DataTable();
         DataTable dtdep = new DataTable();
         DataTable dtstr = new DataTable();
@@ -213,6 +214,7 @@ namespace POSSystem
                 lblDepartment.Content = tb.Text;
                 TxtBxStackPanel2.Visibility = Visibility.Visible;
                 sp21.Visibility = Visibility.Hidden;
+                txtDeptAmt.Focus();
             }
             catch (Exception ex)
             {
@@ -1019,6 +1021,14 @@ namespace POSSystem
                 {
                     string textBox1Str = txtDeptAmt.Text;
                     txtDeptAmt.Text = textBox1Str + number;
+
+                    if (textBox1Str != "")
+                    {
+                        textBox1Str = (Convert.ToDecimal(textBox1Str) * 100).ToString();
+                        textBox1Str = textBox1Str.Remove(textBox1Str.Length - 3);
+                    }
+                    txtDeptAmt.Text = (Convert.ToDecimal(textBox1Str + number) / 100).ToString();
+
                 }
                 if (txtGotFocusStr == "CellEditQty")
                 {
@@ -2118,6 +2128,7 @@ namespace POSSystem
         {
             try
             {
+                goBack = "sp23";
                 var btnContent = sender as Button;
                 var tb = (TextBlock)btnContent.Content;
                 categorytext = tb.Text;
@@ -3059,6 +3070,21 @@ namespace POSSystem
             }
         }
 
+        private void GoBack_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (goBack == "")
+                {
+
+                }
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
         private void button_Click_Category_Description(object sender, RoutedEventArgs e)
         {
             try
@@ -3095,9 +3121,9 @@ namespace POSSystem
                         dt.Columns.Add("pricereduce");
                     }
                     JRDGrid.ItemsSource = dt.DefaultView;
-                    sp23.Visibility = Visibility.Hidden;
-                    sp22.Visibility = Visibility.Hidden;
-                    sp21.Visibility = Visibility.Visible;
+                    //sp23.Visibility = Visibility.Visible;
+                    //sp22.Visibility = Visibility.Visible;
+                    //sp21.Visibility = Visibility.Hidden;
                     TotalEvent();
                     categorytext = "";
                 }
