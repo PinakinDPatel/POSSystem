@@ -8,9 +8,9 @@
         mc:Ignorable="d"  WindowStartupLocation="CenterScreen" WindowState="Maximized" d:DesignWidth="1374" d:DesignHeight="738"  WindowStyle="None">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="9*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="0.9*"/>
+            <RowDefinition Height="8.9*"/>
+            <RowDefinition Height="2.2*"/>
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -149,10 +149,10 @@
                     <RowDefinition Height="1.1*"/>
                 </Grid.RowDefinitions>
                 <UniformGrid Name="sp21" Grid.ColumnSpan="2"></UniformGrid>
-                <UniformGrid Name="sp22" Grid.ColumnSpan="2"></UniformGrid>
+                <UniformGrid Name="ugAddcategory1" Grid.ColumnSpan="2"></UniformGrid>
                 <UniformGrid Name="sp23" Grid.ColumnSpan="2"></UniformGrid>
-                <UniformGrid Name="addcategory2" Grid.ColumnSpan="2"></UniformGrid>
-                <UniformGrid Name="category2" Grid.ColumnSpan="2"></UniformGrid>
+                <UniformGrid Name="ugAddcategory2" Grid.ColumnSpan="2"></UniformGrid>
+                <UniformGrid Name="ugCategory2" Grid.ColumnSpan="2"></UniformGrid>
                 <Grid Name="grPayment" Visibility="Hidden" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*"/>
@@ -327,19 +327,20 @@
                 </Grid>
                 <Grid Grid.Row="1" Name="gPriceCheck" Visibility="Hidden">
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="0.8*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.ColumnSpan="2" Content="Check Price" FontSize="32" HorizontalContentAlignment="Center"></Label>
-                    <Label Grid.Row="1" Content="Barcode" HorizontalContentAlignment="Center" VerticalAlignment="Center" FontSize="25"></Label>
-                    <TextBox Grid.Row="1" GotFocus="textbox_GotFocus" Grid.Column="1" Name="txtBarcode" Margin="5,5,25,5" FontSize="20" Height="35" KeyDown="TxtBarcode_KeyDown"></TextBox>
-                    <Label Grid.Row="2" Content="Unit Retail" HorizontalContentAlignment="Center" FontSize="25"></Label>
-                    <Label Grid.Row="2" Grid.Column="1" Name="lblUnitRetail" HorizontalContentAlignment="Left" FontSize="30"></Label>
+                    <Label Grid.ColumnSpan="2" Grid.Row="1" Content="Check Price" FontSize="32" HorizontalContentAlignment="Center"></Label>
+                    <Label Grid.Row="2" Content="Barcode" HorizontalContentAlignment="Center" VerticalAlignment="Center" FontSize="25"></Label>
+                    <TextBox Grid.Row="2" GotFocus="textbox_GotFocus" Grid.Column="1" Name="txtBarcode" Margin="5,5,25,5" FontSize="20" Height="35" KeyDown="TxtBarcode_KeyDown"></TextBox>
+                    <Label Grid.Row="3" Content="Unit Retail" HorizontalContentAlignment="Center" FontSize="25"></Label>
+                    <Label Grid.Row="3" Grid.Column="1" Name="lblUnitRetail" HorizontalContentAlignment="Left" FontSize="30"></Label>
                 </Grid>
                 <Grid Grid.Row="1" Margin="30,0,30,0">
                     <Grid.RowDefinitions>
@@ -347,13 +348,13 @@
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="2.8*"/>
                     </Grid.RowDefinitions>
-                    <Button Background="{x:Null}" x:Name="LeftArrow" Click="LeftArrow_Click" HorizontalAlignment="Left" Margin="5">
+                    <Button Background="{x:Null}" x:Name="LeftArrow" Click="LeftArrow_Click" HorizontalAlignment="Left" Margin="5" Visibility="Hidden">
                         <fa:ImageAwesome Icon="ArrowLeft" Height="36"/>
                     </Button>
-                    <Button x:Name="GoBack" Content="Goback" VerticalAlignment="Center" Height="32" Width="100" Click="GoBack_Click" HorizontalAlignment="Center" Margin="5">
+                    <Button x:Name="GoBack" Content="Goback" VerticalAlignment="Center" Height="32" Width="100" Click="GoBack_Click" HorizontalAlignment="Center" Visibility="Hidden" Margin="5">
                        
                     </Button>
-                    <Button Background="{x:Null}" x:Name="RightArrow" Click="RightArrow_Click" HorizontalAlignment="Right" Margin="5">
+                    <Button Background="{x:Null}" x:Name="RightArrow" Click="RightArrow_Click" HorizontalAlignment="Right" Margin="5" Visibility="Hidden">
                         <fa:ImageAwesome Icon="ArrowRight" Height="36"/>
                     </Button>
                     <Label Name="lblHoldTransaction" Grid.Row="1" HorizontalContentAlignment="Center" FontSize="24"/>

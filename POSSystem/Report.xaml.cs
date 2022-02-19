@@ -480,7 +480,7 @@ namespace POSSystem
             {
                 Button_Click(sender,e);
                 Dayclose();
-                Send_Email();
+                //Send_Email();
             }
             catch (Exception ex)
             {
