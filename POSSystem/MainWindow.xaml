@@ -167,8 +167,7 @@
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <Button Content="$ 5" Height="60" Margin="5" Click="CashReceive">
-                                </Button>
+                                <Button Content="$ 5" Height="60" Margin="5" Click="CashReceive"></Button>
                                 <Button Content="$ 10" Grid.Column="1" Height="60" Margin="5" Click="CashReceive"></Button>
                                 <Button Content="$ 20" Grid.Column="2" Height="60" Margin="5" Click="CashReceive"></Button>
                                 <Button Content="$ 50" Grid.Column="3" Height="60" Margin="5" Click="CashReceive"></Button>
@@ -203,7 +202,7 @@
                                 </LinearGradientBrush>
                             </Button.Background>
                         </Button>
-                        <Button Content="Card" Grid.Row="1" Margin="10" Foreground="White" FontSize="28" FontWeight="Bold" Click="Tender_Click">
+                        <Button Content="Card" Grid.Row="1" Margin="10" Foreground="White" FontSize="28" FontWeight="Bold" Visibility="Hidden" Click="Tender_Click">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#FF6C3A0F" Offset="0"/>

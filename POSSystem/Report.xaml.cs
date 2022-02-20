@@ -423,35 +423,35 @@ namespace POSSystem
                 sdaHold.Fill(dthold);
                 if (dthold.Rows.Count == 0)
                 {
-                    InsertQuery();
+                    
 
                     PrintDocument = new PrintDocument();
                     PrintDocument.PrintPage += new PrintPageEventHandler(DayClosePrint);
                     PrintDocument.Print();
-
-                    var date = DateTime.Now.ToString("yyyy/MM/dd");
-                    string tenderQ = "Update tender set DayClose=@NowDate Where DayClose is null or DayClose=''";
-                    SqlCommand tenderCMD = new SqlCommand(tenderQ, con);
-                    tenderCMD.Parameters.AddWithValue("@NowDate", date);
-                    string transQ = "Update Transactions set DayClose=@Date Where DayClose is null or DayClose=''";
-                    SqlCommand transCMD = new SqlCommand(transQ, con);
-                    transCMD.Parameters.AddWithValue("@Date", date);
-                    string itemQ = "Update SalesItem set DayClose=@Now Where DayClose is null or DayClose=''";
-                    SqlCommand itemCMD = new SqlCommand(itemQ, con);
-                    itemCMD.Parameters.AddWithValue("@Now", date);
-                    string expeQ = "Update Expence set DayClose=@Now Where DayClose is null";
-                    SqlCommand expCMD = new SqlCommand(expeQ, con);
-                    expCMD.Parameters.AddWithValue("@Now", date);
-                    string RECQ = "Update Receive set DayClose=@Now Where DayClose is null";
-                    SqlCommand RECCMD = new SqlCommand(RECQ, con);
-                    RECCMD.Parameters.AddWithValue("@Now", date);
-                    con.Open();
-                    tenderCMD.ExecuteNonQuery();
-                    transCMD.ExecuteNonQuery();
-                    itemCMD.ExecuteNonQuery();
-                    expCMD.ExecuteNonQuery();
-                    RECCMD.ExecuteNonQuery();
-                    con.Close();
+                    InsertQuery();
+                    //var date = DateTime.Now.ToString("yyyy/MM/dd");
+                    //string tenderQ = "Update tender set DayClose=@NowDate Where DayClose is null or DayClose=''";
+                    //SqlCommand tenderCMD = new SqlCommand(tenderQ, con);
+                    //tenderCMD.Parameters.AddWithValue("@NowDate", date);
+                    //string transQ = "Update Transactions set DayClose=@Date Where DayClose is null or DayClose=''";
+                    //SqlCommand transCMD = new SqlCommand(transQ, con);
+                    //transCMD.Parameters.AddWithValue("@Date", date);
+                    //string itemQ = "Update SalesItem set DayClose=@Now Where DayClose is null or DayClose=''";
+                    //SqlCommand itemCMD = new SqlCommand(itemQ, con);
+                    //itemCMD.Parameters.AddWithValue("@Now", date);
+                    //string expeQ = "Update Expence set DayClose=@Now Where DayClose is null";
+                    //SqlCommand expCMD = new SqlCommand(expeQ, con);
+                    //expCMD.Parameters.AddWithValue("@Now", date);
+                    //string RECQ = "Update Receive set DayClose=@Now Where DayClose is null";
+                    //SqlCommand RECCMD = new SqlCommand(RECQ, con);
+                    //RECCMD.Parameters.AddWithValue("@Now", date);
+                    //con.Open();
+                    //tenderCMD.ExecuteNonQuery();
+                    //transCMD.ExecuteNonQuery();
+                    //itemCMD.ExecuteNonQuery();
+                    //expCMD.ExecuteNonQuery();
+                    //RECCMD.ExecuteNonQuery();
+                    //con.Close();
                 }
                 else { MessageBox.Show("Please Clear Hold Transaction"); }
             }
@@ -467,6 +467,7 @@ namespace POSSystem
             con.Open();
             SqlCommand sql_cmnd = new SqlCommand("sp_DayClose", con);
             sql_cmnd.CommandType = CommandType.StoredProcedure;
+            sql_cmnd.Parameters.AddWithValue("@dayclose", SqlDbType.NVarChar).Value = DateTime.Now.ToString("yyyy/MM/dd");
             sql_cmnd.Parameters.AddWithValue("@enterOn", SqlDbType.NVarChar).Value = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
             sql_cmnd.Parameters.AddWithValue("@enterBy", SqlDbType.NVarChar).Value = username;
             sql_cmnd.ExecuteNonQuery();
@@ -478,7 +479,7 @@ namespace POSSystem
         {
             try
             {
-                Button_Click(sender,e);
+                //Button_Click(sender,e);
                 Dayclose();
                 //Send_Email();
             }

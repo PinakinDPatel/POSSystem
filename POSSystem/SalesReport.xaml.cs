@@ -39,32 +39,32 @@ namespace POSSystem
                 cmdDG.Parameters.AddWithValue("@toDate", Convert.ToDateTime(toDate).ToString("yyyy/MM/dd"));
                 SqlDataAdapter sdaDG = new SqlDataAdapter(cmdDG);
                 DataTable dt = new DataTable();
-                con.Open();
                 sdaDG.Fill(dt);
-                con.Close();
+                if (dt.Rows.Count != 0)
+                {
+                    deprtDG.ItemsSource = null;
+                    cashDG.ItemsSource = null;
 
-                deprtDG.ItemsSource = null;
-                cashDG.ItemsSource = null;
+                    DataTable deptDT = (from row in dt.AsEnumerable() where row.Field<string>("Type") == "In" select row).CopyToDataTable();
+                    DataTable cashDT = (from row in dt.AsEnumerable() where row.Field<string>("Type") == "Out" select row).CopyToDataTable();
 
-                DataTable deptDT = (from row in dt.AsEnumerable() where row.Field<string>("Type") == "In" select row).CopyToDataTable();
-                DataTable cashDT = (from row in dt.AsEnumerable() where row.Field<string>("Type") == "Out" select row).CopyToDataTable();
+                    string deptAmtTotal = deptDT.AsEnumerable().Sum(x => Convert.ToDecimal(x["Amount"])).ToString();
+                    string cashAmtTotal = cashDT.AsEnumerable().Sum(x => Convert.ToDecimal(x["Amount"])).ToString();
+                    string compareTotal1 = (Convert.ToDecimal(deptAmtTotal) - Convert.ToDecimal(cashAmtTotal)).ToString();
 
-                string deptAmtTotal = deptDT.AsEnumerable().Sum(x => Convert.ToDecimal(x["Amount"])).ToString();
-                string cashAmtTotal = cashDT.AsEnumerable().Sum(x => Convert.ToDecimal(x["Amount"])).ToString();
-                string compareTotal1 = (Convert.ToDecimal(deptAmtTotal) - Convert.ToDecimal(cashAmtTotal)).ToString();
+                    //deptDT.Rows.Add("Total", deptAmtTotal);
+                    //cashDT.Rows.Add("Total", cashAmtTotal);
 
-                //deptDT.Rows.Add("Total", deptAmtTotal);
-                //cashDT.Rows.Add("Total", cashAmtTotal);
+                    deprtDG.ItemsSource = deptDT.DefaultView;
+                    deprtDG.CanUserAddRows = false;
 
-                deprtDG.ItemsSource = deptDT.DefaultView;
-                deprtDG.CanUserAddRows = false;
+                    cashDG.ItemsSource = cashDT.DefaultView;
+                    cashDG.CanUserAddRows = false;
 
-                cashDG.ItemsSource = cashDT.DefaultView;
-                cashDG.CanUserAddRows = false;
-
-                inAmtTotal.Content = deptAmtTotal;
-                outAmtTotal.Content = cashAmtTotal;
-                lblShortOver.Content = compareTotal1;
+                    inAmtTotal.Content = deptAmtTotal;
+                    outAmtTotal.Content = cashAmtTotal;
+                    lblShortOver.Content = compareTotal1;
+                }
             }
             catch (Exception ex)
             {

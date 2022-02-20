@@ -34,7 +34,7 @@ namespace POSSystem
         DataTable dtCategory = new DataTable();
         DataTable dtstr = new DataTable();
         string username = App.Current.Properties["username"].ToString();
-        string date = DateTime.Now.ToString("yyyy/MM/dd").Replace("-", "/");
+        string date = DateTime.Now.ToString("yyyy/MM/dd");
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "MainWindow.cs";
         string dataGridSelectedIndex = "";
@@ -162,10 +162,7 @@ namespace POSSystem
                         //cd.Width = GridLength.Auto;
                         this.sp21.Columns = 5;
                         this.sp21.Children.Add(button);
-
-
                     }
-
                 }
 
                 //Customer Dropdown.
@@ -200,21 +197,13 @@ namespace POSSystem
             {
                 using (SqlConnection conn = new SqlConnection(conString))
                 {
-                    conn.Open();
-                    string query1 = "select top 1 Tran_id from(SELECT Tran_id FROM Transactions where DayClose is null union all SELECT distinct TrasactionId FROM Hold) as w ORDER BY convert(int,Tran_id) DESC";
-                    using (SqlCommand cmd2 = new SqlCommand(query1, conn))
-                    {
-                        SqlDataReader data = cmd2.ExecuteReader();
-                        if (data.Read())
-                        {
-                            lblTranid.Content = Convert.ToInt32(data.GetValue(0).ToString()) + 1;
-                        }
-                        else
-                        {
-                            lblTranid.Content = 1;
-                        }
-                    }
-                    conn.Close();
+                    string query1 = "select coalesce(max(convert(int,tran_id)),0)as tran_id from(SELECT tran_id FROM Transactions where EndDate='" + date + "' union all SELECT distinct TrasactionId FROM Hold)as x";
+                    SqlCommand cmd2 = new SqlCommand(query1, conn);
+                    SqlDataAdapter sdaT = new SqlDataAdapter(cmd2);
+                    DataTable dttranid = new DataTable();
+                    sdaT.Fill(dttranid);
+
+                    lblTranid.Content = Convert.ToInt32(dttranid.Rows[0]["tran_id"].ToString()) + 1;
                 }
             }
             catch (Exception ex)
@@ -1028,7 +1017,9 @@ namespace POSSystem
                 if (txtGotFocusStr == "textBox1")
                 {
                     grPayment.Visibility = Visibility.Hidden;
-                    //sp21.Visibility = Visibility.Visible;
+                    sp21.Visibility = Visibility.Visible;
+                    TxtCashReceive.Text = "";
+                    TxtCashReturn.Text = "";
                     string textBox1Str = textBox1.Text;
                     textBox1.Text = textBox1Str + number;
                 }
@@ -1224,19 +1215,19 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                string queryTrans = "select Count(tran_id)as Counts,sum(GrossAmount)as Sales,sum(TaxAmount)as Tax,sum(grandAmount)as Total,min(convert(datetime,createon))as SDate,Max(convert(datetime,createon))as EDate from transactions where ShiftClose is null and (void !=1 or void is Null)";
+                string queryTrans = "select Count(tran_id)as Counts,sum(Convert(decimal(10,2),GrossAmount))as Sales,sum(Convert(decimal(10,2),TaxAmount))as Tax,sum(Convert(decimal(10,2),grandAmount))as Total,min(convert(datetime,createon))as SDate,Max(convert(datetime,createon))as EDate from transactions where ShiftClose is null and (void !=1 or void is Null)";
                 SqlCommand cmdTrans = new SqlCommand(queryTrans, con);
                 SqlDataAdapter sdaTrans = new SqlDataAdapter(cmdTrans);
                 DataTable dtTrans = new DataTable();
                 sdaTrans.Fill(dtTrans);
 
-                string queryDept = "select Department,Sum(amt) as amt from(select Department, Sum(Amount) as amt from salesitem inner join item on salesitem.scancode = item.scancode where ShiftClose is null and(void != 1 or void is Null) group by Department Union all select Department,Sum(Amount) as amt from salesitem inner join Department on salesitem.Descripation = Department.Department where ShiftClose = 1 and(void != 1 or void is Null) group by Department)as x group by Department";
+                string queryDept = "select Department,Sum(Convert(decimal(10,2),amt)) as amt from(select Department, Sum(Convert(decimal(10,2),Amount)) as amt from salesitem inner join item on salesitem.scancode = item.scancode where ShiftClose is null and(void != 1 or void is Null) group by Department Union all select Department,Sum(Convert(decimal(10,2),Amount)) as amt from salesitem inner join Department on salesitem.Descripation = Department.Department where ShiftClose = 1 and(void != 1 or void is Null) group by Department)as x group by Department";
                 SqlCommand cmdDept = new SqlCommand(queryDept, con);
                 SqlDataAdapter sdaDept = new SqlDataAdapter(cmdDept);
                 DataTable dtDept = new DataTable();
                 sdaDept.Fill(dtDept);
 
-                string queryTender = "select tendercode,sum(amount-coalesce(change,0))as amt from tender where ShiftClose is null group by tendercode";
+                string queryTender = "select tendercode,sum(Convert(decimal(10,2),amount)-coalesce(Convert(decimal(10,2),change),0))as amt from tender where ShiftClose is null group by tendercode";
                 SqlCommand cmdTender = new SqlCommand(queryTender, con);
                 SqlDataAdapter sdaTender = new SqlDataAdapter(cmdTender);
                 DataTable dtTender = new DataTable();
@@ -2107,6 +2098,9 @@ namespace POSSystem
                 decimal gransTotali = Convert.ToDecimal(grandTotal.Content.ToString().Replace("Pay $", ""));
                 if (gransTotali != 0)
                 {
+                    GoBack.Visibility = Visibility.Hidden;
+                    LeftArrow.Visibility = Visibility.Hidden;
+                    RightArrow.Visibility = Visibility.Hidden;
                     if (refund == "")
                     {
                         sp21.Visibility = Visibility.Hidden;
@@ -2955,6 +2949,7 @@ namespace POSSystem
         {
             try
             {
+                grPayment.Visibility = Visibility.Hidden;
                 GoBack.Visibility = Visibility.Hidden;
                 ugAddcategory1.Visibility = Visibility.Visible;
                 ugAddcategory2.Visibility = Visibility.Hidden;
