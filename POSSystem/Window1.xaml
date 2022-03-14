@@ -3,10 +3,30 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:POSSystem"
+        x:ClassModifier="public"
+       
         mc:Ignorable="d"  WindowStartupLocation="CenterScreen" WindowState="Minimized" d:DesignWidth="200" d:DesignHeight="100"  WindowStyle="None" FontFamily="Javanese Text">
+    
     <Grid>
-        <TextBox Name="txt" VerticalAlignment="Top" Margin="50" Height="32" Width="150" xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib" Text="{Binding Path=Price, StringFormat=n2, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}"></TextBox>
+        
+        <!--<TextBox Name="txt" VerticalAlignment="Top" Margin="50" Height="32" Width="150" xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib" Text="{Binding Path=Price, StringFormat=n2, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}"></TextBox>
         <Button Content="1" Height="32" VerticalAlignment="Bottom" Margin="50" FontSize="20" Click="Button_Click"></Button>
+        <Button Name="btn1"   Content="Button1" HorizontalAlignment="Left" Margin="45,42,0,0" VerticalAlignment="Top" Width="75">
+            <Button.Style>
+                <Style TargetType="Button">
+                   
+                  
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=btn2, Path=IsMouseOver}" Value="True">
+                            <Setter Property="Visibility" Value="Hidden" />
+                          
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>-->
+
+                <Button Name="btn2"  Content="Button2" Visibility="Hidden" Click="Btn2_Click" Height="100" Width="100"/>
+        <Button Name="btn1"  Content="Button1" Click="Btn1_Click" Height="100" Width="100"/>
     </Grid>
 </Window>

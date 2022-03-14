@@ -146,19 +146,19 @@
                 <Button Name="btnChangeValue" Content="Change" Margin="5" FontSize="20" Grid.Row="1" Grid.Column="2" Click="BtnSearch_Click_ChangeValue"/>
             </Grid>
 
-            <DataGrid Name="dgitem" Grid.Row="2" Grid.RowSpan="4" FontSize="18" AutoGenerateColumns="False" Background="{x:Null}" Margin="0,0,10,0" SelectionChanged="Dgitem_SelectionChanged">
+            <DataGrid Name="dgitem" Grid.Row="2" Grid.RowSpan="4" FontSize="13" AutoGenerateColumns="False" Background="{x:Null}" Margin="0,0,10,0" SelectionChanged="Dgitem_SelectionChanged">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding ScanCode}" Header="ScanCode" Width="120*"/>
                     <DataGridTextColumn Binding="{Binding Description}" ClipboardContentBinding="{x:Null}" Header="Description" Width="200*"/>
-                    <DataGridTextColumn Binding="{Binding Payee}" ClipboardContentBinding="{x:Null}" Header="Payee" Width="150*"/>
+                    <DataGridTextColumn Binding="{Binding Department}" ClipboardContentBinding="{x:Null}" Header="Department" Width="200*"/>
                     <DataGridTextColumn Binding="{Binding UnitCase}" ClipboardContentBinding="{x:Null}" Header="UnitCase" Width="80*"/>
                     <DataGridTextColumn Binding="{Binding CaseCost}" ClipboardContentBinding="{x:Null}" Header="CaseCost" Width="80*"/>
                     <DataGridTextColumn Binding="{Binding UnitRetail}" ClipboardContentBinding="{x:Null}" Header="UnitRetail" Width="80*"/>
-                    <DataGridTextColumn Binding="{Binding MessureIn}" ClipboardContentBinding="{x:Null}" Header="MessureIn" Width="100*"/>
-                    <DataGridTextColumn Binding="{Binding Menufacture}" ClipboardContentBinding="{x:Null}" Header="Menufacture" Width="150*"/>
                     <DataGridTextColumn Binding="{Binding FoodStamp}" ClipboardContentBinding="{x:Null}" Header="FoodStamp" Width="150*"/>
                     <DataGridTextColumn Binding="{Binding TaxRate}" ClipboardContentBinding="{x:Null}" Header="TaxRate" Width="145*"/>
                     <DataGridTextColumn Binding="{Binding MinAge}" ClipboardContentBinding="{x:Null}" Header="MinAge" Width="100*"/>
+                    <DataGridTextColumn Binding="{Binding Payee}" ClipboardContentBinding="{x:Null}" Header="Payee" Width="150*"/>
+                    <DataGridTextColumn Binding="{Binding Menufacture}" ClipboardContentBinding="{x:Null}" Header="Menufacture" Width="150*"/>
                 </DataGrid.Columns>
             </DataGrid>
 

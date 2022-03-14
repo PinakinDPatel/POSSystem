@@ -42,7 +42,14 @@ namespace POSSystem
         }
         private void Close_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            try
+            {
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
         private void ItemLoad()
         {
@@ -246,15 +253,18 @@ namespace POSSystem
         }
         public static void trimData(DataTable dt)
         {
-            foreach (DataColumn c in dt.Columns)
-                if (c.DataType == typeof(string))
-                    foreach (DataRow r in dt.Rows)
-                        try
-                        {
+            try
+            {
+                foreach (DataColumn c in dt.Columns)
+                    if (c.DataType == typeof(string))
+                        foreach (DataRow r in dt.Rows)
                             r[c.ColumnName] = r[c.ColumnName].ToString().Trim();
-                        }
-                        catch
-                        { }
+
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, "ItemView");
+            }
         }
 
         private void Button_Click_Save_ImportFile(object sender, RoutedEventArgs e)
@@ -338,17 +348,21 @@ namespace POSSystem
             try
             {
                 DataTable dt = new DataTable();
-                if (txtScanCode.Text == "")
-                {
-                    string commandText = "SELECT * FROM Item";
-                    SqlConnection connection = new SqlConnection(conString);
-                    SqlCommand command = new SqlCommand(commandText, connection);
-                    command.Parameters.AddWithValue("@scanode", txtScanCode.Text);
-                    connection.Open();
-                    SqlDataAdapter da = new SqlDataAdapter(command);
-                    da.Fill(dt);
-                    connection.Close();
-                }
+                dt.Clear();
+                dgitem.ItemsSource = null;
+                dgitem.Items.Refresh();
+                //dgitem.Items.Clear();
+                //if (txtScanCode.Text == "")
+                //{
+                //    string commandText = "SELECT * FROM Item";
+                //    SqlConnection connection = new SqlConnection(conString);
+                //    SqlCommand command = new SqlCommand(commandText, connection);
+                //    command.Parameters.AddWithValue("@scanode", txtScanCode.Text);
+                //    connection.Open();
+                //    SqlDataAdapter da = new SqlDataAdapter(command);
+                //    da.Fill(dt);
+                //    connection.Close();
+                //}
                 if (txtScanCode.Text != "")
                 {
                     string commandText = "SELECT* FROM Item WHERE ScanCode = @scanode";
@@ -360,9 +374,9 @@ namespace POSSystem
                     da.Fill(dt);
                     connection.Close();
                 }
-                if (txtDescription.Text != "")
+                else if (txtDescription.Text != "")
                 {
-                    string commandText = "SELECT* FROM Item WHERE trim(Description) = @Description";
+                    string commandText = "SELECT* FROM Item WHERE Description = @Description";
                     SqlConnection connection = new SqlConnection(conString);
                     SqlCommand command = new SqlCommand(commandText, connection);
                     command.Parameters.AddWithValue("@Description", txtDescription.Text);
@@ -371,9 +385,9 @@ namespace POSSystem
                     da.Fill(dt);
                     connection.Close();
                 }
-                if (txtDepartment.Text != "")
+                else if (txtDepartment.Text != "")
                 {
-                    string commandText = "SELECT* FROM Item WHERE trim(Department) = @Department";
+                    string commandText = "SELECT* FROM Item WHERE Department = @Department";
                     SqlConnection connection = new SqlConnection(conString);
                     SqlCommand command = new SqlCommand(commandText, connection);
                     command.Parameters.AddWithValue("@Department", txtDepartment.Text);
@@ -382,12 +396,23 @@ namespace POSSystem
                     da.Fill(dt);
                     connection.Close();
                 }
-                if (txtPayee.Text != "")
+                else if (txtPayee.Text != "")
                 {
-                    string commandText = "SELECT* FROM Item WHERE trim(Payee) = @Payee";
+                    string commandText = "SELECT* FROM Item WHERE Payee = @Payee";
                     SqlConnection connection = new SqlConnection(conString);
                     SqlCommand command = new SqlCommand(commandText, connection);
                     command.Parameters.AddWithValue("@Payee", txtPayee.Text);
+                    connection.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(command);
+                    da.Fill(dt);
+                    connection.Close();
+                }
+                else
+                {
+                    string commandText = "SELECT * FROM Item";
+                    SqlConnection connection = new SqlConnection(conString);
+                    SqlCommand command = new SqlCommand(commandText, connection);
+                    command.Parameters.AddWithValue("@scanode", txtScanCode.Text);
                     connection.Open();
                     SqlDataAdapter da = new SqlDataAdapter(command);
                     da.Fill(dt);
@@ -413,16 +438,28 @@ namespace POSSystem
 
         private void Btnback_Click(object sender, RoutedEventArgs e)
         {
-            grupload.Visibility = Visibility.Hidden;
-            grdSecondPart.Visibility = Visibility.Visible;
-            AddExport.Visibility = Visibility.Visible;
-            grdSecondPart2.Visibility = Visibility.Hidden;
-            btnback.Visibility = Visibility.Hidden;
+            try
+            {
+                grupload.Visibility = Visibility.Hidden;
+                grdSecondPart.Visibility = Visibility.Visible;
+                AddExport.Visibility = Visibility.Visible;
+                grdSecondPart2.Visibility = Visibility.Hidden;
+                btnback.Visibility = Visibility.Hidden;
+
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void Dgitem_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            try
+            {
 
+            }
+            catch (Exception ex) { SendErrorToText(ex, errorFileName); }
         }
 
         private void BtnSearch_Click_ChangeValue(object sender, RoutedEventArgs e)
@@ -490,19 +527,20 @@ namespace POSSystem
 
         private void BtnSearch_Click_ExportCSV(object sender, RoutedEventArgs e)
         {
-            DataTable dt = new DataTable();
-            dt = ((DataView)dgitem.ItemsSource).ToTable();
-            StringBuilder sb = new StringBuilder();
-            string[] columnNames = dt.Columns.Cast<DataColumn>().Select(column => column.ColumnName).ToArray();
-            sb.AppendLine(string.Join(",", columnNames));
-            foreach (DataRow row in dt.Rows)
-            {
-                string[] fields = row.ItemArray.Select(field => field.ToString()).ToArray();
-                sb.AppendLine(string.Join(",", fields));
-            }
-            File.WriteAllText("test.csv", sb.ToString());
             try
             {
+                DataTable dt = new DataTable();
+                dt = ((DataView)dgitem.ItemsSource).ToTable();
+                StringBuilder sb = new StringBuilder();
+                string[] columnNames = dt.Columns.Cast<DataColumn>().Select(column => column.ColumnName).ToArray();
+                sb.AppendLine(string.Join(",", columnNames));
+                foreach (DataRow row in dt.Rows)
+                {
+                    string[] fields = row.ItemArray.Select(field => field.ToString()).ToArray();
+                    sb.AppendLine(string.Join(",", fields));
+                }
+                File.WriteAllText("test.csv", sb.ToString());
+
                 StreamWriter sw = new StreamWriter("export.csv");
                 sw.WriteLine(sb.ToString());
                 sw.Close();
@@ -516,12 +554,24 @@ namespace POSSystem
 
         private void ComboBox_SelectionChanged_Field(object sender, SelectionChangedEventArgs e)
         {
+            try { 
             cmb1Border.BorderBrush = System.Windows.Media.Brushes.White;
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         private void textBox_TextChanged_Value(object sender, TextChangedEventArgs e)
         {
+            try { 
             txtChangeValue.BorderBrush = System.Windows.Media.Brushes.Gray;
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
 
         public static void SendErrorToText(Exception ex, string errorFileName)

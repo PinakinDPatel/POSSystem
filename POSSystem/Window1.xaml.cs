@@ -24,17 +24,16 @@ namespace POSSystem
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Btn2_Click(object sender, RoutedEventArgs e)
         {
-            string number = (sender as Button).Content.ToString();
+            btn1.Visibility = Visibility.Visible;
+            btn2.Visibility = Visibility.Hidden;
+        }
 
-            string textBox1Str = txt.Text;
-            if (textBox1Str != "")
-            {
-                textBox1Str = (Convert.ToDecimal(textBox1Str) * 100).ToString();
-                textBox1Str= textBox1Str.Remove(textBox1Str.Length - 3);
-            }
-            txt.Text =(Convert.ToDecimal(textBox1Str + number)/100).ToString();
+        private void Btn1_Click(object sender, RoutedEventArgs e)
+        {
+            btn1.Visibility = Visibility.Hidden;
+            btn2.Visibility = Visibility.Visible;
         }
     }
 }

@@ -52,77 +52,84 @@ namespace POSSystem
 
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter || e.Key == Key.Tab)
+            try
             {
-                var code = TxtScanCode.Text;
-                var length = code.Length;
-                if (length == 12)
+                if (e.Key == Key.Enter || e.Key == Key.Tab)
                 {
-                    code = code.Remove(code.Length - 1);
-                }
-                if (length == 8)
-                {
-                    var last1 = code.Remove(code.Length - 1);
-                    var last2 = last1.Substring(last1.Length - 1);
-                    var first3 = code.Remove(code.Length - 5);
-                    var first4 = code.Remove(code.Length - 4);
-                    var last5 = code.Substring(code.Length - 5);
-                    var second3 = last5.Remove(last5.Length - 2);
-                    var last4 = code.Substring(code.Length - 4);
-                    var second2 = last4.Remove(last4.Length - 2);
-                    if (Convert.ToInt32(last2) == 0)
+                    var code = TxtScanCode.Text;
+                    var length = code.Length;
+                    if (length == 12)
                     {
-                        code = first3 + "00000" + second3;
+                        code = code.Remove(code.Length - 1);
                     }
-                    else if (Convert.ToInt32(last2) == 1)
+                    if (length == 8)
                     {
-                        code = first3 + "10000" + second3;
+                        var last1 = code.Remove(code.Length - 1);
+                        var last2 = last1.Substring(last1.Length - 1);
+                        var first3 = code.Remove(code.Length - 5);
+                        var first4 = code.Remove(code.Length - 4);
+                        var last5 = code.Substring(code.Length - 5);
+                        var second3 = last5.Remove(last5.Length - 2);
+                        var last4 = code.Substring(code.Length - 4);
+                        var second2 = last4.Remove(last4.Length - 2);
+                        if (Convert.ToInt32(last2) == 0)
+                        {
+                            code = first3 + "00000" + second3;
+                        }
+                        else if (Convert.ToInt32(last2) == 1)
+                        {
+                            code = first3 + "10000" + second3;
+                        }
+                        else if (Convert.ToInt32(last2) == 3)
+                        {
+                            code = first4 + "00000" + second2;
+                        }
+                        else if (Convert.ToInt32(last2) == 4)
+                        {
+                            code = code.Remove(code.Length - 3) + "00000" + code.Substring(code.Length - 3).Remove(code.Substring(code.Length - 3).Length - 2);
+                        }
+                        else if (Convert.ToInt32(last2) == 2)
+                        {
+                            code = first3 + "20000" + second3;
+                        }
+                        else
+                        {
+                            int num = 0;
+                            code = code.Remove(code.Length - 2) + num + num + num + num + last2;
+                        }
                     }
-                    else if (Convert.ToInt32(last2) == 3)
-                    {
-                        code = first4 + "00000" + second2;
-                    }
-                    else if (Convert.ToInt32(last2) == 4)
-                    {
-                        code = code.Remove(code.Length - 3) + "00000" + code.Substring(code.Length - 3).Remove(code.Substring(code.Length - 3).Length - 2);
-                    }
-                    else if (Convert.ToInt32(last2) == 2)
-                    {
-                        code = first3 + "20000" + second3;
-                    }
+
+                    SqlConnection con = new SqlConnection(conString);
+                    string queryi = "select code,Description,Department,Manufacturer,UnitCase,CaseCost,UnitRetail,CaseDiscount,MinAge,TaxRate,Foodstamp,Payee,ItemId from Item right outer join (select '" + code + "' as code)as x on item.ScanCode=x.code";
+                    SqlCommand cmdi = new SqlCommand(queryi, con);
+                    SqlDataAdapter sdai = new SqlDataAdapter(cmdi);
+                    DataTable dti = new DataTable();
+                    sdai.Fill(dti);
+                    TxtScanCode.Text = dti.Rows[0].ItemArray[0].ToString();
+                    TxtDescription.Text = dti.Rows[0].ItemArray[1].ToString().Trim();
+                    drpDepartment.Text = dti.Rows[0].ItemArray[2].ToString().Trim();
+                    TxtMenufacturer.Text = dti.Rows[0].ItemArray[3].ToString().Trim();
+                    TxtUnitCase.Text = dti.Rows[0].ItemArray[4].ToString();
+                    TxtCaseCost.Text = dti.Rows[0].ItemArray[5].ToString();
+                    TxtUnitRetail.Text = dti.Rows[0].ItemArray[6].ToString();
+                    TxtCashDiscount.Text = dti.Rows[0].ItemArray[7].ToString();
+                    TxtMinAge.Text = dti.Rows[0].ItemArray[8].ToString();
+                    TxtTaxRate.Text = dti.Rows[0].ItemArray[9].ToString();
+                    int foodstamp;
+                    if (dti.Rows[0].ItemArray[10].ToString() == "")
+                        foodstamp = 0;
                     else
-                    {
-                        int num = 0;
-                        code = code.Remove(code.Length - 2) + num + num + num + num + last2;
-                    }
+                        foodstamp = Convert.ToInt32(dti.Rows[0].ItemArray[10].ToString());
+                    if (foodstamp == 1)
+                        TxtFoodStamp.IsChecked = true;
+                    TxtPayee.Text = dti.Rows[0].ItemArray[11].ToString().Trim();
+                    lblItemId.Content = dti.Rows[0].ItemArray[12].ToString().Trim();
                 }
-
-                SqlConnection con = new SqlConnection(conString);
-                string queryi = "select * from Item right outer join (select '" + code + "' as code)as x on item.ScanCode=x.code";
-                SqlCommand cmdi = new SqlCommand(queryi, con);
-                SqlDataAdapter sdai = new SqlDataAdapter(cmdi);
-                DataTable dti = new DataTable();
-                sdai.Fill(dti);
-                TxtScanCode.Text = dti.Rows[0].ItemArray[18].ToString();
-                TxtDescription.Text = dti.Rows[0].ItemArray[3].ToString().Trim();
-                drpDepartment.Text = dti.Rows[0].ItemArray[4].ToString().Trim();
-                TxtMenufacturer.Text = dti.Rows[0].ItemArray[5].ToString().Trim();
-                TxtUnitCase.Text = dti.Rows[0].ItemArray[9].ToString();
-                TxtCaseCost.Text = dti.Rows[0].ItemArray[10].ToString();
-                TxtUnitRetail.Text = dti.Rows[0].ItemArray[11].ToString();
-                TxtCashDiscount.Text = dti.Rows[0].ItemArray[12].ToString();
-                TxtMinAge.Text = dti.Rows[0].ItemArray[8].ToString();
-                TxtTaxRate.Text = dti.Rows[0].ItemArray[13].ToString();
-                int foodstamp;
-                if (dti.Rows[0].ItemArray[7].ToString() == "")
-                    foodstamp = 0;
-                else
-                    foodstamp = Convert.ToInt32(dti.Rows[0].ItemArray[7].ToString());
-                if (foodstamp == 1)
-                    TxtFoodStamp.IsChecked = true;
-                TxtPayee.Text = dti.Rows[0].ItemArray[6].ToString().Trim();
             }
-
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
         }
         private void Close_Click(object sender, RoutedEventArgs e)
         {
@@ -134,14 +141,15 @@ namespace POSSystem
             {
                 string date = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
                 SqlConnection con = new SqlConnection(conString);
-                string queryD = "Select ScanCode from item where ScanCode=@ScanCode";
-                SqlCommand cmd = new SqlCommand(queryD, con);
-                cmd.Parameters.AddWithValue("@ScanCode", TxtScanCode.Text);
-                SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                sda.Fill(dt);
-                con.Open();
-                if (dt.Rows.Count > 0)
+                //string queryD = "Select ScanCode from item where ScanCode=@ScanCode";
+                //SqlCommand cmd = new SqlCommand(queryD, con);
+                //cmd.Parameters.AddWithValue("@ScanCode", TxtScanCode.Text);
+                //SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                //DataTable dt = new DataTable();
+                //sda.Fill(dt);
+                //con.Open();
+
+                if (lblItemId.Content.ToString() != "")
                 {
                     string queryI = "Update item set ScanCode=@ScanCode,Description=@Description,Department=@Department,MinAge=@MinAge,Manufacturer=@Manufacturer,Payee=@Payee,FoodStamp=@FoodStamp,UnitCase=@UnitCase,CaseCost=@CaseCost,UnitRetail=@UnitRetail,CaseDiscount=@CaseDiscount,TaxRate=@TaxRate,CreateBy=@CreateBy,CreateOn=@CreateOn where ScanCode=@ScanCode";
                     SqlCommand cmdI = new SqlCommand(queryI, con);
@@ -204,6 +212,7 @@ namespace POSSystem
                 TxtUnitRetail.Text = "";
                 TxtCashDiscount.Text = "";
                 TxtTaxRate.Text = "";
+                lblItemId.Content = "";
             }
             catch (Exception ex)
             {
