@@ -6533,20 +6533,6 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_A25A0E4A8DF0452DBFCCD425C26716EF"
-            {
-            "Name" = "8:POSSystem"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_441CE75A021A4F7F9E9A38F81268BCA1"
-            "Folder" = "8:_441CE75A021A4F7F9E9A38F81268BCA1"
-            "WorkingFolder" = "8:_441CE75A021A4F7F9E9A38F81268BCA1"
-            "Icon" = "8:"
-            "Feature" = "8:"
-            }
         }
         "UserInterface"
         {
