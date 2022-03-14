@@ -42,7 +42,7 @@ namespace POSSystem
         DataTable dtHold = new DataTable();
         string username = App.Current.Properties["username"].ToString();
         string date = DateTime.Now.ToString("yyyy/MM/dd");
-        private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
+        private static string ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "MainWindow.cs";
         string dataGridSelectedIndex = "";
 
@@ -1064,7 +1064,7 @@ namespace POSSystem
                     TxtCashReceive.Text = "";
                 }
                 tenderCode = "";
-                //loadtransactionId();
+                
                 transId = transId + 1;
                 lblTranid.Content = transId;
                 textBox1.Focus();
@@ -3139,6 +3139,10 @@ namespace POSSystem
                 if (txtGotFocusStr == "TxtCheck")
                 {
                     Button_Click_1();
+                }
+                if (txtGotFocusStr == "txtDeptAmt")
+                {
+                    Button_Click_Sale_Save(sender,e);
                 }
                 if (txtGotFocusStr == "CellEditQty")
                 {

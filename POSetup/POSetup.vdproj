@@ -6413,7 +6413,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:POSSystem"
         "ProductCode" = "8:{E6F1C2BE-B73B-4743-B264-DDDFF91A4CD1}"
-        "PackageCode" = "8:{956DAD33-EFF9-4F28-884A-E0797AD1846E}"
+        "PackageCode" = "8:{205BF634-261A-4121-B282-1567D6B62CAE}"
         "UpgradeCode" = "8:{5FEB83F3-D30E-400E-A5F3-CA1F91653939}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -6533,6 +6533,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_A25A0E4A8DF0452DBFCCD425C26716EF"
+            {
+            "Name" = "8:POSSystem"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_441CE75A021A4F7F9E9A38F81268BCA1"
+            "Folder" = "8:_441CE75A021A4F7F9E9A38F81268BCA1"
+            "WorkingFolder" = "8:_441CE75A021A4F7F9E9A38F81268BCA1"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
         }
         "UserInterface"
         {
@@ -6962,7 +6976,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_64BFAF6383A541989214A1680B4374C5"
             {
-            "SourcePath" = "8:"
+            "SourcePath" = "8:..\\POSSystem\\obj\\Release\\POSSystem.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_934C6BC8407248238F285A6981314A46"
