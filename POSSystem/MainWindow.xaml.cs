@@ -2332,8 +2332,8 @@ namespace POSSystem
                 string totalAmt = txtTotal.Content.ToString().Replace("$", "");
                 string tax = taxtTotal.Content.ToString().Replace("$", "");
                 string grandTotalAmt = grandTotal.Content.ToString().Replace("Pay $", "");
-                string cashRec = TxtCashReceive.Text.Replace("$ ", "");
-                string cashReturn = TxtCashReturn.Text.Replace("$ ", "");
+                string cashRec = "0";
+                string cashReturn = "0";
                 string tranid = Convert.ToInt32(lblTranid.Content).ToString();
 
                 string transaction = "insert into Transactions(Tran_id,EndDate,EndTime,GrossAmount,TaxAmount,GrandAmount,CreateBy,CreateOn,Void)Values('" + tranid + "','" + onlydate + "','" + onlytime + "','" + totalAmt + "','" + tax + "','" + grandTotalAmt + "','" + username + "','" + date + "','1')";
@@ -2411,12 +2411,14 @@ namespace POSSystem
                 lblDate.Content = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
                 dt.Clear();
                 JRDGrid.Items.Refresh();
-
-                cashTxtPanel.Visibility = Visibility.Hidden;
-                ugDepartment.Visibility = Visibility.Visible;
-                customerTxtPanel.Visibility = Visibility.Hidden;
-                checkTxtPanel.Visibility = Visibility.Hidden;
-                grPayment.Visibility = Visibility.Hidden;
+                if (grPayment.Visibility.ToString() == "Visible")
+                {
+                    cashTxtPanel.Visibility = Visibility.Hidden;
+                    ugDepartment.Visibility = Visibility.Visible;
+                    customerTxtPanel.Visibility = Visibility.Hidden;
+                    checkTxtPanel.Visibility = Visibility.Hidden;
+                    grPayment.Visibility = Visibility.Hidden;
+                }
                 //loadtransactionId();
                 transId = transId + 1;
                 lblTranid.Content = transId;
