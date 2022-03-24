@@ -186,8 +186,6 @@ namespace POSSystem
                         }
                         button.Width = 120;
                         button.Height = 80;
-                        button.HorizontalAlignment = HorizontalAlignment.Left;
-                        button.VerticalAlignment = VerticalAlignment.Top;
                         button.Foreground = new SolidColorBrush(Colors.Black);
                         button.FontSize = 15;
                         button.FontWeight = FontWeights.Bold;
@@ -932,6 +930,7 @@ namespace POSSystem
                 txtTotal.Content = '$' + sum.ToString("0.00");
                 taxtTotal.Content = '$' + Taxsum.ToString("0.00");
                 grandTotal.Content = "Pay " + '$' + Total.ToString("0.00");
+                lblCount.Content = dt.Rows.Count;
             }
             catch (Exception ex)
             {
