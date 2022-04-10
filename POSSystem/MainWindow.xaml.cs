@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Windows.Input;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Text;
 using System.Drawing.Printing;
 using Color = System.Drawing.Color;
@@ -19,6 +20,7 @@ using System.Windows.Resources;
 using System.Reflection;
 using System.Linq;
 using System.Security.Permissions;
+using Image = System.Windows.Controls.Image;
 
 namespace POSSystem
 {
@@ -165,40 +167,86 @@ namespace POSSystem
                 for (int i = 0; i < dtdepartment.Rows.Count; ++i)
                 {
                     Button button = new Button();
+                    Grid G = new Grid();
+                    G.RowDefinitions.Add(new RowDefinition());
+                    G.RowDefinitions.Add(new RowDefinition());
+                    TextBlock TB = new TextBlock();
+                    Image image = new System.Windows.Controls.Image();
                     if (i <= 19)
                     {
-                        var size = System.Windows.SystemParameters.PrimaryScreenWidth;
-                        //if (size == 1024 || size == 1366)
-                        //{
-                        button.Content = new TextBlock()
-                        {
-                            FontSize = 20,
-                            Text = dtdepartment.Rows[i].ItemArray[0].ToString(),
-                            TextAlignment = TextAlignment.Left,
-                            TextWrapping = TextWrapping.Wrap
-                        };
+                        TB.Text = dtdepartment.Rows[i].ItemArray[0].ToString();
+                        TB.TextAlignment = TextAlignment.Center;
+                        TB.TextWrapping = TextWrapping.Wrap;
+
                         if (dtdepartment.Rows[i].ItemArray[2].ToString() != "")
                         {
                             var Path = System.AppDomain.CurrentDomain.BaseDirectory;
                             var path = dtdepartment.Rows[i].ItemArray[2].ToString();
                             var fullpath = Path + "\\Image\\" + path;
-                            button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
+                            image.Source = new BitmapImage(new Uri(fullpath));
+                            image.Height = 50;
+                            image.Width = 80;
+                            image.Stretch = Stretch.Fill;
                         }
                         button.Width = 120;
                         button.Height = 80;
-                        button.Foreground = new SolidColorBrush(Colors.Black);
-                        button.FontSize = 15;
-                        button.FontWeight = FontWeights.Bold;
                         button.Margin = new Thickness(5);
-
                         string abc = dtdepartment.Rows[i].ItemArray[1].ToString();
-                        button.Click += (sender, e) => { button_Click(sender, e, abc); };
+                        button.Click += (sender, e) => { button_Click(sender, e,TB.Text, abc); };
+                        Grid.SetRow(image, 0);
+                        G.Children.Add(image);
+                        Grid.SetRow(TB, 1);
+                        G.Children.Add(TB);
+                        G.HorizontalAlignment = HorizontalAlignment.Center;
+                        G.VerticalAlignment = VerticalAlignment.Bottom;
+                        button.Content = G;
                         this.ugDepartment.HorizontalAlignment = HorizontalAlignment.Left;
                         this.ugDepartment.VerticalAlignment = VerticalAlignment.Top;
-                        //ColumnDefinition cd = new ColumnDefinition();
-                        //cd.Width = GridLength.Auto;
                         this.ugDepartment.Columns = 5;
                         this.ugDepartment.Children.Add(button);
+
+
+
+
+
+
+                        // var size = System.Windows.SystemParameters.PrimaryScreenWidth;
+                        //if (size == 1024 || size == 1366)
+                        //{
+
+
+
+
+
+                        //button.Content = new TextBlock()
+                        //{
+                        //    FontSize = 20,
+                        //    Text = dtdepartment.Rows[i].ItemArray[0].ToString(),
+                        //    TextAlignment = TextAlignment.Left,
+                        //    TextWrapping = TextWrapping.Wrap
+                        //};
+                        //if (dtdepartment.Rows[i].ItemArray[2].ToString() != "")
+                        //{
+                        //    var Path = System.AppDomain.CurrentDomain.BaseDirectory;
+                        //    var path = dtdepartment.Rows[i].ItemArray[2].ToString();
+                        //    var fullpath = Path + "\\Image\\" + path;
+                        //    button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
+                        //}
+                        //button.Width = 120;
+                        //button.Height = 80;
+                        //button.Foreground = new SolidColorBrush(Colors.Black);
+                        //button.FontSize = 15;
+                        //button.FontWeight = FontWeights.Bold;
+                        //button.Margin = new Thickness(5);
+
+                        //string abc = dtdepartment.Rows[i].ItemArray[1].ToString();
+                        //button.Click += (sender, e) => { button_Click(sender, e, abc); };
+                        //this.ugDepartment.HorizontalAlignment = HorizontalAlignment.Left;
+                        //this.ugDepartment.VerticalAlignment = VerticalAlignment.Top;
+                        ////ColumnDefinition cd = new ColumnDefinition();
+                        ////cd.Width = GridLength.Auto;
+                        //this.ugDepartment.Columns = 5;
+                        //this.ugDepartment.Children.Add(button);
 
                         //}
                         //else if (size > 1900)
@@ -235,37 +283,74 @@ namespace POSSystem
                     }
                     else if (i > 19)
                     {
-                        button.Content = new TextBlock()
-                        {
-                            FontSize = 20,
-                            Text = dtdepartment.Rows[i].ItemArray[0].ToString(),
-                            TextAlignment = TextAlignment.Left,
-                            TextWrapping = TextWrapping.Wrap
-                        };
+                        TB.Text = dtdepartment.Rows[i].ItemArray[0].ToString();
+                        TB.TextAlignment = TextAlignment.Center;
+                        TB.TextWrapping = TextWrapping.Wrap;
+
                         if (dtdepartment.Rows[i].ItemArray[2].ToString() != "")
                         {
                             var Path = System.AppDomain.CurrentDomain.BaseDirectory;
                             var path = dtdepartment.Rows[i].ItemArray[2].ToString();
                             var fullpath = Path + "\\Image\\" + path;
-                            button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
+                            image.Source = new BitmapImage(new Uri(fullpath));
+                            image.Height = 80;
+                            image.Width = 80;
+                            image.Stretch = Stretch.Fill;
                         }
                         button.Width = 120;
                         button.Height = 80;
-                        button.HorizontalAlignment = HorizontalAlignment.Left;
-                        button.VerticalAlignment = VerticalAlignment.Top;
-                        button.Foreground = new SolidColorBrush(Colors.Black);
-                        button.FontSize = 15;
-                        button.FontWeight = FontWeights.Bold;
                         button.Margin = new Thickness(5);
-
                         string abc = dtdepartment.Rows[i].ItemArray[1].ToString();
-                        button.Click += (sender, e) => { button_Click(sender, e, abc); };
+                        button.Click += (sender, e) => { button_Click(sender, e, TB.Text, abc); };
+                        Grid.SetRow(image, 0);
+                        G.Children.Add(image);
+                        Grid.SetRow(TB, 1);
+                        G.Children.Add(TB);
+                        G.HorizontalAlignment = HorizontalAlignment.Center;
+                        G.VerticalAlignment = VerticalAlignment.Bottom;
+                        button.Content = G;
                         this.ugDepartment1.HorizontalAlignment = HorizontalAlignment.Left;
                         this.ugDepartment1.VerticalAlignment = VerticalAlignment.Top;
-                        //ColumnDefinition cd = new ColumnDefinition();
-                        //cd.Width = GridLength.Auto;
                         this.ugDepartment1.Columns = 5;
                         this.ugDepartment1.Children.Add(button);
+
+
+
+
+
+
+
+                       // button.Content = new TextBlock()
+                       // {
+                       //     FontSize = 20,
+                       //     Text = dtdepartment.Rows[i].ItemArray[0].ToString(),
+                       //     TextAlignment = TextAlignment.Left,
+                       //     TextWrapping = TextWrapping.Wrap
+                       // };
+                       // if (dtdepartment.Rows[i].ItemArray[2].ToString() != "")
+                       // {
+                       //     var Path = System.AppDomain.CurrentDomain.BaseDirectory;
+                       //     var path = dtdepartment.Rows[i].ItemArray[2].ToString();
+                       //     var fullpath = Path + "\\Image\\" + path;
+                       //     button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
+                       // }
+                       // button.Width = 120;
+                       // button.Height = 80;
+                       // button.HorizontalAlignment = HorizontalAlignment.Left;
+                       // button.VerticalAlignment = VerticalAlignment.Top;
+                       // button.Foreground = new SolidColorBrush(Colors.Black);
+                       // button.FontSize = 15;
+                       // button.FontWeight = FontWeights.Bold;
+                       // button.Margin = new Thickness(5);
+
+                       // string abc = dtdepartment.Rows[i].ItemArray[1].ToString();
+                       //// button.Click += (sender, e) => { button_Click(sender, e, abc); };
+                       // this.ugDepartment1.HorizontalAlignment = HorizontalAlignment.Left;
+                       // this.ugDepartment1.VerticalAlignment = VerticalAlignment.Top;
+                       // //ColumnDefinition cd = new ColumnDefinition();
+                       // //cd.Width = GridLength.Auto;
+                       // this.ugDepartment1.Columns = 5;
+                       // this.ugDepartment1.Children.Add(button);
                     }
                 }
             }
@@ -284,86 +369,148 @@ namespace POSSystem
 
                 for (int i = 0; i < dtAddCategory.Rows.Count; i++)
                 {
+                    Button button = new Button();
+                    Grid G = new Grid();
+                    G.RowDefinitions.Add(new RowDefinition());
+                    G.RowDefinitions.Add(new RowDefinition());
+                    TextBlock TB = new TextBlock();
+                    Image image = new System.Windows.Controls.Image();
                     if (i <= 23)
                     {
-                        Button button = new Button();
-                        var size = System.Windows.SystemParameters.PrimaryScreenWidth;
+                        //var size = System.Windows.SystemParameters.PrimaryScreenWidth;
 
-                        button.Content = new TextBlock()
-                        {
-                            FontSize = 15,
-                            Text = dtAddCategory.Rows[i].ItemArray[0].ToString(),
-                            TextAlignment = TextAlignment.Center,
-                            TextWrapping = TextWrapping.Wrap
-                        };
-                        if (dtAddCategory.Rows[i].ItemArray[0].ToString() != "")
+                        TB.Text = dtAddCategory.Rows[i].ItemArray[0].ToString();
+                        TB.TextAlignment = TextAlignment.Center;
+                        TB.TextWrapping = TextWrapping.Wrap;
+                        if (dtAddCategory.Rows[i].ItemArray[1].ToString() != "")
                         {
                             var Path = System.AppDomain.CurrentDomain.BaseDirectory;
                             var path = dtAddCategory.Rows[i].ItemArray[1].ToString();
-                            if (path != "")
-                            {
-                                var fullpath = Path + "\\Image\\" + path;
-                                button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
-                            }
+                            var fullpath = Path + "\\Image\\" + path;
+                            image.Source = new BitmapImage(new Uri(fullpath));
+                            image.Height = 70;
+                            image.Width = 80;
+                            image.Stretch = Stretch.Fill;
                         }
                         button.Width = 97;
                         button.Height = 78;
-                        button.HorizontalAlignment = HorizontalAlignment.Left;
-                        button.VerticalAlignment = VerticalAlignment.Top;
-
-                        button.Foreground = new SolidColorBrush(Colors.White);
-                        button.FontSize = 15;
-                        button.FontWeight = FontWeights.Bold;
-                        button.Effect = new DropShadowEffect()
-                        { Color = Colors.BlueViolet };
-                        button.Margin = new Thickness(5, 5, 5, 5);
-                        string abc = dtAddCategory.Rows[i].ItemArray[0].ToString();
+                        button.Margin = new Thickness(5);
+                        button.Click += (sender, e) => { button_Click_Category(sender, e, TB.Text); };
+                        Grid.SetRow(image, 0);
+                        G.Children.Add(image);
+                        Grid.SetRow(TB, 1);
+                        G.Children.Add(TB);
+                        G.HorizontalAlignment = HorizontalAlignment.Center;
+                        G.VerticalAlignment = VerticalAlignment.Bottom;
+                        button.Content = G;
                         this.ugAddcategory1.HorizontalAlignment = HorizontalAlignment.Left;
                         this.ugAddcategory1.VerticalAlignment = VerticalAlignment.Top;
-                        button.Click += new RoutedEventHandler(button_Click_Category);
-                        //button.Click += (sender, e) => { button_Click_CategoryDescription(sender, e); };
                         this.ugAddcategory1.Columns = 6;
                         this.ugAddcategory1.Children.Add(button);
+
+                        //button.Content = new TextBlock()
+                        //{
+                        //    FontSize = 15,
+                        //    Text = dtAddCategory.Rows[i].ItemArray[0].ToString(),
+                        //    TextAlignment = TextAlignment.Center,
+                        //    TextWrapping = TextWrapping.Wrap
+                        //};
+                        //if (dtAddCategory.Rows[i].ItemArray[0].ToString() != "")
+                        //{
+                        //    var Path = System.AppDomain.CurrentDomain.BaseDirectory;
+                        //    var path = dtAddCategory.Rows[i].ItemArray[1].ToString();
+                        //    if (path != "")
+                        //    {
+                        //        var fullpath = Path + "\\Image\\" + path;
+                        //        button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
+                        //    }
+                        //}
+                        //button.Width = 97;
+                        //button.Height = 78;
+                        //button.HorizontalAlignment = HorizontalAlignment.Left;
+                        //button.VerticalAlignment = VerticalAlignment.Top;
+
+                        ////button.Foreground = new SolidColorBrush(Colors.Black);
+                        //button.FontSize = 15;
+                        //button.FontWeight = FontWeights.Bold;
+                        //button.Effect = new DropShadowEffect()
+                        //{ Color = Colors.BlueViolet };
+                        //button.Margin = new Thickness(5, 5, 5, 5);
+                        //string abc = dtAddCategory.Rows[i].ItemArray[0].ToString();
+                        //this.ugAddcategory1.HorizontalAlignment = HorizontalAlignment.Left;
+                        //this.ugAddcategory1.VerticalAlignment = VerticalAlignment.Top;
+                        //button.Click += new RoutedEventHandler(button_Click_Category);
+                        ////button.Click += (sender, e) => { button_Click_CategoryDescription(sender, e); };
+                        //this.ugAddcategory1.Columns = 6;
+                        //this.ugAddcategory1.Children.Add(button);
                     }
                     else if (i > 23)
                     {
-                        Button button = new Button();
-
-                        button.Content = new TextBlock()
-                        {
-                            FontSize = 15,
-                            Text = dtAddCategory.Rows[i].ItemArray[0].ToString(),
-                            TextAlignment = TextAlignment.Center,
-                            TextWrapping = TextWrapping.Wrap
-                        };
-                        if (dtAddCategory.Rows[i].ItemArray[0].ToString() != "")
+                        //Button button = new Button();
+                        TB.Text = dtAddCategory.Rows[i].ItemArray[0].ToString();
+                        TB.TextAlignment = TextAlignment.Center;
+                        TB.TextWrapping = TextWrapping.Wrap;
+                        if (dtAddCategory.Rows[i].ItemArray[1].ToString() != "")
                         {
                             var Path = System.AppDomain.CurrentDomain.BaseDirectory;
                             var path = dtAddCategory.Rows[i].ItemArray[1].ToString();
-                            if (path != "")
-                            {
-                                var fullpath = Path + "\\Image\\" + path;
-                                button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
-                            }
+                            var fullpath = Path + "\\Image\\" + path;
+                            image.Source = new BitmapImage(new Uri(fullpath));
+                            image.Height = 70;
+                            image.Width = 80;
+                            image.Stretch = Stretch.Fill;
                         }
                         button.Width = 97;
                         button.Height = 78;
-                        button.HorizontalAlignment = HorizontalAlignment.Left;
-                        button.VerticalAlignment = VerticalAlignment.Top;
-
-                        button.Foreground = new SolidColorBrush(Colors.White);
-                        button.FontSize = 15;
-                        button.FontWeight = FontWeights.Bold;
-                        button.Effect = new DropShadowEffect()
-                        { Color = Colors.BlueViolet };
-                        button.Margin = new Thickness(5, 5, 5, 5);
-                        string abc = dtAddCategory.Rows[i].ItemArray[0].ToString();
+                        button.Margin = new Thickness(5);
+                        button.Click += (sender, e) => { button_Click_Category(sender, e, TB.Text); };
+                        Grid.SetRow(image, 0);
+                        G.Children.Add(image);
+                        Grid.SetRow(TB, 1);
+                        G.Children.Add(TB);
+                        G.HorizontalAlignment = HorizontalAlignment.Center;
+                        G.VerticalAlignment = VerticalAlignment.Bottom;
+                        button.Content = G;
                         this.ugAddcategory2.HorizontalAlignment = HorizontalAlignment.Left;
                         this.ugAddcategory2.VerticalAlignment = VerticalAlignment.Top;
-                        button.Click += new RoutedEventHandler(button_Click_Category);
-                        //button.Click += (sender, e) => { button_Click_CategoryDescription(sender, e); };
                         this.ugAddcategory2.Columns = 6;
                         this.ugAddcategory2.Children.Add(button);
+
+                        //button.Content = new TextBlock()
+                        //{
+                        //    FontSize = 15,
+                        //    Text = dtAddCategory.Rows[i].ItemArray[0].ToString(),
+                        //    TextAlignment = TextAlignment.Center,
+                        //    TextWrapping = TextWrapping.Wrap
+                        //};
+                        //if (dtAddCategory.Rows[i].ItemArray[0].ToString() != "")
+                        //{
+                        //    var Path = System.AppDomain.CurrentDomain.BaseDirectory;
+                        //    var path = dtAddCategory.Rows[i].ItemArray[1].ToString();
+                        //    if (path != "")
+                        //    {
+                        //        var fullpath = Path + "\\Image\\" + path;
+                        //        button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
+                        //    }
+                        //}
+                        //button.Width = 97;
+                        //button.Height = 78;
+                        //button.HorizontalAlignment = HorizontalAlignment.Left;
+                        //button.VerticalAlignment = VerticalAlignment.Top;
+
+                        ////button.Foreground = new SolidColorBrush(Colors.White);
+                        //button.FontSize = 15;
+                        //button.FontWeight = FontWeights.Bold;
+                        //button.Effect = new DropShadowEffect()
+                        //{ Color = Colors.BlueViolet };
+                        //button.Margin = new Thickness(5, 5, 5, 5);
+                        //string abc = dtAddCategory.Rows[i].ItemArray[0].ToString();
+                        //this.ugAddcategory2.HorizontalAlignment = HorizontalAlignment.Left;
+                        //this.ugAddcategory2.VerticalAlignment = VerticalAlignment.Top;
+                        //button.Click += new RoutedEventHandler(button_Click_Category);
+                        ////button.Click += (sender, e) => { button_Click_CategoryDescription(sender, e); };
+                        //this.ugAddcategory2.Columns = 6;
+                        //this.ugAddcategory2.Children.Add(button);
                     }
                 }
             }
@@ -412,92 +559,156 @@ namespace POSSystem
                 {
                     if (dtCategory.Rows[i].ItemArray[2].ToString() == categorytext)
                     {
+                        Button button = new Button();
+                        Grid G = new Grid();
+                        G.RowDefinitions.Add(new RowDefinition());
+                        G.RowDefinitions.Add(new RowDefinition());
+                        TextBlock TB = new TextBlock();
+                        Image image = new System.Windows.Controls.Image();
                         if (j <= 23)
                         {
-
-                            Button button = new Button();
-                            button.Content = new TextBlock()
-                            {
-                                FontSize = 15,
-                                Text = dtCategory.Rows[i].ItemArray[0].ToString(),
-                                TextAlignment = TextAlignment.Center,
-                                TextWrapping = TextWrapping.Wrap
-                            };
-                            if (dtCategory.Rows[i].ItemArray[0].ToString() != "")
+                            TB.Text = dtCategory.Rows[i].ItemArray[0].ToString();
+                            TB.TextAlignment = TextAlignment.Center;
+                            TB.TextWrapping = TextWrapping.Wrap;
+                            button.Tag = TB.Text;
+                            if (dtCategory.Rows[i].ItemArray[1].ToString() != "")
                             {
                                 var Path = System.AppDomain.CurrentDomain.BaseDirectory;
                                 var path = dtCategory.Rows[i].ItemArray[1].ToString();
-                                if (path != "")
-                                {
-                                    var fullpath = Path + "\\Image\\" + path;
-                                    button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
-                                }
+                                var fullpath = Path + "\\Image\\" + path;
+                                image.Source = new BitmapImage(new Uri(fullpath));
+                                image.Height = 70;
+                                image.Width = 80;
+                                image.Stretch = Stretch.Fill;
                             }
                             button.Width = 97;
                             button.Height = 78;
-                            button.HorizontalAlignment = HorizontalAlignment.Left;
-                            button.VerticalAlignment = VerticalAlignment.Top;
                             button.Margin = new Thickness(5);
-                            button.Foreground = new SolidColorBrush(Colors.White);
-                            button.FontSize = 15;
-                            button.FontWeight = FontWeights.Bold;
-                            button.Effect = new DropShadowEffect()
-                            { Color = Colors.BlueViolet };
-                            button.Margin = new Thickness(5, 5, 5, 5);
-                            string abc = dtCategory.Rows[i].ItemArray[0].ToString();
+                            button.Click += new RoutedEventHandler(button_Click_Category_Description);
+                            Grid.SetRow(image, 0);
+                            G.Children.Add(image);
+                            Grid.SetRow(TB, 1);
+                            G.Children.Add(TB);
+                            G.HorizontalAlignment = HorizontalAlignment.Center;
+                            G.VerticalAlignment = VerticalAlignment.Bottom;
+                            button.Content = G;
                             this.ugCategory1.HorizontalAlignment = HorizontalAlignment.Left;
                             this.ugCategory1.VerticalAlignment = VerticalAlignment.Top;
-                            button.Click += new RoutedEventHandler(button_Click_Category_Description);
                             this.ugCategory1.Columns = 6;
                             this.ugCategory1.Children.Add(button);
+
+                            // Button button = new Button();
+                            // button.Content = new TextBlock()
+                            // {
+                            //     FontSize = 15,
+                            //     Text = dtCategory.Rows[i].ItemArray[0].ToString(),
+                            //     TextAlignment = TextAlignment.Center,
+                            //     TextWrapping = TextWrapping.Wrap
+                            // };
+                            // if (dtCategory.Rows[i].ItemArray[0].ToString() != "")
+                            // {
+                            //     var Path = System.AppDomain.CurrentDomain.BaseDirectory;
+                            //     var path = dtCategory.Rows[i].ItemArray[1].ToString();
+                            //     if (path != "")
+                            //     {
+                            //         var fullpath = Path + "\\Image\\" + path;
+                            //         button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
+                            //     }
+                            // }
+                            // button.Width = 97;
+                            // button.Height = 78;
+                            // button.HorizontalAlignment = HorizontalAlignment.Left;
+                            // button.VerticalAlignment = VerticalAlignment.Top;
+                            // button.Margin = new Thickness(5);
+                            //// button.Foreground = new SolidColorBrush(Colors.White);
+                            // button.FontSize = 15;
+                            // button.FontWeight = FontWeights.Bold;
+                            // button.Effect = new DropShadowEffect()
+                            // { Color = Colors.BlueViolet };
+                            // button.Margin = new Thickness(5, 5, 5, 5);
+                            // string abc = dtCategory.Rows[i].ItemArray[0].ToString();
+                            // this.ugCategory1.HorizontalAlignment = HorizontalAlignment.Left;
+                            // this.ugCategory1.VerticalAlignment = VerticalAlignment.Top;
+                            //button.Click += new RoutedEventHandler(button_Click_Category_Description);
+                            // this.ugCategory1.Columns = 6;
+                            // this.ugCategory1.Children.Add(button);
                             j = j + 1;
                         }
                         else if (j > 23)
                         {
                             if (j > 23)
                             {
-
-                                Button button = new Button();
-
-                                button.Content = new TextBlock()
-                                {
-                                    FontSize = 15,
-                                    Text = dtCategory.Rows[i].ItemArray[0].ToString(),
-                                    TextAlignment = TextAlignment.Center,
-                                    TextWrapping = TextWrapping.Wrap
-                                };
-                                if (dtCategory.Rows[i].ItemArray[0].ToString() != "")
+                                TB.Text = dtCategory.Rows[i].ItemArray[0].ToString();
+                                TB.TextAlignment = TextAlignment.Center;
+                                TB.TextWrapping = TextWrapping.Wrap;
+                                if (dtCategory.Rows[i].ItemArray[1].ToString() != "")
                                 {
                                     var Path = System.AppDomain.CurrentDomain.BaseDirectory;
                                     var path = dtCategory.Rows[i].ItemArray[1].ToString();
-                                    if (path != "")
-                                    {
-                                        var fullpath = Path + "\\Image\\" + path;
-                                        button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
-                                    }
+                                    var fullpath = Path + "\\Image\\" + path;
+                                    image.Source = new BitmapImage(new Uri(fullpath));
+                                    image.Height = 70;
+                                    image.Width = 80;
+                                    image.Stretch = Stretch.Fill;
                                 }
                                 button.Width = 97;
                                 button.Height = 78;
-                                button.HorizontalAlignment = HorizontalAlignment.Left;
-                                button.VerticalAlignment = VerticalAlignment.Top;
                                 button.Margin = new Thickness(5);
-                                button.Foreground = new SolidColorBrush(Colors.White);
-                                button.FontSize = 15;
-                                button.FontWeight = FontWeights.Bold;
-                                button.Effect = new DropShadowEffect()
-                                { Color = Colors.BlueViolet };
-                                button.Margin = new Thickness(5, 5, 5, 5);
-                                string abc = dtCategory.Rows[i].ItemArray[0].ToString();
+                                button.Click += new RoutedEventHandler(button_Click_Category_Description);
+                                //button.Click += (sender, e) => { button_Click_Category_Description(sender, e,); };
+                                Grid.SetRow(image, 0);
+                                G.Children.Add(image);
+                                Grid.SetRow(TB, 1);
+                                G.Children.Add(TB);
+                                G.HorizontalAlignment = HorizontalAlignment.Center;
+                                G.VerticalAlignment = VerticalAlignment.Bottom;
+                                button.Content = G;
                                 this.ugCategory2.HorizontalAlignment = HorizontalAlignment.Left;
                                 this.ugCategory2.VerticalAlignment = VerticalAlignment.Top;
-                                button.Click += new RoutedEventHandler(button_Click_Category_Description);
                                 this.ugCategory2.Columns = 6;
                                 this.ugCategory2.Children.Add(button);
+
+                               // Button button = new Button();
+                               // button.Content = new TextBlock()
+                               // {
+                               //     FontSize = 15,
+                               //     Text = dtCategory.Rows[i].ItemArray[0].ToString(),
+                               //     TextAlignment = TextAlignment.Center,
+                               //     TextWrapping = TextWrapping.Wrap
+                               // };
+                               // if (dtCategory.Rows[i].ItemArray[0].ToString() != "")
+                               // {
+                               //     var Path = System.AppDomain.CurrentDomain.BaseDirectory;
+                               //     var path = dtCategory.Rows[i].ItemArray[1].ToString();
+                               //     if (path != "")
+                               //     {
+                               //         var fullpath = Path + "\\Image\\" + path;
+                               //         button.Background = new ImageBrush { ImageSource = new BitmapImage(new Uri(fullpath, UriKind.Relative)), Opacity = 0.95 };
+                               //     }
+                               // }
+                               // button.Width = 97;
+                               // button.Height = 78;
+                               // button.HorizontalAlignment = HorizontalAlignment.Left;
+                               // button.VerticalAlignment = VerticalAlignment.Top;
+                               // button.Margin = new Thickness(5);
+                               //// button.Foreground = new SolidColorBrush(Colors.White);
+                               // button.FontSize = 15;
+                               // button.FontWeight = FontWeights.Bold;
+                               // button.Effect = new DropShadowEffect()
+                               // { Color = Colors.BlueViolet };
+                               // button.Margin = new Thickness(5, 5, 5, 5);
+                               // string abc = dtCategory.Rows[i].ItemArray[0].ToString();
+                               // this.ugCategory2.HorizontalAlignment = HorizontalAlignment.Left;
+                               // this.ugCategory2.VerticalAlignment = VerticalAlignment.Top;
+                               // button.Click += new RoutedEventHandler(button_Click_Category_Description);
+                               // this.ugCategory2.Columns = 6;
+                               // this.ugCategory2.Children.Add(button);
                                 j = j + 1;
                             }
                         }
                     }
                 }
+                categorytext = "";
             }
             catch (Exception ex)
             {
@@ -528,14 +739,14 @@ namespace POSSystem
         }
 
         string taxrate = "";
-        void button_Click(object sender, RoutedEventArgs e, string abc)
+        void button_Click(object sender, RoutedEventArgs e,string xyz, string abc)
         {
             try
             {
-                var btnContent = sender as Button;
-                var tb = (TextBlock)btnContent.Content;
+                //var btnContent = sender as Button;
+                //var tb = (TextBlock)btnContent.Content.;
                 taxrate = abc;
-                lblDepartment.Content = tb.Text;
+                lblDepartment.Content = xyz;
                 TxtBxStackPanel2.Visibility = Visibility.Visible;
                 ugDepartment.Visibility = Visibility.Hidden;
                 ugDepartment1.Visibility = Visibility.Hidden;
@@ -1063,7 +1274,7 @@ namespace POSSystem
                     TxtCashReceive.Text = "";
                 }
                 tenderCode = "";
-                
+
                 transId = transId + 1;
                 lblTranid.Content = transId;
                 textBox1.Focus();
@@ -2087,14 +2298,14 @@ namespace POSSystem
             return datatable;
         }
 
-        void button_Click_Category(object sender, RoutedEventArgs e)
+        void button_Click_Category(object sender, RoutedEventArgs e,string xyz)
         {
             try
             {
                 GoBack.Visibility = Visibility.Visible;
-                var btnContent = sender as Button;
-                var tb = (TextBlock)btnContent.Content;
-                categorytext = tb.Text;
+                //var btnContent = sender as Button;
+                //var tb = (TextBlock)btnContent.Content;
+                categorytext = xyz;
                 Category1(sender, e);
             }
             catch (Exception ex)
@@ -3065,8 +3276,8 @@ namespace POSSystem
         {
             try
             {
-                var btnContent = sender as Button;
-                var tb = (TextBlock)btnContent.Content;
+                var btnContent = (sender as Button);
+                string tb =Convert.ToString(btnContent.Tag);
                 //SqlConnection con = new SqlConnection(conString);
                 //string querya = "select CATEGORY  from Category  where Category = @Description";
                 //SqlCommand cmda = new SqlCommand(querya, con);
@@ -3077,14 +3288,14 @@ namespace POSSystem
                 //sdaa.Fill(dta);
                 //int A = dta.Rows.Count;
 
-                int A = (from DataRow row in dtCategory.Rows where (string)row["Category"] == tb.Text select row).Count();
+                int A = (from DataRow row in dtCategory.Rows where (string)row["Category"] == tb select row).Count();
 
                 if (A != 0)
-                    button_Click_Category(sender, e);
+                    button_Click_Category(sender, e, tb);
                 else
                 {
                     var results = from myRow in dtItem.AsEnumerable()
-                                  where myRow.Field<string>("Description") == tb.Text
+                                  where myRow.Field<string>("Description") == tb
                                   select myRow;
 
                     foreach (DataRow row in results)
@@ -3143,7 +3354,7 @@ namespace POSSystem
                 }
                 if (txtGotFocusStr == "txtDeptAmt")
                 {
-                    Button_Click_Sale_Save(sender,e);
+                    Button_Click_Sale_Save(sender, e);
                 }
                 if (txtGotFocusStr == "CellEditQty")
                 {

@@ -8,7 +8,7 @@
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="Effect">
                 <Setter.Value>
-                    <DropShadowEffect />
+                    <DropShadowEffect Color="LightSteelBlue"/>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -18,7 +18,7 @@
         <Style TargetType="{x:Type Label}">
             <Setter Property="Effect">
                 <Setter.Value>
-                    <DropShadowEffect BlurRadius="2" Color="#264f96" ShadowDepth="1"  />
+                    <DropShadowEffect BlurRadius="2" Color="LightSteelBlue" ShadowDepth="1"  />
                 </Setter.Value>
             </Setter>
             <Setter Property="FontSize" Value="19"/>
@@ -26,28 +26,20 @@
             <Setter Property="FontFamily" Value="Cambria"/>
         </Style>
         <Style TargetType="{x:Type Button}">
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="FontSize" Value="20" />
-            <Setter Property="FontFamily" Value="Cambria" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="FontFamily" Value="Arial" />
+            <Setter Property="Foreground" Value="#FF8B4C00"/>
             <Setter Property="SnapsToDevicePixels" Value="True" />
             <Setter Property="Effect">
                 <Setter.Value>
-                    <DropShadowEffect />
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Background">
-                <Setter.Value>
-                    <!--<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FFCD7A19"/>
-                        <GradientStop Color="#FFF1DCC3" Offset="1"/>
-                    </LinearGradientBrush>-->
-                    <SolidColorBrush Color="#FF7C3F0D" />
+                    <DropShadowEffect  Color="LightSteelBlue"/>
                 </Setter.Value>
             </Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border CornerRadius="10" Background="{TemplateBinding Background}">
+                        <Border CornerRadius="10" Background="{TemplateBinding Background}" BorderBrush="Blue" BorderThickness="0.5">
                             <Grid>
                                 <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,0" />
                             </Grid>
@@ -57,7 +49,7 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FFCF9A6F"/>
+                    <Setter Property="Background" Value="#FF955912"/>
                     <Setter Property="Foreground" Value="White"/>
                 </Trigger>
             </Style.Triggers>
