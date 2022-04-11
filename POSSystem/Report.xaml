@@ -99,6 +99,7 @@
                 <Button Content="DailyReport" Grid.Column="1" FontWeight="Bold" FontSize="28" Margin="10" Click="Button_Click_7"/>
                 <Button Content="UserWise SalesReport" FontSize="28" FontWeight="Bold" Grid.Column="1" Grid.Row="1" Margin="10" Click="UserWiseSale_Button_Click"/>
                 <Button Content="TransactionDetails" Grid.Column="1" FontWeight="Bold" FontSize="28" Grid.Row="2" Margin="10" Click="TranDetails_Button_Click"/>
+                <Button Content="Inventory" Grid.Column="1" FontWeight="Bold" FontSize="28" Margin="10" Grid.Row="3" Click="Click_Inventory"/>
             </Grid>
 
         </Grid>

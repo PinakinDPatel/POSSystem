@@ -423,7 +423,7 @@ namespace POSSystem
                 sdaHold.Fill(dthold);
                 if (dthold.Rows.Count == 0)
                 {
-                    
+
 
                     PrintDocument = new PrintDocument();
                     PrintDocument.PrintPage += new PrintPageEventHandler(DayClosePrint);
@@ -627,6 +627,16 @@ namespace POSSystem
         {
             TransactionDetails TD = new TransactionDetails();
             TD.Show();
+        }
+
+        private void Click_Inventory(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                InventoryReport inventory = new InventoryReport();
+                inventory.Show();
+            }
+            catch (Exception ex) { SendErrorToText(ex, errorFileName); }
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
