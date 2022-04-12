@@ -31,9 +31,9 @@ namespace POSSystem
     {
         string conString = App.Current.Properties["ConString"].ToString();
         string username = App.Current.Properties["username"].ToString();
-
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "Category.cs";
+
         public Category()
         {
             try
@@ -46,6 +46,7 @@ namespace POSSystem
                 SendErrorToText(ex, errorFileName);
             }
         }
+
         private void CateGridView()
         {
             try
@@ -110,7 +111,7 @@ namespace POSSystem
         {
             hdnCategory.Content = (sender as Button).Tag;
             ugSubCategory.Children.Clear();
-            var text = (sender as Button).Tag;
+            var text = hdnCategory.Content;
             SqlConnection con = new SqlConnection(conString);
             string queryC = "Select Description,CategoryImage from Category where Category='" + text + "'";
             SqlCommand cmd = new SqlCommand(queryC, con);
@@ -121,7 +122,7 @@ namespace POSSystem
             {
                 for (int i = 0; i < dtC.Rows.Count; ++i)
                 {
-
+                    hdnAddCategory.Content = text;
                     Button button = new Button();
                     Grid G = new Grid();
                     G.RowDefinitions.Add(new RowDefinition());
@@ -158,6 +159,7 @@ namespace POSSystem
                     this.ugSubCategory.Children.Add(button);
                     gCategory.Visibility = Visibility.Hidden;
                     gSubCategory.Visibility = Visibility.Visible;
+                   
                 }
             }
             else
@@ -176,6 +178,12 @@ namespace POSSystem
                     txtSubCate.Text = dtCD.Rows[0].ItemArray[2].ToString();
                     txtSubCateImage.Text = dtCD.Rows[0].ItemArray[3].ToString();
                     hdnAddCategory.Content = dtCD.Rows[0].ItemArray[4].ToString();
+                    btnCateDelete.Visibility = Visibility.Visible;
+                    if (txtItem.Text != "")
+                    {
+                        btnCateDrill.Visibility = Visibility.Hidden;
+                    }
+                    btnDeptSave.Content = "Update";
                 }
                 else
                 {
@@ -189,6 +197,10 @@ namespace POSSystem
                     lblAddCategoryId.Content = dtAddCategory.Rows[0].ItemArray[0].ToString();
                     txtCategory.Text = dtAddCategory.Rows[0].ItemArray[1].ToString();
                     txtCategoryImg.Text = dtAddCategory.Rows[0].ItemArray[2].ToString();
+                    hdnAddCategory.Content = text;
+                    btnCDrill.Visibility = Visibility.Visible;
+                    btnCDelete.Visibility = Visibility.Visible;
+                    btnCSave.Content = "Update";
                 }
 
             }
@@ -198,6 +210,7 @@ namespace POSSystem
         {
             this.Close();
         }
+
         private void btnSave_Click_Category(object sender, RoutedEventArgs e)
         {
             try
@@ -208,64 +221,86 @@ namespace POSSystem
 
                 if ((txtItem.Text != "" || txtSubCate.Text != ""))
                 {
-                    if (txtItem.Text != "")
+                    string AlreadyExist = "select * from (select Category from addcategory union all select Description from Category)as x where Category ='" + txtSubCate.Text + "'";
+                    SqlCommand cmdAlreadyExist = new SqlCommand(AlreadyExist, con);
+                    SqlDataAdapter sdaAlreadyExist = new SqlDataAdapter(cmdAlreadyExist);
+                    DataTable dtAlreadyExist = new DataTable();
+                    sdaAlreadyExist.Fill(dtAlreadyExist);
+                    if (dtAlreadyExist.Rows.Count == 0)
                     {
-                        string queryD = "Select Description from Item where Scancode = '" + txtItem.Text + "'";
-                        SqlCommand cmd = new SqlCommand(queryD, con);
-                        SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                        DataTable dt = new DataTable();
-                        sda.Fill(dt);
+                        if (txtItem.Text != "")
+                        {
+                            string queryD = "Select Description from Item where Scancode = '" + txtItem.Text + "'";
+                            SqlCommand cmd = new SqlCommand(queryD, con);
+                            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                            DataTable dt = new DataTable();
+                            sda.Fill(dt);
 
-                        if (dt.AsEnumerable().Count() != 0)
-                        {
-                            descr = dt.Rows[0]["Description"].ToString();
-                        }
-                        string queryI1 = "";
-                        if (hdnCategory.Content.ToString() != "")
-                        {
-                            queryI1 = "Update Category set Category=@Category,ScanCode=@ScanCode,Description=@Description,CreateOn=@time,CreateBy=@CreateBy,CategoryImage=@CategoryImage where CategoryId='" + hdnCategory.Content + "'";
+                            if (dt.AsEnumerable().Count() != 0)
+                            {
+                                descr = dt.Rows[0]["Description"].ToString();
+                            }
+                            string queryI1 = "";
+                            if (lblCategoryId.Content is null)
+                            {
+                                queryI1 = "Insert into Category(Category,ScanCode,Description,CreateOn,CreateBy,CategoryImage)Values(@Category,@ScanCode,@Description,@time,@CreateBy,@CategoryImage)";
+
+                            }
+                            else
+                            {
+                                queryI1 = "Update Category set Category=@Category,ScanCode=@ScanCode,Description=@Description,CreateOn=@time,CreateBy=@CreateBy,CategoryImage=@CategoryImage where CategoryId='" + lblCategoryId.Content + "'";
+                            }
+                            SqlCommand cmdI1 = new SqlCommand(queryI1, con);
+                            cmdI1.Parameters.AddWithValue("@Category", hdnAddCategory.Content);
+                            cmdI1.Parameters.AddWithValue("@ScanCode", txtItem.Text);
+                            cmdI1.Parameters.AddWithValue("@Description", descr);
+                            cmdI1.Parameters.AddWithValue("@CreateBy", username);
+                            cmdI1.Parameters.AddWithValue("@time", time);
+                            cmdI1.Parameters.AddWithValue("@CategoryImage", txtSubCateImage.Text);
+                            con.Open();
+                            cmdI1.ExecuteNonQuery();
+                            con.Close();
+                            hdnCategory.Content = null;
+                            txtItem.Text = "";
+                            txtSubCate.Text = "";
+                            txtSubCateImage.Text = "";
+                            btnDeptSave.Content = "Save";
+                            btnCateDelete.Visibility = Visibility.Hidden;
+                            btnCateDrill.Visibility = Visibility.Hidden;
                         }
                         else
                         {
-                            queryI1 = "Insert into Category(Category,ScanCode,Description,CreateOn,CreateBy,CategoryImage)Values(@Category,@ScanCode,@Description,@time,@CreateBy,@CategoryImage)";
+                            string queryI = "";
+                            if (lblCategoryId.Content is null)
+                            {
+                                queryI = "Insert into Category(Category,Description,CreateOn,CreateBy,CategoryImage)Values(@Category,@Description,@time,@CreateBy,@CategoryImage)";
+                            }
+                            else
+                            {
+                                queryI = "Update Category set Category=@Category,Description=@Description,CreateOn=@time,CreateBy=@CreateBy,CategoryImage=@CategoryImage where Categoryid='" + lblCategoryId.Content + "'";
+                            }
+                            SqlCommand cmdI = new SqlCommand(queryI, con);
+                            cmdI.Parameters.AddWithValue("@Category", hdnAddCategory.Content);
+                            cmdI.Parameters.AddWithValue("@Description", txtSubCate.Text);
+                            cmdI.Parameters.AddWithValue("@CreateBy", username);
+                            cmdI.Parameters.AddWithValue("@time", time);
+                            cmdI.Parameters.AddWithValue("@CategoryImage", txtSubCateImage.Text);
+                            con.Open();
+                            cmdI.ExecuteNonQuery();
+                            con.Close();
+                            lblCategoryId.Content = null;
+                            txtItem.Text = "";
+                            txtSubCate.Text = "";
+                            txtSubCateImage.Text = "";
+                            btnDeptSave.Content = "Save";
+                            btnCateDelete.Visibility = Visibility.Hidden;
+                            btnCateDrill.Visibility = Visibility.Hidden;
                         }
-                        SqlCommand cmdI1 = new SqlCommand(queryI1, con);
-                        cmdI1.Parameters.AddWithValue("@Category", hdnCategory.Content);
-                        cmdI1.Parameters.AddWithValue("@ScanCode", txtItem.Text);
-                        cmdI1.Parameters.AddWithValue("@Description", descr);
-                        cmdI1.Parameters.AddWithValue("@CreateBy", username);
-                        cmdI1.Parameters.AddWithValue("@time", time);
-                        cmdI1.Parameters.AddWithValue("@CategoryImage", txtSubCateImage.Text);
-                        con.Open();
-                        cmdI1.ExecuteNonQuery();
-                        con.Close();
-                    }
-                    else
-                    {
-                        string queryI = "";
-                        if (lblCategoryId.Content.ToString() != "")
-                        {
-                            queryI = "Update Category set Category=@Category,Description=@Description,CreateOn=@time,CreateBy=@CreateBy,CategoryImage=@CategoryImage where Categoryid='" + lblCategoryId.Content + "'";
-                        }
-                        else
-                        {
-                            queryI = "Insert into Category(Category,Description,CreateOn,CreateBy,CategoryImage)Values(@Category,@Description,@time,@CreateBy,@CategoryImage)";
-                        }
-                        SqlCommand cmdI = new SqlCommand(queryI, con);
-                        cmdI.Parameters.AddWithValue("@Category", hdnAddCategory.Content);
-                        cmdI.Parameters.AddWithValue("@Description", txtSubCate.Text);
-                        cmdI.Parameters.AddWithValue("@CreateBy", username);
-                        cmdI.Parameters.AddWithValue("@time", time);
-                        cmdI.Parameters.AddWithValue("@CategoryImage", txtSubCateImage.Text);
-                        con.Open();
-                        cmdI.ExecuteNonQuery();
-                        con.Close();
-                    }
                     CateGridView();
+                    }
+                    else { MessageBox.Show("'" + txtSubCate.Text + "' is Already Exists in Database"); }
                 }
-                txtItem.Text = "";
-                txtSubCate.Text = "";
-                txtSubCateImage.Text = "";
+                
             }
             catch (Exception ex)
             {
@@ -293,6 +328,94 @@ namespace POSSystem
         private void GoBack_Click(object sender, RoutedEventArgs e)
         {
             CateGridView();
+            hdnAddCategory.Content = "";
+            hdnCategory.Content = "";
+            lblAddCategoryId.Content = null;
+            lblCategoryId.Content = null;
+            txtItem.Text = "";
+            txtSubCate.Text = "";
+            txtSubCateImage.Text = "";
+            btnDeptSave.Content = "Save";
+            btnCDrill.Visibility = Visibility.Hidden;
+            btnCDelete.Visibility = Visibility.Hidden;
+            btnCateDelete.Visibility = Visibility.Hidden;
+            btnCateDrill.Visibility = Visibility.Hidden;
+            btnCSave.Content = "Save";
+            txtCategory.Text = "";
+            txtCategoryImg.Text = "";
+        }
+
+        private void BtnCDrill_Click(object sender, RoutedEventArgs e)
+        {
+            var text = "";
+            if (txtCategory.Text == "")
+            {
+                text = txtSubCate.Text;
+            }
+            else
+            {
+                text = txtCategory.Text;
+            }
+            SqlConnection con = new SqlConnection(conString);
+            string queryC = "Select Description,CategoryImage from Category where Category='" + text + "'";
+            SqlCommand cmd = new SqlCommand(queryC, con);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dtC = new DataTable();
+            sda.Fill(dtC);
+
+            for (int i = 0; i < dtC.Rows.Count; ++i)
+            {
+
+                Button button = new Button();
+                Grid G = new Grid();
+                G.RowDefinitions.Add(new RowDefinition());
+                G.RowDefinitions.Add(new RowDefinition());
+                TextBlock TB = new TextBlock();
+                Image image = new System.Windows.Controls.Image();
+
+                TB.Text = dtC.Rows[i].ItemArray[0].ToString();
+                TB.TextAlignment = TextAlignment.Center;
+                TB.TextWrapping = TextWrapping.Wrap;
+                button.Tag = TB.Text;
+                if (dtC.Rows[i].ItemArray[1].ToString() != "")
+                {
+                    var Path = System.AppDomain.CurrentDomain.BaseDirectory;
+                    var path = dtC.Rows[i].ItemArray[1].ToString();
+                    var fullpath = Path + "\\Image\\" + path;
+                    image.Source = new BitmapImage(new Uri(fullpath));
+                    image.Height = 50;
+                    image.Width = 80;
+                    image.Stretch = Stretch.Fill;
+                }
+                button.Width = 120;
+                button.Height = 80;
+                button.Margin = new Thickness(5);
+                button.Click += new RoutedEventHandler(button_Click);
+                Grid.SetRow(image, 0);
+                G.Children.Add(image);
+                Grid.SetRow(TB, 1);
+                G.Children.Add(TB);
+                G.VerticalAlignment = VerticalAlignment.Bottom;
+                button.Content = G;
+                this.ugSubCategory.VerticalAlignment = VerticalAlignment.Top;
+                this.ugSubCategory.Columns = 9;
+                this.ugSubCategory.Children.Add(button);
+            }
+            gCategory.Visibility = Visibility.Hidden;
+            gSubCategory.Visibility = Visibility.Visible;
+            btnCateDrill.Visibility = Visibility.Hidden;
+            btnCateDelete.Visibility = Visibility.Hidden;
+            lblAddCategoryId.Content = null;
+            lblCategoryId.Content = null;
+            txtCategory.Text = "";
+            txtSubCate.Text = "";
+            txtSubCateImage.Text = "";
+            txtItem.Text = "";
+            txtCategoryImg.Text = "";
+            btnCDrill.Visibility = Visibility.Hidden;
+            btnCDelete.Visibility = Visibility.Hidden;
+            btnCSave.Content = "Save";
+            hdnAddCategory.Content = text;
         }
 
         private void btnAddSave_Click_Category(object sender, RoutedEventArgs e)
@@ -300,24 +423,38 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                string queryI = "";
-                if (lblAddCategoryId.Content.ToString() != "")
+                string AlreadyExist = "select * from (select Category from addcategory union all select Description from Category)as x where Category ='" + txtCategory.Text + "'";
+                SqlCommand cmdAlreadyExist = new SqlCommand(AlreadyExist, con);
+                SqlDataAdapter sdaAlreadyExist = new SqlDataAdapter(cmdAlreadyExist);
+                DataTable dtAlreadyExist = new DataTable();
+                sdaAlreadyExist.Fill(dtAlreadyExist);
+                if (dtAlreadyExist.Rows.Count == 0)
                 {
-                    queryI = "Update AddCategory set Category=@Category,CategoryImage=@CategoryImage where Categoryid='" + lblAddCategoryId.Content + "'";
+                    string queryI = "";
+                    if (lblAddCategoryId.Content is null)
+                    {
+                        queryI = "Insert into AddCategory(Category,CategoryImage)Values(@Category,@CategoryImage)";
+
+                    }
+                    else
+                    {
+                        queryI = "Update AddCategory set Category=@Category,CategoryImage=@CategoryImage where Categoryid='" + lblAddCategoryId.Content + "'";
+                    }
+                    SqlCommand cmdI = new SqlCommand(queryI, con);
+                    cmdI.Parameters.AddWithValue("@Category", txtCategory.Text);
+                    cmdI.Parameters.AddWithValue("@CategoryImage", txtCategoryImg.Text);
+                    con.Open();
+                    cmdI.ExecuteNonQuery();
+                    con.Close();
+                    txtCategory.Text = "";
+                    txtCategoryImg.Text = "";
+                    lblAddCategoryId.Content = null;
+                    CateGridView();
+                    btnCDrill.Visibility = Visibility.Hidden;
+                    btnCDelete.Visibility = Visibility.Hidden;
+                    btnCSave.Content = "Save";
                 }
-                else
-                {
-                    queryI = "Insert into AddCategory(Category,CategoryImage)Values(@Category,@CategoryImage)";
-                }
-                SqlCommand cmdI = new SqlCommand(queryI, con);
-                cmdI.Parameters.AddWithValue("@Category", txtCategory.Text);
-                cmdI.Parameters.AddWithValue("@CategoryImage", txtCategoryImg.Text);
-                con.Open();
-                cmdI.ExecuteNonQuery();
-                con.Close();
-                txtCategory.Text = "";
-                txtCategoryImg.Text = "";
-                CateGridView();
+                else { MessageBox.Show("'" + txtCategory.Text + "' is Already Exists in Database"); }
             }
             catch (Exception ex)
             {
@@ -425,7 +562,7 @@ namespace POSSystem
         }
 
         private void txtSubCateImage_GotFocus(object sender, RoutedEventArgs e)
-        {
+                                                                                                                                                                                {
             try
             {
                 System.Windows.Forms.OpenFileDialog dlg = new System.Windows.Forms.OpenFileDialog();

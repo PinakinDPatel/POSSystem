@@ -68,7 +68,8 @@
                         </TextBox.Effect>
                     </TextBox>
                     <Button Name="btnCSave" Content="Save" Height="28" Foreground="White" Grid.Column="4" Background="#FF955912" Margin="5" FontSize="25" Click="btnAddSave_Click_Category"/>
-                    <Button Name="btnCDelete" Content="Delete" Height="28" Foreground="White" Grid.Column="6" Width="100" Background="#FF955912" Margin="5" FontSize="25" Click="Categorydelete_click"/>
+                    <Button Name="btnCDrill" Content="Sub Category" Height="28" Foreground="White" Grid.Column="5" Width="180" Background="#FF955912" Margin="5" Visibility="Hidden" FontSize="25" Click="BtnCDrill_Click"/>
+                    <Button Name="btnCDelete" Content="Delete" Height="28" Foreground="White" Grid.Column="6" Width="100" Background="#FF955912" Margin="5" Visibility="Hidden" FontSize="25" Click="Categorydelete_click"/>
                 </Grid>
                 <UniformGrid Name="ugCategory" Grid.Row="1"></UniformGrid>
                 <!--<DataGrid Name="dgCategory" Grid.Row="1" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Top" Margin="0,0,11,0" AutoGenerateColumns="False" Background="{x:Null}">
@@ -112,6 +113,7 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Label Name="lblCategoryId" Visibility="Hidden"></Label>
                     <Label Name="hdnCategory" Visibility="Hidden"></Label>
@@ -135,7 +137,8 @@
                         </TextBox.Effect>
                     </TextBox>
                     <Button Name="btnDeptSave" Content="Save" Foreground="White" Grid.Column="4" Grid.Row="2" Background="#FF955912" Margin="5" FontSize="25" Click="btnSave_Click_Category"/>
-                    <Button Name="btnCateDelete" Content="Delete" Foreground="White" Grid.Column="5" Grid.Row="2" Background="#FF955912" Margin="5" FontSize="25" Click="onDeleteCategory"/>
+                    <Button Name="btnCateDrill" Content="Sub Category" Foreground="White" Grid.Column="5" Grid.Row="2" Background="#FF955912" Margin="5" FontSize="25" Click="BtnCDrill_Click" Visibility="Hidden"/>
+                    <Button Name="btnCateDelete" Content="Delete" Foreground="White" Grid.Column="6" Grid.Row="2" Background="#FF955912" Margin="5" FontSize="25" Click="onDeleteCategory" Visibility="Hidden"/>
                 </Grid>
                 <UniformGrid Name="ugSubCategory" Grid.Row="1"></UniformGrid>
                 <!--<DataGrid Name="dgSubCategory" Grid.Row="1" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Top" Margin="0,0,11,0" AutoGenerateColumns="False" Background="{x:Null}">
