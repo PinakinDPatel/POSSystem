@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Syncfusion.UI.Xaml.Grid.Converter;
 
 namespace POSSystem
 {
@@ -25,6 +26,12 @@ namespace POSSystem
         string conString = App.Current.Properties["ConString"].ToString();
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "UserWiseSalesReport.cs";
+
+        private void PDF_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         public UserWiseSaleReport()
         {
             InitializeComponent();
