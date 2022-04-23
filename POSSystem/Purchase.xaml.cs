@@ -107,14 +107,14 @@ namespace POSSystem
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            DataRow newrow = dtr.NewRow();
-            newrow["ScanCode"] = txtScancode.Text;
-            newrow["Quantity"] = txtQty.Text;
-            newrow["Cost"] = txtCost.Text;
-            newrow["Retail"] = txtRAmount.Text;
-            dtr.Rows.Add(newrow);
-            dgRetail.CanUserAddRows = false;
-            dgRetail.ItemsSource = dtr.AsDataView();
+            SqlConnection con = new SqlConnection(conString);
+            string time = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt");
+            string query = "Insert into ItemRetail(ScanCode,Quantity,Cost,Amount,PurchaseId,UserId,EnterOn)values('" + txtScancode.Text + "','"+ txtQty.Text + "','" + txtCost.Text + "','" + txtRAmount.Text + "','" + purchaseId.Content + "','" + username + "','" + time + "')";
+            SqlCommand cmd = new SqlCommand(query, con);
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+            loadItemRetail();
         }
 
         //Purchase Save
@@ -372,7 +372,6 @@ namespace POSSystem
                 SendErrorToText(ex, errorFileName);
             }
         }
-
 
         List<string> strList1 = new List<string>();
         List<string> strList2 = new List<string>();

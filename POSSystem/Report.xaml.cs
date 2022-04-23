@@ -206,19 +206,19 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                string queryTrans = "select Count(tran_id)as Counts,sum(GrossAmount)as Sales,sum(TaxAmount)as Tax,sum(grandAmount)as Total,min(convert(datetime,createon))as SDate,Max(convert(datetime,createon))as EDate from transactions where ShiftClose is null and (void !=1 or void is Null)";
+                string queryTrans = "select Count(tran_id)as Counts,sum(Convert(decimal(10,2),GrossAmount))as Sales,sum(Convert(decimal(10,2),TaxAmount))as Tax,sum(Convert(decimal(10,2),grandAmount))as Total,min(convert(datetime,createon))as SDate,Max(convert(datetime,createon))as EDate from transactions where ShiftClose is null and (void !=1 or void is Null)";
                 SqlCommand cmdTrans = new SqlCommand(queryTrans, con);
                 SqlDataAdapter sdaTrans = new SqlDataAdapter(cmdTrans);
                 DataTable dtTrans = new DataTable();
                 sdaTrans.Fill(dtTrans);
 
-                string queryDept = "select Department,Sum(amt) as amt from(select Department, Sum(Amount) as amt from salesitem inner join Transactions on SalesItem.TransactionId = Transactions.Tran_id inner join item on salesitem.scancode = item.scancode where SalesItem.DayClose is null and(SalesItem.void != 1 or SalesItem.void is Null) and transactions.void is null group by Department Union all select Department,Sum(Amount) as amt from salesitem inner join Transactions on SalesItem.TransactionId = Transactions.Tran_id inner join Department on salesitem.Descripation = Department.Department where SalesItem.DayClose is null and(SalesItem.void != 1 or SalesItem.void is Null) and transactions.void is null group by Department)as x group by Department";
+                string queryDept = "select Department,Sum(Convert(decimal(10,2),amt)) as amt from(select Department, Sum(Convert(decimal(10,2),Amount)) as amt from salesitem inner join item on salesitem.scancode = item.scancode where ShiftClose is null and(void != 1 or void is Null) group by Department Union all select Department,Sum(Convert(decimal(10,2),Amount)) as amt from salesitem inner join Department on salesitem.Descripation = Department.Department where ShiftClose is null and(void != 1 or void is Null) group by Department)as x group by Department";
                 SqlCommand cmdDept = new SqlCommand(queryDept, con);
                 SqlDataAdapter sdaDept = new SqlDataAdapter(cmdDept);
                 DataTable dtDept = new DataTable();
                 sdaDept.Fill(dtDept);
 
-                string queryTender = "select tendercode,sum(amount-coalesce(change,0))as amt from tender where ShiftClose is null group by tendercode";
+                string queryTender = "select tendercode,sum(Convert(decimal(10,2),amount)-coalesce(Convert(decimal(10,2),change),0))as amt from tender where ShiftClose is null group by tendercode";
                 SqlCommand cmdTender = new SqlCommand(queryTender, con);
                 SqlDataAdapter sdaTender = new SqlDataAdapter(cmdTender);
                 DataTable dtTender = new DataTable();
@@ -311,19 +311,19 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                string queryTrans = "select Count(tran_id)as Counts,sum(GrossAmount)as Sales,sum(TaxAmount)as Tax,sum(grandAmount)as Total,min(convert(datetime,createon))as SDate,Max(convert(datetime,createon))as EDate from transactions where Dayclose is null and (void !=1 or void is Null)";
+                string queryTrans = "select Count(tran_id)as Counts,sum(convert(decimal(10,2),GrossAmount))as Sales,sum(convert(decimal(10,2),TaxAmount))as Tax,sum(convert(decimal(10,2),grandAmount))as Total,min(convert(datetime,createon))as SDate,Max(convert(datetime,createon))as EDate from transactions where Dayclose is null and (void !=1 or void is Null)";
                 SqlCommand cmdTrans = new SqlCommand(queryTrans, con);
                 SqlDataAdapter sdaTrans = new SqlDataAdapter(cmdTrans);
                 DataTable dtTrans = new DataTable();
                 sdaTrans.Fill(dtTrans);
 
-                string queryDept = "select Department,Sum(amt) as amt from(select Department, Sum(Amount) as amt from salesitem inner join item on salesitem.scancode = item.scancode where dayclose is null and(void != 1 or void is Null) group by Department Union all select Department,Sum(Amount) as amt from salesitem inner join Department on salesitem.Descripation = Department.Department where dayclose is null and(void != 1 or void is Null) group by Department)as x group by Department";
+                string queryDept = "select Department,Sum(convert(decimal(10,2),amt)) as amt from(select Department, Sum(convert(decimal(10,2),Amount)) as amt from salesitem inner join item on salesitem.scancode = item.scancode where dayclose is null and(void != 1 or void is Null) group by Department Union all select Department,Sum(convert(decimal(10,2),Amount)) as amt from salesitem inner join Department on salesitem.Descripation = Department.Department where dayclose is null and(void != 1 or void is Null) group by Department)as x group by Department";
                 SqlCommand cmdDept = new SqlCommand(queryDept, con);
                 SqlDataAdapter sdaDept = new SqlDataAdapter(cmdDept);
                 DataTable dtDept = new DataTable();
                 sdaDept.Fill(dtDept);
 
-                string queryTender = "select tendercode,sum(amount-coalesce(change,0))as amt from tender where dayclose is null group by tendercode";
+                string queryTender = "select tendercode,sum(convert(decimal(10,2),amount)-convert(decimal(10,2),coalesce(change,0)))as amt from tender where dayclose is null group by tendercode";
                 SqlCommand cmdTender = new SqlCommand(queryTender, con);
                 SqlDataAdapter sdaTender = new SqlDataAdapter(cmdTender);
                 DataTable dtTender = new DataTable();

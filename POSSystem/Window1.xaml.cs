@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Management;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -22,6 +23,19 @@ namespace POSSystem
         public Window1()
         {
             InitializeComponent();
+            uniqueid();
+
+        }
+
+        private void uniqueid()
+        {
+            ManagementObjectSearcher mos = new ManagementObjectSearcher("SELECT * FROM Win32_BaseBoard");
+            ManagementObjectCollection moc = mos.Get();
+            string motherBoard = "";
+            foreach (ManagementObject mo in moc)
+            {
+                motherBoard = (string)mo["SerialNumber"];
+            }
         }
 
         private void Btn2_Click(object sender, RoutedEventArgs e)

@@ -179,6 +179,7 @@ namespace POSSystem
                     txtSubCateImage.Text = dtCD.Rows[0].ItemArray[3].ToString();
                     hdnAddCategory.Content = dtCD.Rows[0].ItemArray[4].ToString();
                     btnCateDelete.Visibility = Visibility.Visible;
+                    btnCateDrill.Visibility = Visibility.Visible;
                     if (txtItem.Text != "")
                     {
                         btnCateDrill.Visibility = Visibility.Hidden;
