@@ -905,7 +905,7 @@ namespace POSSystem
                                                 if (sumCount == Convert.ToInt32(distinct["Qty"]) * i)
                                                 {
                                                     string price = "";
-                                                    if (itemdt["NewPrice"].ToString() != "")
+                                                    if (itemdt["NewPrice"].ToString() != "" && itemdt["NewPrice"].ToString() != "0")
                                                         price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString();
 
                                                     if (price == "")
@@ -1037,7 +1037,7 @@ namespace POSSystem
                                             if (sumCount == Convert.ToInt32(distinct["Qty"]) * i)
                                             {
                                                 string price = "";
-                                                if (itemdt["NewPrice"].ToString() != "")
+                                                if (itemdt["NewPrice"].ToString() != "" && itemdt["NewPrice"].ToString() != "0")
                                                     price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString();
 
                                                 if (price == "")
@@ -2188,7 +2188,7 @@ namespace POSSystem
                                                                     if (dtProName == disProName)
                                                                     {
                                                                         string price = "";
-                                                                        if (itemDT1["NewPrice"].ToString() != "")
+                                                                        if (itemDT1["NewPrice"].ToString() != "" && itemDT1["NewPrice"].ToString() != "0")
                                                                             price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
 
                                                                         if (price == "")
@@ -2364,7 +2364,7 @@ namespace POSSystem
                         {
 
                             int QA = qDT1 * (qDT / qDT1);
-                            if (dt.Rows[i]["NewPrice"].ToString() != "")
+                            if (dt.Rows[i]["NewPrice"].ToString() != "" && dt.Rows[i]["NewPrice"].ToString() != "0")
                             {
                                 dt.Rows[i]["PromotionName"] = dt.Rows[i]["PROName"];
                                 dt.Rows[i]["Quantity"] = QA;
@@ -2440,7 +2440,7 @@ namespace POSSystem
                         {
 
                             int QA = qDT1 * (qDT / qDT1);
-                            if (dt.Rows[i]["NewPrice"].ToString() != "")
+                            if (dt.Rows[i]["NewPrice"].ToString() != "" && dt.Rows[i]["NewPrice"].ToString() != "0")
                             {
                                 dt.Rows[i]["PromotionName"] = dt.Rows[i]["PROName"];
                                 dt.Rows[i]["Quantity"] = QA;
