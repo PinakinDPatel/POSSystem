@@ -155,6 +155,9 @@
     <Compile Include="Expence.xaml.cs">
       <DependentUpon>Expence.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Loyalty.xaml.cs">
+      <DependentUpon>Loyalty.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Promotion.xaml.cs">
       <DependentUpon>Promotion.xaml</DependentUpon>
     </Compile>
@@ -241,6 +244,10 @@
     <Compile Include="ItemView.xaml.cs">
       <DependentUpon>ItemView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Loyalty.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

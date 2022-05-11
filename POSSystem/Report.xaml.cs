@@ -639,6 +639,19 @@ namespace POSSystem
             catch (Exception ex) { SendErrorToText(ex, errorFileName); }
         }
 
+        private void Loyalty_Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Loyalty page = new Loyalty();
+                page.Show();
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
             try
