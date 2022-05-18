@@ -77,6 +77,8 @@ namespace POSSystem
             txtItemCount.Text = dt.Rows[0].ItemArray[2].ToString();
             txtDiscount.Text = dt.Rows[0].ItemArray[3].ToString();
             txtPriceGroup.Text = dt.Rows[0].ItemArray[4].ToString();
+            cbType.Text = dt.Rows[0].ItemArray[8].ToString();
+            btnSave.Content = "Update";
             btnDelete.Visibility = Visibility.Visible;
         }
 
@@ -112,11 +114,11 @@ namespace POSSystem
                             hdnId.Content = "";
                         if (hdnId.Content.ToString() == "")
                         {
-                            query = "Insert into SCLoyalty(Name,Quantity,Discount,ProGroup,EnterOn,EnterBy)values('" + txtDiscountName.Text + "','" + txtItemCount.Text + "','" + txtDiscount.Text + "','" + txtPriceGroup.Text + "','" + nowTime + "','" + user + "')";
+                            query = "Insert into SCLoyalty(Name,Quantity,Discount,ProGroup,DiscType,EnterOn,EnterBy)values('" + txtDiscountName.Text + "','" + txtItemCount.Text + "','" + txtDiscount.Text + "','" + txtPriceGroup.Text + "','" + cbType.Text + "','" + nowTime + "','" + user + "')";
                         }
                         else
                         {
-                            query = "Update SCLoyalty set Name='" + txtDiscountName.Text + "',Quantity='" + txtItemCount.Text + "',Discount='" + txtDiscount.Text + "',ProGroup='" + txtPriceGroup.Text + "',EnterOn='" + nowTime + "',EnterBy='" + user + "' where SDLoyaltyId='" + hdnId.Content + "'";
+                            query = "Update SCLoyalty set Name='" + txtDiscountName.Text + "',Quantity='" + txtItemCount.Text + "',Discount='" + txtDiscount.Text + "',ProGroup='" + txtPriceGroup.Text + "',EnterOn='" + nowTime + "',EnterBy='" + user + "',DiscType='" + cbType.Text + "' where SDLoyaltyId='" + hdnId.Content + "'";
                         }
                         SqlCommand cmd = new SqlCommand(query, con);
                         con.Open();
@@ -126,8 +128,10 @@ namespace POSSystem
                         txtDiscountName.Text = "";
                         txtItemCount.Text = "";
                         txtPriceGroup.Text = "";
+                        cbType.Text = "";
                         hdnId.Content = "";
                         Load();
+                        btnSave.Content = "Save";
                         btnDelete.Visibility = Visibility.Hidden;
                     }
                     else MessageBox.Show("Please Fill Discount");

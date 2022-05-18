@@ -35,7 +35,8 @@
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
                 <Label Visibility="Hidden" Name="hdnId"></Label>
@@ -47,8 +48,13 @@
                 <TextBox Name="txtDiscount" Grid.Row="1" Grid.Column="2" Margin="4" FontSize="16"></TextBox>
             <Label Content="PriceGroup" Grid.Row="0" Grid.Column="3" VerticalAlignment="Bottom"></Label>
                 <ComboBox Name="txtPriceGroup" Grid.Row="1" Grid.Column="3" Margin="4" FontSize="16"></ComboBox>
-                <Button Name="btnSave" Content="Save" Grid.Column="4" Grid.Row="1" Margin="4" Background="Bisque" Click="BtnSave_Click"/>
-                <Button Name="btnDelete" Content="Delete" Grid.Column="5" Grid.Row="1" Margin="4" Background="Bisque" Visibility="Hidden" Click="BtnDelete_Click"/>
+                <Label Content="Type" Grid.Row="0" Grid.Column="4" VerticalAlignment="Bottom"></Label>
+                <ComboBox Name="cbType" Grid.Row="1" Grid.Column="4" SelectedIndex="0" Margin="4" FontSize="16">
+                    <ComboBoxItem >Once</ComboBoxItem>
+                    <ComboBoxItem>Multi</ComboBoxItem>
+                </ComboBox>
+                <Button Name="btnSave" Content="Save" Grid.Column="5" Grid.Row="1" Margin="4" Background="Bisque" Click="BtnSave_Click"/>
+                <Button Name="btnDelete" Content="Delete" Grid.Column="6" Grid.Row="1" Margin="4" Background="Bisque" Visibility="Hidden" Click="BtnDelete_Click"/>
             </Grid>
             <UniformGrid Grid.Row="1" Name="ugLoyalty" Margin="0,12,0,0"></UniformGrid>
         </Grid>
