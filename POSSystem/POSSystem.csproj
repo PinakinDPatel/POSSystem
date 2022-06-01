@@ -152,6 +152,9 @@
     <Compile Include="DayClose.xaml.cs">
       <DependentUpon>DayClose.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Discount.xaml.cs">
+      <DependentUpon>Discount.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Expence.xaml.cs">
       <DependentUpon>Expence.xaml</DependentUpon>
     </Compile>
@@ -216,6 +219,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Department.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Discount.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

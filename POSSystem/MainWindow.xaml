@@ -32,11 +32,22 @@
                 <RowDefinition Height="3*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <DataGrid Name="JRDGrid" AutoGenerateColumns="False"  HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="15"  CanUserAddRows="False" Background="White" SelectedCellsChanged="selectedCellsChanged" CellEditEnding="JRDGrid_CellEditEnding" GridLinesVisibility="None" SelectionChanged="JRDGrid_SelectionChanged" Foreground="DarkBlue">
+            <DataGrid Name="JRDGrid"  HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="15"  CanUserAddRows="False" Background="White" SelectedCellsChanged="selectedCellsChanged" CellEditEnding="JRDGrid_CellEditEnding" GridLinesVisibility="None" SelectionChanged="JRDGrid_SelectionChanged" Foreground="DarkBlue" AutoGenerateColumns="False">
+                
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Scancode}"  Header="ScanCode" Width="100*"  IsReadOnly="True"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding description}" Header="Description" Width="155*"  IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding quantity}" Header="Qty" Width="40*" IsReadOnly="False">
+                    <DataGridTextColumn Binding="{Binding Scancode}"  Header="ScanCode" Width="100*"  IsReadOnly="True">
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn Header="Description" Width="155*"  IsReadOnly="True">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Description}"/>
+                                    <TextBlock FontSize="11" Text="{Binding PromotionName}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Binding="{Binding Quantity}" Header="Qty" Width="40*" IsReadOnly="False">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="HorizontalAlignment" Value="Right"></Setter>
@@ -50,7 +61,7 @@
                             </Style>
                         </DataGridTextColumn.HeaderStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding unitretail}"  Header="Price" Width="60*" IsReadOnly="True">
+                    <DataGridTextColumn Binding="{Binding UnitRetail}"  Header="Price" Width="60*" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="HorizontalAlignment" Value="Right"></Setter>
@@ -91,6 +102,11 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>-->
                 </DataGrid.Columns>
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Height" Value="40"/>
+                    </Style>
+                </DataGrid.RowStyle>
             </DataGrid>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
@@ -166,7 +182,7 @@
                     </StackPanel>
                     <StackPanel Grid.Column="0" Grid.Row="2"  Height="Auto" Name="customerTxtPanel" Visibility="Hidden" VerticalAlignment="Center">
                         <Label Content="Select Customer" HorizontalAlignment="Center"></Label>
-                        <ComboBox SelectionChanged="ComboBox_SelectionChanged" Margin="5,5,5,5" Height="30" Name="cbcustomer" ItemsSource="{Binding Name}"></ComboBox>
+                        <ComboBox SelectionChanged="ComboBox_SelectionChanged" Margin="5,5,5,5" Height="30" Name="cbcustomer" SelectedIndex="0" ItemsSource="{Binding Name}"></ComboBox>
                         <Button Name="btnConform" Content="Conform" Margin="15" Click="btnConform_Click" Visibility="Hidden"/>
                     </StackPanel>
                     <StackPanel Grid.Column="0" Grid.Row="2"  Height="Auto" Name="checkTxtPanel" Visibility="Hidden" VerticalAlignment="Center">
@@ -327,6 +343,15 @@
                 <TextBox Grid.Row="2" GotFocus="textbox_GotFocus" Grid.Column="1" Name="txtBarcode" Margin="5,5,25,5" FontSize="20" Width="200" Height="35" KeyDown="TxtBarcode_KeyDown"></TextBox>
                 <Label Grid.Row="3" Content="Unit Retail" HorizontalContentAlignment="Center" FontSize="25"></Label>
                 <Label Grid.Row="3" Grid.Column="1" Name="lblUnitRetail" HorizontalContentAlignment="Left" FontSize="30"></Label>
+            </Grid>
+            <Grid Grid.Row="2" Name="gCustomer" Visibility="Hidden">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Name="lblLoyaltyId" Visibility="Hidden"></Label>
+                <Label Content="Select Customer For Loyalty" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="24"></Label>
+                <ComboBox Name="cbCustomer1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" SelectedIndex="0" Margin="10" Height="35" Width="250" SelectionChanged="CbCustomer1_SelectionChanged"></ComboBox>
             </Grid>
             <Grid Grid.Row="2" Margin="30,0,30,0">
                 <Grid.RowDefinitions>
@@ -489,6 +514,7 @@
             </Button>
             <Button Grid.Row="1" Content="Void Item" Margin="5" FontWeight="Bold" FontSize="24" Click="Button_Click_VoidItem"  Background="#FF955912" Foreground="White"/>
             <Button Grid.Column="1" Grid.Row="1" Content="Void Trans." Margin="5" FontWeight="Bold" FontSize="24" Click="Click_VoidTransaction"  Background="#FF955912" Foreground="White"/>
+            <Button Grid.Column="2" Grid.Row="0" Content="Customer" Margin="5" FontWeight="Bold" FontSize="24" Click="Button_Click_Customer"  Background="#FF955912" Foreground="White"/>
             <Button Grid.Column="4" Name="btnRefund" Content="Refund" Margin="5" FontWeight="Bold" FontSize="24" Click="Button_Click_Refund"  Background="#FF955912" Foreground="White"/>
             <Button Grid.Column="2" Name="btnPriceCheck" Grid.Row="1" Content="Price Check" Margin="5" FontSize="24" FontWeight="Bold" Click="OnClick_PriceCheck"  Background="#FF955912" Foreground="White"/>
             <Button Grid.Column="6" Content="No Sale" Margin="5" FontWeight="Bold" FontSize="24"  Background="#FF955912" Foreground="White"/>
