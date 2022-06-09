@@ -643,8 +643,21 @@ namespace POSSystem
         {
             try
             {
-                Loyalty page = new Loyalty();
+                Discount page = new Discount();
                 page.Show();
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
+        private void Button_Click_PromotionGroup(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                AddPromotionItem api = new AddPromotionItem();
+                api.Show();
             }
             catch (Exception ex)
             {

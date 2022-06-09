@@ -100,56 +100,65 @@ namespace POSSystem
 
         private void Btnsave_Click(object sender, RoutedEventArgs e)
         {
-            if (hdnID.Content is null)
-                hdnID.Content = "";
-
-            if (hdnID.Content.ToString() == "")
+            SqlConnection con = new SqlConnection(conString);
+            string queryCustomer = "select PromotionId from promotion where DiscountBY='" + cbDiscountBy.Text + "' and PromotionGroup='" + cbItemGroup.Text + "'";
+            SqlCommand cmdcustomer = new SqlCommand(queryCustomer, con);
+            SqlDataAdapter sdacustomer = new SqlDataAdapter(cmdcustomer);
+            DataTable dt = new DataTable();
+            sdacustomer.Fill(dt);
+            if (dt.Rows.Count == 0)
             {
-                string time = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt").Replace("-", "/");
-                SqlConnection con = new SqlConnection(conString);
-                string queryI = "Insert into Promotion(PromotionGroup,PromotionName,Description,Quantity,NewPrice,Discount,StartDate,EndDate,DiscountBy,EnterBy,EnterOn)Values(@PromotionGroup,@promotionname,@description,@quantity,@newprice,@discount,@startdate,@enddate,@discountBy,@enterby,@enteron)";
-                SqlCommand cmdI = new SqlCommand(queryI, con);
-                cmdI.Parameters.AddWithValue("@promotionname", TxtPromotionName.Text);
-                cmdI.Parameters.AddWithValue("@description", TxtDescription.Text);
-                cmdI.Parameters.AddWithValue("@newprice", TxtNewPrice.Text);
-                cmdI.Parameters.AddWithValue("@discount", txtDiscount.Text);
-                cmdI.Parameters.AddWithValue("@quantity", TxtQuantity.Text);
-                cmdI.Parameters.AddWithValue("@startdate", datePickerStart.Text.Replace("-", "/"));
-                cmdI.Parameters.AddWithValue("@enddate", datePickerEnd.Text.Replace("-", "/"));
-                cmdI.Parameters.AddWithValue("@PromotionGroup", cbItemGroup.Text);
-                cmdI.Parameters.AddWithValue("@enterby", username);
-                cmdI.Parameters.AddWithValue("@enteron", time);
-                cmdI.Parameters.AddWithValue("@discountBy", cbDiscountBy.Text);
-                con.Open();
-                cmdI.ExecuteNonQuery();
-                con.Close();
+                if (hdnID.Content is null)
+                    hdnID.Content = "";
+
+                if (hdnID.Content.ToString() == "")
+                {
+                    string time = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt").Replace("-", "/");
+                    string queryI = "Insert into Promotion(PromotionGroup,PromotionName,Description,Quantity,NewPrice,Discount,StartDate,EndDate,DiscountBy,EnterBy,EnterOn)Values(@PromotionGroup,@promotionname,@description,@quantity,@newprice,@discount,@startdate,@enddate,@discountBy,@enterby,@enteron)";
+                    SqlCommand cmdI = new SqlCommand(queryI, con);
+                    cmdI.Parameters.AddWithValue("@promotionname", TxtPromotionName.Text);
+                    cmdI.Parameters.AddWithValue("@description", TxtDescription.Text);
+                    cmdI.Parameters.AddWithValue("@newprice", TxtNewPrice.Text);
+                    cmdI.Parameters.AddWithValue("@discount", txtDiscount.Text);
+                    cmdI.Parameters.AddWithValue("@quantity", TxtQuantity.Text);
+                    cmdI.Parameters.AddWithValue("@startdate", datePickerStart.Text.Replace("-", "/"));
+                    cmdI.Parameters.AddWithValue("@enddate", datePickerEnd.Text.Replace("-", "/"));
+                    cmdI.Parameters.AddWithValue("@PromotionGroup", cbItemGroup.Text);
+                    cmdI.Parameters.AddWithValue("@enterby", username);
+                    cmdI.Parameters.AddWithValue("@enteron", time);
+                    cmdI.Parameters.AddWithValue("@discountBy", cbDiscountBy.Text);
+                    con.Open();
+                    cmdI.ExecuteNonQuery();
+                    con.Close();
+                }
+                else
+                {
+                    string time = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt").Replace("-", "/");
+                    string queryI = "Update Promotion set PromotionGroup=@PromotionGroup, PromotionName=@promotionname,Description=@description,NewPrice=@newprice,Discount=@discount,Quantity=@quantity,StartDate=@startdate,EndDate=@enddate,DiscountBy=@discountBy,EnterBy=@enterby,EnterOn=@enteron where PromotionId =@id";
+                    SqlCommand cmdI = new SqlCommand(queryI, con);
+                    cmdI.Parameters.AddWithValue("@promotionname", TxtPromotionName.Text);
+                    cmdI.Parameters.AddWithValue("@description", TxtDescription.Text);
+                    cmdI.Parameters.AddWithValue("@newprice", TxtNewPrice.Text);
+                    cmdI.Parameters.AddWithValue("@discount", txtDiscount.Text);
+                    cmdI.Parameters.AddWithValue("@quantity", TxtQuantity.Text);
+                    cmdI.Parameters.AddWithValue("@startdate", datePickerStart.Text.Replace("-", "/"));
+                    cmdI.Parameters.AddWithValue("@enddate", datePickerEnd.Text.Replace("-", "/"));
+                    cmdI.Parameters.AddWithValue("@PromotionGroup", cbItemGroup.Text);
+                    cmdI.Parameters.AddWithValue("@enterby", username);
+                    cmdI.Parameters.AddWithValue("@enteron", time);
+                    cmdI.Parameters.AddWithValue("@discountBy", cbDiscountBy.Text);
+                    cmdI.Parameters.AddWithValue("@id", hdnID.Content);
+                    con.Open();
+                    cmdI.ExecuteNonQuery();
+                    con.Close();
+                }
+                Clear();
+                gridForm.Visibility = Visibility.Hidden;
+                grid1View.Visibility = Visibility.Visible;
+                Load();
             }
             else
-            {
-                string time = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt").Replace("-", "/");
-                SqlConnection con = new SqlConnection(conString);
-                string queryI = "Update Promotion set PromotionGroup=@PromotionGroup, PromotionName=@promotionname,Description=@description,NewPrice=@newprice,Discount=@discount,Quantity=@quantity,StartDate=@startdate,EndDate=@enddate,DiscountBy=@discountBy,EnterBy=@enterby,EnterOn=@enteron where PromotionId =@id";
-                SqlCommand cmdI = new SqlCommand(queryI, con);
-                cmdI.Parameters.AddWithValue("@promotionname", TxtPromotionName.Text);
-                cmdI.Parameters.AddWithValue("@description", TxtDescription.Text);
-                cmdI.Parameters.AddWithValue("@newprice", TxtNewPrice.Text);
-                cmdI.Parameters.AddWithValue("@discount", txtDiscount.Text);
-                cmdI.Parameters.AddWithValue("@quantity", TxtQuantity.Text);
-                cmdI.Parameters.AddWithValue("@startdate", datePickerStart.Text.Replace("-", "/"));
-                cmdI.Parameters.AddWithValue("@enddate", datePickerEnd.Text.Replace("-", "/"));
-                cmdI.Parameters.AddWithValue("@PromotionGroup", cbItemGroup.Text);
-                cmdI.Parameters.AddWithValue("@enterby", username);
-                cmdI.Parameters.AddWithValue("@enteron", time);
-                cmdI.Parameters.AddWithValue("@discountBy", cbDiscountBy.Text);
-                cmdI.Parameters.AddWithValue("@id", hdnID.Content);
-                con.Open();
-                cmdI.ExecuteNonQuery();
-                con.Close();
-            }
-            Clear();
-            gridForm.Visibility = Visibility.Hidden;
-            grid1View.Visibility = Visibility.Visible;
-            Load();
+                MessageBox.Show("You Can Not Choose Same ItemGroup and Discount Offer By");
         }
 
         private void BtnDelete_Click(object sender, RoutedEventArgs e)

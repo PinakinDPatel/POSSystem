@@ -49,20 +49,26 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
-                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
                 <Button Content="Department" Grid.Column="1" Margin="10" FontWeight="Bold" FontSize="28" Click="Button_Click_2"/>
-                <Button Content="Account" Grid.Column="1" Grid.Row="1" Margin="10" FontSize="28" FontWeight="Bold" Click="Button_Click_3" />
-                <Button Content="Item" Grid.Column="1" Grid.Row="2" Margin="10" FontSize="28" FontWeight="Bold" Click="Button_Click_4"/>
-                <Button Content="User" Grid.Column="1" Grid.Row="3" Margin="10" FontSize="28" FontWeight="Bold" Click="Button_Click_5"/>
-                <Button Content="Store" Grid.Column="1" Grid.Row="4" Margin="10" FontSize="28" FontWeight="Bold"  Click="Button_Click_6"/>
-                <Button Content="Category" Grid.Column="1" Grid.Row="5" Margin="10" FontSize="28" FontWeight="Bold" Click="Category_Button_Click"/>
-                <Button Content="Loyalty" Grid.Column="1" Grid.Row="6" Margin="10" FontSize="28" FontWeight="Bold" Click="Loyalty_Button_Click"/>
+                <Button Content="Account" Grid.Column="3" Grid.Row="0" Margin="10" FontSize="28" FontWeight="Bold" Click="Button_Click_3" />
+                <Button Content="Item" Grid.Column="1" Grid.Row="1" Margin="10" FontSize="28" FontWeight="Bold" Click="Button_Click_4"/>
+                <Button Content="User" Grid.Column="3" Grid.Row="1" Margin="10" FontSize="28" FontWeight="Bold" Click="Button_Click_5"/>
+                <Button Content="Store" Grid.Column="1" Grid.Row="2" Margin="10" FontSize="28" FontWeight="Bold"  Click="Button_Click_6"/>
+                <Button Content="Category" Grid.Column="3" Grid.Row="2" Margin="10" FontSize="28" FontWeight="Bold" Click="Category_Button_Click"/>
+                <Button Grid.Column="1" Grid.Row="3" Margin="10" FontSize="28" FontWeight="Bold" Click="Loyalty_Button_Click">
+                    <TextBlock Text="Discount" TextWrapping="Wrap" />
+                </Button>
+                <Button Grid.Column="3" Grid.Row="3" Margin="10" FontSize="28" FontWeight="Bold" Click="Button_Click_PromotionGroup">
+                    <TextBlock Text="Promotion Group" TextWrapping="Wrap" />
+                </Button>
             </Grid>
             <Grid Grid.Column="1" Name="Entry" Visibility="Hidden" >
                 <Grid.RowDefinitions>
@@ -81,7 +87,7 @@
                 <Button Content="Receive" Grid.Column="1" Margin="10" FontSize="28" FontWeight="Bold" Click="BtnReceive_Click"/>
                 <Button Content="Purchase" Grid.Column="1" Grid.Row="3" FontSize="28" FontWeight="Bold" Margin="10" Click="BtnPurchase_Click"/>
                 <Button Content="Expence" Grid.Row="1" Grid.Column="1" FontSize="28" FontWeight="Bold" Margin="10" Click="BtnExpense_Click"/>
-                <Button Content="Promotion" Grid.Column="1"  Grid.Row="2" FontSize="28" FontWeight="Bold" Margin="10" Click="BtnPromotion_Click" />
+                <Button Content="Promotion" Grid.Column="1"  Grid.Row="2" FontSize="28" FontWeight="Bold" Margin="10" Visibility="Hidden" Click="BtnPromotion_Click" />
             </Grid>
             <Grid Grid.Column="1" Name="Report_" Visibility="Hidden" >
                 <Grid.RowDefinitions>

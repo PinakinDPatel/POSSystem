@@ -819,6 +819,8 @@ namespace POSSystem
                 dt.Rows.Add(dr);
                 JRDGrid.ItemsSource = dt.DefaultView;
                 JRDGrid.Items.Refresh();
+                JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count-1]);
+                JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
                 TotalEvent();
                 txtDeptAmt.Text = "";
                 ugDepartment.Visibility = Visibility.Visible;
@@ -929,7 +931,7 @@ namespace POSSystem
                                                 where row["Void"].ToString() != "1"
                                                 select row).ToList<DataRow>();
 
-                    int dCount = dt1.AsEnumerable().Count() - 1;
+                    int dCount = dt.AsEnumerable().Count() - 1;
                     if (dCount >= 0)
                     {
                         if (dt.Rows[dCount]["PROName"].ToString() != "")
@@ -1156,6 +1158,8 @@ namespace POSSystem
 
                         JRDGrid.ItemsSource = dt.DefaultView;
                         JRDGrid.Items.Refresh();
+                        JRDGrid.ScrollIntoView(JRDGrid.Items[dCount]);
+                        JRDGrid.SelectedIndex = dCount;
                         TotalEvent();
                     }
                     textBox1.Text = "";
@@ -1563,6 +1567,8 @@ namespace POSSystem
                     //}
                     JRDGrid.ItemsSource = dt.DefaultView;
                     JRDGrid.Items.Refresh();
+                    JRDGrid.ScrollIntoView(JRDGrid.Items[dCount]);
+                    JRDGrid.SelectedIndex = dCount;
                     TotalEvent();
                 }
 
@@ -3397,6 +3403,8 @@ namespace POSSystem
                         dt.Rows[i]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[i]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[i]["Quantity"])).ToString("0.00");
                     }
                     JRDGrid.ItemsSource = dt.DefaultView;
+                    JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count-1]);
+                    JRDGrid.SelectedIndex = JRDGrid.Items.Count-1;
                     TotalEvent();
                 }
             }
@@ -4133,6 +4141,8 @@ namespace POSSystem
                     }
 
                     JRDGrid.ItemsSource = dt.DefaultView;
+                    JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
+                    JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
                     TotalEvent();
                 }
             }
@@ -4214,6 +4224,8 @@ namespace POSSystem
                     lblCount.Content = dt.Rows.Count;
                     JRDGrid.ItemsSource = dt.DefaultView;
                     JRDGrid.Items.Refresh();
+                    JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
+                    JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
                     grandTotal.Visibility = Visibility.Hidden;
                 }
             }
@@ -4481,6 +4493,8 @@ namespace POSSystem
                     sdaHold.Fill(dt);
                     JRDGrid.ItemsSource = dt.DefaultView;
                     JRDGrid.Items.Refresh();
+                    JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
+                    JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
                     TotalEvent();
                     string qholdDelete = "Delete from Hold where TrasactionId=@transid";
                     SqlCommand cmdHoldDelete = new SqlCommand(qholdDelete, con);
@@ -4623,6 +4637,8 @@ namespace POSSystem
                 ScanCodeFunction();
                 JRDGrid.ItemsSource = dt.DefaultView;
                 JRDGrid.Items.Refresh();
+                JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
+                JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
                 TotalEvent();
             }
             catch (Exception ex)
@@ -4908,6 +4924,8 @@ namespace POSSystem
                         }
                     }
                     JRDGrid.ItemsSource = dt.DefaultView;
+                    JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
+                    JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
                     TotalEvent();
                     categorytext = "";
                 }
@@ -5073,6 +5091,8 @@ namespace POSSystem
                     dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
                 }
                 JRDGrid.ItemsSource = dt.DefaultView;
+                JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
+                JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
                 TotalEvent();
             }
             catch (Exception ex)
