@@ -212,6 +212,7 @@ namespace POSSystem
                     {
                         TB.Text = dtdepartment.Rows[i].ItemArray[0].ToString();
                         TB.TextAlignment = TextAlignment.Center;
+                        TB.FontSize = 16;
                         TB.TextWrapping = TextWrapping.Wrap;
 
                         if (dtdepartment.Rows[i].ItemArray[2].ToString() != "")
@@ -322,6 +323,7 @@ namespace POSSystem
                         TB.Text = dtdepartment.Rows[i].ItemArray[0].ToString();
                         TB.TextAlignment = TextAlignment.Center;
                         TB.TextWrapping = TextWrapping.Wrap;
+                        TB.FontSize = 16;
 
                         if (dtdepartment.Rows[i].ItemArray[2].ToString() != "")
                         {
@@ -418,6 +420,7 @@ namespace POSSystem
                         TB.Text = dtAddCategory.Rows[i].ItemArray[0].ToString();
                         TB.TextAlignment = TextAlignment.Center;
                         TB.TextWrapping = TextWrapping.Wrap;
+                        TB.FontSize = 16;
                         if (dtAddCategory.Rows[i].ItemArray[1].ToString() != "")
                         {
                             var Path = System.AppDomain.CurrentDomain.BaseDirectory;
@@ -486,6 +489,7 @@ namespace POSSystem
                         TB.Text = dtAddCategory.Rows[i].ItemArray[0].ToString();
                         TB.TextAlignment = TextAlignment.Center;
                         TB.TextWrapping = TextWrapping.Wrap;
+                        TB.FontSize = 16;
                         if (dtAddCategory.Rows[i].ItemArray[1].ToString() != "")
                         {
                             var Path = System.AppDomain.CurrentDomain.BaseDirectory;
@@ -607,6 +611,7 @@ namespace POSSystem
                             TB.TextAlignment = TextAlignment.Center;
                             TB.TextWrapping = TextWrapping.Wrap;
                             button.Tag = TB.Text;
+                            TB.FontSize = 16;
                             if (dtCategory.Rows[i].ItemArray[1].ToString() != "")
                             {
                                 var Path = System.AppDomain.CurrentDomain.BaseDirectory;
@@ -677,6 +682,7 @@ namespace POSSystem
                                 TB.Text = dtCategory.Rows[i].ItemArray[0].ToString();
                                 TB.TextAlignment = TextAlignment.Center;
                                 TB.TextWrapping = TextWrapping.Wrap;
+                                TB.FontSize = 16;
                                 if (dtCategory.Rows[i].ItemArray[1].ToString() != "")
                                 {
                                     var Path = System.AppDomain.CurrentDomain.BaseDirectory;
@@ -819,7 +825,7 @@ namespace POSSystem
                 dt.Rows.Add(dr);
                 JRDGrid.ItemsSource = dt.DefaultView;
                 JRDGrid.Items.Refresh();
-                JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count-1]);
+                JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
                 JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
                 TotalEvent();
                 txtDeptAmt.Text = "";
@@ -3395,16 +3401,16 @@ namespace POSSystem
                         //decimal decv = Convert.ToDecimal(qDT1) * Convert.ToDecimal(qDT) / Convert.ToDecimal(qDT1);
 
                         //dt = ScanCodeFunction(dt, i);
-
+                        JRDGrid.ItemsSource = dt.DefaultView;
+                        JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
+                        JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
                     }
                     else
                     {
                         dt.Rows[i]["Quantity"] = Convert.ToDecimal(dt.Rows[i]["Quantity"]) + 1;
                         dt.Rows[i]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[i]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[i]["Quantity"])).ToString("0.00");
+                        JRDGrid.ItemsSource = dt.DefaultView;
                     }
-                    JRDGrid.ItemsSource = dt.DefaultView;
-                    JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count-1]);
-                    JRDGrid.SelectedIndex = JRDGrid.Items.Count-1;
                     TotalEvent();
                 }
             }
@@ -4637,8 +4643,11 @@ namespace POSSystem
                 ScanCodeFunction();
                 JRDGrid.ItemsSource = dt.DefaultView;
                 JRDGrid.Items.Refresh();
-                JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
-                JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
+                if (JRDGrid.Items.Count != 0)
+                {
+                    JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
+                    JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
+                }
                 TotalEvent();
             }
             catch (Exception ex)
@@ -4701,7 +4710,7 @@ namespace POSSystem
                         newRow["ODiscount"] = row.ItemArray[19].ToString();
                         dt.Rows.Add(newRow);
                     }
-                    int dCount = dt.Rows.Count-1;
+                    int dCount = dt.Rows.Count - 1;
                     if (dt.Rows[dCount]["PROName"].ToString() != "")
                     {
                         DataTable distrinctPromotion = dt.DefaultView.ToTable(true, "PROName", "Qty", "NewPrice", "Discount");
