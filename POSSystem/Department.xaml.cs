@@ -62,6 +62,9 @@ namespace POSSystem
                     TxtDepartment_Code.BorderBrush = System.Windows.Media.Brushes.Red;
                 if (TxtTaxRate.Text == "")
                     TxtTaxRate.BorderBrush = System.Windows.Media.Brushes.Red;
+                if (drpimg.Text == "-- Select --")
+                    drpimg.Text = "";
+
 
                 if (TxtDepartment.Text != "" && TxtDepartment_Code.Text != "" && TxtTaxRate.Text != "")
                 {
@@ -130,7 +133,7 @@ namespace POSSystem
                         TxtDepartment.Text = "";
                         TxtDepartment_Code.Text = "";
                         TxtTaxRate.Text = "";
-                        drpimg.Text = "";
+                        drpimg.SelectedIndex = 0;
                         lblDeptId.Content = 0;
                         btnDeptSave.Content = "Save";
                         //}

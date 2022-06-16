@@ -2,59 +2,75 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
       xmlns:local="clr-namespace:POSSystem"
-      mc:Ignorable="d" Height="480.985" Width="414.666" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True" Background="Transparent">
+      mc:Ignorable="d" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowState="Maximized" WindowStyle="None" AllowsTransparency="True">
     <!--d:DesignHeight="750" d:DesignWidth="600"-->
-    <Border Margin="10">
-        <Border.Effect>
-            <DropShadowEffect Color="Black"
-                              Direction="270"
-                              BlurRadius="10"
-                              ShadowDepth="3" />
-        </Border.Effect>
-        <Grid Background="#FFB28661">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="11*"/>
+        </Grid.RowDefinitions>
+        <Label Name="hdnid" Visibility="Hidden"/>
+        <Label Content="Create User" FontSize="24" FontWeight="Bold" FontFamily="Arial Black" Margin="10,0,0,0" VerticalAlignment="Center"/>
+        <Button Height="35" Width="35" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Close_Click" >
+            <fa:FontAwesome Icon="PowerOff" Foreground="Red" FontSize="35"/>
+            <!--<Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>-->
+        </Button>
+        <Grid Grid.Row="1" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="70*"/>
-                <RowDefinition Height="1200*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Close_Click" >
-                <Button.Effect>
-                    <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
-                </Button.Effect>
-                <Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>
-            </Button>
-            <Grid Grid.Row="1" Margin="5">
-                <Grid.Background>
-                    <ImageBrush ImageSource="Image/background.jpg"/>
-                </Grid.Background>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Label Content="Create User" Grid.Row="1" FontSize="28" HorizontalAlignment="Center" FontWeight="Bold" FontFamily="Arial Black" VerticalAlignment="Center"/>
-                <Label Content="UserName" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" Margin="60,0,0,0"/>
-                <TextBox Grid.Row="4" Name="txtUser" TextWrapping="Wrap" FontSize="18" Margin="60,0,60,10"/>
-                <Label Content="Password" Grid.Row="5" HorizontalAlignment="Left" Margin="60,0,0,0" VerticalAlignment="Bottom" FontSize="20"/>
-                <TextBox Margin="60,0,60,10" Grid.Row="6" TextWrapping="Wrap" Name="txtPassword" FontSize="18"/>
-
-                <Label Content="Role" Grid.Row="7" HorizontalAlignment="Left" Margin="60,0,0,0" VerticalAlignment="Bottom" FontSize="20"/>
-                <ComboBox Text="Is not open" Grid.Row="8" Margin="60,0,60,10"  Name="txtRole" FontSize="18">
-                    <ComboBoxItem Name="Manager">Manager</ComboBoxItem>
-                    <ComboBoxItem Name="Cashier">Cashier</ComboBoxItem>
-                </ComboBox>
-                <Button Grid.Row="10" Content="Create" FontSize="20" Margin="120,0,120,10" Foreground="#FFFDFDFD" Click="Button_Click"/>
-            </Grid>
+            <Label Content="UserName" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="20"/>
+            <TextBox Grid.Row="1" Name="txtUser" TextWrapping="Wrap" FontSize="18" Margin="5"/>
+            <Label Content="Password" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="20"/>
+            <TextBox Margin="5" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" Name="txtPassword" FontSize="18"/>
+            <Label Content="Role" Grid.Column="2" HorizontalAlignment="Left" Margin="60,0,0,0" VerticalAlignment="Bottom" FontSize="20"/>
+            <ComboBox Text="Is not open" Grid.Row="1" Grid.Column="2" SelectedIndex="0" Margin="5"  Name="txtRole" FontSize="18">
+                <ComboBoxItem>-- Select --</ComboBoxItem>
+                <ComboBoxItem Name="Manager">Manager</ComboBoxItem>
+                <ComboBoxItem Name="Cashier">Cashier</ComboBoxItem>
+            </ComboBox>
+            <Button Name="btnSave" Grid.Row="1" Grid.Column="3" Content="Create" FontSize="20" Margin="5" Foreground="White" Background="BlueViolet" Click="Button_Click"/>
         </Grid>
-    </Border>
+        <DataGrid Name="dgUser"  AutoGenerateColumns="False" FontSize="16" Foreground="DarkBlue" Margin="5" Grid.Row="2" Background="{x:Null}" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="User Name" Width="100*" Binding="{Binding UserName}"/>
+                <DataGridTextColumn Header="Role" Width="100*" Binding="{Binding RoleName}"/>
+                <DataGridTemplateColumn Header="Edit" Width="40*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="onEdit" Background="{x:Null}"  Height="25" Width="25">
+                                <StackPanel Orientation="Horizontal" >
+                                    <fa:FontAwesome Icon="Edit" Foreground="DarkBlue" FontSize="25"/>
+                                    <!--<Image Source="Image/Edit1.png" Width="25" Height="25"/>-->
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Delete" Width="40*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="onDelete" Background="{x:Null}" Height="25" Width="25">
+                                <StackPanel Orientation="Horizontal">
+                                    <fa:FontAwesome Icon="Trash" Foreground="DarkBlue" FontSize="25"/>
+                                    <!--<Image Source="Image/Delete.png" Width="25" Height="25"/>-->
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
 </Window>

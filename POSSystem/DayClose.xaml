@@ -3,24 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
         xmlns:local="clr-namespace:POSSystem"
         mc:Ignorable="d"
         Title="DayClose" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowStyle="None">
-    <Grid Background="#FFB28661">
+    <Grid >
         <Grid.RowDefinitions>
-            <RowDefinition Height="14*"/>
-            <RowDefinition Height="351*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="16*"/>
         </Grid.RowDefinitions>
-        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Button_Click" >
-            <Button.Effect>
-                <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
-            </Button.Effect>
-            <Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>
+        <Button Height="35" Width="35" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Button_Click" >
+            <fa:FontAwesome Icon="PowerOff" Foreground="Red" FontSize="35"/>
+            <!--<Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>-->
         </Button>
         <Grid Grid.Row="1">
-            <Grid.Background>
-                <ImageBrush ImageSource="Image/background.jpg"/>
-            </Grid.Background>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>

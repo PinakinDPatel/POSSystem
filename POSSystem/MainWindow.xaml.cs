@@ -107,6 +107,45 @@ namespace POSSystem
                 dt.Columns.Add("OPromotionName");
                 dt.Columns.Add("LoyaltyId");
                 dt.Columns.Add("Customer");
+
+                dtHold.Columns.Add("Scancode");
+                dtHold.Columns.Add("Description");
+                dtHold.Columns.Add("UnitRetail");
+                dtHold.Columns.Add("TaxRate");
+                dtHold.Columns.Add("Quantity");
+                dtHold.Columns.Add("Amount");
+                dtHold.Columns.Add("Date");
+                dtHold.Columns.Add("Time");
+                dtHold.Columns.Add("TransactionId");
+                dtHold.Columns.Add("CreateBy");
+                dtHold.Columns.Add("CreateOn");
+                dtHold.Columns.Add("PromotionName");
+                dtHold.Columns.Add("Void");
+                dtHold.Columns.Add("Oprice");
+                dtHold.Columns.Add("PROName");
+                dtHold.Columns.Add("Qty");
+                dtHold.Columns.Add("NewPrice");
+                dtHold.Columns.Add("Discount");
+                dtHold.Columns.Add("DiscountBY");
+                dtHold.Columns.Add("SPromotionName");
+                dtHold.Columns.Add("RPROName");
+                dtHold.Columns.Add("RQty");
+                dtHold.Columns.Add("RNewPrice");
+                dtHold.Columns.Add("RDiscount");
+                dtHold.Columns.Add("RPromotionName");
+                dtHold.Columns.Add("LPROName");
+                dtHold.Columns.Add("LQty");
+                dtHold.Columns.Add("LNewPrice");
+                dtHold.Columns.Add("LDiscount");
+                dtHold.Columns.Add("LPromotionName");
+                dtHold.Columns.Add("OPROName");
+                dtHold.Columns.Add("OQty");
+                dtHold.Columns.Add("ONewPrice");
+                dtHold.Columns.Add("ODiscount");
+                dtHold.Columns.Add("OPromotionName");
+                dtHold.Columns.Add("LoyaltyId");
+                dtHold.Columns.Add("Customer");
+
                 textBox1.Focus();
 
                 dtVoidItem.Columns.Add("Scancode");
@@ -857,6 +896,9 @@ namespace POSSystem
                     ugAddcategory1.Visibility = Visibility.Hidden;
                     ugAddcategory2.Visibility = Visibility.Hidden;
                     GoBack.Visibility = Visibility.Hidden;
+                    gCustomer.Visibility = Visibility.Hidden;
+                    uGHold.Visibility = Visibility.Visible;
+                    gPriceCheck.Visibility = Visibility.Hidden;
                     var code = textBox1.Text;
                     var length = code.Length;
                     if (length == 12)
@@ -1173,6 +1215,8 @@ namespace POSSystem
                     {
                         MessageBox.Show("Select Customer for apply loyalty");
                         gCustomer.Visibility = Visibility.Visible;
+                        uGHold.Visibility = Visibility.Hidden;
+                        gPriceCheck.Visibility = Visibility.Hidden;
                     }
 
                 }
@@ -1197,6 +1241,9 @@ namespace POSSystem
                 ugAddcategory1.Visibility = Visibility.Hidden;
                 ugAddcategory2.Visibility = Visibility.Hidden;
                 GoBack.Visibility = Visibility.Hidden;
+                gCustomer.Visibility = Visibility.Hidden;
+                uGHold.Visibility = Visibility.Visible;
+                gPriceCheck.Visibility = Visibility.Hidden;
                 var code = textBox1.Text;
                 if (code != "")
                 {
@@ -1583,6 +1630,7 @@ namespace POSSystem
                 {
                     MessageBox.Show("Select Customer for apply loyalty");
                     gCustomer.Visibility = Visibility.Visible;
+                    uGHold.Visibility = Visibility.Hidden;
                 }
 
             }
@@ -1938,7 +1986,7 @@ namespace POSSystem
         {
             try
             {
-                if (dt.Rows.Count == 0 && dtVoidItem.Rows.Count == 0)
+                if (dt.Rows.Count == 0 && dtVoidItem.Rows.Count == 0 && dtHold.Rows.Count == 0)
                 {
                     App.Current.Properties["username"] = "";
                     lblusername.Content = "";
@@ -1946,6 +1994,8 @@ namespace POSSystem
                     this.Close();
                     login.Show();
                 }
+                else
+                    MessageBox.Show("Please Clear Transaction or Hold Transaction  or  Void Item Transaction ");
             }
             catch (Exception ex)
             {
@@ -2231,6 +2281,7 @@ namespace POSSystem
             {
             }
         }
+
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             try
@@ -2282,10 +2333,10 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                string queryHold = "select distinct TrasactionId from Hold";
-                SqlCommand cmdHold = new SqlCommand(queryHold, con);
-                SqlDataAdapter sdaHold = new SqlDataAdapter(cmdHold);
-                sdaHold.Fill(dtHold);
+                //string queryHold = "select distinct TrasactionId from Hold";
+                //SqlCommand cmdHold = new SqlCommand(queryHold, con);
+                //SqlDataAdapter sdaHold = new SqlDataAdapter(cmdHold);
+                //sdaHold.Fill(dtHold);
 
                 if (dtHold.Rows.Count == 0)
                 {
@@ -2844,6 +2895,8 @@ namespace POSSystem
                 }
                 foreach (DataRow distrinctRow in distrinctLPromotionName.AsEnumerable())
                 {
+                    if (lblLoyaltyId.Content is null)
+                        lblLoyaltyId.Content = "";
                     if (distrinctRow["LPROName"].ToString() != "" && lblLoyaltyId.Content.ToString() != "")
                     {
                         int sumCount = 0;
@@ -3318,6 +3371,10 @@ namespace POSSystem
             {
                 if (dataGridSelectedIndex != "")
                 {
+                    gCustomer.Visibility = Visibility.Hidden;
+                    gPriceCheck.Visibility = Visibility.Hidden;
+                    uGHold.Visibility = Visibility.Visible;
+
                     int i = Convert.ToInt32(dataGridSelectedIndex);
                     //dt.Rows[i]["Quantity"] = Convert.ToDecimal(dt.Rows[i]["Quantity"]) + 1;
                     if (dt.Rows[i]["PROName"].ToString() != "" || dt.Rows[i]["RPROName"].ToString() != "" || dt.Rows[i]["LPROName"].ToString() != "" || dt.Rows[i]["OPROName"].ToString() != "")
@@ -3426,6 +3483,10 @@ namespace POSSystem
             {
                 if (dataGridSelectedIndex != "")
                 {
+                    gCustomer.Visibility = Visibility.Hidden;
+                    gPriceCheck.Visibility = Visibility.Hidden;
+                    uGHold.Visibility = Visibility.Visible;
+
                     int i = Convert.ToInt32(dataGridSelectedIndex);
                     if (Convert.ToDecimal(dt.Rows[i]["Quantity"]) > 1)
                     {
@@ -4147,10 +4208,15 @@ namespace POSSystem
                     }
 
                     JRDGrid.ItemsSource = dt.DefaultView;
-                    JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
-                    JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
+                    if (JRDGrid.Items.Count > 1)
+                    {
+                        JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
+                        JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
+                    }
                     TotalEvent();
                 }
+                dataGridSelectedIndex="";
+
             }
             catch (Exception ex)
             {
@@ -4345,56 +4411,95 @@ namespace POSSystem
                     string tranid = Convert.ToInt32(lblTranid.Content).ToString();
                     string customer = cbCustomer1.Text;
 
-                    foreach (DataRow dataRow in dt.Rows)
+                    foreach (DataRow row in dt.Rows)
                     {
-                        dataRow[6] = onlydate;
-                        dataRow[7] = onlytime;
-                        dataRow[8] = tranid;
-                        dataRow[9] = username;
-                        dataRow[10] = date;
-                        dataRow[36] = customer;
+                        DataRow newRow = dtHold.NewRow();
+                        newRow["ScanCode"] = row.ItemArray[0].ToString();
+                        newRow["Description"] = row.ItemArray[1].ToString();
+                        newRow["UnitRetail"] = row.ItemArray[2].ToString();
+                        newRow["TaxRate"] = row.ItemArray[3].ToString();
+                        newRow["Quantity"] = row.ItemArray[4].ToString();
+                        newRow["Amount"] = row.ItemArray[5].ToString();
+                        newRow["Date"] = onlydate;
+                        newRow["Time"] = onlytime;
+                        newRow["TransactionId"] = tranid;
+                        newRow["CreateBy"] = username;
+                        newRow["CreateOn"] = date;
+                        newRow["PromotionName"] = row.ItemArray[11].ToString();
+                        newRow["Void"] = row.ItemArray[12].ToString();
+                        newRow["Oprice"] = row.ItemArray[13].ToString();
+                        newRow["PROName"] = row.ItemArray[14].ToString();
+                        newRow["Qty"] = row.ItemArray[15].ToString();
+                        newRow["NewPrice"] = row.ItemArray[16].ToString();
+                        newRow["Discount"] = row.ItemArray[17].ToString();
+                        newRow["DiscountBY"] = row.ItemArray[18].ToString();
+                        newRow["SPromotionName"] = row.ItemArray[19].ToString();
+                        newRow["RPROName"] = row.ItemArray[20].ToString();
+                        newRow["RQty"] = row.ItemArray[21].ToString();
+                        newRow["RNewPrice"] = row.ItemArray[22].ToString();
+                        newRow["RDiscount"] = row.ItemArray[23].ToString();
+                        newRow["RPromotionName"] = row.ItemArray[24].ToString();
+                        newRow["LPROName"] = row.ItemArray[25].ToString();
+                        newRow["LQty"] = row.ItemArray[26].ToString();
+                        newRow["LNewPrice"] = row.ItemArray[27].ToString();
+                        newRow["LDiscount"] = row.ItemArray[28].ToString();
+                        newRow["LPromotionName"] = row.ItemArray[29].ToString();
+                        newRow["OPROName"] = row.ItemArray[30].ToString();
+                        newRow["OQty"] = row.ItemArray[31].ToString();
+                        newRow["ONewPrice"] = row.ItemArray[32].ToString();
+                        newRow["ODiscount"] = row.ItemArray[33].ToString();
+                        newRow["OPromotionName"] = row.ItemArray[34].ToString();
+                        newRow["LoyaltyId"] = row.ItemArray[35].ToString();
+                        newRow["Customer"] = customer;
+                        dtHold.Rows.Add(newRow);
+                        //dataRow[6] = onlydate;
+                        //dataRow[7] = onlytime;
+                        //dataRow[8] = tranid;
+                        //dataRow[9] = username;
+                        //dataRow[10] = date;
+                        //dataRow[36] = customer;
                     }
 
-                    SqlBulkCopy objbulk = new SqlBulkCopy(con);
-                    objbulk.DestinationTableName = "Hold";
-                    objbulk.ColumnMappings.Add("Scancode", "ScanCode");
-                    objbulk.ColumnMappings.Add("description", "Descripation");
-                    objbulk.ColumnMappings.Add("quantity", "Quantity");
-                    objbulk.ColumnMappings.Add("unitretail", "Price");
-                    objbulk.ColumnMappings.Add("Amount", "Amount");
-                    objbulk.ColumnMappings.Add("TaxRate", "TaxRate");
-                    objbulk.ColumnMappings.Add("Date", "EndDate");
-                    objbulk.ColumnMappings.Add("Time", "EndTime");
-                    objbulk.ColumnMappings.Add("PromotionName", "PromotionName");
-                    objbulk.ColumnMappings.Add("TransactionId", "TrasactionId");
-                    objbulk.ColumnMappings.Add("Void", "Void");
-                    objbulk.ColumnMappings.Add("Oprice", "OPrice");
-                    objbulk.ColumnMappings.Add("PROName", "ProName");
-                    objbulk.ColumnMappings.Add("Qty", "Qty");
-                    objbulk.ColumnMappings.Add("newprice", "NewPrice");
-                    objbulk.ColumnMappings.Add("Discount", "Discount");
-                    objbulk.ColumnMappings.Add("DiscountBy", "DiscountBy");
-                    objbulk.ColumnMappings.Add("SPromotionName", "SPromotionName");
-                    objbulk.ColumnMappings.Add("RPROName", "RPROName");
-                    objbulk.ColumnMappings.Add("RQty", "RQty");
-                    objbulk.ColumnMappings.Add("RNewPrice", "RNewPrice");
-                    objbulk.ColumnMappings.Add("RDiscount", "RDiscount");
-                    objbulk.ColumnMappings.Add("RPromotionName", "RPromotionName");
-                    objbulk.ColumnMappings.Add("LPROName", "LPROName");
-                    objbulk.ColumnMappings.Add("LQty", "LQty");
-                    objbulk.ColumnMappings.Add("LNewPrice", "LNewPrice");
-                    objbulk.ColumnMappings.Add("LDiscount", "LDiscount");
-                    objbulk.ColumnMappings.Add("LPromotionName", "LPromotionName");
-                    objbulk.ColumnMappings.Add("OPROName", "OPROName");
-                    objbulk.ColumnMappings.Add("OQty", "OQty");
-                    objbulk.ColumnMappings.Add("ONewPrice", "ONewPrice");
-                    objbulk.ColumnMappings.Add("ODiscount", "ODiscount");
-                    objbulk.ColumnMappings.Add("OPromotionName", "OPromotionName");
-                    objbulk.ColumnMappings.Add("LoyaltyId", "LoyaltyId");
-                    objbulk.ColumnMappings.Add("Customer", "Customer");
-                    con.Open();
-                    objbulk.WriteToServer(dt);
-                    con.Close();
+                    //SqlBulkCopy objbulk = new SqlBulkCopy(con);
+                    //objbulk.DestinationTableName = "Hold";
+                    //objbulk.ColumnMappings.Add("Scancode", "ScanCode");
+                    //objbulk.ColumnMappings.Add("description", "Descripation");
+                    //objbulk.ColumnMappings.Add("quantity", "Quantity");
+                    //objbulk.ColumnMappings.Add("unitretail", "Price");
+                    //objbulk.ColumnMappings.Add("Amount", "Amount");
+                    //objbulk.ColumnMappings.Add("TaxRate", "TaxRate");
+                    //objbulk.ColumnMappings.Add("Date", "EndDate");
+                    //objbulk.ColumnMappings.Add("Time", "EndTime");
+                    //objbulk.ColumnMappings.Add("PromotionName", "PromotionName");
+                    //objbulk.ColumnMappings.Add("TransactionId", "TrasactionId");
+                    //objbulk.ColumnMappings.Add("Void", "Void");
+                    //objbulk.ColumnMappings.Add("Oprice", "OPrice");
+                    //objbulk.ColumnMappings.Add("PROName", "ProName");
+                    //objbulk.ColumnMappings.Add("Qty", "Qty");
+                    //objbulk.ColumnMappings.Add("newprice", "NewPrice");
+                    //objbulk.ColumnMappings.Add("Discount", "Discount");
+                    //objbulk.ColumnMappings.Add("DiscountBy", "DiscountBy");
+                    //objbulk.ColumnMappings.Add("SPromotionName", "SPromotionName");
+                    //objbulk.ColumnMappings.Add("RPROName", "RPROName");
+                    //objbulk.ColumnMappings.Add("RQty", "RQty");
+                    //objbulk.ColumnMappings.Add("RNewPrice", "RNewPrice");
+                    //objbulk.ColumnMappings.Add("RDiscount", "RDiscount");
+                    //objbulk.ColumnMappings.Add("RPromotionName", "RPromotionName");
+                    //objbulk.ColumnMappings.Add("LPROName", "LPROName");
+                    //objbulk.ColumnMappings.Add("LQty", "LQty");
+                    //objbulk.ColumnMappings.Add("LNewPrice", "LNewPrice");
+                    //objbulk.ColumnMappings.Add("LDiscount", "LDiscount");
+                    //objbulk.ColumnMappings.Add("LPromotionName", "LPromotionName");
+                    //objbulk.ColumnMappings.Add("OPROName", "OPROName");
+                    //objbulk.ColumnMappings.Add("OQty", "OQty");
+                    //objbulk.ColumnMappings.Add("ONewPrice", "ONewPrice");
+                    //objbulk.ColumnMappings.Add("ODiscount", "ODiscount");
+                    //objbulk.ColumnMappings.Add("OPromotionName", "OPromotionName");
+                    //objbulk.ColumnMappings.Add("LoyaltyId", "LoyaltyId");
+                    //objbulk.ColumnMappings.Add("Customer", "Customer");
+                    //con.Open();
+                    //objbulk.WriteToServer(dt);
+                    //con.Close();
                     TxtCashReturn.Text = "";
                     TxtCashReceive.Text = "";
                     cbcustomer.Text = "";
@@ -4415,11 +4520,11 @@ namespace POSSystem
                     checkTxtPanel.Visibility = Visibility.Hidden;
                     grPayment.Visibility = Visibility.Hidden;
                     //loadtransactionId();
-                    //if (transId == Convert.ToInt32(lblTranid.Content))
-                    //{
-                    //    transId = transId + 1;
-                    //}
-                    //lblTranid.Content = transId;
+                    if (transId == Convert.ToInt32(lblTranid.Content))
+                    {
+                        transId = transId + 1;
+                    }
+                    lblTranid.Content = transId;
                     loadHold();
                 }
             }
@@ -4433,14 +4538,14 @@ namespace POSSystem
                 gCustomer.Visibility = Visibility.Hidden;
                 uGHold.Visibility = Visibility.Visible;
                 uGHold.Children.Clear();
-                dtHold.Reset();
-                SqlConnection con = new SqlConnection(conString);
-                string queryS = "Select distinct trasactionId from Hold";
-                SqlCommand cmd1 = new SqlCommand(queryS, con);
-                SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
-                sda1.Fill(dtHold);
-
-                for (int i = 0; i < dtHold.Rows.Count; ++i)
+                //dtHold.Reset();
+                //SqlConnection con = new SqlConnection(conString);
+                //string queryS = "Select distinct trasactionId from Hold";
+                //SqlCommand cmd1 = new SqlCommand(queryS, con);
+                //SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
+                //sda1.Fill(dtHold);
+                DataTable distrinctTransactionId = dtHold.DefaultView.ToTable(true, "TransactionId");
+                for (int i = 0; i < distrinctTransactionId.Rows.Count; ++i)
                 {
                     Button button = new Button();
                     lblHoldTransaction.Content = "Hold Transaction";
@@ -4449,7 +4554,7 @@ namespace POSSystem
                     button.Content = new TextBlock()
                     {
                         FontSize = 20,
-                        Text = dtHold.Rows[i].ItemArray[0].ToString(),
+                        Text = dtHold.Rows[i].ItemArray[8].ToString(),
                         TextAlignment = TextAlignment.Left,
                         TextWrapping = TextWrapping.Wrap
                     };
@@ -4463,7 +4568,7 @@ namespace POSSystem
                     button.FontWeight = FontWeights.Bold;
                     button.Margin = new Thickness(5);
 
-                    string abc = dtHold.Rows[i].ItemArray[0].ToString();
+                    string abc = dtHold.Rows[i].ItemArray[8].ToString();
                     button.Click += (sender, e) => { button_Click_Hold(sender, e, abc); };
                     this.uGHold.HorizontalAlignment = HorizontalAlignment.Center;
                     this.uGHold.VerticalAlignment = VerticalAlignment.Top;
@@ -4487,27 +4592,82 @@ namespace POSSystem
                     TxtCashReturn.Text = "";
                     grPayment.Visibility = Visibility.Hidden;
                     var btnContent = sender as Button;
-                    var tb = ((TextBlock)btnContent.Content).Text;
+                    string tb = ((TextBlock)btnContent.Content).Text;
                     lblTranid.Content = tb;
+                    var results = from myRow in dtHold.AsEnumerable()
+                                  where myRow.Field<string>("TransactionId") == tb
+                                  select myRow;
 
-                    SqlConnection con = new SqlConnection(conString);
-                    string edate = Convert.ToDateTime(lblDate.Content).ToString("yyyy/MM/dd");
-                    string queryHold = "select Scancode,Descripation as Description,Quantity,Price as UnitRetail,Amount,TaxRate,EndDate as Date,EndTime as Time,PromotionName,TrasactionId as TransactionId,Void,Oprice,PROName,Qty,newprice,Discount,DiscountBy,SPromotionName,RPROName,RQty,RNewPrice,RDiscount,RPromotionName,LPROName,LQty,LNewPrice,LDiscount,LPromotionName,OPROName,OQty,ONewPrice,ODiscount,OPromotionName,LoyaltyId,Customer from Hold where TrasactionId=@transid";
-                    SqlCommand cmdHold = new SqlCommand(queryHold, con);
-                    cmdHold.Parameters.AddWithValue("@transid", tb);
-                    SqlDataAdapter sdaHold = new SqlDataAdapter(cmdHold);
-                    sdaHold.Fill(dt);
+                    foreach (DataRow row in results)
+                    {
+                        DataRow newRow = dt.NewRow();
+                        newRow["ScanCode"] = row.ItemArray[0].ToString();
+                        newRow["Description"] = row.ItemArray[1].ToString();
+                        newRow["UnitRetail"] = row.ItemArray[2].ToString();
+                        newRow["TaxRate"] = row.ItemArray[3].ToString();
+                        newRow["Quantity"] = row.ItemArray[4].ToString();
+                        newRow["Amount"] = row.ItemArray[5].ToString();
+                        newRow["Date"] = row.ItemArray[6].ToString();
+                        newRow["Time"] = row.ItemArray[7].ToString();
+                        newRow["TransactionId"] = row.ItemArray[8].ToString();
+                        newRow["CreateBy"] = row.ItemArray[9].ToString();
+                        newRow["CreateOn"] = row.ItemArray[10].ToString();
+                        newRow["PromotionName"] = row.ItemArray[11].ToString();
+                        newRow["Void"] = row.ItemArray[12].ToString();
+                        newRow["Oprice"] = row.ItemArray[13].ToString();
+                        newRow["PROName"] = row.ItemArray[14].ToString();
+                        newRow["Qty"] = row.ItemArray[15].ToString();
+                        newRow["NewPrice"] = row.ItemArray[16].ToString();
+                        newRow["Discount"] = row.ItemArray[17].ToString();
+                        newRow["DiscountBY"] = row.ItemArray[18].ToString();
+                        newRow["SPromotionName"] = row.ItemArray[19].ToString();
+                        newRow["RPROName"] = row.ItemArray[20].ToString();
+                        newRow["RQty"] = row.ItemArray[21].ToString();
+                        newRow["RNewPrice"] = row.ItemArray[22].ToString();
+                        newRow["RDiscount"] = row.ItemArray[23].ToString();
+                        newRow["RPromotionName"] = row.ItemArray[24].ToString();
+                        newRow["LPROName"] = row.ItemArray[25].ToString();
+                        newRow["LQty"] = row.ItemArray[26].ToString();
+                        newRow["LNewPrice"] = row.ItemArray[27].ToString();
+                        newRow["LDiscount"] = row.ItemArray[28].ToString();
+                        newRow["LPromotionName"] = row.ItemArray[29].ToString();
+                        newRow["OPROName"] = row.ItemArray[30].ToString();
+                        newRow["OQty"] = row.ItemArray[31].ToString();
+                        newRow["ONewPrice"] = row.ItemArray[32].ToString();
+                        newRow["ODiscount"] = row.ItemArray[33].ToString();
+                        newRow["OPromotionName"] = row.ItemArray[34].ToString();
+                        newRow["LoyaltyId"] = row.ItemArray[35].ToString();
+                        newRow["Customer"] = row.ItemArray[36].ToString();
+                        dt.Rows.Add(newRow);
+                        //row.Delete();
+                    }
+                    List<DataRow> rowsToRemove = dtHold.AsEnumerable()
+                                   .Where(r => r.Field<string>("TransactionId") == tb).ToList();
+                    rowsToRemove.ForEach(dtHold.Rows.Remove);
+
+                    //SqlConnection con = new SqlConnection(conString);
+                    //string edate = Convert.ToDateTime(lblDate.Content).ToString("yyyy/MM/dd");
+                    //string queryHold = "select Scancode,Descripation as Description,Quantity,Price as UnitRetail,Amount,TaxRate,EndDate as Date,EndTime as Time,PromotionName,TrasactionId as TransactionId,Void,Oprice,PROName,Qty,newprice,Discount,DiscountBy,SPromotionName,RPROName,RQty,RNewPrice,RDiscount,RPromotionName,LPROName,LQty,LNewPrice,LDiscount,LPromotionName,OPROName,OQty,ONewPrice,ODiscount,OPromotionName,LoyaltyId,Customer from Hold where TrasactionId=@transid";
+                    //SqlCommand cmdHold = new SqlCommand(queryHold, con);
+                    //cmdHold.Parameters.AddWithValue("@transid", tb);
+                    //SqlDataAdapter sdaHold = new SqlDataAdapter(cmdHold);
+                    //sdaHold.Fill(dt);
+
+
+
+
+
                     JRDGrid.ItemsSource = dt.DefaultView;
                     JRDGrid.Items.Refresh();
                     JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
                     JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
                     TotalEvent();
-                    string qholdDelete = "Delete from Hold where TrasactionId=@transid";
-                    SqlCommand cmdHoldDelete = new SqlCommand(qholdDelete, con);
-                    cmdHoldDelete.Parameters.AddWithValue("@transid", tb);
-                    con.Open();
-                    cmdHoldDelete.ExecuteNonQuery();
-                    con.Close();
+                    //string qholdDelete = "Delete from Hold where TrasactionId=@transid";
+                    //SqlCommand cmdHoldDelete = new SqlCommand(qholdDelete, con);
+                    //cmdHoldDelete.Parameters.AddWithValue("@transid", tb);
+                    //con.Open();
+                    //cmdHoldDelete.ExecuteNonQuery();
+                    //con.Close();
                     Button SelectedButton = (Button)sender;
                     uGHold.Children.Remove(SelectedButton);
                     cbCustomer1.Text = dt.Rows[0]["Customer"].ToString();
@@ -4625,30 +4785,33 @@ namespace POSSystem
             {
                 ComboBox cmb = sender as ComboBox;
                 int cc = cmb.SelectedIndex;
-                lblLoyaltyId.Content = dtAccount.Rows[cc]["Mobile"].ToString();
+                if (cc > 0)
+                {
+                    lblLoyaltyId.Content = dtAccount.Rows[cc]["Mobile"].ToString();
 
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    dt.Rows[i]["UnitRetail"] = dt.Rows[i]["UnitRetail"];
-                    dt.Rows[i]["Amount"] = Convert.ToDecimal(dt.Rows[i]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[i]["Quantity"]);
-                    dt.Rows[i]["SPromotionName"] = "";
-                    dt.Rows[i]["RPromotionName"] = "";
-                    dt.Rows[i]["LPromotionName"] = "";
-                    dt.Rows[i]["OPromotionName"] = "";
-                    dt.Rows[i]["LoyaltyId"] = "";
-                    dt.Rows[i]["Customer"] = "";
-                    dt.Rows[i]["UnitRetail"] = dt.Rows[i]["UnitRetail"];
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        dt.Rows[i]["UnitRetail"] = dt.Rows[i]["UnitRetail"];
+                        dt.Rows[i]["Amount"] = Convert.ToDecimal(dt.Rows[i]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[i]["Quantity"]);
+                        dt.Rows[i]["SPromotionName"] = "";
+                        dt.Rows[i]["RPromotionName"] = "";
+                        dt.Rows[i]["LPromotionName"] = "";
+                        dt.Rows[i]["OPromotionName"] = "";
+                        dt.Rows[i]["LoyaltyId"] = "";
+                        dt.Rows[i]["Customer"] = "";
+                        dt.Rows[i]["UnitRetail"] = dt.Rows[i]["UnitRetail"];
+                    }
+                    //dt = ScanCodeFunction(dt, cc);
+                    ScanCodeFunction();
+                    JRDGrid.ItemsSource = dt.DefaultView;
+                    JRDGrid.Items.Refresh();
+                    if (JRDGrid.Items.Count != 0)
+                    {
+                        JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
+                        JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
+                    }
+                    TotalEvent();
                 }
-                //dt = ScanCodeFunction(dt, cc);
-                ScanCodeFunction();
-                JRDGrid.ItemsSource = dt.DefaultView;
-                JRDGrid.Items.Refresh();
-                if (JRDGrid.Items.Count != 0)
-                {
-                    JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
-                    JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
-                }
-                TotalEvent();
             }
             catch (Exception ex)
             {
@@ -4660,6 +4823,10 @@ namespace POSSystem
         {
             try
             {
+                gCustomer.Visibility = Visibility.Hidden;
+                uGHold.Visibility = Visibility.Visible;
+                gPriceCheck.Visibility = Visibility.Hidden;
+
                 var btnContent = (sender as Button);
                 string tb = Convert.ToString(btnContent.Tag);
                 //SqlConnection con = new SqlConnection(conString);

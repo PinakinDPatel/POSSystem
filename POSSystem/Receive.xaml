@@ -3,24 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
         xmlns:local="clr-namespace:POSSystem"
         mc:Ignorable="d"
         Title="Receive" WindowState="Maximized" ShowInTaskbar="False" WindowStyle="None">
-    <Grid Background="#FFB28661">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="14*"/>
-            <RowDefinition Height="351*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="16*"/>
         </Grid.RowDefinitions>
-        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Click="Close_Click" >
-            <Button.Effect>
-                <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
-            </Button.Effect>
-            <Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>
+        <Button Height="35" Width="35" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" Click="Close_Click" >
+            <fa:FontAwesome Icon="PowerOff" Foreground="Red" FontSize="35"/>
+            <!--<Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>-->
         </Button>
         <Grid Grid.Row="1">
-            <Grid.Background>
-                <ImageBrush ImageSource="Image/background.jpg"/>
-            </Grid.Background>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="9*"/>
@@ -28,8 +24,8 @@
             <Label Content="Receive" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36"></Label>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="325"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1.5*"/>
                 </Grid.ColumnDefinitions>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -54,18 +50,18 @@
                     <Label Content="Type :" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     <Label Content="Amount :" Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     <Label Content="Comment :" Grid.Row="5" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                    <DatePicker Name="txtDate" Grid.Row="1" Grid.Column="1" FontSize="20" HorizontalAlignment="Left" Width="180" Height="35" Margin="5,5,5,5"/>
-                    <ComboBox Name="cbReceive" ItemsSource="{Binding Name}"  Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Height="35" Width="180" Margin="5,5,5,5" Background="White"/>
-                    <ComboBox Name="cbType" ItemsSource="{Binding Name}"  Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Height="35" Width="180" Margin="5,5,5,5" Background="White">
+                    <DatePicker Name="txtDate" Foreground="DarkBlue" Grid.Row="1" Grid.Column="1" FontSize="20" HorizontalAlignment="Left" Width="180" Height="35" Margin="5,5,5,5"/>
+                    <ComboBox Name="cbReceive" Foreground="DarkBlue" ItemsSource="{Binding Name}"  Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Height="35" Width="180" Margin="5,5,5,5" Background="White"/>
+                    <ComboBox Name="cbType" Foreground="DarkBlue" ItemsSource="{Binding Name}"  Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Height="35" Width="180" Margin="5,5,5,5" Background="White">
                         <ComboBoxItem Name="Recieve">Recieve</ComboBoxItem>
                         <ComboBoxItem Name="Income">Income</ComboBoxItem>
                     </ComboBox>
                     <TextBox Name="txtAmount" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Width="180" Height="35" Margin="5,5,5,5"/>
                     <TextBox Name="txtcomment" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" Width="180" Height="35" Margin="5,5,5,5"/>
-                    <Button Name="btnSave" Content="Save" HorizontalAlignment="Center" Grid.Row="6" Width="180" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="5,5,5,5" Click="Button_Click"/>
+                    <Button Name="btnSave" Content="Save" Foreground="White" Background="BlueViolet" HorizontalAlignment="Center" Grid.Row="6" Width="180" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="5" Click="Button_Click"/>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <DataGrid Name="dgReceive" Background="{x:Null}" AutoGenerateColumns="False" Margin="5,5,5,5" >
+                    <DataGrid Name="dgReceive" Background="{x:Null}" AutoGenerateColumns="False" Foreground="DarkBlue" Margin="5" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Receive}" Header="Receive" Width="100*"/>
                             <DataGridTextColumn Binding="{Binding Amount}" Header="Amount" Width="50*"/>
@@ -73,9 +69,10 @@
                             <DataGridTemplateColumn Header="Edit" Width="40*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Click="onEdit" Background="White" Width="22" Height="25">
+                                        <Button Click="onEdit" Background="White" Width="25" Height="25">
                                             <StackPanel Orientation="Horizontal">
-                                                <Image Source="Image/Edit1.png"/>
+                                                <fa:FontAwesome Icon="Trash" Foreground="DarkBlue" FontSize="25"/>
+                                                <!--<Image Source="Image/Edit1.png"/>-->
                                             </StackPanel>
                                         </Button>
                                     </DataTemplate>
@@ -84,8 +81,9 @@
                             <DataGridTemplateColumn Header="Delete" Width="40*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Click="onDelete" Background="White" Width="20" Height="25">
+                                        <Button Click="onDelete" Background="White" Width="25" Height="25">
                                             <StackPanel Orientation="Horizontal">
+                                                <fa:FontAwesome Icon="Trash" Foreground="DarkBlue" FontSize="25"/>
                                                 <Image Source="Image/Delete.png" Width="22"/>
                                             </StackPanel>
                                         </Button>

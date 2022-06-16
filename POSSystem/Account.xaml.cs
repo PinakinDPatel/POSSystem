@@ -75,6 +75,8 @@ namespace POSSystem
                     txtMobile.BorderBrush = System.Windows.Media.Brushes.Red;
                 if (txtEmail.Text == "")
                     txtEmail.BorderBrush = System.Windows.Media.Brushes.Red;
+                if (drphead.Text == "-- Select --")
+                    drphead.Text = "";
 
                 if (txtaccount.Text != "" && drphead.Text != "" && txtAddress.Text != "" && txtMobile.Text != "" && txtEmail.Text != "")
                 {
@@ -116,7 +118,7 @@ namespace POSSystem
                             txtAddress.Text = "";
                             txtEmail.Text = "";
                             txtMobile.Text = "";
-                            drphead.Text = "";
+                            drphead.SelectedIndex = 0;
                             lblAccountId.Content = 0;
                         }
                     }
@@ -146,7 +148,7 @@ namespace POSSystem
                             txtAddress.Text = "";
                             txtEmail.Text = "";
                             txtMobile.Text = "";
-                            drphead.Text = "";
+                            drphead.SelectedIndex = 0;
                             lblAccountId.Content = 0;
                             btnSave.Content = "Save";
                         }

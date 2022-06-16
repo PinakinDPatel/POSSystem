@@ -3,24 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
         xmlns:local="clr-namespace:POSSystem"
         mc:Ignorable="d"
-        Title="SalesReport" ResizeMode="NoResize"  WindowStartupLocation="CenterScreen" WindowState="Maximized" d:DesignWidth="1374" d:DesignHeight="738" WindowStyle="None">
-    <Grid Background="#FFB28661">
+        Title="SalesReport" ResizeMode="NoResize"  WindowStartupLocation="CenterScreen" WindowState="Maximized" WindowStyle="None">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20*"/>
-            <RowDefinition Height="351*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="16*"/>
         </Grid.RowDefinitions>
-        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,15,0" Click="Close_Click" >
-            <Button.Effect>
-                <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
-            </Button.Effect>
-            <Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>
+        <Button Height="35" Width="35" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,15,0" Click="Close_Click" >
+            <fa:FontAwesome Icon="PowerOff" Foreground="Red" FontSize="35"/>
+            <!--<Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>-->
         </Button>
         <Grid Grid.Row="1">
-            <Grid.Background>
-                <ImageBrush ImageSource="Image/background.jpg"/>
-            </Grid.Background>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -33,30 +29,23 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <Label Content="Sales Report" HorizontalAlignment="Center" Grid.ColumnSpan="2" VerticalAlignment="Center" FontSize="28"/>
-            <Grid Grid.ColumnSpan="2" Grid.Row="1" Margin="0,10,0,10" >
+            <Grid Grid.ColumnSpan="2" Grid.Row="1" Margin="0" >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="254*" />
-                    <ColumnDefinition Width="115*" />
-                    <ColumnDefinition Width="215*" />
-                    <ColumnDefinition Width="102*" />
-                    <ColumnDefinition Width="211*" />
-                    <ColumnDefinition Width="233*" />
-                    <ColumnDefinition Width="244*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="2*" />
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-
-                </Grid.RowDefinitions>
-
                 <Label Content="From :" VerticalAlignment="Center" HorizontalAlignment="Right" Height="33"  Width="65" Grid.Column="1"/>
-                <DatePicker Name="fromDate" Grid.Column="2" FontSize="20" Margin="5,5,5,0"/>
-
+                <DatePicker Name="fromDate" Grid.Column="2" Foreground="DarkBlue" FontSize="20" Margin="5"/>
                 <Label Grid.Column="3" Content="To :" VerticalAlignment="Center" HorizontalAlignment="Right" Height="33" Width="41"/>
-                <DatePicker Name="toDate" Grid.Column="4" Margin="5,5,5,0" FontSize="20" />
-                <Button Content="Show" Grid.Column="5" Margin="5,5,5,0" FontSize="20" Click="btn_click_daterange"/>
+                <DatePicker Name="toDate" Grid.Column="4" Margin="5" Foreground="DarkBlue" FontSize="20" />
+                <Button Content="Show" Grid.Column="5" Margin="5" Foreground="White" Background="BlueViolet" FontSize="20" Click="btn_click_daterange"/>
             </Grid>
-
-
-            <DataGrid Name="deprtDG" Grid.Row="2" AutoGenerateColumns="False" Background="Transparent" RowBackground="Transparent" FontSize="20" Margin="10,10,10,10" GridLinesVisibility="None" RowHeaderWidth="0">
+            <DataGrid Name="deprtDG" Grid.Row="2" AutoGenerateColumns="False" Background="Transparent" Foreground="DarkBlue" FontSize="20" Margin="5" GridLinesVisibility="None">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Description}"  Header="Department" Width="60*"  IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
@@ -71,7 +60,7 @@
                                 <Setter Property="Background" Value="Transparent"/>
                                 <Setter Property="Margin" Value="10,0,0,0"/>
                                 <Setter Property="FontWeight" Value="ExtraBold"/>
-                                <Setter Property="Foreground" Value="#FF7C3F0D"/>
+                                <Setter Property="Foreground" Value="DarkBlue"/>
                                 <Setter Property="FontSize" Value="24"/>
                             </Style>
                         </DataGridTextColumn.HeaderStyle>
@@ -89,7 +78,7 @@
                                 <Setter Property="Background" Value="Transparent"/>
                                 <Setter Property="Margin" Value="0,0,10,0"/>
                                 <Setter Property="FontWeight" Value="ExtraBold"/>
-                                <Setter Property="Foreground" Value="#FF7C3F0D"/>
+                                <Setter Property="Foreground" Value="DarkBlue"/>
                                 <Setter Property="FontSize" Value="24"/>
                             </Style>
                         </DataGridTextColumn.HeaderStyle>
@@ -109,11 +98,11 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                 </Grid.RowDefinitions>
-                <Label Content="Total :"  HorizontalAlignment="Left" Margin="20,0,0,0" FontSize="28" Foreground="#FF7C3F0D"/>
-                <Label Name="inAmtTotal"  Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,20,0" FontSize="28" Foreground="#FF7C3F0D"/>
+                <Label Content="Total :"  HorizontalAlignment="Left" Margin="20,0,0,0" FontSize="28"/>
+                <Label Name="inAmtTotal"  Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,20,0" FontSize="28"/>
             </Grid>
 
-            <DataGrid Name="cashDG" Grid.Row="2" Grid.Column="1" FontSize="20" Background="Transparent" RowBackground="Transparent" RowHeaderWidth="0" AutoGenerateColumns="False" GridLinesVisibility="None"  Margin="10,10,10,10">
+            <DataGrid Name="cashDG" Foreground="DarkBlue" Grid.Row="2" Grid.Column="1" FontSize="20" Background="Transparent" RowBackground="Transparent" RowHeaderWidth="0" AutoGenerateColumns="False" GridLinesVisibility="None"  Margin="10,10,10,10">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Description}"  Header="TenderCode" Width="60*"  IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
@@ -128,7 +117,7 @@
                                 <Setter Property="Background" Value="Transparent"/>
                                 <Setter Property="Margin" Value="10,0,0,0"/>
                                 <Setter Property="FontWeight" Value="ExtraBold"/>
-                                <Setter Property="Foreground" Value="#FF7C3F0D"/>
+                                <Setter Property="Foreground" Value="DarkBlue"/>
                                 <Setter Property="FontSize" Value="24"/>
                             </Style>
                         </DataGridTextColumn.HeaderStyle>
@@ -146,7 +135,7 @@
                                 <Setter Property="Background" Value="Transparent"/>
                                 <Setter Property="Margin" Value="0,0,10,0"/>
                                 <Setter Property="FontWeight" Value="ExtraBold"/>
-                                <Setter Property="Foreground" Value="#FF7C3F0D"/>
+                                <Setter Property="Foreground" Value="DarkBlue"/>
                                 <Setter Property="FontSize" Value="24"/>
                             </Style>
                         </DataGridTextColumn.HeaderStyle>
@@ -158,7 +147,6 @@
                     </Style>
                 </DataGrid.Resources>
             </DataGrid>
-
             <Grid Grid.Row="3" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -166,10 +154,10 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                 </Grid.RowDefinitions>
-                <Label Content="Total :" Grid.Column="0" HorizontalAlignment="Left" Margin="20,0,0,0" FontSize="28" Foreground="#FF7C3F0D"/>
-                <Label Name="outAmtTotal" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,20,0" FontSize="28" Foreground="#FF7C3F0D"/>
+                <Label Content="Total :" Grid.Column="0" HorizontalAlignment="Left" Margin="20,0,0,0" FontSize="28"/>
+                <Label Name="outAmtTotal" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,20,0" FontSize="28"/>
             </Grid>
-            <Grid Grid.Row="4" Grid.ColumnSpan="2" Background="#FF7C3F0D">
+            <Grid Grid.Row="4" Grid.ColumnSpan="2" Background="BlueViolet">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>

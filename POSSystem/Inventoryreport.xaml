@@ -3,27 +3,23 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
         xmlns:local="clr-namespace:POSSystem"
         mc:Ignorable="d"
-        Title="Window3" Height="450" Width="800"  WindowStyle="None" WindowState="Maximized">
-    <Grid Background="#FFB28661">
+        Title="Window3" WindowStyle="None" WindowState="Maximized">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20*"/>
-            <RowDefinition Height="351*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="16*"/>
         </Grid.RowDefinitions>
-        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,15,0" Click="onclick_Close">
-            <Button.Effect>
-                <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
-            </Button.Effect>
-            <Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>
+        <Button Height="35" Width="35" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" Click="onclick_Close">
+            <fa:FontAwesome Icon="PowerOff" Foreground="Red" FontSize="35"/>
+            <!--<Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>-->
         </Button>
         <Grid Grid.Row="1">
-            <Grid.Background>
-                <ImageBrush ImageSource="Image/background.jpg"/>
-            </Grid.Background>
             <Grid.RowDefinitions>
-                <RowDefinition Height="1.3*"/>
-                <RowDefinition Height="9*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="10*"/>
             </Grid.RowDefinitions>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -35,12 +31,12 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Label Content="Date :" HorizontalContentAlignment="Right" VerticalAlignment="Center"></Label>
-                <DatePicker Name="txtStartDate" Grid.Column="1" Height="30" FontSize="16" Width="120"/>
+                <DatePicker Name="txtStartDate" Grid.Column="1" Foreground="DarkBlue" Height="30" FontSize="16" Margin="5"/>
                 <!--<Label Content=" To :" HorizontalContentAlignment="Center" VerticalAlignment="Center" Grid.Column="2"></Label>
                 <DatePicker Name="txtEndDate" Grid.Column="3" Height="30" Width="120"/>-->
-                <Button Name="btnSerch" Content="Search" Grid.Column="2" Height="30" Width="120" Click="BtnSerch_Click"></Button>
+                <Button Name="btnSerch" Content="Search" Grid.Column="2" Foreground="White" Background="BlueViolet" Height="30" Margin="5" Click="BtnSerch_Click"></Button>
             </Grid>
-            <DataGrid Name="dgInventory" Grid.Row="1" AutoGenerateColumns="False">
+            <DataGrid Name="dgInventory" Foreground="DarkBlue" Grid.Row="1" AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding ScanCode}" Header="ScanCode" Width="100*"/>
                     <DataGridTextColumn Binding="{Binding Descripation}" Header="Description" Width="100*"/>

@@ -30,13 +30,15 @@ namespace POSSystem
 
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "CreateUser.cs";
-
+        DataTable dtUser = new DataTable();
         public CreateUser()
         {
             try
-            {if (StoreId != "" || StoreId != null)
+            {
+                if (StoreId != "" || StoreId != null)
                 {
                     InitializeComponent();
+                    Loaduser();
                 }
             }
             catch (Exception ex)
@@ -44,6 +46,63 @@ namespace POSSystem
                 SendErrorToText(ex, errorFileName);
             }
         }
+
+        private void Loaduser()
+        {
+            SqlConnection con = new SqlConnection(conString);
+            dtUser.Clear();
+            string queryS = "Select * from UserRegi";
+            SqlCommand cmd = new SqlCommand(queryS, con);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            sda.Fill(dtUser);
+            dgUser.CanUserAddRows = false;
+            dgUser.ItemsSource = dtUser.AsDataView();
+        }
+
+        private void onEdit(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                DataRowView row = (DataRowView)dgUser.SelectedItem;
+                hdnid.Content = row["UserRegiId"].ToString();
+                txtUser.Text = row["UserName"].ToString();
+                txtUser.Text = row["PassWord"].ToString();
+                txtRole.Text = row["RoleName"].ToString();
+                btnSave.Content = "Update";
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+
+        }
+        private void onDelete(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                DataRowView row = (DataRowView)dgUser.SelectedItem;
+                row.Delete();
+
+                int rowsAffected;
+                using (SqlConnection conn = new SqlConnection(conString))
+                {
+                    SqlCommand cmd = new SqlCommand("DELETE from UserRegi WHERE UserRegiId = " + row["UserRegiId"], conn);
+                    cmd.Connection.Open();
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+                if (rowsAffected > 0)
+                    dtUser.AcceptChanges();
+                else
+                    dtUser.RejectChanges();
+                hdnid.Content = 0;
+                Loaduser();
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName);
+            }
+        }
+
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -52,27 +111,32 @@ namespace POSSystem
         {
             try
             {
-                string userConString = "Server=184.168.194.64; Database=POS_User; User ID = POS_User; Password=09#Prem#24; Trusted_Connection=false;MultipleActiveResultSets=true";
-                SqlConnection con = new SqlConnection(userConString);
-                string queryS = "Select Name,PassWord from UserRegi where Name=@userName or Password=@password";
+                SqlConnection con = new SqlConnection(conString);
+                string queryS = "Select UserName,PassWord from UserRegi where UserName=@userName or Password=@password";
                 SqlCommand cmd = new SqlCommand(queryS, con);
                 cmd.Parameters.AddWithValue("@userName", txtUser.Text);
                 cmd.Parameters.AddWithValue("@password", txtPassword.Text);
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 sda.Fill(dt);
-                con.Open();
-                int i = cmd.ExecuteNonQuery();
-                con.Close();
+
                 if (dt.Rows.Count > 0)
                 {
                     MessageBox.Show("UserName Or Password Already Exist!");
                 }
                 else
                 {
-                    
+
                     string time = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt");
-                    string queryI = "Insert into UserRegi(Name,Password,CreateOn,StoreId,RoleName)Values(@userName,@password,@time,@storeId,@roleName)";
+                    if (hdnid.Content is null)
+                        hdnid.Content = "";
+                    string queryI = "";
+
+                    if (hdnid.Content.ToString() == "")
+                        queryI = "Insert into UserRegi(UserName,Password,CreateOn,StoreId,RoleName)Values(@userName,@password,@time,@storeId,@roleName)";
+                    else
+                        queryI = "Update UserRegi set UserName=@userName,Password=@password,CreateOn=@time,StoreId=@storeId,RoleName=@roleName where UserRegiId='" + hdnid.Content + "'";
+
                     SqlCommand cmdI = new SqlCommand(queryI, con);
                     cmdI.Parameters.AddWithValue("@userName", txtUser.Text);
                     cmdI.Parameters.AddWithValue("@password", txtPassword.Text);
@@ -84,6 +148,7 @@ namespace POSSystem
                     con.Close();
                     txtPassword.Text = "";
                     txtUser.Text = "";
+                    Loaduser();
                 }
             }
             catch (Exception ex)

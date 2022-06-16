@@ -2,27 +2,26 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
       xmlns:local="clr-namespace:POSSystem"
       mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Maximized" WindowStyle="None">
-    <Grid Background="#FFB28661">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="14*"/>
-            <RowDefinition Height="351*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="18*"/>
         </Grid.RowDefinitions>
-        <Button Height="25" Width="25" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,15,0" Click="Close_Click" >
-            <Button.Effect>
-                <DropShadowEffect BlurRadius="0" ShadowDepth="0"/>
-            </Button.Effect>
-            <Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>
+        <Button Height="35" Width="35" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,15,0" Click="Close_Click" >
+            <fa:FontAwesome Icon="PowerOff" Foreground="Red" FontSize="35"/>
+            <!--<Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>-->
         </Button>
         <Grid Grid.Row="1">
-            <Grid.Background>
+            <!--<Grid.Background>
                 <ImageBrush ImageSource="Image/background.jpg"/>
-            </Grid.Background>
+            </Grid.Background>-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="15*"></RowDefinition>
-                <RowDefinition Height="20*"></RowDefinition>
+                <RowDefinition Height="25*"></RowDefinition>
                 <RowDefinition Height="65*"></RowDefinition>
             </Grid.RowDefinitions>
             <Label Content="Department" FontSize="42" Grid.ColumnSpan="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
@@ -48,7 +47,7 @@
                     </TextBox.Effect>
                 </TextBox>
                 <Label Name="lblDeptId" Visibility="Hidden"></Label>
-                <Button Name="btnDeptSave" Content="Save" Foreground="White" Grid.Column="4" Grid.Row="1" Margin="5" FontSize="25" Click="Button_Click"/>
+                <Button Name="btnDeptSave" Content="Save" Background="BlueViolet" Foreground="White" Grid.Column="4" Grid.Row="1" Margin="5" FontSize="25" Click="Button_Click"/>
                 <Label Content="Code :-"  VerticalAlignment="Bottom" FontSize="20" Grid.Column="1" HorizontalAlignment="Left"/>
                 <TextBox x:Name="TxtDepartment_Code" FontSize="20" Grid.Column="1" Grid.Row="1" Margin="5">
                     <TextBox.Effect>
@@ -62,7 +61,8 @@
                 </TextBox>
                 <Label Content="Tax Rate :-" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" Grid.Column="2"/>
                 <Label Content="Image :-" Grid.Column="3" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20"/>
-                <ComboBox Name="drpimg" FontSize="20" Grid.Row="1" Grid.Column="3" Margin="5">
+                <ComboBox Name="drpimg" FontSize="20" Grid.Row="1" SelectedIndex="0" Grid.Column="3" Margin="5" Background="White" Foreground="DarkBlue">
+                    <ComboBoxItem Content="-- Select --" />
                     <ComboBoxItem Content="Bread.jpg" />
                     <ComboBoxItem Content="Beer.jpg" />
                     <ComboBoxItem Content="Drinks.jpeg" />
@@ -74,14 +74,13 @@
                     <ComboBoxItem Content="Produce.jpg" />
                     <ComboBoxItem Content="Tabacco.jpg" />
                     <ComboBoxItem Content="NonFood.jpg" />
-
                     <ComboBox.Effect>
                         <DropShadowEffect BlurRadius="2" ShadowDepth="3" />
                     </ComboBox.Effect>
                 </ComboBox>
             </Grid>
             <Label Name="lblusername" Visibility="Hidden"/>
-            <DataGrid Name="DeptGrid" Grid.Row="2" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Top" Margin="0,0,11,0" AutoGenerateColumns="False" Background="{x:Null}">
+            <DataGrid Name="DeptGrid" Grid.Row="2" Foreground="DarkBlue" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Top" Margin="0,0,11,0" AutoGenerateColumns="False" Background="{x:Null}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Department}" ClipboardContentBinding="{x:Null}" Header="Name" Width="110*"/>
                     <DataGridTextColumn Binding="{Binding DepartmentCode}" ClipboardContentBinding="{x:Null}" Header="Code" Width="40*"/>
@@ -92,7 +91,8 @@
                             <DataTemplate>
                                 <Button Click="onEdit" Background="{x:Null}" Width="25" Height="25">
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Source="Image/Edit1.png"/>
+                                        <fa:FontAwesome Icon="Edit" FontSize="26" Foreground="DarkBlue"/>
+                                        <!--<Image Source="Image/Edit1.png"/>-->
                                     </StackPanel>
                                 </Button>
                             </DataTemplate>
@@ -103,7 +103,8 @@
                             <DataTemplate>
                                 <Button Click="onDelete" Background="{x:Null}" Width="22" Height="24">
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Source="Image/Delete.png"/>
+                                        <fa:FontAwesome Icon="Trash" FontSize="26" Foreground="DarkBlue"/>
+                                        <!--<Image Source="Image/Delete.png"/>-->
                                     </StackPanel>
                                 </Button>
                             </DataTemplate>
