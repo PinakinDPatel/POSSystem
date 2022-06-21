@@ -16,7 +16,7 @@ namespace POSSystem
         string ServerName = ConfigurationManager.AppSettings["ServerName"];
         string DBName = ConfigurationManager.AppSettings["DBName"];
         string conString = "";
-        string userConString = "Server=184.168.194.64; Database=POS_User; User ID = POS_User; Password=09#Prem#24; Trusted_Connection=false;MultipleActiveResultSets=true";
+        string userConString = "Server=184.168.194.64; Database=db_POS; User ID = pinakin; Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
 
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "Login.cs";
@@ -102,9 +102,9 @@ namespace POSSystem
 
                 if (dt.Rows.Count > 0)
                 {
-                    App.Current.Properties["username"] = dt.Rows[0]["Name"].ToString();
+                    App.Current.Properties["username"] = dt.Rows[0]["UserName"].ToString();
                     App.Current.Properties["StoreId"] = dt.Rows[0]["StoreId"].ToString();
-                    //App.Current.Properties["Role"] = dt.Rows[0]["RoleName"].ToString();
+                    App.Current.Properties["Role"] = dt.Rows[0]["RoleName"].ToString();
                     var s = App.Current.Properties["StoreId"].ToString();
                     if (App.Current.Properties["StoreId"].ToString() != "" || App.Current.Properties["StoreId"].ToString() != null)
                     {

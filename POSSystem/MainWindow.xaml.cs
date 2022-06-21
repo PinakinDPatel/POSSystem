@@ -1644,7 +1644,7 @@ namespace POSSystem
         {
             try
             {
-                tenderCode = (sender as Button).Content.ToString();
+                tenderCode = (((((sender as Button).Content)as Grid).Children[0])as Label).Content.ToString();
                 if (tenderCode == "Cash")
                 {
                     cashTxtPanel.Visibility = Visibility.Visible;

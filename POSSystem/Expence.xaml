@@ -10,10 +10,10 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="16*"/>
+            <RowDefinition Height="14*"/>
         </Grid.RowDefinitions>
-        <Button Height="35" Width="35" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" Click="Close_Click" >
-            <fa:FontAwesome Icon="PowerOff" Foreground="Red" FontSize="35"/>
+        <Button Height="45" Width="45" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" Click="Close_Click" >
+            <fa:FontAwesome Icon="PowerOff" Foreground="Red" FontSize="42"/>
             <!--<Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>-->
         </Button>
         <Grid Grid.Row="1">
@@ -54,9 +54,9 @@
                     <ComboBox Name="cbExpence" ItemsSource="{Binding Name}" Foreground="DarkBlue" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Height="35" Width="180" Margin="5,5,5,5" Background="White"/>
                     <ComboBox Name="cbType" ItemsSource="{Binding Name}"  Grid.Row="2" Foreground="DarkBlue" Grid.Column="1" HorizontalAlignment="Left" Height="35" Width="180" Margin="5,5,5,5" Background="White">
                         <ComboBoxItem Name="Expense">Expense</ComboBoxItem>
-                        <ComboBoxItem Name="Income">Income</ComboBoxItem>
+                        <ComboBoxItem Name="Income">Payment</ComboBoxItem>
                     </ComboBox>
-                    <TextBox Name="txtAmount" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Width="180" Height="35" Margin="5,5,5,5"/>
+                    <TextBox Name="txtAmount" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Width="180" Height="35" HorizontalContentAlignment="Right" Margin="5,5,5,5"/>
                     <TextBox Name="txtcomment" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" Width="180" Height="35" Margin="5,5,5,5"/>
                     <Button Name="btnSave" Content="Save" Height="30" Foreground="White" Background="BlueViolet" HorizontalAlignment="Center" Grid.Row="6" Width="180" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="1" Click="Button_Click"/>
                 </Grid>

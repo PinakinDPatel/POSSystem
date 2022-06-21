@@ -19,7 +19,7 @@
                 <RowDefinition Height="9*"/>
             </Grid.RowDefinitions>
             <Label Name="lblVersion" Foreground="BlueViolet" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15"/>
-            <Button Height="32" Width="32" Background="{x:Null}" HorizontalAlignment="Right" BorderBrush="Transparent" BorderThickness="0" Margin="0,0,5,0" Click="Button_Click">
+            <Button Height="45" Width="45" Background="{x:Null}" HorizontalAlignment="Right" BorderBrush="Transparent" BorderThickness="0" Margin="0,0,5,0" Click="Button_Click">
                 <fa:ImageAwesome Icon="PowerOff" Foreground="BlueViolet"/>
             </Button>
             <Grid Grid.Row="1" Margin="5">
@@ -27,8 +27,8 @@
                     <ImageBrush ImageSource="Image/background.jpg"/>
                 </Grid.Background>-->
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="16*"/>
-                    <RowDefinition Height="63*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="5*"/>
                 </Grid.RowDefinitions>
                 <Label Content="PSPCStore" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="44" FontWeight="Bold" FontFamily="Wide Latin" Background="{x:Null}" >
                     <Label.Foreground>
@@ -53,9 +53,9 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Label Content="Login" HorizontalAlignment="Center" Foreground="BlueViolet" VerticalAlignment="Center" FontSize="32" FontFamily="Arial Black" Grid.Row="1"/>
-                        <Label Content="Enter Your Password" HorizontalAlignment="Center" Foreground="BlueViolet" VerticalAlignment="Center" FontSize="16" FontWeight="Bold"  Grid.Row="2" />
-                        <TextBox Name="TxtPassword" Margin="90,0,90,10" Foreground="BlueViolet" KeyDown="OnKeyDownHandler" TextWrapping="Wrap" FontSize="22" Grid.Row="3"/>
-                        <Button Content="Sign In" Name="TxtSignIn" Margin="90,0,90,0" FontSize="24" Background="BlueViolet" FontWeight="Bold" Foreground="White" Click="TxtSignIn_Click" Grid.Row="4"/>
+                        <Label Content="Enter Your Password" HorizontalAlignment="Center" Foreground="BlueViolet" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"  Grid.Row="2" />
+                        <TextBox Name="TxtPassword" Width="250" Margin="10" Foreground="BlueViolet" KeyDown="OnKeyDownHandler" TextWrapping="Wrap" FontSize="22" Grid.Row="3"/>
+                        <Button Content="Sign In" Name="TxtSignIn" Margin="10" Width="250" FontSize="32" Background="BlueViolet" FontWeight="Bold" Foreground="White" Click="TxtSignIn_Click" Grid.Row="4"/>
                     </Grid>
                     <Grid Grid.Column="1">
                         <Grid.ColumnDefinitions>
@@ -71,7 +71,7 @@
                             <RowDefinition Height="2*"/>
                             <RowDefinition Height="1*"/>
                         </Grid.RowDefinitions>
-                        <Button Content="1" Name="Txt1" Foreground="White" FontSize="28" Click="btnclick" Grid.Row="1" Margin="5">
+                        <Button Content="1" Name="Txt1" Foreground="White" FontSize="36" FontWeight="Bold" Click="btnclick" Grid.Row="1" Margin="5">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="BlueViolet"/>
@@ -79,7 +79,7 @@
                                 </LinearGradientBrush>
                             </Button.Background>
                         </Button>
-                        <Button Content="2" Name="Txt2" Margin="5" Foreground="White" FontSize="28"  Click="btnclick" Grid.Row="1" Grid.Column="1">
+                        <Button Content="2" Name="Txt2" Margin="5" Foreground="White" FontSize="36" FontWeight="Bold"  Click="btnclick" Grid.Row="1" Grid.Column="1">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="BlueViolet"/>
@@ -87,7 +87,7 @@
                                 </LinearGradientBrush>
                             </Button.Background>
                         </Button>
-                        <Button Content="3" Name="Txt3" Margin="5" Foreground="White" FontSize="28" Click="btnclick" Grid.Row="1" Grid.Column="2">
+                        <Button Content="3" Name="Txt3" Margin="5" Foreground="White" FontSize="36" FontWeight="Bold" Click="btnclick" Grid.Row="1" Grid.Column="2">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="BlueViolet"/>
@@ -95,7 +95,7 @@
                                 </LinearGradientBrush>
                             </Button.Background>
                         </Button>
-                        <Button Content="4" Name="Txt4" Margin="5" Foreground="White" FontSize="28" Click="btnclick" Grid.Row="2">
+                        <Button Content="4" Name="Txt4" Margin="5" Foreground="White" FontSize="36" FontWeight="Bold" Click="btnclick" Grid.Row="2">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="BlueViolet"/>
@@ -103,7 +103,7 @@
                                 </LinearGradientBrush>
                             </Button.Background>
                         </Button>
-                        <Button Content="5" Name="Txt5" Margin="5" Foreground="White" FontSize="28" Padding="0,-5,0,0"  Click="btnclick" Grid.Row="2" Grid.Column="1">
+                        <Button Content="5" Name="Txt5" Margin="5" Foreground="White" FontSize="36" FontWeight="Bold" Padding="0,-5,0,0"  Click="btnclick" Grid.Row="2" Grid.Column="1">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="BlueViolet"/>
@@ -111,7 +111,7 @@
                                 </LinearGradientBrush>
                             </Button.Background>
                         </Button>
-                        <Button Content="6" Name="Txt6" Margin="5" Foreground="White" FontSize="28" Click="btnclick" Grid.Row="2" Grid.Column="2">
+                        <Button Content="6" Name="Txt6" Margin="5" Foreground="White" FontSize="36" FontWeight="Bold" Click="btnclick" Grid.Row="2" Grid.Column="2">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="BlueViolet"/>
@@ -119,7 +119,7 @@
                                 </LinearGradientBrush>
                             </Button.Background>
                         </Button>
-                        <Button Content="7" Name="Txt7" Margin="5" Foreground="White" FontSize="28" Click="btnclick" Grid.Row="3">
+                        <Button Content="7" Name="Txt7" Margin="5" Foreground="White" FontSize="36" FontWeight="Bold" Click="btnclick" Grid.Row="3">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="BlueViolet"/>
@@ -127,7 +127,7 @@
                                 </LinearGradientBrush>
                             </Button.Background>
                         </Button>
-                        <Button Content="8" Name="Txt8" Margin="5" Foreground="White" FontSize="28" Click="btnclick" Grid.Row="3" Grid.Column="1">
+                        <Button Content="8" Name="Txt8" Margin="5" Foreground="White" FontSize="36" FontWeight="Bold" Click="btnclick" Grid.Row="3" Grid.Column="1">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="BlueViolet"/>
@@ -135,7 +135,7 @@
                                 </LinearGradientBrush>
                             </Button.Background>
                         </Button>
-                        <Button Content="9" Name="Txt9" Margin="5" Foreground="White" FontSize="28" Click="btnclick" Grid.Row="3" Grid.Column="2">
+                        <Button Content="9" Name="Txt9" Margin="5" Foreground="White" FontSize="36" FontWeight="Bold" Click="btnclick" Grid.Row="3" Grid.Column="2">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="BlueViolet"/>
@@ -143,7 +143,7 @@
                                 </LinearGradientBrush>
                             </Button.Background>
                         </Button>
-                        <Button Content="0" Name="Txt0" Margin="5" Foreground="White" FontSize="28" Click="btnclick" Grid.Row="4">
+                        <Button Content="0" Name="Txt0" Margin="5" Foreground="White" FontSize="36" FontWeight="Bold" Click="btnclick" Grid.Row="4">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="BlueViolet"/>
@@ -151,7 +151,7 @@
                                 </LinearGradientBrush>
                             </Button.Background>
                         </Button>
-                        <Button Content="Clear" Name="TxtClear" Margin="5" Foreground="White" FontSize="28" Click="TxtClear_Click" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2">
+                        <Button Content="Clear" Name="TxtClear" Margin="5" Foreground="White" FontSize="36" FontWeight="Bold" Click="TxtClear_Click" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="BlueViolet"/>

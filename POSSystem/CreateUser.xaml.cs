@@ -66,8 +66,10 @@ namespace POSSystem
                 DataRowView row = (DataRowView)dgUser.SelectedItem;
                 hdnid.Content = row["UserRegiId"].ToString();
                 txtUser.Text = row["UserName"].ToString();
-                txtUser.Text = row["PassWord"].ToString();
+                txtPassword.Text = row["PassWord"].ToString();
                 txtRole.Text = row["RoleName"].ToString();
+                if (txtRole.Text == "")
+                    txtRole.SelectedIndex = 0;
                 btnSave.Content = "Update";
             }
             catch (Exception ex)
@@ -107,6 +109,7 @@ namespace POSSystem
         {
             this.Close();
         }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -120,22 +123,38 @@ namespace POSSystem
                 DataTable dt = new DataTable();
                 sda.Fill(dt);
 
-                if (dt.Rows.Count > 0)
+                string time = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt");
+                if (hdnid.Content is null)
+                    hdnid.Content = "";
+                string queryI = "";
+
+                if (hdnid.Content.ToString() == "")
                 {
-                    MessageBox.Show("UserName Or Password Already Exist!");
+                    if (dt.Rows.Count > 0)
+                    {
+                        MessageBox.Show("UserName Or Password Already Exist!");
+                    }
+                    else
+                    {
+                        queryI = "Insert into UserRegi(UserName,Password,CreateOn,StoreId,RoleName)Values(@userName,@password,@time,@storeId,@roleName)";
+                        SqlCommand cmdI = new SqlCommand(queryI, con);
+                        cmdI.Parameters.AddWithValue("@userName", txtUser.Text);
+                        cmdI.Parameters.AddWithValue("@password", txtPassword.Text);
+                        cmdI.Parameters.AddWithValue("@time", time);
+                        cmdI.Parameters.AddWithValue("@storeId", StoreId);
+                        cmdI.Parameters.AddWithValue("@roleName", txtRole.Text);
+                        con.Open();
+                        cmdI.ExecuteNonQuery();
+                        con.Close();
+                        txtPassword.Text = "";
+                        txtUser.Text = "";
+                        Loaduser();
+                        txtRole.SelectedIndex = 0;
+                    }
                 }
                 else
                 {
-
-                    string time = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt");
-                    if (hdnid.Content is null)
-                        hdnid.Content = "";
-                    string queryI = "";
-
-                    if (hdnid.Content.ToString() == "")
-                        queryI = "Insert into UserRegi(UserName,Password,CreateOn,StoreId,RoleName)Values(@userName,@password,@time,@storeId,@roleName)";
-                    else
-                        queryI = "Update UserRegi set UserName=@userName,Password=@password,CreateOn=@time,StoreId=@storeId,RoleName=@roleName where UserRegiId='" + hdnid.Content + "'";
+                    queryI = "Update UserRegi set UserName=@userName,Password=@password,CreateOn=@time,StoreId=@storeId,RoleName=@roleName where UserRegiId='" + hdnid.Content + "'";
 
                     SqlCommand cmdI = new SqlCommand(queryI, con);
                     cmdI.Parameters.AddWithValue("@userName", txtUser.Text);
@@ -149,6 +168,9 @@ namespace POSSystem
                     txtPassword.Text = "";
                     txtUser.Text = "";
                     Loaduser();
+                    txtRole.SelectedIndex = 0;
+                    btnSave.Content = "Save";
+                    hdnid.Content = "";
                 }
             }
             catch (Exception ex)

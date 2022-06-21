@@ -29,7 +29,7 @@ namespace POSSystem
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "Receive.cs";
         string username = App.Current.Properties["username"].ToString();
-        DataTable dtDG = new DataTable();
+        DataTable dtReceive = new DataTable();
         public Receive()
         {
             InitializeComponent();
@@ -116,15 +116,15 @@ namespace POSSystem
         {
             try
             {
-                dtDG.Reset();
+                dtReceive.Reset();
                 var date = Convert.ToDateTime(txtDate.SelectedDate).ToString("yyyy/MM/dd");
                 SqlConnection con = new SqlConnection(conString);
                 string queryDG = "Select * from Receive where Convert(date,Date)=Convert(date,'" + date + "')";
                 SqlCommand cmdDG = new SqlCommand(queryDG, con);
                 SqlDataAdapter sdaDG = new SqlDataAdapter(cmdDG);
-                sdaDG.Fill(dtDG);
+                sdaDG.Fill(dtReceive);
                 dgReceive.CanUserAddRows = false;
-                dgReceive.ItemsSource = dtDG.AsDataView();
+                dgReceive.ItemsSource = dtReceive.AsDataView();
             }
             catch (Exception ex)
             {
@@ -139,7 +139,8 @@ namespace POSSystem
                 DataRowView row = (DataRowView)dgReceive.SelectedItem;
                 lblReceiveid.Content = row["ReceiveId"].ToString();
                 txtDate.Text = row["Date"].ToString();
-                cbReceive.Text = row["Expence"].ToString();
+                cbReceive.Text = row["Receive"].ToString();
+                cbType.Text = row["VoucherType"].ToString();
                 txtAmount.Text = row["Amount"].ToString();
                 txtcomment.Text = row["Comment"].ToString();
                 btnSave.Content = "Update";
@@ -165,9 +166,9 @@ namespace POSSystem
                     rowsAffected = cmd.ExecuteNonQuery();
                 }
                 if (rowsAffected > 0)
-                    dtDG.AcceptChanges();
+                    dtReceive.AcceptChanges();
                 else
-                    dtDG.RejectChanges();
+                    dtReceive.RejectChanges();
                 lblReceiveid.Content = 0;
             }
             catch (Exception ex)

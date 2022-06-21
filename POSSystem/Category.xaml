@@ -31,7 +31,7 @@
                 </Grid.ColumnDefinitions>
                 <Label Name="lblusername" Visibility="Hidden"/>
                 <Label Content="Category" FontSize="36" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                <Button Content="GoBack" Click="GoBack_Click" Foreground="White" Background="BlueViolet" Height="35" Width="100" HorizontalAlignment="Left"></Button>
+                <Button Name="btnGoBack" Content="GoBack" Click="GoBack_Click" Foreground="White" Background="BlueViolet" Height="35" Width="100" Visibility="Hidden" HorizontalAlignment="Left"></Button>
                 <!--<Button Name="btnCateSave" Content="Create Category" Foreground="White" Grid.Column="2" Margin="5" FontSize="25" Click="btnAdd_Click_Category"/>-->
             </Grid>
             <Grid Name="gCategory" Grid.Row="1" Visibility="Visible">

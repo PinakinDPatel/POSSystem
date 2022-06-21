@@ -11,6 +11,15 @@
                     <DropShadowEffect Color="LightSteelBlue"/>
                 </Setter.Value>
             </Setter>
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
+        <Style TargetType="{x:Type ComboBox}">
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="LightSteelBlue"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontSize" Value="20"/>
         </Style>
         <Style TargetType="{x:Type DataGridColumnHeader}">
             <Setter Property="FontWeight" Value="Bold"/>

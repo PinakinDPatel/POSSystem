@@ -34,11 +34,11 @@ namespace POSSystem
         {
             try
             {
+                dt.Clear();
                 SqlConnection con = new SqlConnection(conString);
                 string queryD = "Select DepartmentId,Department,DepartmentCode,TaxRate,FilePath from department";
                 SqlCommand cmd = new SqlCommand(queryD, con);
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
                 sda.Fill(dt);
                 DeptGrid.CanUserAddRows = false;
                 DeptGrid.ItemsSource = dt.DefaultView;
@@ -158,6 +158,8 @@ namespace POSSystem
                 TxtTaxRate.Text = row["TaxRate"].ToString();
                 drpimg.Text = row["FilePath"].ToString();
                 btnDeptSave.Content = "Update";
+                if (drpimg.Text == "")
+                    drpimg.SelectedIndex=0;
             }
             catch (Exception ex) { SendErrorToText(ex, errorFileName); }
 

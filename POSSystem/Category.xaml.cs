@@ -51,6 +51,7 @@ namespace POSSystem
         {
             try
             {
+                btnGoBack.Visibility = Visibility.Hidden;
                 gCategory.Visibility = Visibility.Visible;
                 gSubCategory.Visibility = Visibility.Hidden;
                 ugCategory.Children.Clear();
@@ -110,6 +111,7 @@ namespace POSSystem
         private void button_Click(object sender, RoutedEventArgs e)
         {
             hdnCategory.Content = (sender as Button).Tag;
+            btnGoBack.Visibility = Visibility.Visible;
             ugSubCategory.Children.Clear();
             var text = hdnCategory.Content;
             SqlConnection con = new SqlConnection(conString);

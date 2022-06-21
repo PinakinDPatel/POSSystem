@@ -69,16 +69,10 @@ namespace POSSystem
                     txtaccount.BorderBrush = System.Windows.Media.Brushes.Red;
                 if (drphead.Text == "")
                     cmb1BorderHead.BorderBrush = System.Windows.Media.Brushes.Red;
-                if (txtAddress.Text == "")
-                    txtAddress.BorderBrush = System.Windows.Media.Brushes.Red;
-                if (txtMobile.Text == "")
-                    txtMobile.BorderBrush = System.Windows.Media.Brushes.Red;
-                if (txtEmail.Text == "")
-                    txtEmail.BorderBrush = System.Windows.Media.Brushes.Red;
                 if (drphead.Text == "-- Select --")
                     drphead.Text = "";
 
-                if (txtaccount.Text != "" && drphead.Text != "" && txtAddress.Text != "" && txtMobile.Text != "" && txtEmail.Text != "")
+                if (txtaccount.Text != "" && drphead.Text != "")
                 {
                     SqlConnection con = new SqlConnection(conString);
                     int lbl = Convert.ToInt32(lblAccountId.Content);
@@ -124,12 +118,12 @@ namespace POSSystem
                     }
                     else
                     {
-                        if (dt.Rows.Count > 0)
-                        {
-                            MessageBox.Show("Account Already Exist!");
-                        }
-                        else
-                        {
+                        //if (dt.Rows.Count > 0)
+                        //{
+                        //    MessageBox.Show("Account Already Exist!");
+                        //}
+                        //else
+                        //{
                             string time = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt");
                             string queryIU = "Update Account Set Name=@account,Head=@head,Mobile=@mobile,Address=@address,Email=@email,CreateOn=@time,CreateBy=@user Where AccountId='" + lblAccountId.Content + "'";
                             SqlCommand cmdI = new SqlCommand(queryIU, con);
@@ -151,7 +145,7 @@ namespace POSSystem
                             drphead.SelectedIndex = 0;
                             lblAccountId.Content = 0;
                             btnSave.Content = "Save";
-                        }
+                        //}
                     }
                 }
             }
