@@ -43,6 +43,7 @@ namespace POSSystem
             {
                 InitializeComponent();
                 StoreDetails();
+                Entry.Visibility = Visibility.Visible;
             }
             catch (Exception ex)
             {

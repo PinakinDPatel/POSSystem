@@ -95,10 +95,10 @@ namespace POSSystem
                 cmd.Parameters.AddWithValue("@password", TxtPassword.Text);
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
-                con.Open();
+                //con.Open();
                 sda.Fill(dt);
-                int i = cmd.ExecuteNonQuery();
-                con.Close();
+                //int i = cmd.ExecuteNonQuery();
+                //con.Close();
 
                 if (dt.Rows.Count > 0)
                 {

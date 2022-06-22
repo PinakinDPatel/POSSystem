@@ -859,7 +859,10 @@ namespace POSSystem
                 dr[1] = lblDepartment.Content.ToString();
                 dr[2] = Convert.ToDecimal(txtDeptAmt.Text).ToString("0.00");
                 dr[3] = taxrate;
-                dr[4] = 1;
+                if (refund == "")
+                    dr[4] = 1;
+                else
+                    dr[4] = -1;
                 dr[5] = (decimal.Parse(txtDeptAmt.Text) * 1).ToString("0.00");
                 dt.Rows.Add(dr);
                 JRDGrid.ItemsSource = dt.DefaultView;
@@ -952,7 +955,10 @@ namespace POSSystem
                         DataRow newRow = dt.NewRow();
                         newRow["ScanCode"] = row.ItemArray[0].ToString();
                         newRow["Description"] = row.ItemArray[1].ToString();
-                        newRow["Quantity"] = 1;
+                        if (refund == "")
+                            newRow["Quantity"] = 1;
+                        else
+                            newRow["Quantity"] = -1;
                         newRow["UnitRetail"] = row.ItemArray[2].ToString();
                         newRow["Amount"] = row.ItemArray[2].ToString();
                         newRow["OPrice"] = row.ItemArray[2].ToString();
@@ -993,7 +999,8 @@ namespace POSSystem
                                     int sumCount = (from row in dt.AsEnumerable()
                                                     where row.Field<string>("PROName") == distinct["PROName"].ToString()
                                                     select row).Sum(r => Convert.ToInt32(r.Field<string>("Quantity")));
-
+                                    if (sumCount < 0)
+                                        sumCount = sumCount * -1;
                                     foreach (var itemdt in dt.AsEnumerable())
                                     {
                                         if (itemdt["PROName"].ToString() == distinct["PROName"].ToString())
@@ -1045,7 +1052,8 @@ namespace POSSystem
                                     int sumCount = (from row in dt.AsEnumerable()
                                                     where row.Field<string>("RPROName") == distinct["RPROName"].ToString()
                                                     select row).Sum(r => Convert.ToInt32(r.Field<string>("Quantity")));
-
+                                    if (sumCount < 0)
+                                        sumCount = sumCount * -1;
                                     foreach (var itemdt in dt.AsEnumerable())
                                     {
                                         if (itemdt["RPROName"].ToString() == distinct["RPROName"].ToString())
@@ -1102,7 +1110,8 @@ namespace POSSystem
                                     int sumCount = (from row in dt.AsEnumerable()
                                                     where row.Field<string>("LPROName") == distinct["LPROName"].ToString() && row.Field<string>("Void") != "1"
                                                     select row).Sum(r => Convert.ToInt32(r.Field<string>("Quantity")));
-
+                                    if (sumCount < 0)
+                                        sumCount = sumCount * -1;
                                     foreach (var itemdt in dt.AsEnumerable())
                                     {
                                         if (itemdt["LPROName"].ToString() == distinct["LPROName"].ToString())
@@ -1160,7 +1169,8 @@ namespace POSSystem
                                     int sumCount = (from row in dt.AsEnumerable()
                                                     where row.Field<string>("OPROName") == distinct["OPROName"].ToString() && row.Field<string>("Void") != "1"
                                                     select row).Sum(r => Convert.ToInt32(r.Field<string>("Quantity")));
-
+                                    if (sumCount < 0)
+                                        sumCount = sumCount * -1;
                                     foreach (var itemdt in dt.AsEnumerable())
                                     {
                                         if (itemdt["OPROName"].ToString() == distinct["OPROName"].ToString())
@@ -1299,7 +1309,10 @@ namespace POSSystem
                         DataRow newRow = dt.NewRow();
                         newRow["ScanCode"] = row.ItemArray[0].ToString();
                         newRow["Description"] = row.ItemArray[1].ToString();
-                        newRow["Quantity"] = 1;
+                        if (refund == "")
+                            newRow["Quantity"] = 1;
+                        else
+                            newRow["Quantity"] = 1;
                         newRow["UnitRetail"] = row.ItemArray[2].ToString();
                         newRow["Amount"] = row.ItemArray[2].ToString();
                         newRow["OPrice"] = row.ItemArray[2].ToString();
@@ -1337,7 +1350,8 @@ namespace POSSystem
                                 int sumCount = (from row in dt.AsEnumerable()
                                                 where row.Field<string>("PROName") == distinct["PROName"].ToString()
                                                 select row).Sum(r => Convert.ToInt32(r.Field<string>("Quantity")));
-
+                                if (sumCount < 0)
+                                    sumCount = sumCount * -1;
                                 foreach (var itemdt in dt.AsEnumerable())
                                 {
                                     if (itemdt["PROName"].ToString() == distinct["PROName"].ToString())
@@ -1389,7 +1403,8 @@ namespace POSSystem
                                 int sumCount = (from row in dt.AsEnumerable()
                                                 where row.Field<string>("RPROName") == distinct["RPROName"].ToString()
                                                 select row).Sum(r => Convert.ToInt32(r.Field<string>("Quantity")));
-
+                                if (sumCount < 0)
+                                    sumCount = sumCount * -1;
                                 foreach (var itemdt in dt.AsEnumerable())
                                 {
                                     if (itemdt["RPROName"].ToString() == distinct["RPROName"].ToString())
@@ -1446,7 +1461,8 @@ namespace POSSystem
                                 int sumCount = (from row in dt.AsEnumerable()
                                                 where row.Field<string>("LPROName") == distinct["LPROName"].ToString()
                                                 select row).Sum(r => Convert.ToInt32(r.Field<string>("Quantity")));
-
+                                if (sumCount < 0)
+                                    sumCount = sumCount * -1;
                                 foreach (var itemdt in dt.AsEnumerable())
                                 {
                                     if (itemdt["LPROName"].ToString() == distinct["LPROName"].ToString())
@@ -1504,7 +1520,8 @@ namespace POSSystem
                                 int sumCount = (from row in dt.AsEnumerable()
                                                 where row.Field<string>("OPROName") == distinct["OPROName"].ToString()
                                                 select row).Sum(r => Convert.ToInt32(r.Field<string>("Quantity")));
-
+                                if (sumCount < 0)
+                                    sumCount = sumCount * -1;
                                 foreach (var itemdt in dt.AsEnumerable())
                                 {
                                     if (itemdt["OPROName"].ToString() == distinct["OPROName"].ToString())
@@ -1644,7 +1661,7 @@ namespace POSSystem
         {
             try
             {
-                tenderCode = (((((sender as Button).Content)as Grid).Children[0])as Label).Content.ToString();
+                tenderCode = (((((sender as Button).Content) as Grid).Children[0]) as Label).Content.ToString();
                 if (tenderCode == "Cash")
                 {
                     cashTxtPanel.Visibility = Visibility.Visible;
@@ -2622,69 +2639,69 @@ namespace POSSystem
                                 dt.Rows[i]["Amount"] = Convert.ToDecimal(dt.Rows[i]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[i]["Quantity"]);
                             }
                         }
+                        ScanCodeFunction();
+                        //DataTable distrinctPromotionName = dt.DefaultView.ToTable(true, "PROName");
+                        //DataTable distrinctSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "PROName", "Qty", "NewPrice", "Discount");
+                        //foreach (DataRow distrinctRow in distrinctPromotionName.AsEnumerable())
+                        //{
+                        //    if (distrinctRow["PROName"].ToString() != "")
+                        //    {
+                        //        int sumCount = 0;
+                        //        for (int j = 0; j < distrinctSCANCODE.AsEnumerable().Count(); j++)
+                        //        {
+                        //            if (distrinctSCANCODE.Rows[j]["PROName"].ToString() != "")
+                        //            {
+                        //                for (int i = 0; i < dt.Rows.Count; i++)
+                        //                {
+                        //                    if (distrinctSCANCODE.Rows[j]["PROName"].ToString() == distrinctRow["PROName"].ToString())
+                        //                    {
+                        //                        if (distrinctSCANCODE.Rows[j]["ScanCode"].ToString() == dt.Rows[i]["ScanCode"].ToString())
+                        //                        {
+                        //                            sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
+                        //                            for (int K = 0; K < dt.Rows.Count; K++)
+                        //                            {
+                        //                                foreach (DataRow itemDT1 in distrinctSCANCODE.AsEnumerable())
+                        //                                {
+                        //                                    if (itemDT1["PROName"].ToString() == distrinctRow["PROName"].ToString())
+                        //                                    {
+                        //                                        int Y = sumCount / Convert.ToInt32(itemDT1["Qty"]);
+                        //                                        for (int x = 1; x <= Y; x++)
+                        //                                        {
+                        //                                            if (sumCount == Convert.ToInt32(itemDT1["Qty"]) * x)
+                        //                                            {
+                        //                                                for (int z = 0; z <= i; z++)
+                        //                                                {
+                        //                                                    string dtProName = dt.Rows[z]["PROName"].ToString();
+                        //                                                    string disProName = distrinctRow["PROName"].ToString();
+                        //                                                    if (dtProName == disProName)
+                        //                                                    {
+                        //                                                        string price = "";
+                        //                                                        if (itemDT1["NewPrice"].ToString() != "")
+                        //                                                            price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
 
-                        DataTable distrinctPromotionName = dt.DefaultView.ToTable(true, "PROName");
-                        DataTable distrinctSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "PROName", "Qty", "NewPrice", "Discount");
-                        foreach (DataRow distrinctRow in distrinctPromotionName.AsEnumerable())
-                        {
-                            if (distrinctRow["PROName"].ToString() != "")
-                            {
-                                int sumCount = 0;
-                                for (int j = 0; j < distrinctSCANCODE.AsEnumerable().Count(); j++)
-                                {
-                                    if (distrinctSCANCODE.Rows[j]["PROName"].ToString() != "")
-                                    {
-                                        for (int i = 0; i < dt.Rows.Count; i++)
-                                        {
-                                            if (distrinctSCANCODE.Rows[j]["PROName"].ToString() == distrinctRow["PROName"].ToString())
-                                            {
-                                                if (distrinctSCANCODE.Rows[j]["ScanCode"].ToString() == dt.Rows[i]["ScanCode"].ToString())
-                                                {
-                                                    sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
-                                                    for (int K = 0; K < dt.Rows.Count; K++)
-                                                    {
-                                                        foreach (DataRow itemDT1 in distrinctSCANCODE.AsEnumerable())
-                                                        {
-                                                            if (itemDT1["PROName"].ToString() == distrinctRow["PROName"].ToString())
-                                                            {
-                                                                int Y = sumCount / Convert.ToInt32(itemDT1["Qty"]);
-                                                                for (int x = 1; x <= Y; x++)
-                                                                {
-                                                                    if (sumCount == Convert.ToInt32(itemDT1["Qty"]) * x)
-                                                                    {
-                                                                        for (int z = 0; z <= i; z++)
-                                                                        {
-                                                                            string dtProName = dt.Rows[z]["PROName"].ToString();
-                                                                            string disProName = distrinctRow["PROName"].ToString();
-                                                                            if (dtProName == disProName)
-                                                                            {
-                                                                                string price = "";
-                                                                                if (itemDT1["NewPrice"].ToString() != "")
-                                                                                    price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
+                        //                                                        if (price == "")
+                        //                                                            price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["Discount"])).ToString();
 
-                                                                                if (price == "")
-                                                                                    price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["Discount"])).ToString();
+                        //                                                        dt.Rows[z]["PromotionName"] = itemDT1["PROName"];
+                        //                                                        dt.Rows[z]["UnitRetail"] = price;
+                        //                                                        dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
+                        //                                                    }
+                        //                                                }
 
-                                                                                dt.Rows[z]["PromotionName"] = itemDT1["PROName"];
-                                                                                dt.Rows[z]["UnitRetail"] = price;
-                                                                                dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
-                                                                            }
-                                                                        }
+                        //                                            }
 
-                                                                    }
+                        //                                        }
+                        //                                    }
+                        //                                }
+                        //                            }
+                        //                        }
+                        //                    }
+                        //                }
 
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-
-                                    }
-                                }
-                            }
-                        }
+                        //            }
+                        //        }
+                        //    }
+                        //}
                     }
                 }
                 JRDGrid.ItemsSource = dt.DefaultView;
@@ -2767,6 +2784,8 @@ namespace POSSystem
                                         sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
                                         //for (int K = 0; K < dt.Rows.Count; K++)
                                         //{
+                                        if (sumCount < 0)
+                                            sumCount = sumCount * -1;
                                         foreach (DataRow itemDT1 in distrinctSCANCODE.AsEnumerable())
                                         {
                                             if (itemDT1["PROName"].ToString() == distrinctRow["PROName"].ToString())
@@ -2839,6 +2858,8 @@ namespace POSSystem
                                         sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
                                         //for (int K = 0; K < dt.Rows.Count; K++)
                                         //{
+                                        if (sumCount < 0)
+                                            sumCount = sumCount * -1;
                                         foreach (DataRow itemDT1 in distrinctRSCANCODE.AsEnumerable())
                                         {
                                             if (itemDT1["RPROName"].ToString() == distrinctRow["RPROName"].ToString())
@@ -2913,6 +2934,8 @@ namespace POSSystem
                                         sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
                                         //for (int K = 0; K < dt.Rows.Count; K++)
                                         //{
+                                        if (sumCount < 0)
+                                            sumCount = sumCount * -1;
                                         foreach (DataRow itemDT1 in distrinctLSCANCODE.AsEnumerable())
                                         {
                                             if (itemDT1["LPROName"].ToString() == distrinctRow["LPROName"].ToString())
@@ -2990,6 +3013,8 @@ namespace POSSystem
                                         sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
                                         //for (int K = 0; K < dt.Rows.Count; K++)
                                         //{
+                                        if (sumCount < 0)
+                                            sumCount = sumCount * -1;
                                         foreach (DataRow itemDT1 in distrinctOSCANCODE.AsEnumerable())
                                         {
                                             if (itemDT1["OPROName"].ToString() == distrinctRow["OPROName"].ToString())
@@ -4215,7 +4240,7 @@ namespace POSSystem
                     }
                     TotalEvent();
                 }
-                dataGridSelectedIndex="";
+                dataGridSelectedIndex = "";
 
             }
             catch (Exception ex)
@@ -4819,6 +4844,12 @@ namespace POSSystem
             }
         }
 
+        private void NoSale_Click(object sender, RoutedEventArgs e)
+        {
+            Report rpt = new Report();
+            rpt.Show();
+        }
+
         private void button_Click_Category_Description(object sender, RoutedEventArgs e)
         {
             try
@@ -4854,7 +4885,10 @@ namespace POSSystem
                         DataRow newRow = dt.NewRow();
                         newRow["ScanCode"] = row.ItemArray[0].ToString();
                         newRow["Description"] = row.ItemArray[1].ToString();
-                        newRow["Quantity"] = 1;
+                        if (refund == "")
+                            newRow["Quantity"] = 1;
+                        else
+                            newRow["Quantity"] = -1;
                         newRow["UnitRetail"] = row.ItemArray[2].ToString();
                         newRow["Amount"] = row.ItemArray[2].ToString();
                         newRow["OPrice"] = row.ItemArray[2].ToString();
@@ -4889,7 +4923,8 @@ namespace POSSystem
                                 int sumCount = (from row in dt.AsEnumerable()
                                                 where row.Field<string>("PROName") == distinct["PROName"].ToString()
                                                 select row).Sum(r => Convert.ToInt32(r.Field<string>("Quantity")));
-
+                                if (sumCount < 0)
+                                    sumCount = sumCount * -1;
                                 foreach (var itemdt in dt.AsEnumerable())
                                 {
                                     if (itemdt["PROName"].ToString() == distinct["PROName"].ToString())
@@ -4941,7 +4976,8 @@ namespace POSSystem
                                 int sumCount = (from row in dt.AsEnumerable()
                                                 where row.Field<string>("RPROName") == distinct["RPROName"].ToString()
                                                 select row).Sum(r => Convert.ToInt32(r.Field<string>("Quantity")));
-
+                                if (sumCount < 0)
+                                    sumCount = sumCount * -1;
                                 foreach (var itemdt in dt.AsEnumerable())
                                 {
                                     if (itemdt["RPROName"].ToString() == distinct["RPROName"].ToString())
@@ -4998,7 +5034,8 @@ namespace POSSystem
                                 int sumCount = (from row in dt.AsEnumerable()
                                                 where row.Field<string>("LPROName") == distinct["LPROName"].ToString()
                                                 select row).Sum(r => Convert.ToInt32(r.Field<string>("Quantity")));
-
+                                if (sumCount < 0)
+                                    sumCount = sumCount * -1;
                                 foreach (var itemdt in dt.AsEnumerable())
                                 {
                                     if (itemdt["LPROName"].ToString() == distinct["LPROName"].ToString())
@@ -5056,7 +5093,8 @@ namespace POSSystem
                                 int sumCount = (from row in dt.AsEnumerable()
                                                 where row.Field<string>("OPROName") == distinct["OPROName"].ToString()
                                                 select row).Sum(r => Convert.ToInt32(r.Field<string>("Quantity")));
-
+                                if (sumCount < 0)
+                                    sumCount = sumCount * -1;
                                 foreach (var itemdt in dt.AsEnumerable())
                                 {
                                     if (itemdt["OPROName"].ToString() == distinct["OPROName"].ToString())
