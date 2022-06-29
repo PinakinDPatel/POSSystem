@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
+        xmlns:rv="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms"
         xmlns:local="clr-namespace:POSSystem"
         mc:Ignorable="d"
         Title="UserWiseSaleReport" ResizeMode="NoResize"  WindowState="Maximized" WindowStyle="None">
@@ -39,10 +40,12 @@
                 <Label Grid.Column="3" Content="To :" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                 <DatePicker Name="toDate" Grid.Column="4" Margin="5" Foreground="DarkBlue" FontSize="20" />
                 <Button Content="Show" Grid.Column="5" Margin="5" Foreground="White" Background="BlueViolet" FontSize="20" Click="btn_click_daterange"/>
-                <Button Content="PDF" Grid.Column="6" Margin="5" Foreground="White" Background="BlueViolet" FontSize="20" Click="PDF_Click"/>
+                <!--<Button Content="PDF" Grid.Column="6" Margin="5" Foreground="White" Background="BlueViolet" FontSize="20" Click="PDF_Click"/>-->
             </Grid>
-
-            <DataGrid Name="saleDG" Grid.Row="2" AutoGenerateColumns="False" Background="Transparent" Foreground="DarkBlue" RowBackground="Transparent" FontSize="20" Margin="10,10,10,0" GridLinesVisibility="None" RowHeaderWidth="0">
+            <WindowsFormsHost Grid.Row="2">
+                <rv:ReportViewer x:Name="rptUserReport"></rv:ReportViewer>
+            </WindowsFormsHost>
+            <!--<DataGrid Name="saleDG" Grid.Row="2" AutoGenerateColumns="False" Background="Transparent" Foreground="DarkBlue" RowBackground="Transparent" FontSize="20" Margin="10,10,10,0" GridLinesVisibility="None" RowHeaderWidth="0">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding CreateBy}"  Header="User" Width="40*" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
@@ -384,7 +387,7 @@
                         <Setter Property="Background" Value="Transparent"/>
                     </Style>
                 </DataGrid.Resources>
-            </DataGrid>
+            </DataGrid>-->
         </Grid>
     </Grid>
 </Window>

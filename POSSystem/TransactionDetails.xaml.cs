@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Reporting.WinForms;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -39,7 +40,7 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                string queryDG = "select Tran_id,transactions.EndDate,Transactions.EndTime,GrossAmount,TaxAmount,GrandAmount,transactions.CreateBy,ScanCode,descripation,quantity,price,salesitem.amount,TenderCode,(tender.Amount-Change)as TenderAmount from transactions inner join salesitem on transactions.Tran_id=SalesItem.TransactionId and Transactions.EndDate=SalesItem.EndDate inner join Tender on transactions.Tran_id=tender.TransactionId and Transactions.EndDate=tender.EndDate where Transactions.EndDate=@fromDate and Tran_id=@tranid";
+                string queryDG = "select Tran_id,transactions.EndDate,Transactions.EndTime,Convert(Decimal(10,2),GrossAmount)as GrossAmount,Convert(Decimal(10,2),TaxAmount)as TaxAmount,Convert(Decimal(10,2),GrandAmount)as GrandAmount,transactions.CreateBy,ScanCode,descripation,Convert(int,quantity) as quantity,Convert(Decimal(10,2),price)as price,Convert(Decimal(10,2),salesitem.amount)as amount,TenderCode,(tender.Amount-Coalesce(Change,0))as TenderAmount from transactions inner join salesitem on transactions.Tran_id=SalesItem.TransactionId and Transactions.EndDate=SalesItem.EndDate inner join Tender on transactions.Tran_id=tender.TransactionId and Transactions.EndDate=tender.EndDate where Transactions.EndDate=@fromDate and Tran_id=@tranid";
                 SqlCommand cmdDG = new SqlCommand(queryDG, con);
                 cmdDG.Parameters.AddWithValue("@fromDate", Convert.ToDateTime(fromDate).ToString("yyyy/MM/dd"));
                 cmdDG.Parameters.AddWithValue("@tranid", TxtTranId);
@@ -49,30 +50,37 @@ namespace POSSystem
                 con.Open();
                 sdaDG.Fill(dt);
                 con.Close();
+                var Path = System.AppDomain.CurrentDomain.BaseDirectory;
+                ReportDataSource rds = new ReportDataSource("DataSet1", dt);
+                rptTranDetails.LocalReport.ReportPath = Path + "Reports\\TranDetails.rdlc";
+                rptTranDetails.LocalReport.DataSources.Clear();
+                rptTranDetails.LocalReport.DataSources.Add(rds);
+                rptTranDetails.RefreshReport();
+                rptTranDetails.ZoomMode = ZoomMode.PageWidth;
+                //transactionDG.ItemsSource = dt.DefaultView;
+                //transactionDG.CanUserAddRows = false;
 
-                transactionDG.ItemsSource = dt.DefaultView;
-                transactionDG.CanUserAddRows = false;
-
-                lblUser.Content = dt.Rows[0].ItemArray[6];
-                lblSale.Content = dt.Rows[0].ItemArray[3];
-                lblTax.Content = dt.Rows[0].ItemArray[4];
-                lblGrandAmount.Content = dt.Rows[0].ItemArray[5];
-                lblTenderAmount.Content = dt.Rows[0].ItemArray[13];
-                lblTenderCode.Content = dt.Rows[0].ItemArray[12];
+                //lblUser.Content = dt.Rows[0].ItemArray[6];
+                //lblSale.Content = dt.Rows[0].ItemArray[3];
+                //lblTax.Content = dt.Rows[0].ItemArray[4];
+                //lblGrandAmount.Content = dt.Rows[0].ItemArray[5];
+                //lblTenderAmount.Content = dt.Rows[0].ItemArray[13];
+                //lblTenderCode.Content = dt.Rows[0].ItemArray[12];
             }
             catch (Exception ex)
             {
                 SendErrorToText(ex, errorFileName);
             }
         }
+
         private void btn_click_daterange(object sender, RoutedEventArgs e)
         {
-            lblUser.Content = "";
-            lblSale.Content = "";
-            lblTax.Content = "";
-            lblGrandAmount.Content = "";
-            lblTenderAmount.Content = "";
-            lblTenderCode.Content = "";
+        //    lblUser.Content = "";
+        //    lblSale.Content = "";
+        //    lblTax.Content = "";
+        //    lblGrandAmount.Content = "";
+        //    lblTenderAmount.Content = "";
+        //    lblTenderCode.Content = "";
             Datable(fromDate.SelectedDate.Value.ToString(),TxtTranId.Text);
         }
 

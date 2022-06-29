@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
+        xmlns:rv="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms"
         xmlns:local="clr-namespace:POSSystem"
         mc:Ignorable="d"
         Title="Window3" WindowStyle="None" WindowState="Maximized">
@@ -36,7 +37,10 @@
                 <DatePicker Name="txtEndDate" Grid.Column="3" Height="30" Width="120"/>-->
                 <Button Name="btnSerch" Content="Search" Grid.Column="2" Foreground="White" Background="BlueViolet" Height="30" Margin="5" Click="BtnSerch_Click"></Button>
             </Grid>
-            <DataGrid Name="dgInventory" Foreground="DarkBlue" Grid.Row="1" AutoGenerateColumns="False">
+            <WindowsFormsHost Grid.Row="1">
+                <rv:ReportViewer x:Name="rptInventory"/>
+            </WindowsFormsHost>
+            <!--<DataGrid Name="dgInventory" Foreground="DarkBlue" Grid.Row="1" AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding ScanCode}" Header="ScanCode" Width="100*"/>
                     <DataGridTextColumn Binding="{Binding Descripation}" Header="Description" Width="100*"/>
@@ -44,7 +48,7 @@
                     <DataGridTextColumn Binding="{Binding Closing}" Header="Closing Quantity" Width="100*"/>
                     <DataGridTextColumn Binding="{Binding Value}" Header="Closing Value" Width="100*"/>
                 </DataGrid.Columns>
-            </DataGrid>
+            </DataGrid>-->
         </Grid>
     </Grid>
 </Window>

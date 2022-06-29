@@ -6,22 +6,26 @@
       xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
       xmlns:local="clr-namespace:POSSystem"
       mc:Ignorable="d" 
-     ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True">
+     ResizeMode="NoResize" WindowStyle="ToolWindow">
    
     <!--d:DesignHeight="519.597" d:DesignWidth="1018.326" WindowStartupLocation="CenterScreen" WindowStyle="None">-->
+    <Border BorderBrush="Black" BorderThickness="1">
+        <!--<Border.Effect>
+            <DropShadowEffect Color="Black"
+                              Direction="270"
+                              BlurRadius="8"
+                              ShadowDepth="3" />
+        </Border.Effect>-->
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="16*"/>
+                <RowDefinition Height="12*"/>
             </Grid.RowDefinitions>
-            <Button Height="35" Width="35" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" Click="Close_Click" >
+            <Button Height="35" Width="35" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5,5,0" Click="Close_Click" >
             <fa:FontAwesome Icon="PowerOff" Foreground="Red" FontSize="35"/>
             <!--<Image Source="Image/close.png" Height="25" Width="25" RenderTransformOrigin="0.5,0.58"/>-->
             </Button>
             <Grid Grid.Row="1" Margin="5">
-                <!--<Grid.Background>
-                    <ImageBrush ImageSource="Image/background.jpg"/>
-                </Grid.Background>-->
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="230*"></ColumnDefinition>
                     <ColumnDefinition Width="45*"></ColumnDefinition>
@@ -30,9 +34,7 @@
                     <ColumnDefinition Width="230*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="2*"></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
@@ -48,39 +50,37 @@
                 </Grid.RowDefinitions>
                 <Label Name="lblusername" Visibility="Hidden"/>
                 <Label Name="lblItemId" Content="" Visibility="Hidden"/>
-                <Label Content="ScanCode" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Center" FontFamily="Arial Black" FontSize="16" Height="28" Margin="10,0,0,0" Width="98"/>
+                <Label Content="ScanCode" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Center" Foreground="Black" FontSize="18" Height="28" Margin="10,0,0,0" Width="98"/>
                 <TextBox Margin="10,0,0,0" Name="TxtScanCode" KeyDown="OnKeyDownHandler" Grid.Row="2" TextWrapping="Wrap"/>
-                <Label Content="Description" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" FontFamily="Arial Black" FontSize="16" Height="28" Margin="0,3" Width="110"/>
+                <Label Content="Description" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center"  Foreground="Black" FontSize="18" Height="28" Margin="0,3" Width="110"/>
                 <TextBox Name="TxtDescription"  Grid.Row="2" Grid.Column="2" TextWrapping="Wrap"/>
-                <Label Content="Department" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" FontFamily="Arial Black" FontSize="16" Height="28" Margin="0,3" Width="114"/>
+                <Label Content="Department" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center"  Foreground="Black" FontSize="18" Height="28" Margin="0,3" Width="114"/>
                 <ComboBox Name="drpDepartment" Grid.Row="2" Foreground="DarkBlue" Grid.Column="4" ItemsSource="{Binding TypeList}" Margin="0,0,10,0">
-                    <!--<ComboBoxItem Content="Deli"></ComboBoxItem>
-            <ComboBoxItem Content="Drinks"></ComboBoxItem>
-            <ComboBoxItem Content="Grocery"></ComboBoxItem>
-            <ComboBoxItem Content="Snacks"></ComboBoxItem>-->
+                   
                 </ComboBox>
-                <Label Content="Manufacturer" HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Center" FontFamily="Arial Black" FontSize="16" Height="28" Margin="10,0,0,0" Width="127"/>
+                <Label Content="Manufacturer" HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Center"  Foreground="Black" FontSize="18" Height="28" Margin="10,0,0,0" Width="127"/>
                 <TextBox Margin="10,0,0,0" Name="TxtMenufacturer" Grid.Row="4" TextWrapping="Wrap" />
-                <Label Content="Payee" HorizontalAlignment="Left" Grid.Row="5" VerticalAlignment="Center" FontFamily="Arial Black" FontSize="16" Height="28" Margin="10,0,0,0" Width="63"/>
+                <Label Content="Payee" HorizontalAlignment="Left" Grid.Row="5" VerticalAlignment="Center"  Foreground="Black" FontSize="18" Height="28" Margin="10,0,0,0" Width="63"/>
                 <TextBox Margin="10,0,0,0" Name="TxtPayee"  Grid.Row="6" TextWrapping="Wrap"/>
-                <Label Content="FoodStamp" HorizontalAlignment="Left" Grid.Row="7" Grid.Column="4" VerticalAlignment="Center" FontFamily="Arial Black" FontSize="16" Height="28" Margin="0,2,0,3" Width="108"/>
+                <Label Content="FoodStamp" HorizontalAlignment="Left" Grid.Row="7" Grid.Column="4" VerticalAlignment="Center"  Foreground="Black" FontSize="18" Height="28" Margin="0,2,0,3" Width="108"/>
                 <!--<TextBox Margin="0,0,10,0"  Grid.Row="8" Grid.Column="4" TextWrapping="Wrap" />-->
                 <CheckBox FontFamily="Arial Black" FontSize="16"  Name="TxtFoodStamp" Grid.Row="8" Grid.Column="4" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
-                <Label Content="Min Age" Grid.Row="7" FontFamily="Arial Black" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Margin="10,0,0,0" Width="80"/>
+                <Label Content="Min Age" Grid.Row="7" Foreground="Black" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Margin="10,0,0,0" Width="80"/>
                 <TextBox Margin="10,0,0,0" Name="TxtMinAge" Grid.Column="0" Grid.Row="8" TextWrapping="Wrap" />
-                <Label Content="UnitCase" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" FontFamily="Arial Black" FontSize="16" Height="28" Margin="0,3" Width="90"/>
+                <Label Content="UnitCase" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="2" VerticalAlignment="Center"  Foreground="Black" FontSize="18" Height="28" Margin="0,3" Width="90"/>
                 <TextBox Name="TxtUnitCase" Grid.Column="2" Grid.Row="4" TextWrapping="Wrap" />
-                <Label Content="CaseCost" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="4" VerticalAlignment="Center" FontFamily="Arial Black" FontSize="16" Height="28" Margin="0,3" Width="94"/>
+                <Label Content="CaseCost" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="4" VerticalAlignment="Center"  Foreground="Black" FontSize="18" Height="28" Margin="0,3" Width="94"/>
                 <TextBox Margin="0,0,10,0" Name="TxtCaseCost" Grid.Column="4" Grid.Row="4" TextWrapping="Wrap" />
-                <Label Content="UnitRetail" HorizontalAlignment="Left" Grid.Row="5" Grid.Column="2" VerticalAlignment="Center" FontFamily="Arial Black" FontSize="16" Height="28" Margin="0,3" Width="98"/>
+                <Label Content="UnitRetail" HorizontalAlignment="Left" Grid.Row="5" Grid.Column="2" VerticalAlignment="Center"  Foreground="Black" FontSize="18" Height="28" Margin="0,3" Width="98"/>
                 <TextBox Name="TxtUnitRetail" Grid.Column="2" Grid.Row="6" TextWrapping="Wrap" />
-                <Label Content="CashDiscount" HorizontalAlignment="Left" Grid.Row="5" Grid.Column="4" VerticalAlignment="Center"  FontFamily="Arial Black" FontSize="16" Height="28" Margin="0,3" Width="131"  />
+                <Label Content="CashDiscount" HorizontalAlignment="Left" Grid.Row="5" Grid.Column="4" VerticalAlignment="Center"  Foreground="Black" FontSize="18" Height="28" Margin="0,3" Width="131"  />
                 <TextBox Margin="0,0,10,0" Name="TxtCashDiscount" Grid.Column="4" Grid.Row="6" TextWrapping="Wrap"/>
-                <Label Content="TaxRate" HorizontalAlignment="Left" VerticalContentAlignment="Center" Grid.Row="7" Grid.Column="2"  FontFamily="Arial Black" FontSize="16" Width="83"/>
+                <Label Content="TaxRate" HorizontalAlignment="Left" VerticalContentAlignment="Center" Grid.Row="7" Grid.Column="2"  Foreground="Black" FontSize="18" Width="83"/>
                 <TextBox Name="TxtTaxRate" Grid.Column="2" Grid.Row="8" TextWrapping="Wrap" />
                 <Button Name="btnSave" Grid.Column="2" Background="BlueViolet" Content="Save" Grid.Row="10" Foreground="White" FontSize="30" Click="Button_Click" />
-                <Label Content="Create New Item" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontWeight="Bold" Grid.Column="2" />
+                <Label Content="Create New Item" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="28" FontWeight="Bold" Grid.Column="2" />
                 
             </Grid>
         </Grid>
+    </Border>
 </Window>

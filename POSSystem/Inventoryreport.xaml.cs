@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Reporting.WinForms;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -26,7 +27,7 @@ namespace POSSystem
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "InventoryReport.cs";
 
-        
+
 
         string username = App.Current.Properties["username"].ToString();
         DataTable dtDG = new DataTable();
@@ -34,7 +35,7 @@ namespace POSSystem
         {
             InitializeComponent();
             txtStartDate.SelectedDate = DateTime.Now.Date;
-            Inventory();
+            //Inventory();
         }
         private void onclick_Close(object sender, RoutedEventArgs e)
         {
@@ -57,8 +58,16 @@ namespace POSSystem
                 SqlDataAdapter sdaCB = new SqlDataAdapter(cmdCB);
                 DataTable dtCB = new DataTable();
                 sdaCB.Fill(dtCB);
-                dgInventory.CanUserAddRows = false;
-                dgInventory.ItemsSource = dtCB.DefaultView;
+                var Path = System.AppDomain.CurrentDomain.BaseDirectory;
+                ReportDataSource rds = new ReportDataSource("DataSet1", dtCB);
+                //ReportViewer rv1 = new ReportViewer();
+                rptInventory.LocalReport.ReportPath = Path + "Reports\\Inventory.rdlc";
+                rptInventory.LocalReport.DataSources.Clear();
+                rptInventory.LocalReport.DataSources.Add(rds);
+                rptInventory.RefreshReport();
+                rptInventory.ZoomMode = ZoomMode.PageWidth;
+                //dgInventory.CanUserAddRows = false;
+                //dgInventory.ItemsSource = dtCB.DefaultView;
             }
             catch (Exception ex)
             {

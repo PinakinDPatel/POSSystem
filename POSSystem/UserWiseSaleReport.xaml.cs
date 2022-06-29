@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Reporting.WinForms;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -25,11 +26,7 @@ namespace POSSystem
         string conString = App.Current.Properties["ConString"].ToString();
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "UserWiseSalesReport.cs";
-
-        private void PDF_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
 
         public UserWiseSaleReport()
         {
@@ -56,27 +53,35 @@ namespace POSSystem
                 con.Open();
                 sdaDG.Fill(dt);
                 con.Close();
+                var Path = System.AppDomain.CurrentDomain.BaseDirectory;
+                ReportDataSource rds = new ReportDataSource("DataSet1", dt);
+                //ReportViewer rv1 = new ReportViewer();
+                rptUserReport.LocalReport.ReportPath =Path+ "Reports\\UserWiseSalesReport.rdlc";
+                rptUserReport.LocalReport.DataSources.Clear();
+                rptUserReport.LocalReport.DataSources.Add(rds);
+                rptUserReport.RefreshReport();
+                rptUserReport.ZoomMode = ZoomMode.PageWidth;
 
-                string grossAmtTotal = dt.AsEnumerable().Sum(x => Convert.ToDecimal(x["GrossAmount"])).ToString();
-                string taxAmtTotal = dt.AsEnumerable().Sum(x => Convert.ToDecimal(x["TaxAmount"])).ToString();
-                string receiveAmtTotal = dt.AsEnumerable().Sum(x => Convert.ToDecimal(x["Receive"])).ToString();
-                string cashAmtTotal = dt.AsEnumerable().Sum(x => Convert.ToDecimal(x["Cash"])).ToString();
-                string checkAmtTotal = dt.AsEnumerable().Sum(x => Convert.ToDecimal(x["Chec"])).ToString();
-                string cardAmtTotal = dt.AsEnumerable().Sum(x => Convert.ToDecimal(x["Card"])).ToString();
-                string loanAmtTotal = dt.AsEnumerable().Sum(x => Convert.ToDecimal(x["Loan"])).ToString();
-                string ExpAmtTotal = dt.AsEnumerable().Sum(x => Convert.ToDecimal(x["Exp"])).ToString();
+                //string grossAmtTotal = dt.AsEnumerable().Sum(x => Convert.ToDecimal(x["GrossAmount"])).ToString();
+                //string taxAmtTotal = dt.AsEnumerable().Sum(x => Convert.ToDecimal(x["TaxAmount"])).ToString();
+                //string receiveAmtTotal = dt.AsEnumerable().Sum(x => Convert.ToDecimal(x["Receive"])).ToString();
+                //string cashAmtTotal = dt.AsEnumerable().Sum(x => Convert.ToDecimal(x["Cash"])).ToString();
+                //string checkAmtTotal = dt.AsEnumerable().Sum(x => Convert.ToDecimal(x["Chec"])).ToString();
+                //string cardAmtTotal = dt.AsEnumerable().Sum(x => Convert.ToDecimal(x["Card"])).ToString();
+                //string loanAmtTotal = dt.AsEnumerable().Sum(x => Convert.ToDecimal(x["Loan"])).ToString();
+                //string ExpAmtTotal = dt.AsEnumerable().Sum(x => Convert.ToDecimal(x["Exp"])).ToString();
 
-                saleDG.ItemsSource = dt.DefaultView;
-                saleDG.CanUserAddRows = false;
+                //saleDG.ItemsSource = dt.DefaultView;
+                //saleDG.CanUserAddRows = false;
 
-                tSale.Header = grossAmtTotal;
-                tTax.Header = taxAmtTotal;
-                tReceive.Header = receiveAmtTotal;
-                tCash.Header = cashAmtTotal;
-                tCheck.Header = checkAmtTotal;
-                tCard.Header = cardAmtTotal;
-                tLoan.Header = loanAmtTotal;
-                tExpence.Header = ExpAmtTotal;
+                //tSale.Header = grossAmtTotal;
+                //tTax.Header = taxAmtTotal;
+                //tReceive.Header = receiveAmtTotal;
+                //tCash.Header = cashAmtTotal;
+                //tCheck.Header = checkAmtTotal;
+                //tCard.Header = cardAmtTotal;
+                //tLoan.Header = loanAmtTotal;
+                //tExpence.Header = ExpAmtTotal;
 
             }
             catch (Exception ex)

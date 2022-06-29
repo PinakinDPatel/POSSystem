@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Reporting.WinForms;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -33,7 +34,7 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                string queryDG = "select Description,sum(cast(Amount as decimal(10,2)))as Amount,Type from dayclose where Enddate between @fromDate and @toDate Group by Description,Type";
+                string queryDG = "select Description,sum(cast(Amount as decimal(10,2)))as Amount,Type from dayclose where convert(date, Enddate) between @fromDate and @toDate Group by Description,Type";
                 SqlCommand cmdDG = new SqlCommand(queryDG, con);
                 cmdDG.Parameters.AddWithValue("@fromDate", Convert.ToDateTime(fromDate).ToString("yyyy/MM/dd"));
                 cmdDG.Parameters.AddWithValue("@toDate", Convert.ToDateTime(toDate).ToString("yyyy/MM/dd"));
@@ -42,28 +43,38 @@ namespace POSSystem
                 sdaDG.Fill(dt);
                 if (dt.Rows.Count != 0)
                 {
-                    deprtDG.ItemsSource = null;
-                    cashDG.ItemsSource = null;
+                    //deprtDG.ItemsSource = null;
+                    //cashDG.ItemsSource = null;
 
-                    DataTable deptDT = (from row in dt.AsEnumerable() where row.Field<string>("Type") == "In" select row).CopyToDataTable();
-                    DataTable cashDT = (from row in dt.AsEnumerable() where row.Field<string>("Type") == "Out" select row).CopyToDataTable();
+                    //DataTable deptDT = (from row in dt.AsEnumerable() where row.Field<string>("Type") == "In" select row).CopyToDataTable();
+                    //DataTable cashDT = (from row in dt.AsEnumerable() where row.Field<string>("Type") == "Out" select row).CopyToDataTable();
 
-                    string deptAmtTotal = deptDT.AsEnumerable().Sum(x => Convert.ToDecimal(x["Amount"])).ToString();
-                    string cashAmtTotal = cashDT.AsEnumerable().Sum(x => Convert.ToDecimal(x["Amount"])).ToString();
-                    string compareTotal1 = (Convert.ToDecimal(deptAmtTotal) - Convert.ToDecimal(cashAmtTotal)).ToString();
+                    var Path = System.AppDomain.CurrentDomain.BaseDirectory;
+                    ReportDataSource rds = new ReportDataSource("DataSet1", dt);
+                    //ReportViewer rv1 = new ReportViewer();
+                    rptUserReport.LocalReport.ReportPath = Path + "Reports\\Salesreport.rdlc";
+                    rptUserReport.LocalReport.DataSources.Clear();
+                    rptUserReport.LocalReport.DataSources.Add(rds);
+                    rptUserReport.RefreshReport();
+                    rptUserReport.ZoomMode = ZoomMode.PageWidth;
 
-                    //deptDT.Rows.Add("Total", deptAmtTotal);
-                    //cashDT.Rows.Add("Total", cashAmtTotal);
 
-                    deprtDG.ItemsSource = deptDT.DefaultView;
-                    deprtDG.CanUserAddRows = false;
+                    //string deptAmtTotal = deptDT.AsEnumerable().Sum(x => Convert.ToDecimal(x["Amount"])).ToString();
+                    //string cashAmtTotal = cashDT.AsEnumerable().Sum(x => Convert.ToDecimal(x["Amount"])).ToString();
+                    //string compareTotal1 = (Convert.ToDecimal(deptAmtTotal) - Convert.ToDecimal(cashAmtTotal)).ToString();
 
-                    cashDG.ItemsSource = cashDT.DefaultView;
-                    cashDG.CanUserAddRows = false;
+                    ////deptDT.Rows.Add("Total", deptAmtTotal);
+                    ////cashDT.Rows.Add("Total", cashAmtTotal);
 
-                    inAmtTotal.Content = deptAmtTotal;
-                    outAmtTotal.Content = cashAmtTotal;
-                    lblShortOver.Content = compareTotal1;
+                    //deprtDG.ItemsSource = deptDT.DefaultView;
+                    //deprtDG.CanUserAddRows = false;
+
+                    //cashDG.ItemsSource = cashDT.DefaultView;
+                    //cashDG.CanUserAddRows = false;
+
+                    //inAmtTotal.Content = deptAmtTotal;
+                    //outAmtTotal.Content = cashAmtTotal;
+                    //lblShortOver.Content = compareTotal1;
                 }
             }
             catch (Exception ex)
