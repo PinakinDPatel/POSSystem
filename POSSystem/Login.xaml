@@ -54,7 +54,7 @@
                         </Grid.RowDefinitions>
                         <Label Content="Login" HorizontalAlignment="Center" Foreground="BlueViolet" VerticalAlignment="Center" FontSize="32" FontFamily="Arial Black" Grid.Row="1"/>
                         <Label Content="Enter Your Password" HorizontalAlignment="Center" Foreground="BlueViolet" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"  Grid.Row="2" />
-                        <TextBox Name="TxtPassword" Width="250" Margin="10" Foreground="BlueViolet" KeyDown="OnKeyDownHandler" TextWrapping="Wrap" FontSize="22" Grid.Row="3"/>
+                        <PasswordBox Name="TxtPassword" Width="250" Margin="10" Foreground="BlueViolet" KeyDown="OnKeyDownHandler" FontSize="22" Grid.Row="3"/>
                         <Button Content="Sign In" Name="TxtSignIn" Margin="10" Width="250" FontSize="32" Background="BlueViolet" FontWeight="Bold" Foreground="White" Click="TxtSignIn_Click" Grid.Row="4"/>
                     </Grid>
                     <Grid Grid.Column="1">

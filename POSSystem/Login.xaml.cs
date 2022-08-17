@@ -30,7 +30,7 @@ namespace POSSystem
         {
             try
             {
-                TextBox tb = new TextBox();
+                PasswordBox tb = new PasswordBox();
                 InitializeComponent();
                 tb.KeyDown += new KeyEventHandler(OnKeyDownHandler);
                 TxtPassword.Focus();
@@ -64,7 +64,7 @@ namespace POSSystem
             try
             {
                 string number = (sender as Button).Content.ToString();
-                TxtPassword.Text += number;
+                TxtPassword.Password += number;
             }
             catch (Exception ex)
             {
@@ -76,7 +76,7 @@ namespace POSSystem
         {
             try
             {
-                TxtPassword.Text = "";
+                TxtPassword.Password = "";
             }
             catch (Exception ex)
             {
@@ -92,7 +92,7 @@ namespace POSSystem
                 SqlConnection con = new SqlConnection(userConString);
                 string query = "select * from userregi where password=@password ";
                 SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@password", TxtPassword.Text);
+                cmd.Parameters.AddWithValue("@password", TxtPassword.Password);
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 //con.Open();
