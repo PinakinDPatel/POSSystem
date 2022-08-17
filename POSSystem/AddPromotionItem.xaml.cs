@@ -41,7 +41,7 @@ namespace POSSystem
                 dt.Clear();
                 ugProGroup.Children.Clear();
                 SqlConnection con = new SqlConnection(conString);
-                string queryCustomer = "select GroupId,ProGroup from ProGroup";
+                string queryCustomer = "select promotiongroupid,PromotionName from PromotionGroup union all select Groupid, ProGroup from ProGroup where ProGroup not in(Select promotionName from PromotionGroup)";
                 SqlCommand cmdcustomer = new SqlCommand(queryCustomer, con);
                 SqlDataAdapter sdacustomer = new SqlDataAdapter(cmdcustomer);
                 //DataTable dt = new DataTable();

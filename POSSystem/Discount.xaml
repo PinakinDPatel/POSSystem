@@ -36,6 +36,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
             <Label Name="hdnID"></Label>
             <Label Grid.Row="0" Content="Discount-By :-" HorizontalAlignment="Right" VerticalAlignment="Center"/>
@@ -66,13 +67,17 @@
             <Label Content="Must Enter Eighter Discount or New Price" Grid.RowSpan="2" Foreground="Blue" VerticalAlignment="Center" Grid.Column="2" Grid.Row="5"/>
             <Label Grid.Row="6" Content="New Price :-" HorizontalAlignment="Right" VerticalAlignment="Center"/>
             <TextBox x:Name="TxtNewPrice" Grid.Column="1" Grid.Row="6" Margin="6"/>
-            <Label Grid.Row="7" Content="Start Date :-" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-            <DatePicker x:Name="datePickerStart" Foreground="DarkBlue" FontSize="20" Grid.Row="7" Grid.Column="1" Margin="6"/>
-            <Label Content="" Grid.Column="2" Grid.Row="7" Grid.RowSpan="2" VerticalAlignment="Center"/>
-            <Label Grid.Row="8" Content="End Date :-" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-            <DatePicker x:Name="datePickerEnd" Foreground="DarkBlue" FontSize="20" Grid.Row="8" Grid.Column="1" Margin="6" />
-            <Button Name="btnsave" Content="Save" Foreground="White" Background="BlueViolet" Margin="6" Grid.Row="9" Grid.Column="1" Click="Btnsave_Click"/>
-            <Grid Name="gridupdate" Grid.ColumnSpan="3" Grid.Row="9" Visibility="Hidden">
+            <Label Grid.Row="7" Content="Type :-" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            <ComboBox Name="cbType" Foreground="DarkBlue" Grid.Row="7" Grid.Column="1" Margin="6" SelectedIndex="0" FontSize="16">
+                <ComboBoxItem>Once</ComboBoxItem>
+                <ComboBoxItem>Multy</ComboBoxItem>
+            </ComboBox>
+            <Label Grid.Row="8" Content="Start Date :-" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            <DatePicker x:Name="datePickerStart" Foreground="DarkBlue" FontSize="20" Grid.Row="8" Grid.Column="1" Margin="6"/>
+            <Label Grid.Row="9" Content="End Date :-" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            <DatePicker x:Name="datePickerEnd" Foreground="DarkBlue" FontSize="20" Grid.Row="9" Grid.Column="1" Margin="6" />
+            <Button Name="btnsave" Content="Save" Foreground="White" Background="BlueViolet" Margin="6" Grid.Row="10" Grid.Column="1" Click="Btnsave_Click"/>
+            <Grid Name="gridupdate" Grid.ColumnSpan="3" Grid.Row="10" Visibility="Hidden">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>

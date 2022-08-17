@@ -89,7 +89,7 @@
                         <ComboBox Name="drphead" SelectionChanged="drphead_SelectionChanged" SelectedIndex="0" FontSize="20" Foreground="DarkBlue">
                             <ComboBoxItem Content="-- Select --"/>
                             <ComboBoxItem Content="Tender"/>
-                            <ComboBoxItem Content="Customers"/>
+                            <ComboBoxItem Content="Customer"/>
                             <ComboBoxItem Content="Vendor" />
                             <ComboBoxItem Content="Expence"/>
                             <ComboBoxItem Content="Income" />

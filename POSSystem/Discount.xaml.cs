@@ -86,12 +86,14 @@ namespace POSSystem
             TxtPromotionName.Text = dt.Rows[0].ItemArray[1].ToString();
             TxtDescription.Text = dt.Rows[0].ItemArray[2].ToString();
             cbItemGroup.Text = dt.Rows[0].ItemArray[3].ToString();
-            TxtQuantity.Text = dt.Rows[0].ItemArray[6].ToString();
+            TxtQuantity.Text = dt.Rows[0].ItemArray[5].ToString();
             TxtNewPrice.Text = dt.Rows[0].ItemArray[4].ToString();
-            txtDiscount.Text = dt.Rows[0].ItemArray[13].ToString();
-            datePickerStart.Text = dt.Rows[0].ItemArray[7].ToString();
-            datePickerEnd.Text = dt.Rows[0].ItemArray[8].ToString();
-            cbDiscountBy.Text = dt.Rows[0].ItemArray[14].ToString();
+            txtDiscount.Text = dt.Rows[0].ItemArray[12].ToString();
+            datePickerStart.Text = dt.Rows[0].ItemArray[6].ToString();
+            datePickerEnd.Text = dt.Rows[0].ItemArray[7].ToString();
+            cbDiscountBy.Text = dt.Rows[0].ItemArray[13].ToString();
+            cbType.Text = dt.Rows[0].ItemArray[14].ToString();
+
 
             btnsave.Visibility = Visibility.Hidden;
             gridupdate.Visibility = Visibility.Visible;
@@ -101,7 +103,7 @@ namespace POSSystem
         private void Btnsave_Click(object sender, RoutedEventArgs e)
         {
             SqlConnection con = new SqlConnection(conString);
-            string queryCustomer = "select PromotionId from promotion where DiscountBY='" + cbDiscountBy.Text + "' and PromotionGroup='" + cbItemGroup.Text + "'";
+            string queryCustomer = "select PromotionId from promotion where DiscountBY='" + cbDiscountBy.Text + "' and PromotionGroup='" + cbItemGroup.Text + "' and Promotionid!='" + hdnID.Content + "'";
             SqlCommand cmdcustomer = new SqlCommand(queryCustomer, con);
             SqlDataAdapter sdacustomer = new SqlDataAdapter(cmdcustomer);
             DataTable dt = new DataTable();
@@ -114,7 +116,7 @@ namespace POSSystem
                 if (hdnID.Content.ToString() == "")
                 {
                     string time = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt").Replace("-", "/");
-                    string queryI = "Insert into Promotion(PromotionGroup,PromotionName,Description,Quantity,NewPrice,Discount,StartDate,EndDate,DiscountBy,EnterBy,EnterOn)Values(@PromotionGroup,@promotionname,@description,@quantity,@newprice,@discount,@startdate,@enddate,@discountBy,@enterby,@enteron)";
+                    string queryI = "Insert into Promotion(PromotionGroup,PromotionName,Description,Quantity,NewPrice,Discount,StartDate,EndDate,DiscountBy,Type,EnterBy,EnterOn)Values(@PromotionGroup,@promotionname,@description,@quantity,@newprice,@discount,@startdate,@enddate,@discountBy,@type,@enterby,@enteron)";
                     SqlCommand cmdI = new SqlCommand(queryI, con);
                     cmdI.Parameters.AddWithValue("@promotionname", TxtPromotionName.Text);
                     cmdI.Parameters.AddWithValue("@description", TxtDescription.Text);
@@ -127,6 +129,7 @@ namespace POSSystem
                     cmdI.Parameters.AddWithValue("@enterby", username);
                     cmdI.Parameters.AddWithValue("@enteron", time);
                     cmdI.Parameters.AddWithValue("@discountBy", cbDiscountBy.Text);
+                    cmdI.Parameters.AddWithValue("@type", cbType.Text);
                     con.Open();
                     cmdI.ExecuteNonQuery();
                     con.Close();
@@ -134,7 +137,7 @@ namespace POSSystem
                 else
                 {
                     string time = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt").Replace("-", "/");
-                    string queryI = "Update Promotion set PromotionGroup=@PromotionGroup, PromotionName=@promotionname,Description=@description,NewPrice=@newprice,Discount=@discount,Quantity=@quantity,StartDate=@startdate,EndDate=@enddate,DiscountBy=@discountBy,EnterBy=@enterby,EnterOn=@enteron where PromotionId =@id";
+                    string queryI = "Update Promotion set PromotionGroup=@PromotionGroup, PromotionName=@promotionname,Description=@description,NewPrice=@newprice,Discount=@discount,Quantity=@quantity,StartDate=@startdate,EndDate=@enddate,DiscountBy=@discountBy,EnterBy=@enterby,EnterOn=@enteron,Type=@type where PromotionId =@id";
                     SqlCommand cmdI = new SqlCommand(queryI, con);
                     cmdI.Parameters.AddWithValue("@promotionname", TxtPromotionName.Text);
                     cmdI.Parameters.AddWithValue("@description", TxtDescription.Text);
@@ -148,6 +151,7 @@ namespace POSSystem
                     cmdI.Parameters.AddWithValue("@enteron", time);
                     cmdI.Parameters.AddWithValue("@discountBy", cbDiscountBy.Text);
                     cmdI.Parameters.AddWithValue("@id", hdnID.Content);
+                    cmdI.Parameters.AddWithValue("@type", cbType.Text);
                     con.Open();
                     cmdI.ExecuteNonQuery();
                     con.Close();
