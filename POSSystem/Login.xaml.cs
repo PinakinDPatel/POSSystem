@@ -9,6 +9,10 @@ using System.Windows.Input;
 using System.Deployment.Application;
 using System.Reflection;
 
+using RestSharp;
+using Square.Models;
+using System.Management;
+
 namespace POSSystem
 {
     public partial class Login : Window
@@ -30,6 +34,28 @@ namespace POSSystem
         {
             try
             {
+                //try
+                //{
+                //    var result = await client.DevicesApi.GetDeviceCodeAsync(id: "B3Z6NAMYQSMTM");
+                //}
+                //catch (ApiException e)
+                //{
+                //    Console.WriteLine("Failed to make the request");
+                //    Console.WriteLine($"Response Code: {e.ResponseCode}");
+                //    Console.WriteLine($"Exception: {e.Message}");
+                //}
+                //var deviceCode = new DeviceCode.Builder(productType: "TERMINAL_API").Name("Squardev").LocationId("02FGFVJR8HR1N").Build();
+               var strJSONContent = "{'device_code':{'product_type':'TERMINAL_API','name':'Squardev tet','location_id':'LDPQXMKET0HRC'},'idempotency_key':'80cb629e-f251-4506-ac94-5c5787bff22f'}";
+                var client = new RestSharp.RestClient("https://connect.squareup.com");
+                var request = new RestRequest("v2/devices/codes", Method.GET);
+                request.RequestFormat = RestSharp.DataFormat.Json;
+                request.AddHeader("Accept", "application/json");
+                request.AddHeader("Authorization", "Bearer 	EAAAESEEhUZHEQnyfESFSVtrgriytdOeliataJQ4gxfYom-yae_A2PFt1AazfMTG");
+                //setHeaders(request);
+                request.AddHeader("Square-Version", "2022-11-16");
+                request.AddParameter("application/json", strJSONContent, ParameterType.RequestBody);
+                var Response = client.Execute(request);
+                var r = Response.Content;
                 PasswordBox tb = new PasswordBox();
                 InitializeComponent();
                 tb.KeyDown += new KeyEventHandler(OnKeyDownHandler);
@@ -88,11 +114,20 @@ namespace POSSystem
         {
             try
             {
+                ManagementObjectSearcher mos = new ManagementObjectSearcher("SELECT * FROM Win32_BaseBoard");
+                ManagementObjectCollection moc = mos.Get();
+                string motherBoard = "";
+                foreach (ManagementObject mo in moc)
+                {
+                    motherBoard = (string)mo["SerialNumber"];
+                }
+                string [] str  =motherBoard.Split('/');
                 //SqlConnection con = new SqlConnection(conString);
                 SqlConnection con = new SqlConnection(userConString);
-                string query = "select * from userregi where password=@password ";
+                string query = "select UserName,userregi.StoreId,Register_id,RoleName from userregi inner join storeDetails on userregi.storeid=storeDetails.storeid inner join register on storeDetails.storeid=register.storeid where password=@password and SerialNumber=@serialnumber ";
                 SqlCommand cmd = new SqlCommand(query, con);
                 cmd.Parameters.AddWithValue("@password", TxtPassword.Password);
+                cmd.Parameters.AddWithValue("@serialnumber", str[1]);
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 //con.Open();
@@ -103,6 +138,7 @@ namespace POSSystem
                 if (dt.Rows.Count > 0)
                 {
                     App.Current.Properties["username"] = dt.Rows[0]["UserName"].ToString();
+                    App.Current.Properties["RegisterId"] = dt.Rows[0]["Register_id"].ToString();
                     App.Current.Properties["StoreId"] = dt.Rows[0]["StoreId"].ToString();
                     App.Current.Properties["Role"] = dt.Rows[0]["RoleName"].ToString();
                     var s = App.Current.Properties["StoreId"].ToString();

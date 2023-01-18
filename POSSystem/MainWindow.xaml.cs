@@ -45,6 +45,8 @@ namespace POSSystem
         DataTable dtstr = new DataTable();
         DataTable dtHold = new DataTable();
         string username = App.Current.Properties["username"].ToString();
+        string storeid = App.Current.Properties["StoreId"].ToString();
+        string registerid = App.Current.Properties["RegisterId"].ToString();
         string date = DateTime.Now.ToString("yyyy/MM/dd");
         private static string ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "MainWindow.cs";
@@ -57,7 +59,7 @@ namespace POSSystem
             try
             {
                 InitializeComponent();
-
+                lblLoyaltyId.Content = "";
                 //Load TextBox and Label
                 grandTotal.Content = "Pay $0.00";
                 txtTotal.Content = "$0.00";
@@ -221,7 +223,7 @@ namespace POSSystem
                 dtAccount.Rows.Add(newRow);
 
                 SqlConnection con = new SqlConnection(conString);
-                string queryCustomer = "select Name,Account.LoyaltyId,Count from Account Left Outer join (select Loyaltyid,Count(Count)as Count from(select distinct transactionid, Loyaltyid,COUNT(LoyaltyId)as Count from SalesItem where loyaltyId!='' and EndDate='"+date+"' group by transactionid,Loyaltyid)as z group by Loyaltyid)as x on Account.loyaltyid=x.loyaltyId where Head='Customer'";
+                string queryCustomer = "select Name,Account.LoyaltyId,Count from Account Left Outer join (select Loyaltyid,Count(Count)as Count from(select distinct transactionid, Loyaltyid,COUNT(LoyaltyId)as Count from SalesItem where loyaltyId!='' and EndDate='" + date + "' group by transactionid,Loyaltyid)as z group by Loyaltyid)as x on Account.loyaltyid=x.loyaltyId where Head='Customer'";
                 SqlCommand cmdcustomer = new SqlCommand(queryCustomer, con);
                 SqlDataAdapter sdacustomer = new SqlDataAdapter(cmdcustomer);
 
@@ -2112,7 +2114,7 @@ namespace POSSystem
                 string cashReturn = TxtCashReturn.Text.Replace("$ ", "");
                 string tranid = Convert.ToInt32(lblTranid.Content).ToString();
 
-                string transaction = "insert into Transactions(Tran_id,EndDate,EndTime,GrossAmount,TaxAmount,GrandAmount,CreateBy,CreateOn)Values('" + tranid + "','" + onlydate + "','" + onlytime + "','" + totalAmt + "','" + tax + "','" + grandTotalAmt + "','" + username + "','" + date + "')";
+                string transaction = "insert into Transactions(Tran_id,EndDate,EndTime,GrossAmount,TaxAmount,GrandAmount,CreateBy,CreateOn,StoreId,Register_id)Values('" + tranid + "','" + onlydate + "','" + onlytime + "','" + totalAmt + "','" + tax + "','" + grandTotalAmt + "','" + username + "','" + date + "','" + storeid + "','" + registerid + "')";
                 SqlCommand cmd = new SqlCommand(transaction, con);
                 con.Open();
                 cmd.ExecuteNonQuery();
@@ -2183,7 +2185,7 @@ namespace POSSystem
                 //PrintDocument = new PrintDocument();
                 //PrintDocument.PrintPage += new PrintPageEventHandler(FormatPage);
                 //PrintDocument.Print();
-                if (lblLoyaltyId.Content.ToString() != "")
+                if (lblLoyaltyId.Content.ToString() != "" && lblLoyaltyId.Content == null)
                 {
                     var results = from myRow in dtAccount.AsEnumerable()
                                   where myRow.Field<string>("Name") == cbCustomer1.Text
@@ -2194,10 +2196,11 @@ namespace POSSystem
                     }
                 }
                 cbcustomer.Text = "";
+                lblCount.Content = 0;
                 TxtCheck.Text = "";
-                txtTotal.Content = "";
+                txtTotal.Content = "$0.00";
+                taxtTotal.Content = "$0.00";
                 grandTotal.Content = "Pay " + "$" + "0.00";
-                taxtTotal.Content = "";
                 cbCustomer1.Text = "--Select--";
                 lblLoyaltyId.Content = "";
                 lblDate.Content = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
@@ -2258,7 +2261,7 @@ namespace POSSystem
                 new SolidBrush(Color.Black), 22 + 22, 22);
                 Offset = Offset + largeinc + 20;
 
-                DrawAtStart(dtstr.Rows[0]["StoreAddress"].ToString(), Offset);
+                DrawAtStart("   "+dtstr.Rows[0]["StoreAddress"].ToString(), Offset);
                 Offset = Offset + largeinc;
                 DrawAtStart(dtstr.Rows[0]["PhoneNumber"].ToString(), Offset);
 
@@ -2266,12 +2269,13 @@ namespace POSSystem
 
                 String underLine = "-------------------------------------";
                 DrawLine(underLine, largefont, Offset, 0);
-
                 Offset = Offset + largeinc;
-                DrawAtStart("Transaction Id:" + lblTranid.Content, Offset);
+                DrawAtStart("Register Id : " + registerid, Offset);
+                Offset = Offset + largeinc;
+                DrawAtStart("Transaction Id : " + lblTranid.Content, Offset);
                 Offset = Offset + largeinc;
 
-                DrawAtStart("Date: " + lblDate.Content, Offset);
+                DrawAtStart("Date : " + lblDate.Content, Offset);
 
                 Offset = Offset + largeinc;
                 underLine = "-------------------------------------";
@@ -2583,48 +2587,7 @@ namespace POSSystem
             }
         }
 
-        private void SendErrorToText(Exception ex, string errorFileName)
-        {
-            var line = Environment.NewLine + Environment.NewLine;
-            ErrorlineNo = ex.StackTrace.Substring(ex.StackTrace.Length - 7, 7);
-            Errormsg = ex.GetType().Name.ToString();
-            extype = ex.GetType().ToString();
-            MessageBox.Show("line -" + line + "</br> FileName -" + errorFileName, "Error " + ex);
-            ErrorLocation = ex.Message.ToString();
-            try
-            {
-                string filepath = System.AppDomain.CurrentDomain.BaseDirectory;
-                string errorpath = filepath + "\\ErrorFiles\\";
-
-                if (!Directory.Exists(filepath))
-                {
-                    Directory.CreateDirectory(filepath);
-                }
-
-                filepath = filepath + "log.txt";
-
-                if (!File.Exists(filepath))
-                {
-                    File.Create(filepath).Dispose();
-                }
-                using (StreamWriter sw = File.AppendText(filepath))
-                {
-                    string error = "Log Written Date:" + " " + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt") + line + "File Name :" + errorFileName + line + "Error Line No :" + " " + ErrorlineNo + line + "Error Message:" + " " + Errormsg + line + "Exception Type:" + " " + extype + line + "Error Location :" + " " + ErrorLocation + line + " Error Page Url:" + " " + exurl + line + "User Host IP:" + " " + hostIp + line;
-                    sw.WriteLine("-----------Exception Details on " + " " + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt") + "-----------------");
-                    sw.WriteLine("-------------------------------------------------------------------------------------");
-                    sw.WriteLine(line);
-                    sw.WriteLine(error);
-                    sw.WriteLine("--------------------------------*End*------------------------------------------");
-                    sw.WriteLine(line);
-                    sw.Flush();
-                    sw.Close();
-                }
-            }
-
-            catch (Exception e)
-            {
-            }
-        }
+        
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
@@ -5294,7 +5257,7 @@ namespace POSSystem
                 if (cc > 0)
                 {
                     lblLoyaltyId.Content = dtAccount.Rows[cc]["LoyaltyId"].ToString();
-                    loyaltyCustomerCount =Convert.ToInt32(dtAccount.Rows[cc]["Count"]);
+                    loyaltyCustomerCount = Convert.ToInt32(dtAccount.Rows[cc]["Count"]);
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
                         dt.Rows[i]["UnitRetail"] = dt.Rows[i]["UnitRetail"];
@@ -5965,6 +5928,49 @@ namespace POSSystem
             catch
             {
                 return false;
+            }
+        }
+
+        private void SendErrorToText(Exception ex, string errorFileName)
+        {
+            var line = Environment.NewLine + Environment.NewLine;
+            ErrorlineNo = ex.StackTrace.Substring(ex.StackTrace.Length - 7, 7);
+            Errormsg = ex.GetType().Name.ToString();
+            extype = ex.GetType().ToString();
+            MessageBox.Show("line -" + line + "</br> FileName -" + errorFileName, "Error " + ex);
+            ErrorLocation = ex.Message.ToString();
+            try
+            {
+                string filepath = System.AppDomain.CurrentDomain.BaseDirectory;
+                string errorpath = filepath + "\\ErrorFiles\\";
+
+                if (!Directory.Exists(filepath))
+                {
+                    Directory.CreateDirectory(filepath);
+                }
+
+                filepath = filepath + "log.txt";
+
+                if (!File.Exists(filepath))
+                {
+                    File.Create(filepath).Dispose();
+                }
+                using (StreamWriter sw = File.AppendText(filepath))
+                {
+                    string error = "Log Written Date:" + " " + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt") + line + "File Name :" + errorFileName + line + "Error Line No :" + " " + ErrorlineNo + line + "Error Message:" + " " + Errormsg + line + "Exception Type:" + " " + extype + line + "Error Location :" + " " + ErrorLocation + line + " Error Page Url:" + " " + exurl + line + "User Host IP:" + " " + hostIp + line;
+                    sw.WriteLine("-----------Exception Details on " + " " + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss tt") + "-----------------");
+                    sw.WriteLine("-------------------------------------------------------------------------------------");
+                    sw.WriteLine(line);
+                    sw.WriteLine(error);
+                    sw.WriteLine("--------------------------------*End*------------------------------------------");
+                    sw.WriteLine(line);
+                    sw.Flush();
+                    sw.Close();
+                }
+            }
+
+            catch (Exception e)
+            {
             }
         }
     }
