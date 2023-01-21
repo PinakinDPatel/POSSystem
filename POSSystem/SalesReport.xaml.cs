@@ -34,7 +34,7 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                string queryDG = "select Description,sum(cast(Amount as decimal(10,2)))as Amount,Type from dayclose where convert(date, Enddate) between @fromDate and @toDate Group by Description,Type";
+                string queryDG = "select Description,sum(cast(Amount as decimal(10,2)))as Amount,Type from dayclose where convert(date, Enddate) between convert(date, @fromDate) and convert(date, @toDate) Group by Description,Type";
                 SqlCommand cmdDG = new SqlCommand(queryDG, con);
                 cmdDG.Parameters.AddWithValue("@fromDate", Convert.ToDateTime(fromDate).ToString("yyyy/MM/dd"));
                 cmdDG.Parameters.AddWithValue("@toDate", Convert.ToDateTime(toDate).ToString("yyyy/MM/dd"));

@@ -223,7 +223,7 @@ namespace POSSystem
                 dtAccount.Rows.Add(newRow);
 
                 SqlConnection con = new SqlConnection(conString);
-                string queryCustomer = "select Name,Account.LoyaltyId,Count from Account Left Outer join (select Loyaltyid,Count(Count)as Count from(select distinct transactionid, Loyaltyid,COUNT(LoyaltyId)as Count from SalesItem where loyaltyId!='' and EndDate='" + date + "' group by transactionid,Loyaltyid)as z group by Loyaltyid)as x on Account.loyaltyid=x.loyaltyId where Head='Customer'";
+                string queryCustomer = "select Name,Account.LoyaltyId,coalesce(Count,0)as Count from Account Left Outer join (select Loyaltyid,Count(Count)as Count from(select distinct transactionid, Loyaltyid,COUNT(LoyaltyId)as Count from SalesItem where loyaltyId!='' and EndDate='" + date + "' group by transactionid,Loyaltyid)as z group by Loyaltyid)as x on Account.loyaltyid=x.loyaltyId where Head='Customer'";
                 SqlCommand cmdcustomer = new SqlCommand(queryCustomer, con);
                 SqlDataAdapter sdacustomer = new SqlDataAdapter(cmdcustomer);
 
@@ -1030,7 +1030,7 @@ namespace POSSystem
                                                         {
                                                             string price = "";
                                                             if (itemdt["NewPrice"].ToString() != "" && itemdt["NewPrice"].ToString() != "0")
-                                                                price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString();
+                                                                price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString("0.00");
 
                                                             if (price == "")
                                                             {
@@ -1043,7 +1043,7 @@ namespace POSSystem
                                                                     ldisc = Convert.ToDecimal(itemdt["LDiscount"]);
                                                                 if (itemdt["RPromotionName"].ToString() != "")
                                                                     rdisc = Convert.ToDecimal(itemdt["RDiscount"]);
-                                                                price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - ldisc - rdisc - Convert.ToDecimal(itemdt["Discount"])).ToString();
+                                                                price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - ldisc - rdisc - Convert.ToDecimal(itemdt["Discount"])).ToString("0.00");
                                                             }
                                                             itemdt["SPromotionName"] = itemdt["PROName"];
                                                             itemdt["UnitRetail"] = price;
@@ -1061,7 +1061,7 @@ namespace POSSystem
                                                         {
                                                             string price = "";
                                                             if (itemdt["NewPrice"].ToString() != "" && itemdt["NewPrice"].ToString() != "0")
-                                                                price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString();
+                                                                price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString("0.00");
 
                                                             if (price == "")
                                                             {
@@ -1074,7 +1074,7 @@ namespace POSSystem
                                                                     ldisc = Convert.ToDecimal(itemdt["LDiscount"]);
                                                                 if (itemdt["RPromotionName"].ToString() != "")
                                                                     rdisc = Convert.ToDecimal(itemdt["RDiscount"]);
-                                                                price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - ldisc - rdisc - Convert.ToDecimal(itemdt["Discount"])).ToString();
+                                                                price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - ldisc - rdisc - Convert.ToDecimal(itemdt["Discount"])).ToString("0.00");
                                                             }
                                                             itemdt["SPromotionName"] = itemdt["PROName"];
                                                             itemdt["UnitRetail"] = price;
@@ -1117,7 +1117,7 @@ namespace POSSystem
                                                         {
                                                             string price = "";
                                                             if (itemdt["RNewPrice"].ToString() != "" && itemdt["RNewPrice"].ToString() != "0")
-                                                                price = (Convert.ToDecimal(itemdt["RNewPrice"]) / Convert.ToInt32(itemdt["RQty"])).ToString();
+                                                                price = (Convert.ToDecimal(itemdt["RNewPrice"]) / Convert.ToInt32(itemdt["RQty"])).ToString("0.00");
                                                             if (price == "")
                                                             {
                                                                 decimal odisc = 0;
@@ -1129,7 +1129,7 @@ namespace POSSystem
                                                                     ldisc = Convert.ToDecimal(itemdt["LDiscount"]);
                                                                 if (itemdt["SPromotionName"].ToString() != "")
                                                                     sdisc = Convert.ToDecimal(itemdt["Discount"]);
-                                                                price = (Convert.ToDecimal(itemdt["Oprice"]) - sdisc - ldisc - odisc - Convert.ToDecimal(itemdt["RDiscount"])).ToString();
+                                                                price = (Convert.ToDecimal(itemdt["Oprice"]) - sdisc - ldisc - odisc - Convert.ToDecimal(itemdt["RDiscount"])).ToString("0.00");
                                                             }
                                                             itemdt["RPromotionName"] = itemdt["RPROName"];
                                                             itemdt["UnitRetail"] = price;
@@ -1150,7 +1150,7 @@ namespace POSSystem
 
 
                                                             if (itemdt["RNewPrice"].ToString() != "" && itemdt["RNewPrice"].ToString() != "0")
-                                                                price = (Convert.ToDecimal(itemdt["RNewPrice"]) / Convert.ToInt32(itemdt["RQty"])).ToString();
+                                                                price = (Convert.ToDecimal(itemdt["RNewPrice"]) / Convert.ToInt32(itemdt["RQty"])).ToString("0.00");
 
                                                             if (price == "")
                                                             {
@@ -1164,7 +1164,7 @@ namespace POSSystem
                                                                 if (itemdt["SPromotionName"].ToString() != "")
                                                                     sdisc = Convert.ToDecimal(itemdt["Discount"]);
 
-                                                                price = (Convert.ToDecimal(itemdt["Oprice"]) - sdisc - ldisc - odisc - Convert.ToDecimal(itemdt["RDiscount"])).ToString();
+                                                                price = (Convert.ToDecimal(itemdt["Oprice"]) - sdisc - ldisc - odisc - Convert.ToDecimal(itemdt["RDiscount"])).ToString("0.00");
                                                             }
                                                             itemdt["RPromotionName"] = itemdt["RPROName"];
                                                             itemdt["UnitRetail"] = price;
@@ -1214,7 +1214,7 @@ namespace POSSystem
                                                                 {
                                                                     string price = "";
                                                                     if (itemdt["LNewPrice"].ToString() != "" && itemdt["LNewPrice"].ToString() != "0")
-                                                                        price = (Convert.ToDecimal(itemdt["LNewPrice"]) / Convert.ToInt32(itemdt["LQty"])).ToString();
+                                                                        price = (Convert.ToDecimal(itemdt["LNewPrice"]) / Convert.ToInt32(itemdt["LQty"])).ToString("0.00");
 
                                                                     if (price == "")
                                                                     {
@@ -1227,7 +1227,7 @@ namespace POSSystem
                                                                             sdisc = Convert.ToDecimal(itemdt["Discount"]);
                                                                         if (itemdt["RPromotionName"].ToString() != "")
                                                                             rdisc = Convert.ToDecimal(itemdt["RDiscount"]);
-                                                                        price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(itemdt["LDiscount"]) / Convert.ToInt32(itemdt["LQty"]))).ToString();
+                                                                        price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(itemdt["LDiscount"]) / Convert.ToInt32(itemdt["LQty"]))).ToString("0.00");
                                                                     }
 
                                                                     itemdt["LPromotionName"] = itemdt["LPROName"];
@@ -1253,7 +1253,7 @@ namespace POSSystem
                                                                 {
                                                                     string price = "";
                                                                     if (itemdt["LNewPrice"].ToString() != "" && itemdt["LNewPrice"].ToString() != "0")
-                                                                        price = (Convert.ToDecimal(itemdt["LNewPrice"]) / Convert.ToInt32(itemdt["LQty"])).ToString();
+                                                                        price = (Convert.ToDecimal(itemdt["LNewPrice"]) / Convert.ToInt32(itemdt["LQty"])).ToString("0.00");
 
                                                                     if (price == "")
                                                                     {
@@ -1266,7 +1266,7 @@ namespace POSSystem
                                                                             sdisc = Convert.ToDecimal(itemdt["Discount"]);
                                                                         if (itemdt["RPromotionName"].ToString() != "")
                                                                             rdisc = Convert.ToDecimal(itemdt["RDiscount"]);
-                                                                        price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(itemdt["LDiscount"]) / Convert.ToInt32(itemdt["LQty"]))).ToString();
+                                                                        price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(itemdt["LDiscount"]) / Convert.ToInt32(itemdt["LQty"]))).ToString("0.00");
                                                                     }
 
                                                                     itemdt["LPromotionName"] = itemdt["LPROName"];
@@ -1314,7 +1314,7 @@ namespace POSSystem
                                                         {
                                                             string price = "";
                                                             if (itemdt["ONewPrice"].ToString() != "" && itemdt["ONewPrice"].ToString() != "0")
-                                                                price = (Convert.ToDecimal(itemdt["ONewPrice"]) / Convert.ToInt32(itemdt["OQty"])).ToString();
+                                                                price = (Convert.ToDecimal(itemdt["ONewPrice"]) / Convert.ToInt32(itemdt["OQty"])).ToString("0.00");
 
                                                             if (price == "")
                                                             {
@@ -1327,7 +1327,7 @@ namespace POSSystem
                                                                     sdisc = Convert.ToDecimal(itemdt["Discount"]);
                                                                 if (itemdt["RPromotionName"].ToString() != "")
                                                                     rdisc = Convert.ToDecimal(itemdt["RDiscount"]);
-                                                                price = (Convert.ToDecimal(itemdt["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(itemdt["ODiscount"])).ToString();
+                                                                price = (Convert.ToDecimal(itemdt["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(itemdt["ODiscount"])).ToString("0.00");
                                                             }
 
                                                             itemdt["OPromotionName"] = itemdt["OPROName"];
@@ -1347,7 +1347,7 @@ namespace POSSystem
                                                         {
                                                             string price = "";
                                                             if (itemdt["ONewPrice"].ToString() != "" && itemdt["ONewPrice"].ToString() != "0")
-                                                                price = (Convert.ToDecimal(itemdt["ONewPrice"]) / Convert.ToInt32(itemdt["OQty"])).ToString();
+                                                                price = (Convert.ToDecimal(itemdt["ONewPrice"]) / Convert.ToInt32(itemdt["OQty"])).ToString("0.00");
 
                                                             if (price == "")
                                                             {
@@ -1360,7 +1360,7 @@ namespace POSSystem
                                                                     sdisc = Convert.ToDecimal(itemdt["Discount"]);
                                                                 if (itemdt["RPromotionName"].ToString() != "")
                                                                     rdisc = Convert.ToDecimal(itemdt["RDiscount"]);
-                                                                price = (Convert.ToDecimal(itemdt["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(itemdt["ODiscount"])).ToString();
+                                                                price = (Convert.ToDecimal(itemdt["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(itemdt["ODiscount"])).ToString("0.00");
                                                             }
 
                                                             itemdt["OPromotionName"] = itemdt["OPROName"];
@@ -1531,7 +1531,7 @@ namespace POSSystem
                                                     {
                                                         string price = "";
                                                         if (itemdt["NewPrice"].ToString() != "" && itemdt["NewPrice"].ToString() != "0")
-                                                            price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString("0.00");
 
                                                         if (price == "")
                                                         {
@@ -1544,7 +1544,7 @@ namespace POSSystem
                                                                 ldisc = Convert.ToDecimal(itemdt["LDiscount"]);
                                                             if (itemdt["RPromotionName"].ToString() != "")
                                                                 rdisc = Convert.ToDecimal(itemdt["RDiscount"]);
-                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - ldisc - rdisc - Convert.ToDecimal(itemdt["Discount"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - ldisc - rdisc - Convert.ToDecimal(itemdt["Discount"])).ToString("0.00");
                                                         }
                                                         itemdt["SPromotionName"] = itemdt["PROName"];
                                                         itemdt["UnitRetail"] = price;
@@ -1562,7 +1562,7 @@ namespace POSSystem
                                                     {
                                                         string price = "";
                                                         if (itemdt["NewPrice"].ToString() != "" && itemdt["NewPrice"].ToString() != "0")
-                                                            price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString("0.00");
 
                                                         if (price == "")
                                                         {
@@ -1575,7 +1575,7 @@ namespace POSSystem
                                                                 ldisc = Convert.ToDecimal(itemdt["LDiscount"]);
                                                             if (itemdt["RPromotionName"].ToString() != "")
                                                                 rdisc = Convert.ToDecimal(itemdt["RDiscount"]);
-                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - ldisc - rdisc - Convert.ToDecimal(itemdt["Discount"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - ldisc - rdisc - Convert.ToDecimal(itemdt["Discount"])).ToString("0.00");
                                                         }
                                                         itemdt["SPromotionName"] = itemdt["PROName"];
                                                         itemdt["UnitRetail"] = price;
@@ -1621,7 +1621,7 @@ namespace POSSystem
 
 
                                                         if (itemdt["RNewPrice"].ToString() != "" && itemdt["RNewPrice"].ToString() != "0")
-                                                            price = (Convert.ToDecimal(itemdt["RNewPrice"]) / Convert.ToInt32(itemdt["RQty"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["RNewPrice"]) / Convert.ToInt32(itemdt["RQty"])).ToString("0.00");
 
                                                         if (price == "")
                                                         {
@@ -1635,7 +1635,7 @@ namespace POSSystem
                                                             if (itemdt["SPromotionName"].ToString() != "")
                                                                 sdisc = Convert.ToDecimal(itemdt["Discount"]);
 
-                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - sdisc - ldisc - odisc - Convert.ToDecimal(itemdt["RDiscount"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - sdisc - ldisc - odisc - Convert.ToDecimal(itemdt["RDiscount"])).ToString("0.00");
                                                         }
                                                         itemdt["RPromotionName"] = itemdt["RPROName"];
                                                         itemdt["UnitRetail"] = price;
@@ -1657,7 +1657,7 @@ namespace POSSystem
 
 
                                                         if (itemdt["RNewPrice"].ToString() != "" && itemdt["RNewPrice"].ToString() != "0")
-                                                            price = (Convert.ToDecimal(itemdt["RNewPrice"]) / Convert.ToInt32(itemdt["RQty"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["RNewPrice"]) / Convert.ToInt32(itemdt["RQty"])).ToString("0.00");
 
                                                         if (price == "")
                                                         {
@@ -1671,7 +1671,7 @@ namespace POSSystem
                                                             if (itemdt["SPromotionName"].ToString() != "")
                                                                 sdisc = Convert.ToDecimal(itemdt["Discount"]);
 
-                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - sdisc - ldisc - odisc - Convert.ToDecimal(itemdt["RDiscount"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - sdisc - ldisc - odisc - Convert.ToDecimal(itemdt["RDiscount"])).ToString("0.00");
                                                         }
                                                         itemdt["RPromotionName"] = itemdt["RPROName"];
                                                         itemdt["UnitRetail"] = price;
@@ -1721,7 +1721,7 @@ namespace POSSystem
                                                             {
                                                                 string price = "";
                                                                 if (itemdt["LNewPrice"].ToString() != "" && itemdt["LNewPrice"].ToString() != "0")
-                                                                    price = (Convert.ToDecimal(itemdt["LNewPrice"]) / Convert.ToInt32(itemdt["LQty"])).ToString();
+                                                                    price = (Convert.ToDecimal(itemdt["LNewPrice"]) / Convert.ToInt32(itemdt["LQty"])).ToString("0.00");
 
                                                                 if (price == "")
                                                                 {
@@ -1734,8 +1734,8 @@ namespace POSSystem
                                                                         sdisc = Convert.ToDecimal(itemdt["Discount"]);
                                                                     if (itemdt["RPromotionName"].ToString() != "")
                                                                         rdisc = Convert.ToDecimal(itemdt["RDiscount"]);
-                                                                    price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(itemdt["LDiscount"]) / Convert.ToInt32(itemdt["LQty"]))).ToString();
-                                                                    //price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - Convert.ToDecimal(itemdt["LDiscount"])).ToString();
+                                                                    price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(itemdt["LDiscount"]) / Convert.ToInt32(itemdt["LQty"]))).ToString("0.00");
+                                                                    //price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - Convert.ToDecimal(itemdt["LDiscount"])).ToString("0.00");
                                                                 }
 
                                                                 itemdt["LPromotionName"] = itemdt["LPROName"];
@@ -1761,7 +1761,7 @@ namespace POSSystem
                                                             {
                                                                 string price = "";
                                                                 if (itemdt["LNewPrice"].ToString() != "" && itemdt["LNewPrice"].ToString() != "0")
-                                                                    price = (Convert.ToDecimal(itemdt["LNewPrice"]) / Convert.ToInt32(itemdt["LQty"])).ToString();
+                                                                    price = (Convert.ToDecimal(itemdt["LNewPrice"]) / Convert.ToInt32(itemdt["LQty"])).ToString("0.00");
 
                                                                 if (price == "")
                                                                 {
@@ -1774,8 +1774,8 @@ namespace POSSystem
                                                                         sdisc = Convert.ToDecimal(itemdt["Discount"]);
                                                                     if (itemdt["RPromotionName"].ToString() != "")
                                                                         rdisc = Convert.ToDecimal(itemdt["RDiscount"]);
-                                                                    price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(itemdt["LDiscount"]) / Convert.ToInt32(itemdt["LQty"]))).ToString();
-                                                                    //price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - Convert.ToDecimal(itemdt["LDiscount"])).ToString();
+                                                                    price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(itemdt["LDiscount"]) / Convert.ToInt32(itemdt["LQty"]))).ToString("0.00");
+                                                                    //price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - Convert.ToDecimal(itemdt["LDiscount"])).ToString("0.00");
                                                                 }
 
                                                                 itemdt["LPromotionName"] = itemdt["LPROName"];
@@ -1823,7 +1823,7 @@ namespace POSSystem
                                                     {
                                                         string price = "";
                                                         if (itemdt["ONewPrice"].ToString() != "" && itemdt["ONewPrice"].ToString() != "0")
-                                                            price = (Convert.ToDecimal(itemdt["ONewPrice"]) / Convert.ToInt32(itemdt["OQty"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["ONewPrice"]) / Convert.ToInt32(itemdt["OQty"])).ToString("0.00");
 
                                                         if (price == "")
                                                         {
@@ -1836,7 +1836,7 @@ namespace POSSystem
                                                                 sdisc = Convert.ToDecimal(itemdt["Discount"]);
                                                             if (itemdt["RPromotionName"].ToString() != "")
                                                                 rdisc = Convert.ToDecimal(itemdt["RDiscount"]);
-                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(itemdt["ODiscount"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(itemdt["ODiscount"])).ToString("0.00");
                                                         }
 
                                                         itemdt["OPromotionName"] = itemdt["OPROName"];
@@ -1856,7 +1856,7 @@ namespace POSSystem
                                                     {
                                                         string price = "";
                                                         if (itemdt["ONewPrice"].ToString() != "" && itemdt["ONewPrice"].ToString() != "0")
-                                                            price = (Convert.ToDecimal(itemdt["ONewPrice"]) / Convert.ToInt32(itemdt["OQty"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["ONewPrice"]) / Convert.ToInt32(itemdt["OQty"])).ToString("0.00");
 
                                                         if (price == "")
                                                         {
@@ -1869,7 +1869,7 @@ namespace POSSystem
                                                                 sdisc = Convert.ToDecimal(itemdt["Discount"]);
                                                             if (itemdt["RPromotionName"].ToString() != "")
                                                                 rdisc = Convert.ToDecimal(itemdt["RDiscount"]);
-                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(itemdt["ODiscount"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(itemdt["ODiscount"])).ToString("0.00");
                                                         }
 
                                                         itemdt["OPromotionName"] = itemdt["OPROName"];
@@ -1911,10 +1911,10 @@ namespace POSSystem
                     //                                {
                     //                                    string price = "";
                     //                                    if (itemdt["NewPrice"].ToString() != "" && itemdt["NewPrice"].ToString() != "0")
-                    //                                        price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString();
+                    //                                        price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString("0.00");
 
                     //                                    if (price == "")
-                    //                                        price = (Convert.ToDecimal(itemdt["Oprice"]) - Convert.ToDecimal(itemdt["Discount"])).ToString();
+                    //                                        price = (Convert.ToDecimal(itemdt["Oprice"]) - Convert.ToDecimal(itemdt["Discount"])).ToString("0.00");
 
                     //                                    itemdt["PromotionName"] = itemdt["PROName"];
                     //                                    itemdt["UnitRetail"] = price;
@@ -1933,10 +1933,10 @@ namespace POSSystem
                     //                            {
                     //                                string price = "";
                     //                                if (itemdt["NewPrice"].ToString() != "" && itemdt["NewPrice"].ToString() != "0")
-                    //                                    price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString();
+                    //                                    price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString("0.00");
 
                     //                                if (price == "")
-                    //                                    price = (Convert.ToDecimal(itemdt["Oprice"]) - Convert.ToDecimal(itemdt["Discount"])).ToString();
+                    //                                    price = (Convert.ToDecimal(itemdt["Oprice"]) - Convert.ToDecimal(itemdt["Discount"])).ToString("0.00");
 
                     //                                itemdt["PromotionName"] = itemdt["PROName"];
                     //                                itemdt["UnitRetail"] = price;
@@ -1944,10 +1944,10 @@ namespace POSSystem
                     //                            }
                     //                            //string price = "";
                     //                            //if (itemdt["NewPrice"].ToString() != "" && itemdt["NewPrice"].ToString() != "0")
-                    //                            //    price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString();
+                    //                            //    price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString("0.00");
 
                     //                            //if (price == "")
-                    //                            //    price = (Convert.ToDecimal(itemdt["Oprice"]) - Convert.ToDecimal(itemdt["Discount"])).ToString();
+                    //                            //    price = (Convert.ToDecimal(itemdt["Oprice"]) - Convert.ToDecimal(itemdt["Discount"])).ToString("0.00");
 
                     //                            //itemdt["PromotionName"] = itemdt["PROName"];
                     //                            //itemdt["UnitRetail"] = price;
@@ -2266,9 +2266,13 @@ namespace POSSystem
                 DrawAtStart(dtstr.Rows[0]["PhoneNumber"].ToString(), Offset);
 
                 Offset = Offset + largeinc;
-
                 String underLine = "-------------------------------------";
-                DrawLine(underLine, largefont, Offset, 0);
+                DrawLine(underLine, largefont, Offset, 2);
+                Offset = Offset + largeinc;
+                graphics.DrawString("Sales Receipt", headerfont, new SolidBrush(Color.Black), 20 + 20, Offset);
+                Offset = Offset + largeinc;
+                underLine = "-------------------------------------";
+                DrawLine(underLine, largefont, Offset, 3);
                 Offset = Offset + largeinc;
                 DrawAtStart("Register Id : " + registerid, Offset);
                 Offset = Offset + largeinc;
@@ -2396,9 +2400,9 @@ namespace POSSystem
                              new SolidBrush(Color.Black), startX + 5, startY + Offset);
 
                 graphics.DrawString(value, itemfont,
-                         new SolidBrush(Color.Black), startX + 180, startY + Offset);
+                         new SolidBrush(Color.Black), startX + 170, startY + Offset);
                 graphics.DrawString(value1, itemfont,
-                      new SolidBrush(Color.Black), startX + 210, startY + Offset);
+                      new SolidBrush(Color.Black), startX + 200, startY + Offset);
             }
             catch (Exception ex)
             {
@@ -2734,6 +2738,9 @@ namespace POSSystem
                 DrawLine(underLine, largefont, Offset, 0);
 
                 Offset = Offset + mediuminc + 10;
+                DrawAtStart("          Register :" + registerid, Offset);
+                Offset = Offset + mediuminc;
+                Offset = Offset + mediuminc;
                 DrawAtStart("Date From:       " + dtTrans.Rows[0]["SDate"].ToString(), Offset);
                 Offset = Offset + mediuminc;
                 DrawAtStart("Date To:           " + dtTrans.Rows[0]["EDate"].ToString(), Offset);
@@ -2967,10 +2974,10 @@ namespace POSSystem
                         //                                                    {
                         //                                                        string price = "";
                         //                                                        if (itemDT1["NewPrice"].ToString() != "")
-                        //                                                            price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
+                        //                                                            price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString("0.00");
 
                         //                                                        if (price == "")
-                        //                                                            price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["Discount"])).ToString();
+                        //                                                            price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["Discount"])).ToString("0.00");
 
                         //                                                        dt.Rows[z]["PromotionName"] = itemDT1["PROName"];
                         //                                                        dt.Rows[z]["UnitRetail"] = price;
@@ -3093,7 +3100,7 @@ namespace POSSystem
                                                                 {
                                                                     string price = "";
                                                                     if (itemDT1["NewPrice"].ToString() != "" && itemDT1["NewPrice"].ToString() != "0")
-                                                                        price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
+                                                                        price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString("0.00");
                                                                     if (price == "")
                                                                     {
                                                                         decimal ldisc = 0;
@@ -3105,7 +3112,7 @@ namespace POSSystem
                                                                             odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
                                                                         if (dt.Rows[z]["RPromotionName"].ToString() != "")
                                                                             rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
-                                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - rdisc - Convert.ToDecimal(dt.Rows[z]["Discount"])).ToString();
+                                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - rdisc - Convert.ToDecimal(dt.Rows[z]["Discount"])).ToString("0.00");
                                                                     }
                                                                     dt.Rows[z]["SPromotionName"] = dt.Rows[z]["PROName"];
                                                                     dt.Rows[z]["UnitRetail"] = price;
@@ -3126,7 +3133,7 @@ namespace POSSystem
                                                                 {
                                                                     string price = "";
                                                                     if (itemDT1["NewPrice"].ToString() != "" && itemDT1["NewPrice"].ToString() != "0")
-                                                                        price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
+                                                                        price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString("0.00");
 
                                                                     if (price == "")
                                                                     {
@@ -3139,7 +3146,7 @@ namespace POSSystem
                                                                             odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
                                                                         if (dt.Rows[z]["RPromotionName"].ToString() != "")
                                                                             rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
-                                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - rdisc - Convert.ToDecimal(dt.Rows[z]["Discount"])).ToString();
+                                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - rdisc - Convert.ToDecimal(dt.Rows[z]["Discount"])).ToString("0.00");
                                                                     }
                                                                     dt.Rows[z]["SPromotionName"] = dt.Rows[z]["PROName"];
                                                                     dt.Rows[z]["UnitRetail"] = price;
@@ -3199,7 +3206,7 @@ namespace POSSystem
                                                                 {
                                                                     string price = "";
                                                                     if (itemDT1["RNewPrice"].ToString() != "" && itemDT1["RNewPrice"].ToString() != "0")
-                                                                        price = (Convert.ToDecimal(itemDT1["RNewPrice"]) / Convert.ToInt32(itemDT1["RQty"])).ToString();
+                                                                        price = (Convert.ToDecimal(itemDT1["RNewPrice"]) / Convert.ToInt32(itemDT1["RQty"])).ToString("0.00");
 
                                                                     if (price == "")
                                                                     {
@@ -3212,7 +3219,7 @@ namespace POSSystem
                                                                             odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
                                                                         if (dt.Rows[z]["SPromotionName"].ToString() != "")
                                                                             sdisc = Convert.ToDecimal(dt.Rows[z]["Discount"]);
-                                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - sdisc - Convert.ToDecimal(dt.Rows[z]["RDiscount"])).ToString();
+                                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - sdisc - Convert.ToDecimal(dt.Rows[z]["RDiscount"])).ToString("0.00");
                                                                     }
                                                                     dt.Rows[z]["RPromotionName"] = dt.Rows[z]["RPROName"];
                                                                     dt.Rows[z]["UnitRetail"] = price;
@@ -3236,7 +3243,7 @@ namespace POSSystem
                                                                 {
                                                                     string price = "";
                                                                     if (itemDT1["RNewPrice"].ToString() != "" && itemDT1["RNewPrice"].ToString() != "0")
-                                                                        price = (Convert.ToDecimal(itemDT1["RNewPrice"]) / Convert.ToInt32(itemDT1["RQty"])).ToString();
+                                                                        price = (Convert.ToDecimal(itemDT1["RNewPrice"]) / Convert.ToInt32(itemDT1["RQty"])).ToString("0.00");
 
                                                                     if (price == "")
                                                                     {
@@ -3249,7 +3256,7 @@ namespace POSSystem
                                                                             odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
                                                                         if (dt.Rows[z]["SPromotionName"].ToString() != "")
                                                                             sdisc = Convert.ToDecimal(dt.Rows[z]["Discount"]);
-                                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - sdisc - Convert.ToDecimal(dt.Rows[z]["RDiscount"])).ToString();
+                                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - sdisc - Convert.ToDecimal(dt.Rows[z]["RDiscount"])).ToString("0.00");
                                                                     }
                                                                     dt.Rows[z]["RPromotionName"] = dt.Rows[z]["RPROName"];
                                                                     dt.Rows[z]["UnitRetail"] = price;
@@ -3317,7 +3324,7 @@ namespace POSSystem
                                                                     {
                                                                         string price = "";
                                                                         if (itemDT1["LNewPrice"].ToString() != "")
-                                                                            price = (Convert.ToDecimal(itemDT1["LNewPrice"]) / Convert.ToInt32(itemDT1["LQty"])).ToString();
+                                                                            price = (Convert.ToDecimal(itemDT1["LNewPrice"]) / Convert.ToInt32(itemDT1["LQty"])).ToString("0.00");
 
                                                                         if (price == "")
                                                                         {
@@ -3330,7 +3337,7 @@ namespace POSSystem
                                                                                 sdisc = Convert.ToDecimal(dt.Rows[z]["SDiscount"]);
                                                                             if (dt.Rows[z]["RPromotionName"].ToString() != "")
                                                                                 rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
-                                                                            price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(dt.Rows[z]["LDiscount"]) / Convert.ToInt32(dt.Rows[z]["LQty"]))).ToString();
+                                                                            price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(dt.Rows[z]["LDiscount"]) / Convert.ToInt32(dt.Rows[z]["LQty"]))).ToString("0.00");
                                                                         }
                                                                         dt.Rows[z]["LPromotionName"] = dt.Rows[z]["LPROName"];
                                                                         dt.Rows[z]["UnitRetail"] = price;
@@ -3359,7 +3366,7 @@ namespace POSSystem
                                                                     {
                                                                         string price = "";
                                                                         if (itemDT1["LNewPrice"].ToString() != "")
-                                                                            price = (Convert.ToDecimal(itemDT1["LNewPrice"]) / Convert.ToInt32(itemDT1["LQty"])).ToString();
+                                                                            price = (Convert.ToDecimal(itemDT1["LNewPrice"]) / Convert.ToInt32(itemDT1["LQty"])).ToString("0.00");
 
                                                                         if (price == "")
                                                                         {
@@ -3372,9 +3379,9 @@ namespace POSSystem
                                                                                 sdisc = Convert.ToDecimal(dt.Rows[z]["SDiscount"]);
                                                                             if (dt.Rows[z]["RPromotionName"].ToString() != "")
                                                                                 rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
-                                                                            price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(dt.Rows[z]["LDiscount"]) / Convert.ToInt32(dt.Rows[z]["LQty"]))).ToString();
-                                                                            //price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - odisc - sdisc - rdisc - Convert.ToDecimal(dt.Rows[z]["LDiscount"])).ToString();
-                                                                            //price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["LDiscount"])).ToString();
+                                                                            price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(dt.Rows[z]["LDiscount"]) / Convert.ToInt32(dt.Rows[z]["LQty"]))).ToString("0.00");
+                                                                            //price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - odisc - sdisc - rdisc - Convert.ToDecimal(dt.Rows[z]["LDiscount"])).ToString("0.00");
+                                                                            //price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["LDiscount"])).ToString("0.00");
                                                                         }
                                                                         dt.Rows[z]["LPromotionName"] = dt.Rows[z]["LPROName"];
                                                                         dt.Rows[z]["UnitRetail"] = price;
@@ -3442,7 +3449,7 @@ namespace POSSystem
                                                                 {
                                                                     string price = "";
                                                                     if (itemDT1["ONewPrice"].ToString() != "" && itemDT1["ONewPrice"].ToString() != "0")
-                                                                        price = (Convert.ToDecimal(itemDT1["ONewPrice"]) / Convert.ToInt32(itemDT1["OQty"])).ToString();
+                                                                        price = (Convert.ToDecimal(itemDT1["ONewPrice"]) / Convert.ToInt32(itemDT1["OQty"])).ToString("0.00");
 
                                                                     if (price == "")
                                                                     {
@@ -3455,7 +3462,7 @@ namespace POSSystem
                                                                             sdisc = Convert.ToDecimal(dt.Rows[z]["SDiscount"]);
                                                                         if (dt.Rows[z]["RPromotionName"].ToString() != "")
                                                                             rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
-                                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(dt.Rows[z]["ODiscount"])).ToString();
+                                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(dt.Rows[z]["ODiscount"])).ToString("0.00");
                                                                     }
                                                                     dt.Rows[z]["OPromotionName"] = dt.Rows[z]["OPROName"];
                                                                     dt.Rows[z]["UnitRetail"] = price;
@@ -3479,7 +3486,7 @@ namespace POSSystem
                                                                 {
                                                                     string price = "";
                                                                     if (itemDT1["ONewPrice"].ToString() != "" && itemDT1["ONewPrice"].ToString() != "0")
-                                                                        price = (Convert.ToDecimal(itemDT1["ONewPrice"]) / Convert.ToInt32(itemDT1["OQty"])).ToString();
+                                                                        price = (Convert.ToDecimal(itemDT1["ONewPrice"]) / Convert.ToInt32(itemDT1["OQty"])).ToString("0.00");
 
                                                                     if (price == "")
                                                                     {
@@ -3492,7 +3499,7 @@ namespace POSSystem
                                                                             sdisc = Convert.ToDecimal(dt.Rows[z]["SDiscount"]);
                                                                         if (dt.Rows[z]["RPromotionName"].ToString() != "")
                                                                             rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
-                                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(dt.Rows[z]["ODiscount"])).ToString();
+                                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(dt.Rows[z]["ODiscount"])).ToString("0.00");
                                                                     }
                                                                     dt.Rows[z]["OPromotionName"] = dt.Rows[z]["OPROName"];
                                                                     dt.Rows[z]["UnitRetail"] = price;
@@ -3574,10 +3581,10 @@ namespace POSSystem
                 //                                                            {
                 //                                                                string price = "";
                 //                                                                if (itemDT1["NewPrice"].ToString() != "" && itemDT1["NewPrice"].ToString() != "0")
-                //                                                                    price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
+                //                                                                    price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString("0.00");
 
                 //                                                                if (price == "")
-                //                                                                    price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["Discount"])).ToString();
+                //                                                                    price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["Discount"])).ToString("0.00");
 
                 //                                                                datatable.Rows[z]["PromotionName"] = itemDT1["PROName"];
                 //                                                                datatable.Rows[z]["UnitRetail"] = price;
@@ -3596,10 +3603,10 @@ namespace POSSystem
                 //                                                        {
                 //                                                            string price = "";
                 //                                                            if (itemDT1["NewPrice"].ToString() != "" && itemDT1["NewPrice"].ToString() != "0")
-                //                                                                price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
+                //                                                                price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString("0.00");
 
                 //                                                            if (price == "")
-                //                                                                price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["Discount"])).ToString();
+                //                                                                price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["Discount"])).ToString("0.00");
 
                 //                                                            datatable.Rows[z]["PromotionName"] = itemDT1["PROName"];
                 //                                                            datatable.Rows[z]["UnitRetail"] = price;
@@ -3608,10 +3615,10 @@ namespace POSSystem
 
                 //                                                        //string price = "";
                 //                                                        //if (itemDT1["NewPrice"].ToString() != "" && itemDT1["NewPrice"].ToString() != "0")
-                //                                                        //    price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
+                //                                                        //    price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString("0.00");
 
                 //                                                        //if (price == "")
-                //                                                        //    price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) * Convert.ToDecimal(itemDT1["Discount"]) / 100)).ToString();
+                //                                                        //    price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) * Convert.ToDecimal(itemDT1["Discount"]) / 100)).ToString("0.00");
 
                 //                                                        //datatable.Rows[z]["PromotionName"] = itemDT1["PROName"];
                 //                                                        //datatable.Rows[z]["UnitRetail"] = price;
@@ -3645,10 +3652,10 @@ namespace POSSystem
                 //                                                                        {
                 //                                                                            string price = "";
                 //                                                                            if (itemDT1["NewPrice"].ToString() != "" && itemDT1["NewPrice"].ToString() != "0")
-                //                                                                                price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
+                //                                                                                price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString("0.00");
 
                 //                                                                            if (price == "")
-                //                                                                                price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["Discount"])).ToString();
+                //                                                                                price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["Discount"])).ToString("0.00");
 
                 //                                                                            datatable.Rows[z]["PromotionName"] = itemDT1["PROName"];
                 //                                                                            datatable.Rows[z]["UnitRetail"] = price;
@@ -3667,10 +3674,10 @@ namespace POSSystem
                 //                                                                    {
                 //                                                                        string price = "";
                 //                                                                        if (itemDT1["NewPrice"].ToString() != "" && itemDT1["NewPrice"].ToString() != "0")
-                //                                                                            price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
+                //                                                                            price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString("0.00");
 
                 //                                                                        if (price == "")
-                //                                                                            price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["Discount"])).ToString();
+                //                                                                            price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["Discount"])).ToString("0.00");
 
                 //                                                                        datatable.Rows[z]["PromotionName"] = itemDT1["PROName"];
                 //                                                                        datatable.Rows[z]["UnitRetail"] = price;
@@ -3678,10 +3685,10 @@ namespace POSSystem
                 //                                                                    }
                 //                                                                    //string price = "";
                 //                                                                    //if (itemDT1["NewPrice"].ToString() != "")
-                //                                                                    //    price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
+                //                                                                    //    price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString("0.00");
 
                 //                                                                    //if (price == "")
-                //                                                                    //    price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) * Convert.ToDecimal(itemDT1["Discount"]) / 100)).ToString();
+                //                                                                    //    price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) * Convert.ToDecimal(itemDT1["Discount"]) / 100)).ToString("0.00");
 
                 //                                                                    //datatable.Rows[z]["Quantity"] = q2;
                 //                                                                    //datatable.Rows[z]["PromotionName"] = itemDT1["PROName"];
@@ -3722,10 +3729,10 @@ namespace POSSystem
                 //                                                                    {
                 //                                                                        string price = "";
                 //                                                                        if (itemDT1["NewPrice"].ToString() != "" && itemDT1["NewPrice"].ToString() != "0")
-                //                                                                            price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
+                //                                                                            price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString("0.00");
 
                 //                                                                        if (price == "")
-                //                                                                            price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["Discount"])).ToString();
+                //                                                                            price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["Discount"])).ToString("0.00");
 
                 //                                                                        datatable.Rows[z]["PromotionName"] = itemDT1["PROName"];
                 //                                                                        datatable.Rows[z]["UnitRetail"] = price;
@@ -3744,10 +3751,10 @@ namespace POSSystem
                 //                                                                {
                 //                                                                    string price = "";
                 //                                                                    if (itemDT1["NewPrice"].ToString() != "" && itemDT1["NewPrice"].ToString() != "0")
-                //                                                                        price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
+                //                                                                        price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString("0.00");
 
                 //                                                                    if (price == "")
-                //                                                                        price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["Discount"])).ToString();
+                //                                                                        price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["Discount"])).ToString("0.00");
 
                 //                                                                    datatable.Rows[z]["PromotionName"] = itemDT1["PROName"];
                 //                                                                    datatable.Rows[z]["UnitRetail"] = price;
@@ -3756,10 +3763,10 @@ namespace POSSystem
 
                 //                                                                //string price = "";
                 //                                                                //if (itemDT1["NewPrice"].ToString() != "")
-                //                                                                //    price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
+                //                                                                //    price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString("0.00");
 
                 //                                                                //if (price == "")
-                //                                                                //    price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["Discount"])).ToString();
+                //                                                                //    price = (Convert.ToDecimal(datatable.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["Discount"])).ToString("0.00");
 
                 //                                                                //if (Convert.ToInt32(datatable.Rows[z]["Quantity"]) >= Convert.ToInt32(datatable.Rows[z]["Qty"]))
                 //                                                                //{
@@ -4418,7 +4425,7 @@ namespace POSSystem
                             //                                            {
                             //                                                string price = "";
                             //                                                if (itemDT1["NewPrice"].ToString() != "" && itemDT1["NewPrice"].ToString() != "0")
-                            //                                                    price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString();
+                            //                                                    price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString("0.00");
 
                             //                                                if (price == "")
                             //                                                {
@@ -4431,7 +4438,7 @@ namespace POSSystem
                             //                                                        odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
                             //                                                    if (dt.Rows[z]["RPromotionName"].ToString() != "")
                             //                                                        rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
-                            //                                                    price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - rdisc - Convert.ToDecimal(dt.Rows[z]["Discount"])).ToString();
+                            //                                                    price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - rdisc - Convert.ToDecimal(dt.Rows[z]["Discount"])).ToString("0.00");
                             //                                                }
                             //                                                dt.Rows[z]["SPromotionName"] = dt.Rows[z]["PROName"];
                             //                                                dt.Rows[z]["UnitRetail"] = price;
@@ -4490,7 +4497,7 @@ namespace POSSystem
                             //                                            {
                             //                                                string price = "";
                             //                                                if (itemDT1["RNewPrice"].ToString() != "" && itemDT1["RNewPrice"].ToString() != "0")
-                            //                                                    price = (Convert.ToDecimal(itemDT1["RNewPrice"]) / Convert.ToInt32(itemDT1["RQty"])).ToString();
+                            //                                                    price = (Convert.ToDecimal(itemDT1["RNewPrice"]) / Convert.ToInt32(itemDT1["RQty"])).ToString("0.00");
 
                             //                                                if (price == "")
                             //                                                {
@@ -4503,7 +4510,7 @@ namespace POSSystem
                             //                                                        odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
                             //                                                    if (dt.Rows[z]["SPromotionName"].ToString() != "")
                             //                                                        sdisc = Convert.ToDecimal(dt.Rows[z]["Discount"]);
-                            //                                                    price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - sdisc - Convert.ToDecimal(dt.Rows[z]["RDiscount"])).ToString();
+                            //                                                    price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - sdisc - Convert.ToDecimal(dt.Rows[z]["RDiscount"])).ToString("0.00");
                             //                                                }
                             //                                                dt.Rows[z]["RPromotionName"] = dt.Rows[z]["RPROName"];
                             //                                                dt.Rows[z]["UnitRetail"] = price;
@@ -4562,7 +4569,7 @@ namespace POSSystem
                             //                                            {
                             //                                                string price = "";
                             //                                                if (itemDT1["LNewPrice"].ToString() != "")
-                            //                                                    price = (Convert.ToDecimal(itemDT1["LNewPrice"]) / Convert.ToInt32(itemDT1["LQty"])).ToString();
+                            //                                                    price = (Convert.ToDecimal(itemDT1["LNewPrice"]) / Convert.ToInt32(itemDT1["LQty"])).ToString("0.00");
 
                             //                                                if (price == "")
                             //                                                {
@@ -4575,8 +4582,8 @@ namespace POSSystem
                             //                                                        sdisc = Convert.ToDecimal(dt.Rows[z]["SDiscount"]);
                             //                                                    if (dt.Rows[z]["RPromotionName"].ToString() != "")
                             //                                                        rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
-                            //                                                    price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - odisc - sdisc - rdisc - Convert.ToDecimal(dt.Rows[z]["LDiscount"])).ToString();
-                            //                                                    //price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["LDiscount"])).ToString();
+                            //                                                    price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - odisc - sdisc - rdisc - Convert.ToDecimal(dt.Rows[z]["LDiscount"])).ToString("0.00");
+                            //                                                    //price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["LDiscount"])).ToString("0.00");
                             //                                                }
                             //                                                dt.Rows[z]["LPromotionName"] = dt.Rows[z]["LPROName"];
                             //                                                dt.Rows[z]["UnitRetail"] = price;
@@ -4639,7 +4646,7 @@ namespace POSSystem
                             //                                            {
                             //                                                string price = "";
                             //                                                if (itemDT1["ONewPrice"].ToString() != ""&& itemDT1["ONewPrice"].ToString() != "0")
-                            //                                                    price = (Convert.ToDecimal(itemDT1["ONewPrice"]) / Convert.ToInt32(itemDT1["OQty"])).ToString();
+                            //                                                    price = (Convert.ToDecimal(itemDT1["ONewPrice"]) / Convert.ToInt32(itemDT1["OQty"])).ToString("0.00");
 
                             //                                                if (price == "")
                             //                                                {
@@ -4652,7 +4659,7 @@ namespace POSSystem
                             //                                                        sdisc = Convert.ToDecimal(dt.Rows[z]["SDiscount"]);
                             //                                                    if (dt.Rows[z]["RPromotionName"].ToString() != "")
                             //                                                        rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
-                            //                                                    price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(dt.Rows[z]["ODiscount"])).ToString();
+                            //                                                    price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(dt.Rows[z]["ODiscount"])).ToString("0.00");
                             //                                                }
                             //                                                dt.Rows[z]["OPromotionName"] = dt.Rows[z]["OPROName"];
                             //                                                dt.Rows[z]["UnitRetail"] = price;
@@ -5383,7 +5390,7 @@ namespace POSSystem
                                                     {
                                                         string price = "";
                                                         if (itemdt["NewPrice"].ToString() != "" && itemdt["NewPrice"].ToString() != "0")
-                                                            price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString("0.00");
 
                                                         if (price == "")
                                                         {
@@ -5396,7 +5403,7 @@ namespace POSSystem
                                                                 ldisc = Convert.ToDecimal(itemdt["LDiscount"]);
                                                             if (itemdt["RPromotionName"].ToString() != "")
                                                                 rdisc = Convert.ToDecimal(itemdt["RDiscount"]);
-                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - ldisc - rdisc - Convert.ToDecimal(itemdt["Discount"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - ldisc - rdisc - Convert.ToDecimal(itemdt["Discount"])).ToString("0.00");
                                                         }
                                                         itemdt["SPromotionName"] = itemdt["PROName"];
                                                         itemdt["UnitRetail"] = price;
@@ -5414,7 +5421,7 @@ namespace POSSystem
                                                     {
                                                         string price = "";
                                                         if (itemdt["NewPrice"].ToString() != "" && itemdt["NewPrice"].ToString() != "0")
-                                                            price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["NewPrice"]) / Convert.ToInt32(itemdt["Qty"])).ToString("0.00");
 
                                                         if (price == "")
                                                         {
@@ -5427,7 +5434,7 @@ namespace POSSystem
                                                                 ldisc = Convert.ToDecimal(itemdt["LDiscount"]);
                                                             if (itemdt["RPromotionName"].ToString() != "")
                                                                 rdisc = Convert.ToDecimal(itemdt["RDiscount"]);
-                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - ldisc - rdisc - Convert.ToDecimal(itemdt["Discount"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - ldisc - rdisc - Convert.ToDecimal(itemdt["Discount"])).ToString("0.00");
                                                         }
                                                         itemdt["SPromotionName"] = itemdt["PROName"];
                                                         itemdt["UnitRetail"] = price;
@@ -5473,7 +5480,7 @@ namespace POSSystem
 
 
                                                         if (itemdt["RNewPrice"].ToString() != "" && itemdt["RNewPrice"].ToString() != "0")
-                                                            price = (Convert.ToDecimal(itemdt["RNewPrice"]) / Convert.ToInt32(itemdt["RQty"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["RNewPrice"]) / Convert.ToInt32(itemdt["RQty"])).ToString("0.00");
 
                                                         if (price == "")
                                                         {
@@ -5487,7 +5494,7 @@ namespace POSSystem
                                                             if (itemdt["SPromotionName"].ToString() != "")
                                                                 sdisc = Convert.ToDecimal(itemdt["Discount"]);
 
-                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - sdisc - ldisc - odisc - Convert.ToDecimal(itemdt["RDiscount"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - sdisc - ldisc - odisc - Convert.ToDecimal(itemdt["RDiscount"])).ToString("0.00");
                                                         }
                                                         itemdt["RPromotionName"] = itemdt["RPROName"];
                                                         itemdt["UnitRetail"] = price;
@@ -5509,7 +5516,7 @@ namespace POSSystem
 
 
                                                         if (itemdt["RNewPrice"].ToString() != "" && itemdt["RNewPrice"].ToString() != "0")
-                                                            price = (Convert.ToDecimal(itemdt["RNewPrice"]) / Convert.ToInt32(itemdt["RQty"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["RNewPrice"]) / Convert.ToInt32(itemdt["RQty"])).ToString("0.00");
 
                                                         if (price == "")
                                                         {
@@ -5523,7 +5530,7 @@ namespace POSSystem
                                                             if (itemdt["SPromotionName"].ToString() != "")
                                                                 sdisc = Convert.ToDecimal(itemdt["Discount"]);
 
-                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - sdisc - ldisc - odisc - Convert.ToDecimal(itemdt["RDiscount"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - sdisc - ldisc - odisc - Convert.ToDecimal(itemdt["RDiscount"])).ToString("0.00");
                                                         }
                                                         itemdt["RPromotionName"] = itemdt["RPROName"];
                                                         itemdt["UnitRetail"] = price;
@@ -5577,7 +5584,7 @@ namespace POSSystem
                                                                 {
                                                                     string price = "";
                                                                     if (itemdt["LNewPrice"].ToString() != "" && itemdt["LNewPrice"].ToString() != "0")
-                                                                        price = (Convert.ToDecimal(itemdt["LNewPrice"]) / Convert.ToInt32(itemdt["LQty"])).ToString();
+                                                                        price = (Convert.ToDecimal(itemdt["LNewPrice"]) / Convert.ToInt32(itemdt["LQty"])).ToString("0.00");
 
                                                                     if (price == "")
                                                                     {
@@ -5590,8 +5597,8 @@ namespace POSSystem
                                                                             sdisc = Convert.ToDecimal(itemdt["Discount"]);
                                                                         if (itemdt["RPromotionName"].ToString() != "")
                                                                             rdisc = Convert.ToDecimal(itemdt["RDiscount"]);
-                                                                        price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(itemdt["LDiscount"]) / Convert.ToInt32(itemdt["LQty"]))).ToString();
-                                                                        //price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - Convert.ToDecimal(itemdt["LDiscount"])).ToString();
+                                                                        price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(itemdt["LDiscount"]) / Convert.ToInt32(itemdt["LQty"]))).ToString("0.00");
+                                                                        //price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - Convert.ToDecimal(itemdt["LDiscount"])).ToString("0.00");
                                                                     }
 
                                                                     itemdt["LPromotionName"] = itemdt["LPROName"];
@@ -5614,7 +5621,7 @@ namespace POSSystem
                                                             {
                                                                 string price = "";
                                                                 if (itemdt["LNewPrice"].ToString() != "" && itemdt["LNewPrice"].ToString() != "0")
-                                                                    price = (Convert.ToDecimal(itemdt["LNewPrice"]) / Convert.ToInt32(itemdt["LQty"])).ToString();
+                                                                    price = (Convert.ToDecimal(itemdt["LNewPrice"]) / Convert.ToInt32(itemdt["LQty"])).ToString("0.00");
 
                                                                 if (price == "")
                                                                 {
@@ -5627,8 +5634,8 @@ namespace POSSystem
                                                                         sdisc = Convert.ToDecimal(itemdt["Discount"]);
                                                                     if (itemdt["RPromotionName"].ToString() != "")
                                                                         rdisc = Convert.ToDecimal(itemdt["RDiscount"]);
-                                                                    price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(itemdt["LDiscount"]) / Convert.ToInt32(itemdt["LQty"]))).ToString();
-                                                                    //price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - Convert.ToDecimal(itemdt["LDiscount"])).ToString();
+                                                                    price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(itemdt["LDiscount"]) / Convert.ToInt32(itemdt["LQty"]))).ToString("0.00");
+                                                                    //price = (Convert.ToDecimal(itemdt["Oprice"]) - odisc - sdisc - rdisc - Convert.ToDecimal(itemdt["LDiscount"])).ToString("0.00");
                                                                 }
 
                                                                 itemdt["LPromotionName"] = itemdt["LPROName"];
@@ -5676,7 +5683,7 @@ namespace POSSystem
                                                     {
                                                         string price = "";
                                                         if (itemdt["ONewPrice"].ToString() != "" && itemdt["ONewPrice"].ToString() != "0")
-                                                            price = (Convert.ToDecimal(itemdt["ONewPrice"]) / Convert.ToInt32(itemdt["OQty"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["ONewPrice"]) / Convert.ToInt32(itemdt["OQty"])).ToString("0.00");
 
                                                         if (price == "")
                                                         {
@@ -5689,7 +5696,7 @@ namespace POSSystem
                                                                 sdisc = Convert.ToDecimal(itemdt["Discount"]);
                                                             if (itemdt["RPromotionName"].ToString() != "")
                                                                 rdisc = Convert.ToDecimal(itemdt["RDiscount"]);
-                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(itemdt["ODiscount"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(itemdt["ODiscount"])).ToString("0.00");
                                                         }
 
                                                         itemdt["OPromotionName"] = itemdt["OPROName"];
@@ -5709,7 +5716,7 @@ namespace POSSystem
                                                     {
                                                         string price = "";
                                                         if (itemdt["ONewPrice"].ToString() != "" && itemdt["ONewPrice"].ToString() != "0")
-                                                            price = (Convert.ToDecimal(itemdt["ONewPrice"]) / Convert.ToInt32(itemdt["OQty"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["ONewPrice"]) / Convert.ToInt32(itemdt["OQty"])).ToString("0.00");
 
                                                         if (price == "")
                                                         {
@@ -5722,7 +5729,7 @@ namespace POSSystem
                                                                 sdisc = Convert.ToDecimal(itemdt["Discount"]);
                                                             if (itemdt["RPromotionName"].ToString() != "")
                                                                 rdisc = Convert.ToDecimal(itemdt["RDiscount"]);
-                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(itemdt["ODiscount"])).ToString();
+                                                            price = (Convert.ToDecimal(itemdt["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(itemdt["ODiscount"])).ToString("0.00");
                                                         }
 
                                                         itemdt["OPromotionName"] = itemdt["OPROName"];

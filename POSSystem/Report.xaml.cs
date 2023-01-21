@@ -31,6 +31,7 @@ namespace POSSystem
     {
         string conString = App.Current.Properties["ConString"].ToString();
         string username = App.Current.Properties["username"].ToString();
+        string registerid = App.Current.Properties["RegisterId"].ToString();
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "Report.cs";
         private PrintDocument PrintDocument;
@@ -139,7 +140,7 @@ namespace POSSystem
                 graphics.DrawString(value, minifont,
                          new SolidBrush(Color.Black), startX + 180, startY + Offset);
                 graphics.DrawString(value1, minifont,
-                        new SolidBrush(Color.Black), startX + 200, startY + Offset);
+                        new SolidBrush(Color.Black), startX + 210, startY + Offset);
             }
             catch (Exception ex) { SendErrorToText(ex, errorFileName); }
         }
@@ -155,7 +156,7 @@ namespace POSSystem
                              new SolidBrush(Color.Black), startX + 5, startY + Offset);
 
                 graphics.DrawString(value, itemfont,
-                         new SolidBrush(Color.Black), startX + 180, startY + Offset);
+                         new SolidBrush(Color.Black), startX + 170, startY + Offset);
                 graphics.DrawString(value1, itemfont,
                       new SolidBrush(Color.Black), startX + 200, startY + Offset);
             }
@@ -247,6 +248,9 @@ namespace POSSystem
                 DrawLine(underLine, largefont, Offset, 0);
 
                 Offset = Offset + mediuminc + 10;
+                DrawAtStart("       Register :" + registerid, Offset);
+                Offset = Offset + mediuminc;
+                Offset = Offset + mediuminc;
                 DrawAtStart("Date From:       " + dtTrans.Rows[0]["SDate"].ToString(), Offset);
                 Offset = Offset + mediuminc;
                 DrawAtStart("Date To:           " + dtTrans.Rows[0]["EDate"].ToString(), Offset);
@@ -352,6 +356,8 @@ namespace POSSystem
                 DrawLine(underLine, mediumfont, Offset, 0);
 
                 Offset = Offset + mediuminc + 10;
+                DrawAtStart("       Register :" + registerid, Offset);
+                Offset = Offset + mediuminc;
                 DrawAtStart("Date From:       " + dtTrans.Rows[0]["SDate"].ToString(), Offset);
                 Offset = Offset + mediuminc;
                 DrawAtStart("Date To:           " + dtTrans.Rows[0]["EDate"].ToString(), Offset);
