@@ -3055,13 +3055,13 @@ namespace POSSystem
             try
             {
                 DataTable distrinctPromotionName = dt.DefaultView.ToTable(true, "PROName");
-                DataTable distrinctSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "PROName", "Qty", "NewPrice", "Discount");
+                DataTable distrinctSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "PROName", "Qty", "NewPrice", "Discount","Type");
                 DataTable distrinctRPromotionName = dt.DefaultView.ToTable(true, "RPROName");
-                DataTable distrinctRSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "RPROName", "RQty", "RNewPrice", "RDiscount");
+                DataTable distrinctRSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "RPROName", "RQty", "RNewPrice", "RDiscount","RType");
                 DataTable distrinctLPromotionName = dt.DefaultView.ToTable(true, "LPROName");
-                DataTable distrinctLSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "LPROName", "LQty", "LNewPrice", "LDiscount");
+                DataTable distrinctLSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "LPROName", "LQty", "LNewPrice", "LDiscount","LType");
                 DataTable distrinctOPromotionName = dt.DefaultView.ToTable(true, "OPROName");
-                DataTable distrinctOSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "OPROName", "OQty", "ONewPrice", "ODiscount");
+                DataTable distrinctOSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "OPROName", "OQty", "ONewPrice", "ODiscount","OType");
 
                 foreach (DataRow distrinctRow in distrinctPromotionName.AsEnumerable())
                 {
@@ -3323,7 +3323,7 @@ namespace POSSystem
                                                                     if (dt.Rows[z]["LPROName"].ToString() == distrinctRow["LPROName"].ToString())
                                                                     {
                                                                         string price = "";
-                                                                        if (itemDT1["LNewPrice"].ToString() != "")
+                                                                        if (itemDT1["LNewPrice"].ToString() != "" && itemDT1["LNewPrice"].ToString() != "0")
                                                                             price = (Convert.ToDecimal(itemDT1["LNewPrice"]) / Convert.ToInt32(itemDT1["LQty"])).ToString("0.00");
 
                                                                         if (price == "")
@@ -3365,7 +3365,7 @@ namespace POSSystem
                                                                     if (dt.Rows[z]["LPROName"].ToString() == distrinctRow["LPROName"].ToString())
                                                                     {
                                                                         string price = "";
-                                                                        if (itemDT1["LNewPrice"].ToString() != "")
+                                                                        if (itemDT1["LNewPrice"].ToString() != "" && itemDT1["LNewPrice"].ToString() != "0")
                                                                             price = (Convert.ToDecimal(itemDT1["LNewPrice"]) / Convert.ToInt32(itemDT1["LQty"])).ToString("0.00");
 
                                                                         if (price == "")
