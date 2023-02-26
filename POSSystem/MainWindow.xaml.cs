@@ -865,26 +865,32 @@ namespace POSSystem
         {
             try
             {
-                DataRow dr = dt.NewRow();
-                dr[0] = 0;
-                dr[1] = lblDepartment.Content.ToString();
-                dr[2] = Convert.ToDecimal(txtDeptAmt.Text).ToString("0.00");
-                dr[3] = taxrate;
-                if (refund == "")
-                    dr[4] = 1;
+                decimal value;
+                if (decimal.TryParse(txtDeptAmt.Text, out value))
+                {
+                    DataRow dr = dt.NewRow();
+                    dr[0] = 0;
+                    dr[1] = lblDepartment.Content.ToString();
+                    dr[2] = Convert.ToDecimal(txtDeptAmt.Text).ToString("0.00");
+                    dr[3] = taxrate;
+                    if (refund == "")
+                        dr[4] = 1;
+                    else
+                        dr[4] = -1;
+                    dr[5] = (decimal.Parse(txtDeptAmt.Text) * 1).ToString("0.00");
+                    dt.Rows.Add(dr);
+                    JRDGrid.ItemsSource = dt.DefaultView;
+                    JRDGrid.Items.Refresh();
+                    JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
+                    JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
+                    TotalEvent();
+                    txtDeptAmt.Text = "";
+                    ugDepartment.Visibility = Visibility.Visible;
+                    TxtBxStackPanel2.Visibility = Visibility.Hidden;
+                    textBox1.Focus();
+                }
                 else
-                    dr[4] = -1;
-                dr[5] = (decimal.Parse(txtDeptAmt.Text) * 1).ToString("0.00");
-                dt.Rows.Add(dr);
-                JRDGrid.ItemsSource = dt.DefaultView;
-                JRDGrid.Items.Refresh();
-                JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
-                JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
-                TotalEvent();
-                txtDeptAmt.Text = "";
-                ugDepartment.Visibility = Visibility.Visible;
-                TxtBxStackPanel2.Visibility = Visibility.Hidden;
-                textBox1.Focus();
+                    MessageBox.Show("Please Enter Valid Value");
             }
             catch (Exception ex)
             {
@@ -2068,9 +2074,17 @@ namespace POSSystem
             {
                 if (e.Key == Key.Tab || e.Key == Key.Enter)
                 {
-                    var i = grandTotal.Content;
-                    TxtCashReturn.Text = decimal.Parse(Convert.ToDecimal(decimal.Parse(TxtCashReceive.Text) - decimal.Parse(grandTotal.Content.ToString().Replace("Pay $", ""))).ToString("0.00")).ToString("0.00");
-                    Button_Click_1();
+                    decimal value;
+                    if (decimal.TryParse(TxtCashReceive.Text, out value))
+                    {
+                        TxtCashReturn.Text = decimal.Parse(Convert.ToDecimal(decimal.Parse(TxtCashReceive.Text) - decimal.Parse(grandTotal.Content.ToString().Replace("Pay $", ""))).ToString("0.00")).ToString("0.00");
+                        if (decimal.Parse(TxtCashReceive.Text) - decimal.Parse(grandTotal.Content.ToString().Replace("Pay $", "")) >= 0)
+                        {
+                            Button_Click_1();
+                        }
+                        else { MessageBox.Show("Cash is Less then Bill Amount"); }
+                    }
+                    else { MessageBox.Show("Please Enter Valid Value"); }
                 }
             }
             catch (Exception ex)
@@ -2261,7 +2275,7 @@ namespace POSSystem
                 new SolidBrush(Color.Black), 22 + 22, 22);
                 Offset = Offset + largeinc + 20;
 
-                DrawAtStart("   "+dtstr.Rows[0]["StoreAddress"].ToString(), Offset);
+                DrawAtStart("   " + dtstr.Rows[0]["StoreAddress"].ToString(), Offset);
                 Offset = Offset + largeinc;
                 DrawAtStart(dtstr.Rows[0]["PhoneNumber"].ToString(), Offset);
 
@@ -2458,6 +2472,7 @@ namespace POSSystem
                                 var el = e.EditingElement as TextBox;
                                 DataRow dataRow = dt.Rows[rowIndex];
                                 dt.Rows[rowIndex]["Quantity"] = el.Text;
+
                                 if (dt.Rows[rowIndex]["PROName"].ToString() != "")
                                 {
                                     int qDT = Convert.ToInt32(dt.Rows[rowIndex]["Quantity"]);
@@ -2465,22 +2480,272 @@ namespace POSSystem
 
                                     if (qDT >= qDT1)
                                     {
-
-                                        int QA = qDT1 * (qDT / qDT1);
-                                        if (dt.Rows[rowIndex]["NewPrice"].ToString() != "")
+                                        int QA = 0;
+                                        if (dt.Rows[rowIndex]["Type"].ToString() == "Once")
                                         {
-                                            dt.Rows[rowIndex]["PromotionName"] = dt.Rows[rowIndex]["PROName"];
-                                            dt.Rows[rowIndex]["Quantity"] = QA;
-                                            dt.Rows[rowIndex]["UnitRetail"] = Convert.ToDecimal(dt.Rows[rowIndex]["NewPrice"]) / qDT1;
-                                            dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
+                                            QA = qDT - qDT1;
                                         }
                                         else
                                         {
-                                            dt.Rows[rowIndex]["PromotionName"] = dt.Rows[rowIndex]["PROName"];
+                                            QA = qDT1 * (qDT / qDT1);
+                                        }
+                                        string price = "";
+                                        if (dt.Rows[rowIndex]["NewPrice"].ToString() != "")
+                                        {
+                                            price = (Convert.ToDecimal(dt.Rows[rowIndex]["NewPrice"]) / qDT1).ToString("0.00");
+                                        }
+                                        else
+                                        {
+                                            decimal odisc = 0;
+                                            decimal ldisc = 0;
+                                            decimal rdisc = 0;
+                                            if (dt.Rows[rowIndex]["OPromotionName"].ToString() != "")
+                                                odisc = Convert.ToDecimal(dt.Rows[rowIndex]["ODiscount"]);
+                                            if (dt.Rows[rowIndex]["LPromotionName"].ToString() != "")
+                                                ldisc = Convert.ToDecimal(dt.Rows[rowIndex]["LDiscount"]);
+                                            if (dt.Rows[rowIndex]["RPromotionName"].ToString() != "")
+                                                rdisc = Convert.ToDecimal(dt.Rows[rowIndex]["RDiscount"]);
+                                            price = (Convert.ToDecimal(dt.Rows[rowIndex]["Oprice"]) - odisc - ldisc - rdisc - Convert.ToDecimal(dt.Rows[rowIndex]["Discount"]) / qDT1).ToString("0.00");
+                                        }
+                                        dt.Rows[rowIndex]["UnitRetail"] = price;
+                                        dt.Rows[rowIndex]["SPromotionName"] = dt.Rows[rowIndex]["PROName"];
+                                        dt.Rows[rowIndex]["Quantity"] = QA;
+                                        dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
+
+                                        int QB = qDT - QA;
+                                        if (QB != 0)
+                                        {
+                                            for (int a = 0; a < QB; a++)
+                                            {
+                                                DataRow newRow = dt.NewRow();
+                                                newRow["ScanCode"] = dt.Rows[rowIndex]["ScanCode"];
+                                                newRow["Description"] = dt.Rows[rowIndex]["Description"];
+                                                if (refund == "")
+                                                    newRow["Quantity"] = 1;
+                                                else
+                                                    newRow["Quantity"] = -1;
+                                                newRow["UnitRetail"] = dt.Rows[rowIndex]["OPrice"];
+                                                newRow["Amount"] = Convert.ToInt32(newRow["Quantity"]) * Convert.ToDecimal(newRow["UnitRetail"]);
+                                                newRow["OPrice"] = dt.Rows[rowIndex]["OPrice"];
+                                                newRow["TaxRate"] = dt.Rows[rowIndex]["TaxRate"];
+                                                newRow["PROName"] = dt.Rows[rowIndex]["PROName"];
+                                                newRow["Qty"] = dt.Rows[rowIndex]["Qty"];
+                                                newRow["NewPrice"] = dt.Rows[rowIndex]["NewPrice"];
+                                                newRow["Discount"] = dt.Rows[rowIndex]["Discount"];
+                                                newRow["Type"] = dt.Rows[rowIndex]["Type"];
+                                                dt.Rows.Add(newRow);
+                                            }
+                                        }
+                                    }
+
+                                    int intv = qDT1 * (qDT / qDT1);
+                                    decimal ab = qDT / qDT1;
+                                    decimal decv = Convert.ToDecimal(qDT1) * Convert.ToDecimal(qDT) / Convert.ToDecimal(qDT1);
+
+                                    ScanCodeFunction();
+                                }
+                                else if (dt.Rows[rowIndex]["RPROName"].ToString() != "")
+                                {
+                                    int qDT = Convert.ToInt32(dt.Rows[rowIndex]["Quantity"]);
+                                    int qDT1 = Convert.ToInt32(dt.Rows[rowIndex]["RQty"]);
+
+                                    if (qDT >= qDT1)
+                                    {
+                                        int QA = 0;
+                                        if (dt.Rows[rowIndex]["RType"].ToString() == "Once")
+                                        {
+                                            QA = qDT - qDT1;
+                                        }
+                                        else
+                                        {
+                                            QA = qDT1 * (qDT / qDT1);
+                                        }
+                                        string price = "";
+                                        if (dt.Rows[rowIndex]["RNewPrice"].ToString() != "")
+                                        {
+                                            price = (Convert.ToDecimal(dt.Rows[rowIndex]["RNewPrice"]) / qDT1).ToString("0.00");
+                                        }
+                                        else
+                                        {
+                                            decimal odisc = 0;
+                                            decimal ldisc = 0;
+                                            decimal sdisc = 0;
+                                            if (dt.Rows[rowIndex]["PromotionName"].ToString() != "")
+                                                sdisc = Convert.ToDecimal(dt.Rows[rowIndex]["Discount"]);
+                                            if (dt.Rows[rowIndex]["LPromotionName"].ToString() != "")
+                                                ldisc = Convert.ToDecimal(dt.Rows[rowIndex]["LDiscount"]);
+                                            if (dt.Rows[rowIndex]["OPromotionName"].ToString() != "")
+                                                odisc = Convert.ToDecimal(dt.Rows[rowIndex]["ODiscount"]);
+                                            price = (Convert.ToDecimal(dt.Rows[rowIndex]["Oprice"]) - sdisc - odisc - ldisc - Convert.ToDecimal(dt.Rows[rowIndex]["RDiscount"]) / qDT1).ToString("0.00");
+                                        }
+                                        dt.Rows[rowIndex]["UnitRetail"] = price;
+                                        dt.Rows[rowIndex]["RPromotionName"] = dt.Rows[rowIndex]["RPROName"];
+                                        dt.Rows[rowIndex]["Quantity"] = QA;
+                                        dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
+                                        int QB = qDT - QA;
+                                        if (QB != 0)
+                                        {
+                                            for (int a = 0; a < QB; a++)
+                                            {
+                                                DataRow newRow = dt.NewRow();
+                                                newRow["ScanCode"] = dt.Rows[rowIndex]["ScanCode"];
+                                                newRow["Description"] = dt.Rows[rowIndex]["Description"];
+                                                if (refund == "")
+                                                    newRow["Quantity"] = 1;
+                                                else
+                                                    newRow["Quantity"] = -1;
+                                                newRow["UnitRetail"] = dt.Rows[rowIndex]["OPrice"];
+                                                newRow["Amount"] = Convert.ToInt32(newRow["Quantity"]) * Convert.ToDecimal(newRow["UnitRetail"]);
+                                                newRow["OPrice"] = dt.Rows[rowIndex]["OPrice"];
+                                                newRow["TaxRate"] = dt.Rows[rowIndex]["TaxRate"];
+                                                newRow["RPROName"] = dt.Rows[rowIndex]["RPROName"];
+                                                newRow["RQty"] = dt.Rows[rowIndex]["RQty"];
+                                                newRow["RNewPrice"] = dt.Rows[rowIndex]["RNewPrice"];
+                                                newRow["RDiscount"] = dt.Rows[rowIndex]["RDiscount"];
+                                                newRow["RType"] = dt.Rows[rowIndex]["RType"];
+                                                dt.Rows.Add(newRow);
+                                            }
+                                        }
+                                    }
+
+                                    int intv = qDT1 * (qDT / qDT1);
+                                    decimal ab = qDT / qDT1;
+                                    decimal decv = Convert.ToDecimal(qDT1) * Convert.ToDecimal(qDT) / Convert.ToDecimal(qDT1);
+
+                                    ScanCodeFunction();
+                                }
+                                else if (dt.Rows[rowIndex]["LPROName"].ToString() != "")
+                                {
+                                    int qDT = Convert.ToInt32(dt.Rows[rowIndex]["Quantity"]);
+                                    int qDT1 = Convert.ToInt32(dt.Rows[rowIndex]["LQty"]);
+
+                                    if (qDT >= qDT1)
+                                    {
+                                        int QA = 0;
+                                        if (dt.Rows[rowIndex]["LType"].ToString() == "Once")
+                                        {
+                                            QA = qDT;
+                                            string price = "";
+                                            if (dt.Rows[rowIndex]["LNewPrice"].ToString() != "" && dt.Rows[rowIndex]["LNewPrice"].ToString() != "0")
+                                            {
+                                                price= Convert.ToDecimal(dt.Rows[rowIndex]["LNewPrice"]).ToString("0.00");
+                                            }
+                                            else
+                                            {
+                                                decimal odisc = 0;
+                                                decimal rdisc = 0;
+                                                decimal sdisc = 0;
+                                                if (dt.Rows[rowIndex]["PromotionName"].ToString() != "")
+                                                    sdisc = Convert.ToDecimal(dt.Rows[rowIndex]["Discount"]);
+                                                if (dt.Rows[rowIndex]["RPromotionName"].ToString() != "")
+                                                    rdisc = Convert.ToDecimal(dt.Rows[rowIndex]["RDiscount"]);
+                                                if (dt.Rows[rowIndex]["OPromotionName"].ToString() != "")
+                                                    odisc = Convert.ToDecimal(dt.Rows[rowIndex]["ODiscount"]);
+                                                price = (Convert.ToDecimal(dt.Rows[rowIndex]["Oprice"]) - sdisc - odisc - rdisc - Convert.ToDecimal(dt.Rows[rowIndex]["LDiscount"]) / qDT).ToString("0.00");
+                                            }
+                                            dt.Rows[rowIndex]["UnitRetail"] = price;
+                                            dt.Rows[rowIndex]["LPromotionName"] = dt.Rows[rowIndex]["LPROName"];
+                                            dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
+
+                                        }
+                                        else
+                                        {
+                                            QA = qDT1 * (qDT / qDT1);
+                                            string price = "";
+                                            if (dt.Rows[rowIndex]["LNewPrice"].ToString() != "" && dt.Rows[rowIndex]["LNewPrice"].ToString() != "0")
+                                            {
+                                                price = (Convert.ToDecimal(dt.Rows[rowIndex]["LNewPrice"])).ToString("0.00");
+                                            }
+                                            else
+                                            {
+                                                decimal odisc = 0;
+                                                decimal rdisc = 0;
+                                                decimal sdisc = 0;
+                                                if (dt.Rows[rowIndex]["PromotionName"].ToString() != "")
+                                                    sdisc = Convert.ToDecimal(dt.Rows[rowIndex]["Discount"]);
+                                                if (dt.Rows[rowIndex]["RPromotionName"].ToString() != "")
+                                                    rdisc = Convert.ToDecimal(dt.Rows[rowIndex]["RDiscount"]);
+                                                if (dt.Rows[rowIndex]["OPromotionName"].ToString() != "")
+                                                    odisc = Convert.ToDecimal(dt.Rows[rowIndex]["ODiscount"]);
+                                                price = (Convert.ToDecimal(dt.Rows[rowIndex]["Oprice"]) - sdisc - odisc - rdisc - Convert.ToDecimal(dt.Rows[rowIndex]["LDiscount"]) / qDT1).ToString("0.00");
+                                            }
+                                            dt.Rows[rowIndex]["UnitRetail"] = price;
+                                            dt.Rows[rowIndex]["LPromotionName"] = dt.Rows[rowIndex]["LPROName"];
                                             dt.Rows[rowIndex]["Quantity"] = QA;
-                                            dt.Rows[rowIndex]["UnitRetail"] = (Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) - Convert.ToDecimal(dt.Rows[rowIndex]["Discount"]));
                                             dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
                                         }
+                                       
+                                        int QB = qDT - QA;
+                                        if (QB != 0)
+                                        {
+                                            for (int a = 0; a < QB; a++)
+                                            {
+                                                DataRow newRow = dt.NewRow();
+                                                newRow["ScanCode"] = dt.Rows[rowIndex]["ScanCode"];
+                                                newRow["Description"] = dt.Rows[rowIndex]["Description"];
+                                                if (refund == "")
+                                                    newRow["Quantity"] = 1;
+                                                else
+                                                    newRow["Quantity"] = -1;
+                                                newRow["UnitRetail"] = dt.Rows[rowIndex]["OPrice"];
+                                                newRow["Amount"] = Convert.ToInt32(newRow["Quantity"]) * Convert.ToDecimal(newRow["UnitRetail"]);
+                                                newRow["OPrice"] = dt.Rows[rowIndex]["OPrice"];
+                                                newRow["TaxRate"] = dt.Rows[rowIndex]["TaxRate"];
+                                                newRow["LPROName"] = dt.Rows[rowIndex]["LPROName"];
+                                                newRow["LQty"] = dt.Rows[rowIndex]["LQty"];
+                                                newRow["LNewPrice"] = dt.Rows[rowIndex]["LNewPrice"];
+                                                newRow["LDiscount"] = dt.Rows[rowIndex]["LDiscount"];
+                                                newRow["LType"] = dt.Rows[rowIndex]["LType"];
+                                                dt.Rows.Add(newRow);
+                                            }
+                                        }
+                                    }
+
+                                    int intv = qDT1 * (qDT / qDT1);
+                                    decimal ab = qDT / qDT1;
+                                    decimal decv = Convert.ToDecimal(qDT1) * Convert.ToDecimal(qDT) / Convert.ToDecimal(qDT1);
+
+                                    ScanCodeFunction();
+                                }
+                                else if (dt.Rows[rowIndex]["OPROName"].ToString() != "")
+                                {
+                                    int qDT = Convert.ToInt32(dt.Rows[rowIndex]["Quantity"]);
+                                    int qDT1 = Convert.ToInt32(dt.Rows[rowIndex]["OQty"]);
+
+                                    if (qDT >= qDT1)
+                                    {
+
+                                        int QA = 0;
+                                        if (dt.Rows[rowIndex]["OType"].ToString() == "Once")
+                                        {
+                                            QA = qDT - qDT1;
+                                        }
+                                        else
+                                        {
+                                            QA = qDT1 * (qDT / qDT1);
+                                        }
+                                        string price = "";
+                                        if (dt.Rows[rowIndex]["ONewPrice"].ToString() != "")
+                                        {
+                                            price = (Convert.ToDecimal(dt.Rows[rowIndex]["ONewPrice"]) / qDT1).ToString("0.00");
+                                        }
+                                        else
+                                        {
+                                            decimal odisc = 0;
+                                            decimal rdisc = 0;
+                                            decimal sdisc = 0;
+                                            if (dt.Rows[rowIndex]["PromotionName"].ToString() != "")
+                                                sdisc = Convert.ToDecimal(dt.Rows[rowIndex]["Discount"]);
+                                            if (dt.Rows[rowIndex]["RPromotionName"].ToString() != "")
+                                                rdisc = Convert.ToDecimal(dt.Rows[rowIndex]["RDiscount"]);
+                                            if (dt.Rows[rowIndex]["LPromotionName"].ToString() != "")
+                                                odisc = Convert.ToDecimal(dt.Rows[rowIndex]["LDiscount"]);
+                                            price = (Convert.ToDecimal(dt.Rows[rowIndex]["Oprice"]) - sdisc - odisc - rdisc - Convert.ToDecimal(dt.Rows[rowIndex]["ODiscount"]) / qDT1).ToString("0.00");
+                                        }
+                                        dt.Rows[rowIndex]["UnitRetail"] = price;
+                                        dt.Rows[rowIndex]["OPromotionName"] = dt.Rows[rowIndex]["OPROName"];
+                                        dt.Rows[rowIndex]["Quantity"] = QA;
+                                        dt.Rows[rowIndex]["Amount"] = Convert.ToDecimal(Convert.ToDecimal(dt.Rows[rowIndex]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[rowIndex]["Quantity"])).ToString("0.00");
                                         int QB = qDT - QA;
                                         if (QB != 0)
                                         {
@@ -2493,13 +2758,12 @@ namespace POSSystem
                                                 newRow["UnitRetail"] = dt.Rows[rowIndex]["OPrice"];
                                                 newRow["Amount"] = Convert.ToInt32(newRow["Quantity"]) * Convert.ToDecimal(newRow["UnitRetail"]);
                                                 newRow["OPrice"] = dt.Rows[rowIndex]["OPrice"];
-                                                newRow["PromotionName"] = "";
                                                 newRow["TaxRate"] = dt.Rows[rowIndex]["TaxRate"];
-                                                newRow["PROName"] = dt.Rows[rowIndex]["PROName"];
-                                                newRow["Qty"] = dt.Rows[rowIndex]["Qty"];
-                                                newRow["NewPrice"] = dt.Rows[rowIndex]["NewPrice"];
-                                                newRow["Discount"] = dt.Rows[rowIndex]["Discount"];
-                                                newRow["DiscountBy"] = dt.Rows[rowIndex]["DiscountBy"];
+                                                newRow["OPROName"] = dt.Rows[rowIndex]["OPROName"];
+                                                newRow["OQty"] = dt.Rows[rowIndex]["OQty"];
+                                                newRow["ONewPrice"] = dt.Rows[rowIndex]["ONewPrice"];
+                                                newRow["ODiscount"] = dt.Rows[rowIndex]["ODiscount"];
+                                                newRow["OType"] = dt.Rows[rowIndex]["OType"];
                                                 dt.Rows.Add(newRow);
                                             }
                                         }
@@ -2590,8 +2854,6 @@ namespace POSSystem
                 SendErrorToText(ex, errorFileName);
             }
         }
-
-        
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
@@ -3055,13 +3317,13 @@ namespace POSSystem
             try
             {
                 DataTable distrinctPromotionName = dt.DefaultView.ToTable(true, "PROName");
-                DataTable distrinctSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "PROName", "Qty", "NewPrice", "Discount","Type");
+                DataTable distrinctSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "PROName", "Qty", "NewPrice", "Discount", "Type");
                 DataTable distrinctRPromotionName = dt.DefaultView.ToTable(true, "RPROName");
-                DataTable distrinctRSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "RPROName", "RQty", "RNewPrice", "RDiscount","RType");
+                DataTable distrinctRSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "RPROName", "RQty", "RNewPrice", "RDiscount", "RType");
                 DataTable distrinctLPromotionName = dt.DefaultView.ToTable(true, "LPROName");
-                DataTable distrinctLSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "LPROName", "LQty", "LNewPrice", "LDiscount","LType");
+                DataTable distrinctLSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "LPROName", "LQty", "LNewPrice", "LDiscount", "LType");
                 DataTable distrinctOPromotionName = dt.DefaultView.ToTable(true, "OPROName");
-                DataTable distrinctOSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "OPROName", "OQty", "ONewPrice", "ODiscount","OType");
+                DataTable distrinctOSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "OPROName", "OQty", "ONewPrice", "ODiscount", "OType");
 
                 foreach (DataRow distrinctRow in distrinctPromotionName.AsEnumerable())
                 {
@@ -3886,6 +4148,10 @@ namespace POSSystem
                             newRow["OQty"] = dt.Rows[i]["OQty"].ToString();
                             newRow["ONewPrice"] = dt.Rows[i]["ONewPrice"].ToString();
                             newRow["ODiscount"] = dt.Rows[i]["ODiscount"].ToString();
+                            newRow["Type"] = dt.Rows[i]["Type"].ToString();
+                            newRow["RType"] = dt.Rows[i]["RType"].ToString();
+                            newRow["LType"] = dt.Rows[i]["LType"].ToString();
+                            newRow["OType"] = dt.Rows[i]["OType"].ToString();
                             dt.Rows.Add(newRow);
                         }
                         ScanCodeFunction();

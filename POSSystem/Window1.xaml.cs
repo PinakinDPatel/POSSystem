@@ -40,14 +40,21 @@ namespace POSSystem
 
         private void Btn2_Click(object sender, RoutedEventArgs e)
         {
+            popup1.IsOpen = false;
             btn1.Visibility = Visibility.Visible;
             btn2.Visibility = Visibility.Hidden;
         }
 
         private void Btn1_Click(object sender, RoutedEventArgs e)
         {
+            popup1.IsOpen = true;
+            //popup1.Placement = 
             btn1.Visibility = Visibility.Hidden;
             btn2.Visibility = Visibility.Visible;
+        }
+        private void NumButton_Click(object sender,RoutedEventArgs e)
+        {
+
         }
     }
 }

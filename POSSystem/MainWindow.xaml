@@ -32,7 +32,7 @@
                 <RowDefinition Height="3*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <DataGrid Name="JRDGrid"  HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="15" CanUserAddRows="False" Background="White" SelectedCellsChanged="selectedCellsChanged" CellEditEnding="JRDGrid_CellEditEnding" GridLinesVisibility="None" SelectionChanged="JRDGrid_SelectionChanged" Foreground="DarkBlue" AutoGenerateColumns="False">
+            <DataGrid Name="JRDGrid"  HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="15" CanUserAddRows="False" CanUserDeleteRows="False" Background="White" CellEditEnding="JRDGrid_CellEditEnding" GridLinesVisibility="None" SelectionChanged="JRDGrid_SelectionChanged" Foreground="DarkBlue" AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Scancode}"  Header="ScanCode" Width="100*"  IsReadOnly="True">
                     </DataGridTextColumn>
@@ -46,7 +46,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Binding="{Binding Quantity}" Header="Qty" Width="40*" IsReadOnly="False">
+                    <DataGridTextColumn Binding="{Binding Quantity}" Header="Qty" Width="40*" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="HorizontalAlignment" Value="Right"></Setter>

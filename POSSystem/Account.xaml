@@ -19,10 +19,31 @@
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="2*"></RowDefinition>
                 <RowDefinition Height="9*"></RowDefinition>
             </Grid.RowDefinitions>
             <Label Content="Account" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Top" />
             <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Content="Account Name :-" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" Margin="10,0,0,0"/>
+                <TextBox Name="txtaccount1" TextChanged="textBox_txtaccount" FontSize="20" Grid.Row="1" Margin="10,0,0,12">
+                    <TextBox.Effect>
+                        <DropShadowEffect BlurRadius="2" ShadowDepth="3"/>
+                    </TextBox.Effect>
+                </TextBox>
+            </Grid>
+            <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="90*"  />
                     <ColumnDefinition Width="151*"  />

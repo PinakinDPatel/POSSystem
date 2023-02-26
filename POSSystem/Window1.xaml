@@ -28,5 +28,118 @@
 
                 <Button Name="btn2"  Content="Button2" Visibility="Hidden" Click="Btn2_Click" Height="100" Width="100"/>
         <Button Name="btn1"  Content="Button1" Click="Btn1_Click" Height="100" Width="100"/>
+        <Popup Name="popup1" IsOpen="False" Placement="Bottom">
+            <Border BorderBrush="BlueViolet" BorderThickness="5" CornerRadius="5" Background="White">
+                <Grid Height="215" Width="298" Margin="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Button Content="1" Margin="5,5,5,5" FontSize="36" Foreground="White" Click="NumButton_Click">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="BlueViolet" Offset="0"/>
+                                <GradientStop Color="Violet" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button Content="2" Grid.Column="1" FontSize="36" Foreground="White" Margin="5,5,5,5"  Click="NumButton_Click">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="BlueViolet" Offset="0"/>
+                                <GradientStop Color="Violet" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button Content="3" Grid.Column="2" FontSize="36" Foreground="White" Margin="5,5,5,5" Click="NumButton_Click">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="BlueViolet" Offset="0"/>
+                                <GradientStop Color="Violet" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button Content="4" Grid.Column="0" FontSize="36" Foreground="White" Grid.Row="1" Margin="5,5,5,5" Click="NumButton_Click">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="BlueViolet" Offset="0"/>
+                                <GradientStop Color="Violet" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button Content="5" Grid.Column="1" FontSize="36" Foreground="White" Grid.Row="1" Margin="5,5,5,5" Click="NumButton_Click">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="BlueViolet" Offset="0"/>
+                                <GradientStop Color="Violet" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button Content="6" Grid.Column="2" FontSize="36" Foreground="White" Grid.Row="1" Margin="5,5,5,5" Click="NumButton_Click">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="BlueViolet" Offset="0"/>
+                                <GradientStop Color="Violet" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button Content="7" Grid.Column="0" FontSize="36" Foreground="White" Grid.Row="2" Margin="5,5,5,5" Click="NumButton_Click">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="BlueViolet" Offset="0"/>
+                                <GradientStop Color="Violet" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button Content="8" Grid.Column="1" FontSize="36" Foreground="White" Grid.Row="2" Margin="5,5,5,5" Click="NumButton_Click">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="BlueViolet" Offset="0"/>
+                                <GradientStop Color="Violet" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button Content="9" Grid.Column="2" FontSize="36" Foreground="White" Grid.Row="2" Margin="5,5,5,5" Click="NumButton_Click">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="BlueViolet" Offset="0"/>
+                                <GradientStop Color="Violet" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button Content="0" Grid.Column="0" FontSize="36" Foreground="White" Grid.Row="3" Margin="5,5,5,5" Click="NumButton_Click">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="BlueViolet" Offset="0"/>
+                                <GradientStop Color="Violet" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button Content="Clear" Grid.ColumnSpan="1" FontSize="30" Foreground="White" Grid.Column="1" Grid.Row="3" Margin="5,5,5,5" Click="Btn2_Click">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="BlueViolet" Offset="0"/>
+                                <GradientStop Color="Violet" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button Content="Enter" Grid.ColumnSpan="1" FontSize="30" Foreground="White" Grid.Column="2" Grid.Row="3" Margin="5,5,5,5" Click="Btn2_Click">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="BlueViolet" Offset="0"/>
+                                <GradientStop Color="Violet" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                </Grid>
+            </Border>
+        </Popup>
     </Grid>
 </Window>
