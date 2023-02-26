@@ -269,7 +269,7 @@ namespace POSSystem
                         {
                             var Path = System.AppDomain.CurrentDomain.BaseDirectory;
                             var path = dtdepartment.Rows[i].ItemArray[2].ToString();
-                            var fullpath = Path + "\\Image\\" + path;
+                            var fullpath = Path + "Image\\" + path;
                             image.Source = new BitmapImage(new Uri(fullpath));
                             image.Height = 50;
                             image.Width = 80;
@@ -6217,9 +6217,9 @@ namespace POSSystem
                 string filepath = System.AppDomain.CurrentDomain.BaseDirectory;
                 string errorpath = filepath + "\\ErrorFiles\\";
 
-                if (!Directory.Exists(filepath))
+                if (!Directory.Exists(errorpath))
                 {
-                    Directory.CreateDirectory(filepath);
+                    Directory.CreateDirectory(errorpath);
                 }
 
                 filepath = filepath + "log.txt";
