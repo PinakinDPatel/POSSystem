@@ -45,17 +45,17 @@ namespace POSSystem
                 //    Console.WriteLine($"Exception: {e.Message}");
                 //}
                 //var deviceCode = new DeviceCode.Builder(productType: "TERMINAL_API").Name("Squardev").LocationId("02FGFVJR8HR1N").Build();
-               var strJSONContent = "{'device_code':{'product_type':'TERMINAL_API','name':'Squardev tet','location_id':'LDPQXMKET0HRC'},'idempotency_key':'80cb629e-f251-4506-ac94-5c5787bff22f'}";
-                var client = new RestSharp.RestClient("https://connect.squareup.com");
-                var request = new RestRequest("v2/devices/codes", Method.GET);
-                request.RequestFormat = RestSharp.DataFormat.Json;
-                request.AddHeader("Accept", "application/json");
-                request.AddHeader("Authorization", "Bearer 	EAAAESEEhUZHEQnyfESFSVtrgriytdOeliataJQ4gxfYom-yae_A2PFt1AazfMTG");
-                //setHeaders(request);
-                request.AddHeader("Square-Version", "2022-11-16");
-                request.AddParameter("application/json", strJSONContent, ParameterType.RequestBody);
-                var Response = client.Execute(request);
-                var r = Response.Content;
+               //var strJSONContent = "{'device_code':{'product_type':'TERMINAL_API','name':'Squardev tet','location_id':'LDPQXMKET0HRC'},'idempotency_key':'80cb629e-f251-4506-ac94-5c5787bff22f'}";
+               // var client = new RestSharp.RestClient("https://connect.squareup.com");
+               // var request = new RestRequest("v2/devices/codes", Method.GET);
+               // request.RequestFormat = RestSharp.DataFormat.Json;
+               // request.AddHeader("Accept", "application/json");
+               // request.AddHeader("Authorization", "Bearer 	EAAAESEEhUZHEQnyfESFSVtrgriytdOeliataJQ4gxfYom-yae_A2PFt1AazfMTG");
+               // //setHeaders(request);
+               // request.AddHeader("Square-Version", "2022-11-16");
+               // request.AddParameter("application/json", strJSONContent, ParameterType.RequestBody);
+               // var Response = client.Execute(request);
+               // var r = Response.Content;
                 PasswordBox tb = new PasswordBox();
                 InitializeComponent();
                 tb.KeyDown += new KeyEventHandler(OnKeyDownHandler);
@@ -124,16 +124,17 @@ namespace POSSystem
                 string [] str  =motherBoard.Split('/');
                 //SqlConnection con = new SqlConnection(conString);
                 SqlConnection con = new SqlConnection(userConString);
-                string query = "select UserName,userregi.StoreId,Register_id,RoleName from userregi inner join storeDetails on userregi.storeid=storeDetails.storeid inner join register on storeDetails.storeid=register.storeid where password=@password and SerialNumber=@serialnumber ";
+               // string query = "Select * from Adjust";
+                string query = "select UserName,userregi.StoreId,Register_id,RoleName from userregi inner join storeDetails on userregi.storeid=storeDetails.storeid inner join register on storeDetails.storeid=register.storeid where password=@password";// and SerialNumber=@serialnumber ";
                 SqlCommand cmd = new SqlCommand(query, con);
                 cmd.Parameters.AddWithValue("@password", TxtPassword.Password);
-                cmd.Parameters.AddWithValue("@serialnumber", str[1]);
+                cmd.Parameters.AddWithValue("@serialnumber",motherBoard);
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
-                //con.Open();
+                con.Open();
                 sda.Fill(dt);
                 //int i = cmd.ExecuteNonQuery();
-                //con.Close();
+                con.Close();
 
                 if (dt.Rows.Count > 0)
                 {

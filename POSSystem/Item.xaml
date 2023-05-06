@@ -6,7 +6,7 @@
       xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
       xmlns:local="clr-namespace:POSSystem"
       mc:Ignorable="d" 
-     ResizeMode="NoResize" WindowStyle="ToolWindow">
+     ResizeMode="NoResize" WindowStyle="None">
    
     <!--d:DesignHeight="519.597" d:DesignWidth="1018.326" WindowStartupLocation="CenterScreen" WindowStyle="None">-->
     <Border BorderBrush="Black" BorderThickness="1">

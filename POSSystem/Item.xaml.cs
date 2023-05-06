@@ -148,7 +148,7 @@ namespace POSSystem
                 //DataTable dt = new DataTable();
                 //sda.Fill(dt);
                 //con.Open();
-
+                
                 if (lblItemId.Content.ToString() != "")
                 {
                     string queryI = "Update item set ScanCode=@ScanCode,Description=@Description,Department=@Department,MinAge=@MinAge,Manufacturer=@Manufacturer,Payee=@Payee,FoodStamp=@FoodStamp,UnitCase=@UnitCase,CaseCost=@CaseCost,UnitRetail=@UnitRetail,CaseDiscount=@CaseDiscount,TaxRate=@TaxRate,CreateBy=@CreateBy,CreateOn=@CreateOn where ScanCode=@ScanCode";
@@ -170,10 +170,10 @@ namespace POSSystem
                     cmdI.Parameters.AddWithValue("@TaxRate", TxtTaxRate.Text);
                     cmdI.Parameters.AddWithValue("@CreateBy", lblusername.Content);
                     cmdI.Parameters.AddWithValue("@CreateOn", date);
+                    con.Open();
                     cmdI.ExecuteNonQuery();
                     con.Close();
                 }
-
                 else
                 {
                     string queryI = "Insert into item(ScanCode,Description,Department,Manufacturer,Payee,FoodStamp,UnitCase,CaseCost,UnitRetail,CaseDiscount,TaxRate,CreateBy,CreateOn,MinAge)Values(@ScanCode,@Description,@Department,@Manufacturer,@Payee,@FoodStamp,@UnitCase,@CaseCost,@UnitRetail,@CaseDiscount,@TaxRate,@CreateBy,@CreateOn,@MinAge)";
@@ -195,6 +195,7 @@ namespace POSSystem
                     cmdI.Parameters.AddWithValue("@TaxRate", TxtTaxRate.Text);
                     cmdI.Parameters.AddWithValue("@CreateBy", lblusername.Content);
                     cmdI.Parameters.AddWithValue("@CreateOn", date);
+                    con.Open();
                     cmdI.ExecuteNonQuery();
                     con.Close();
 
@@ -219,7 +220,6 @@ namespace POSSystem
                 SendErrorToText(ex, errorFileName);
             }
         }
-
         public static void SendErrorToText(Exception ex, string errorFileName)
         {
             var line = Environment.NewLine + Environment.NewLine;
