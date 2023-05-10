@@ -12,6 +12,7 @@ using System.Reflection;
 using RestSharp;
 using Square.Models;
 using System.Management;
+using POSSystem.Common;
 
 namespace POSSystem
 {
@@ -19,9 +20,10 @@ namespace POSSystem
     {
         string ServerName = ConfigurationManager.AppSettings["ServerName"];
         string DBName = ConfigurationManager.AppSettings["DBName"];
-        string conString = "";
-        string userConString = "Server=184.168.194.64; Database=db_POS; User ID = pinakin; Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
-
+        string conStoreId = AppCommon.Decrypt(ConfigurationManager.AppSettings["Key"]).Split('_')[0].ToString();
+        string conPOSId = AppCommon.Decrypt(ConfigurationManager.AppSettings["Key"]).Split('_')[1].ToString();
+        //string userConString = "Server=184.168.194.64; Database=db_POS; User ID = pinakin; Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+        string userConString = "Server=184.168.194.64; User ID = pspcstore; Password=Prem#12681#; Trusted_Connection=false;MultipleActiveResultSets=true";
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "Login.cs";
 
@@ -45,17 +47,17 @@ namespace POSSystem
                 //    Console.WriteLine($"Exception: {e.Message}");
                 //}
                 //var deviceCode = new DeviceCode.Builder(productType: "TERMINAL_API").Name("Squardev").LocationId("02FGFVJR8HR1N").Build();
-               //var strJSONContent = "{'device_code':{'product_type':'TERMINAL_API','name':'Squardev tet','location_id':'LDPQXMKET0HRC'},'idempotency_key':'80cb629e-f251-4506-ac94-5c5787bff22f'}";
-               // var client = new RestSharp.RestClient("https://connect.squareup.com");
-               // var request = new RestRequest("v2/devices/codes", Method.GET);
-               // request.RequestFormat = RestSharp.DataFormat.Json;
-               // request.AddHeader("Accept", "application/json");
-               // request.AddHeader("Authorization", "Bearer 	EAAAESEEhUZHEQnyfESFSVtrgriytdOeliataJQ4gxfYom-yae_A2PFt1AazfMTG");
-               // //setHeaders(request);
-               // request.AddHeader("Square-Version", "2022-11-16");
-               // request.AddParameter("application/json", strJSONContent, ParameterType.RequestBody);
-               // var Response = client.Execute(request);
-               // var r = Response.Content;
+                //var strJSONContent = "{'device_code':{'product_type':'TERMINAL_API','name':'Squardev tet','location_id':'LDPQXMKET0HRC'},'idempotency_key':'80cb629e-f251-4506-ac94-5c5787bff22f'}";
+                // var client = new RestSharp.RestClient("https://connect.squareup.com");
+                // var request = new RestRequest("v2/devices/codes", Method.GET);
+                // request.RequestFormat = RestSharp.DataFormat.Json;
+                // request.AddHeader("Accept", "application/json");
+                // request.AddHeader("Authorization", "Bearer 	EAAAESEEhUZHEQnyfESFSVtrgriytdOeliataJQ4gxfYom-yae_A2PFt1AazfMTG");
+                // //setHeaders(request);
+                // request.AddHeader("Square-Version", "2022-11-16");
+                // request.AddParameter("application/json", strJSONContent, ParameterType.RequestBody);
+                // var Response = client.Execute(request);
+                // var r = Response.Content;
                 PasswordBox tb = new PasswordBox();
                 InitializeComponent();
                 tb.KeyDown += new KeyEventHandler(OnKeyDownHandler);
@@ -114,6 +116,7 @@ namespace POSSystem
         {
             try
             {
+                //var vvvv = AppCommon.Encrypt("000000");
                 ManagementObjectSearcher mos = new ManagementObjectSearcher("SELECT * FROM Win32_BaseBoard");
                 ManagementObjectCollection moc = mos.Get();
                 string motherBoard = "";
@@ -121,33 +124,31 @@ namespace POSSystem
                 {
                     motherBoard = (string)mo["SerialNumber"];
                 }
-                string [] str  =motherBoard.Split('/');
+                //   string [] str  =motherBoard.Split('/');
                 //SqlConnection con = new SqlConnection(conString);
                 SqlConnection con = new SqlConnection(userConString);
-               // string query = "Select * from Adjust";
-                string query = "select UserName,userregi.StoreId,Register_id,RoleName from userregi inner join storeDetails on userregi.storeid=storeDetails.storeid inner join register on storeDetails.storeid=register.storeid where password=@password";// and SerialNumber=@serialnumber ";
+                string query = "select FirstName+' '+LastName as UserName,UserRegistration.StoreId,Register_id,RoleId from UserRegistration inner join Store on UserRegistration.storeid=Store.storeid inner join Register on Store.storeid=register.storeid  where password=@password and SerialNumber=@serialnumber and UserRegistration.storeid = " + conStoreId + "";
+                // string query = "select UserName,userregi.StoreId,Register_id,RoleName from userregi inner join storeDetails on userregi.storeid=storeDetails.storeid inner join register on storeDetails.storeid=register.storeid where password=@password";// and SerialNumber=@serialnumber ";
                 SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@password", TxtPassword.Password);
-                cmd.Parameters.AddWithValue("@serialnumber",motherBoard);
+                cmd.Parameters.AddWithValue("@password", AppCommon.Encrypt(TxtPassword.Password));
+                cmd.Parameters.AddWithValue("@serialnumber", motherBoard);
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
-                con.Open();
                 sda.Fill(dt);
-                //int i = cmd.ExecuteNonQuery();
-                con.Close();
 
                 if (dt.Rows.Count > 0)
                 {
                     App.Current.Properties["username"] = dt.Rows[0]["UserName"].ToString();
                     App.Current.Properties["RegisterId"] = dt.Rows[0]["Register_id"].ToString();
                     App.Current.Properties["StoreId"] = dt.Rows[0]["StoreId"].ToString();
-                    App.Current.Properties["Role"] = dt.Rows[0]["RoleName"].ToString();
+                    App.Current.Properties["Role"] = dt.Rows[0]["RoleId"].ToString();
                     var s = App.Current.Properties["StoreId"].ToString();
+                    App.Current.Properties["POSId"] = conPOSId;
                     if (App.Current.Properties["StoreId"].ToString() != "" || App.Current.Properties["StoreId"].ToString() != null)
                     {
 
-                        conString = "Server=" + ServerName + ";Database=" + DBName + "; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
-                        App.Current.Properties["ConString"] = conString;
+                        //conString = "Server=" + ServerName + ";Database=" + DBName + "; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
+                        App.Current.Properties["ConString"] = userConString;
 
                         MainWindow frm = new MainWindow();
                         frm.Show();

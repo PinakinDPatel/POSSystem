@@ -192,6 +192,7 @@
     <Compile Include="Category.xaml.cs">
       <DependentUpon>Category.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\AppCommon.cs" />
     <Compile Include="CreatePromotion.xaml.cs">
       <DependentUpon>CreatePromotion.xaml</DependentUpon>
     </Compile>

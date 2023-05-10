@@ -48,6 +48,7 @@ namespace POSSystem
         DataTable dttranid = new DataTable(); // 7
         string username = App.Current.Properties["username"].ToString();
         string storeid = App.Current.Properties["StoreId"].ToString();
+        string posId = App.Current.Properties["POSId"].ToString();
         string registerid = App.Current.Properties["RegisterId"].ToString();
         string date = DateTime.Now.ToString("yyyy/MM/dd");
         private static string ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
@@ -93,6 +94,9 @@ namespace POSSystem
                 dt.Columns.Add("bIsTrueId");
                 dt.Columns.Add("LoyaltyId");
                 dt.Columns.Add("Customer");
+                dt.Columns.Add("StoreId");
+                dt.Columns.Add("POSId");
+                dt.Columns.Add("RegisterId");
 
                 dtHold.Columns.Add("Scancode");
                 dtHold.Columns.Add("Description");
@@ -124,16 +128,14 @@ namespace POSSystem
                 dtVoidItem.Columns.Add("Oprice");
 
                 LoadItem();
-
                 LoadDepartment();
                 loadDropdownCustomer();
                 loadtransactionId();
                 loadHold();
                 addCategory1();
                 Category();
-                
-                // fill Store Details
                 StoreDetails();
+                FileTransfer();
 
                 if (dtstr.Rows.Count == 0)
                 {
@@ -154,7 +156,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "MainWindow");
             }
         }
 
@@ -162,40 +164,23 @@ namespace POSSystem
         {
             try
             {
-                // SqlConnection con = new SqlConnection(conString);
-                ////string query = "select item.Scancode,item.Description,Convert(decimal(10,2),UnitRetail)as UnitRetail,Department.TaxRate,x.PromotionName AS PROName,x.Quantity as Qty,newprice,Discount,RProName,RQty,RNewPrice,RDiscount,LProName,LQty,LNewPrice,LDiscount,OProName,OQty,ONewPrice,ODiscount,Type,RType,LType,OType from Item inner join Department on rtrim(item.Department)=rtrim(Department.Department) left join(select scancode, Promotion.promotionName, newprice, Quantity, Discount,DiscountBy,Type from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotiongroup where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate) and DiscountBY='ScanData')as x on item.scancode = x.scancode left join(select scancode, Promotion.promotionName as RProName, newprice as RNewPrice, Quantity as RQty, Discount as RDiscount,DiscountBy as RDiscountBy,Type as RType from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotiongroup where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate) and DiscountBY='Retailer')as y on item.scancode = y.scancode left join(select scancode, Promotion.promotionName as LProName, newprice as LNewPrice, Quantity as LQty, Discount as LDiscount,DiscountBy as LDiscountBy,Type as LType from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotiongroup where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate) and DiscountBY='Loyalty')as z on item.scancode = z.scancode left join(select scancode, Promotion.promotionName as OProName, newprice as ONewPrice, Quantity as OQty, Discount as ODiscount,DiscountBy as ODiscountBy,Type as OType from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotiongroup where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate) and DiscountBY='Other')as a on item.scancode = a.scancode";
-                //string query = "select Item.ScanCode,Item.Description,UnitRetail,Department.Taxrate,String_agg(x.PromotionId,',')as PromotionId from Item join Department on rtrim(item.Department)=rtrim(Department.Department)"
-                //    + " left join(select promotiongroup.ScanCode,	promotiongroup.Description	,promotiongroup.Retail ,PromotionId,Promotion.PromotionName"
-                //    + " from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotiongroup where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate) )as x on item.scancode = x.scancode"
-                //    + " Group By Item.ScanCode,Item.Description,UnitRetail,Department.Taxrate";
-                //SqlCommand cmd = new SqlCommand(query, con);
-                //SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                //sda.Fill(dtItem);
-
-                ////string query = "select item.Scancode,item.Description,Convert(decimal(10,2),UnitRetail)as UnitRetail,Department.TaxRate,x.PromotionName AS PROName,x.Quantity as Qty,newprice,Discount,RProName,RQty,RNewPrice,RDiscount,LProName,LQty,LNewPrice,LDiscount,OProName,OQty,ONewPrice,ODiscount,Type,RType,LType,OType from Item inner join Department on rtrim(item.Department)=rtrim(Department.Department) left join(select scancode, Promotion.promotionName, newprice, Quantity, Discount,DiscountBy,Type from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotiongroup where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate) and DiscountBY='ScanData')as x on item.scancode = x.scancode left join(select scancode, Promotion.promotionName as RProName, newprice as RNewPrice, Quantity as RQty, Discount as RDiscount,DiscountBy as RDiscountBy,Type as RType from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotiongroup where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate) and DiscountBY='Retailer')as y on item.scancode = y.scancode left join(select scancode, Promotion.promotionName as LProName, newprice as LNewPrice, Quantity as LQty, Discount as LDiscount,DiscountBy as LDiscountBy,Type as LType from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotiongroup where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate) and DiscountBY='Loyalty')as z on item.scancode = z.scancode left join(select scancode, Promotion.promotionName as OProName, newprice as ONewPrice, Quantity as OQty, Discount as ODiscount,DiscountBy as ODiscountBy,Type as OType from promotiongroup inner join promotion on promotiongroup.promotionname = promotion.promotiongroup where Convert(date, GETDATE()) between Convert(date, startdate) and Convert(date, enddate) and DiscountBY='Other')as a on item.scancode = a.scancode";
-                //string query1 = "select PromotionId, Promotion.promotionName, newprice, Quantity, Discount,Type from promotion";
-                //SqlCommand cmd1 = new SqlCommand(query1, con);
-                //SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
-                //sda1.Fill(dtPromotion);
-
                 using (SqlConnection conn = new SqlConnection(conString))
                 using (SqlCommand cmd = new SqlCommand("spPOSMainPage", conn))
                 {
                     SqlDataAdapter adapt = new SqlDataAdapter(cmd);
                     adapt.SelectCommand.CommandType = CommandType.StoredProcedure;
                     adapt.SelectCommand.Parameters.Add(new SqlParameter("@storeid", SqlDbType.VarChar, 100));
-                    adapt.SelectCommand.Parameters["@storeid"].Value = "";
+                    adapt.SelectCommand.Parameters["@storeid"].Value = storeid;
                     adapt.SelectCommand.Parameters.Add(new SqlParameter("@date", SqlDbType.VarChar, 100));
                     adapt.SelectCommand.Parameters["@date"].Value = date;
+                    adapt.SelectCommand.Parameters.Add(new SqlParameter("@RegisterId", SqlDbType.VarChar, 100));
+                    adapt.SelectCommand.Parameters["@RegisterId"].Value = registerid;
+                    adapt.SelectCommand.Parameters.Add(new SqlParameter("@POSId", SqlDbType.VarChar, 100));
+                    adapt.SelectCommand.Parameters["@POSId"].Value = posId;
                     DataSet ds = new DataSet();
                     adapt.Fill(ds);
                     if (ds.Tables.Count > 0)
                     {
-                        dtAccount.Columns.Add("Name");
-                        DataRow newRow = dtAccount.NewRow();
-                        newRow["Name"] = "--Select--";
-                        dtAccount.Rows.Add(newRow);
-
                         dtItem = ds.Tables[0];
                         dtPromotion = ds.Tables[1];
                         dtAccount = ds.Tables[2];
@@ -203,34 +188,46 @@ namespace POSSystem
                         dtAddCategory = ds.Tables[4];
                         dtCategory = ds.Tables[5];
                         dttranid = ds.Tables[6];
+
+                        DataRow newRow = dtAccount.NewRow();
+                        newRow["Name"] = "--Select--";
+                        dtAccount.Rows.InsertAt(newRow, 0);
                     }
                 }
 
             }
-            catch (Exception ex) { SendErrorToText(ex, errorFileName); }
+            catch (Exception ex) { SendErrorToText(ex, errorFileName, "LoadItem"); }
         }
+
+
+        public void FileTransfer()
+        {
+            string sourcePath = ConfigurationManager.AppSettings["sourcePath"].ToString();
+            string DestinationPath = ConfigurationManager.AppSettings["DestinationPath"].ToString();
+            foreach (string f in Directory.GetFiles(sourcePath))
+            {
+                try
+                {
+                    string files = Path.GetFileName(f);
+                    if (!File.Exists(DestinationPath + "\\" + files))
+                        File.Create(DestinationPath + "\\" + files);
+                }
+                catch (Exception ex) { SendErrorToText(ex, errorFileName, "FileTransfer"); }
+            }
+        }
+
+
 
         private void loadDropdownCustomer()
         {
             try
             {
-                //dtAccount.Columns.Add("Name");
-                //DataRow newRow = dtAccount.NewRow();
-                //newRow["Name"] = "--Select--";
-                //dtAccount.Rows.Add(newRow);
-
-                //SqlConnection con = new SqlConnection(conString);
-                //string queryCustomer = "select Name,Account.LoyaltyId,coalesce(Count,0)as Count from Account Left Outer join (select Loyaltyid,Count(Count)as Count from(select distinct transactionid, Loyaltyid,COUNT(LoyaltyId)as Count from SalesItem where loyaltyId!='' and EndDate='" + date + "' group by transactionid,Loyaltyid)as z group by Loyaltyid)as x on Account.loyaltyid=x.loyaltyId where Head='Customer'";
-                //SqlCommand cmdcustomer = new SqlCommand(queryCustomer, con);
-                //SqlDataAdapter sdacustomer = new SqlDataAdapter(cmdcustomer);
-                //sdacustomer.Fill(dtAccount);
-
                 cbcustomer.ItemsSource = dtAccount.DefaultView;
                 cbcustomer.DisplayMemberPath = "Name";
                 cbCustomer1.ItemsSource = dtAccount.DefaultView;
                 cbCustomer1.DisplayMemberPath = "Name";
             }
-            catch (Exception ex) { SendErrorToText(ex, errorFileName); }
+            catch (Exception ex) { SendErrorToText(ex, errorFileName, "loadDropdownCustomer"); }
         }
 
         private void LoadDepartment()
@@ -440,7 +437,7 @@ namespace POSSystem
                     }
                 }
             }
-            catch (Exception ex) { SendErrorToText(ex, errorFileName); }
+            catch (Exception ex) { SendErrorToText(ex, errorFileName, "LoadDepartment"); }
         }
 
         private void addCategory1()
@@ -606,7 +603,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "addCategory1");
             }
         }
 
@@ -622,7 +619,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Category");
             }
         }
 
@@ -804,7 +801,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Category1");
             }
         }
 
@@ -830,7 +827,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "loadtransactionId");
             }
         }
         string taxrate = "";
@@ -849,7 +846,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "button_Click");
             }
         }
         private void Button_Click_Go_Back(object sender, RoutedEventArgs e)
@@ -861,7 +858,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Button_Click_Go_Back");
             }
         }
         private void Button_Click_Sale_Save(object sender, RoutedEventArgs e)
@@ -897,7 +894,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Button_Click_Sale_Save");
             }
         }
 
@@ -1541,7 +1538,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "OnKeyDownHandler");
             }
         }
 
@@ -1649,7 +1646,7 @@ namespace POSSystem
 
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "BarcodeMethod");
             }
         }
 
@@ -1691,7 +1688,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Tender_Click");
             }
         }
 
@@ -1732,7 +1729,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "TotalEvent");
             }
         }
 
@@ -1757,7 +1754,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "TxtCashReceive_KeyDown");
             }
         }
 
@@ -1796,7 +1793,7 @@ namespace POSSystem
                 string cashReturn = TxtCashReturn.Text.Replace("$ ", "");
                 string tranid = Convert.ToInt32(lblTranid.Content).ToString();
 
-                string transaction = "insert into Transactions(Tran_id,EndDate,EndTime,GrossAmount,TaxAmount,GrandAmount,CreateBy,CreateOn,StoreId,Register_id)Values('" + tranid + "','" + onlydate + "','" + onlytime + "','" + totalAmt + "','" + tax + "','" + grandTotalAmt + "','" + username + "','" + date + "','" + storeid + "','" + registerid + "')";
+                string transaction = "insert into Transactions(Tran_id,EndDate,EndTime,GrossAmount,TaxAmount,GrandAmount,CreateBy,CreateOn,StoreId,Register_id,POSId)Values('" + tranid + "','" + onlydate + "','" + onlytime + "','" + totalAmt + "','" + tax + "','" + grandTotalAmt + "','" + username + "','" + date + "','" + storeid + "','" + registerid + "','" + posId + "')";
                 SqlCommand cmd = new SqlCommand(transaction, con);
                 con.Open();
                 cmd.ExecuteNonQuery();
@@ -1805,9 +1802,9 @@ namespace POSSystem
                 {
                     string tender = "";
                     if (refund == "")
-                        tender = "insert into Tender(EndDate,Endtime,TenderCode,Amount,Change,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + cashRec + "','" + cashReturn + "','" + tranid + "','" + username + "','" + date + "')";
+                        tender = "insert into Tender(EndDate,Endtime,TenderCode,Amount,Change,TransactionId,CreateBy,CreateOn,StoreId,POSId,RegisterId)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + cashRec + "','" + cashReturn + "','" + tranid + "','" + username + "','" + date + "','" + storeid + "','" + posId + "','" + registerid + "')";
                     else
-                        tender = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + username + "','" + date + "')";
+                        tender = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn,StoreId,POSId,RegisterId)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + username + "','" + date + "','" + storeid + "','" + posId + "','" + registerid + "')";
                     SqlCommand cmdTender = new SqlCommand(tender, con);
                     con.Open();
                     cmdTender.ExecuteNonQuery();
@@ -1815,7 +1812,7 @@ namespace POSSystem
                 }
                 else if (tenderCode == "Card")
                 {
-                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + username + "','" + date + "')";
+                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn,storeid,posid,RegisterId)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + username + "','" + date + "','" + storeid + "','" + posId + "','" + registerid + "')";
                     SqlCommand cmdTender1 = new SqlCommand(tender1, con);
                     con.Open();
                     cmdTender1.ExecuteNonQuery();
@@ -1823,7 +1820,7 @@ namespace POSSystem
                 }
                 else if (tenderCode == "Customer")
                 {
-                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,AccountName,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + cbcustomer.Text + "','" + username + "','" + date + "')";
+                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,AccountName,CreateBy,CreateOn,storeid,posid,RegisterId)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + cbcustomer.Text + "','" + username + "','" + date + "','" + storeid + "','" + posId + "','" + registerid + "')";
                     SqlCommand cmdTender1 = new SqlCommand(tender1, con);
                     con.Open();
                     cmdTender1.ExecuteNonQuery();
@@ -1831,7 +1828,7 @@ namespace POSSystem
                 }
                 else if (tenderCode == "Check")
                 {
-                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CheckNo,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + TxtCheck.Text + "','" + username + "','" + date + "')";
+                    string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CheckNo,CreateBy,CreateOn,storeid,posid,RegisterId)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + TxtCheck.Text + "','" + username + "','" + date + "','" + storeid + "','" + posId + "','" + registerid + "')";
                     SqlCommand cmdTender1 = new SqlCommand(tender1, con);
                     con.Open();
                     cmdTender1.ExecuteNonQuery();
@@ -1843,7 +1840,9 @@ namespace POSSystem
                     dataRow[7] = onlytime;
                     dataRow[8] = tranid;
                     dataRow[9] = username;
-                    dataRow[10] = date;
+                    dataRow["StoreId"] = storeid;
+                    dataRow["POSId"] = posId;
+                    dataRow["RegisterId"] = registerid;
                 }
 
                 SqlBulkCopy objbulk = new SqlBulkCopy(con);
@@ -1861,6 +1860,9 @@ namespace POSSystem
                 objbulk.ColumnMappings.Add("CreateOn", "CreateOn");
                 objbulk.ColumnMappings.Add("Void", "Void");
                 objbulk.ColumnMappings.Add("LoyaltyId", "loyaltyId");
+                objbulk.ColumnMappings.Add("StoreId", "StoreId");
+                objbulk.ColumnMappings.Add("POSId", "POSId");
+                objbulk.ColumnMappings.Add("RegisterId", "RegisterId");
                 con.Open();
                 objbulk.WriteToServer(dt);
                 con.Close();
@@ -1908,7 +1910,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Button_Click_1");
             }
         }
 
@@ -1917,12 +1919,12 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                string query = "select * from storedetails";
+                string query = "select * from store where storeid = " + storeid + "";
                 SqlCommand cmdstore = new SqlCommand(query, con);
                 SqlDataAdapter sdastore = new SqlDataAdapter(cmdstore);
                 sdastore.Fill(dtstr);
             }
-            catch (Exception ex) { SendErrorToText(ex, errorFileName); }
+            catch (Exception ex) { SendErrorToText(ex, errorFileName, "StoreDetails"); }
         }
 
         private void FormatPage(object sender, PrintPageEventArgs e)
@@ -1943,7 +1945,7 @@ namespace POSSystem
                 new SolidBrush(Color.Black), 22 + 22, 22);
                 Offset = Offset + largeinc + 20;
 
-                DrawAtStart("   " + dtstr.Rows[0]["StoreAddress"].ToString(), Offset);
+                DrawAtStart("   " + dtstr.Rows[0]["Address"].ToString(), Offset);
                 Offset = Offset + largeinc;
                 DrawAtStart(dtstr.Rows[0]["PhoneNumber"].ToString(), Offset);
 
@@ -2012,7 +2014,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "FormatPage");
             }
         }
 
@@ -2033,7 +2035,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Button_Click_2");
             }
         }
         void DrawAtStart(string text, int Offset)
@@ -2049,7 +2051,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "DrawAtStart");
             }
         }
         void InsertItem(string key, string value, string value1, int Offset)
@@ -2068,7 +2070,7 @@ namespace POSSystem
                 graphics.DrawString(value1, minifont,
                         new SolidBrush(Color.Black), startX + 210, startY + Offset);
             }
-            catch (Exception ex) { SendErrorToText(ex, errorFileName); }
+            catch (Exception ex) { SendErrorToText(ex, errorFileName, "InsertItem"); }
         }
         void InsertHeaderStyleItem(string key, string value, string value1, int Offset)
         {
@@ -2088,7 +2090,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "InsertHeaderStyleItem");
             }
 
         }
@@ -2103,7 +2105,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "DrawLine");
             }
         }
         void DrawSimpleString(string text, Font font, int Offset, int xOffset)
@@ -2117,7 +2119,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "DrawSimpleString");
             }
         }
 
@@ -2460,7 +2462,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "JRDGrid_CellEditEnding");
             }
         }
         private void NumButton_Click(object sender, RoutedEventArgs e)
@@ -2519,7 +2521,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "NumButton_Click");
             }
         }
 
@@ -2532,7 +2534,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Button_Click_3");
             }
         }
 
@@ -2563,7 +2565,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Button_Click_4");
             }
 
         }
@@ -2574,11 +2576,6 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                //string queryHold = "select distinct TrasactionId from Hold";
-                //SqlCommand cmdHold = new SqlCommand(queryHold, con);
-                //SqlDataAdapter sdaHold = new SqlDataAdapter(cmdHold);
-                //sdaHold.Fill(dtHold);
-
                 if (dtHold.Rows.Count == 0)
                 {
                     PrintDocument = new PrintDocument();
@@ -2592,34 +2589,34 @@ namespace POSSystem
                     sdaShift.Fill(dtShift);
                     int i = dtShift.Rows.Count;
 
-                    string tenderQ = "Update tender set shiftClose=@username Where shiftClose is null";
+                    string tenderQ = "Update tender set shiftClose=@username Where StoreId = " + storeid + " and PosId = " + posId + " and   shiftClose is null";
                     SqlCommand tenderCMD = new SqlCommand(tenderQ, con);
                     tenderCMD.Parameters.AddWithValue("@username", i);
-                    string transQ = "Update Transactions set shiftClose=@username Where shiftClose is null";
+                    string transQ = "Update Transactions set shiftClose=@username Where StoreId = " + storeid + " and PosId = " + posId + " and  shiftClose is null";
                     SqlCommand transCMD = new SqlCommand(transQ, con);
                     transCMD.Parameters.AddWithValue("@username", i);
-                    string itemQ = "Update SalesItem set shiftClose=@username Where shiftClose is null";
+                    string itemQ = "Update SalesItem set shiftClose=@username Where StoreId = " + storeid + " and PosId = " + posId + " and  shiftClose is null";
                     SqlCommand itemCMD = new SqlCommand(itemQ, con);
                     itemCMD.Parameters.AddWithValue("@username", i);
-                    string expQ = "Update Expence set shiftClose=@username Where shiftClose is null";
-                    SqlCommand expCMD = new SqlCommand(expQ, con);
-                    expCMD.Parameters.AddWithValue("@username", i);
-                    string RECQ = "Update Receive set shiftClose=@username Where shiftClose is null";
-                    SqlCommand RECCMD = new SqlCommand(RECQ, con);
-                    RECCMD.Parameters.AddWithValue("@username", i);
+                    //string expQ = "Update Expence set shiftClose=@username Where StoreId = " + storeid + " and PosId = " + posId + " and  shiftClose is null";
+                    //SqlCommand expCMD = new SqlCommand(expQ, con);
+                    //expCMD.Parameters.AddWithValue("@username", i);
+                    //string RECQ = "Update Receive set shiftClose=@username Where StoreId = " + storeid + " and PosId = " + posId + " and  shiftClose is null";
+                    //SqlCommand RECCMD = new SqlCommand(RECQ, con);
+                    //RECCMD.Parameters.AddWithValue("@username", i);
                     con.Open();
                     tenderCMD.ExecuteNonQuery();
                     transCMD.ExecuteNonQuery();
                     itemCMD.ExecuteNonQuery();
-                    expCMD.ExecuteNonQuery();
-                    RECCMD.ExecuteNonQuery();
+                    //expCMD.ExecuteNonQuery();
+                    //RECCMD.ExecuteNonQuery();
                     con.Close();
                 }
                 else { MessageBox.Show("Please Clear Hold Transaction"); }
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Button_Click_5");
             }
         }
 
@@ -2628,19 +2625,19 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                string queryTrans = "select Count(tran_id)as Counts,sum(Convert(decimal(10,2),GrossAmount))as Sales,sum(Convert(decimal(10,2),TaxAmount))as Tax,sum(Convert(decimal(10,2),grandAmount))as Total,min(convert(datetime,createon))as SDate,Max(convert(datetime,createon))as EDate from transactions where ShiftClose is null and (void !=1 or void is Null)";
+                string queryTrans = "select Count(tran_id)as Counts,sum(Convert(decimal(10,2),GrossAmount))as Sales,sum(Convert(decimal(10,2),TaxAmount))as Tax,sum(Convert(decimal(10,2),grandAmount))as Total,min(convert(datetime,createon))as SDate,Max(convert(datetime,createon))as EDate from transactions where StoreId = " + storeid + " and POSId = " + posId + " and ShiftClose is null and (void !=1 or void is Null)";
                 SqlCommand cmdTrans = new SqlCommand(queryTrans, con);
                 SqlDataAdapter sdaTrans = new SqlDataAdapter(cmdTrans);
                 DataTable dtTrans = new DataTable();
                 sdaTrans.Fill(dtTrans);
 
-                string queryDept = "select Department,Sum(Convert(decimal(10,2),amt)) as amt from(select Department, Sum(Convert(decimal(10,2),Amount)) as amt from salesitem inner join item on salesitem.scancode = item.scancode where ShiftClose is null and(void != 1 or void is Null) group by Department Union all select Department,Sum(Convert(decimal(10,2),Amount)) as amt from salesitem inner join Department on salesitem.Descripation = Department.Department where ShiftClose is null and(void != 1 or void is Null) group by Department)as x group by Department";
+                string queryDept = "select Department,Sum(Convert(decimal(10,2),amt)) as amt from(select Department, Sum(Convert(decimal(10,2),Amount)) as amt from salesitem inner join item on salesitem.scancode = item.scancode and salesitem.storeid = item.storeid where  salesitem.storeid = " + storeid + " and salesitem.POSId = " + posId + " and ShiftClose is null and(void != 1 or void is Null) group by Department Union all select Department,Sum(Convert(decimal(10,2),Amount)) as amt from salesitem inner join Department on salesitem.Descripation = Department.Department and salesitem.storeid = item.storeid where  salesitem.storeid = " + storeid + " and salesitem.POSId = " + posId + " and ShiftClose is null and(void != 1 or void is Null) group by Department)as x group by Department";
                 SqlCommand cmdDept = new SqlCommand(queryDept, con);
                 SqlDataAdapter sdaDept = new SqlDataAdapter(cmdDept);
                 DataTable dtDept = new DataTable();
                 sdaDept.Fill(dtDept);
 
-                string queryTender = "select tendercode,sum(Convert(decimal(10,2),amount)-coalesce(Convert(decimal(10,2),change),0))as amt from tender where ShiftClose is null group by tendercode";
+                string queryTender = "select tendercode,sum(Convert(decimal(10,2),amount)-coalesce(Convert(decimal(10,2),change),0))as amt from tender where  storeid = " + storeid + " and posid =" + posId + " and  ShiftClose is null group by tendercode";
                 SqlCommand cmdTender = new SqlCommand(queryTender, con);
                 SqlDataAdapter sdaTender = new SqlDataAdapter(cmdTender);
                 DataTable dtTender = new DataTable();
@@ -2659,7 +2656,7 @@ namespace POSSystem
                 new SolidBrush(Color.Black), 22 + 22, 22);
                 Offset = Offset + largeinc + 22;
 
-                DrawAtStart("            " + dtstr.Rows[0]["StoreAddress"].ToString(), Offset);
+                DrawAtStart("            " + dtstr.Rows[0]["Address"].ToString(), Offset);
                 Offset = Offset + mediuminc;
                 DrawAtStart("            " + dtstr.Rows[0]["PhoneNumber"].ToString(), Offset);
 
@@ -2727,7 +2724,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "ShiftClose");
             }
         }
 
@@ -2740,7 +2737,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Button_Click_6");
             }
         }
 
@@ -2756,7 +2753,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "textbox_GotFocus");
             }
         }
 
@@ -2796,7 +2793,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Department_Button_Click");
             }
         }
 
@@ -2834,7 +2831,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "ShortcutKey_Button_Click");
             }
         }
 
@@ -2874,7 +2871,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "JdGrid_delete_click");
             }
         }
 
@@ -2889,7 +2886,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "TxtCheck_KeyDown");
             }
         }
 
@@ -2901,7 +2898,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "ComboBox_SelectionChanged");
             }
         }
 
@@ -2914,7 +2911,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "btnConform_Click");
             }
         }
 
@@ -3505,9 +3502,154 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "ScanCodeFunction");
             }
         }
+
+
+        private void Button_DayClose(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+                if (dtHold.Rows.Count == 0)
+                {
+                    PrintDocument = new PrintDocument();
+                    PrintDocument.PrintPage += new PrintPageEventHandler(DayClosePrint);
+                    PrintDocument.Print();
+                    InsertQuery();
+                }
+                else { MessageBox.Show("Please Clear Hold Transaction"); }
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName, "Button_DayClose");
+            }
+        }
+
+        private void InsertQuery()
+        {
+            SqlConnection con = new SqlConnection(conString);
+            con.Open();
+            SqlCommand sql_cmnd = new SqlCommand("sp_DayClose", con);
+            sql_cmnd.CommandType = CommandType.StoredProcedure;
+            sql_cmnd.Parameters.AddWithValue("@dayclose", SqlDbType.NVarChar).Value = DateTime.Now.ToString("yyyy/MM/dd");
+            sql_cmnd.Parameters.AddWithValue("@enterOn", SqlDbType.NVarChar).Value = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
+            sql_cmnd.Parameters.AddWithValue("@enterBy", SqlDbType.NVarChar).Value = username;
+            sql_cmnd.Parameters.AddWithValue("@storeId", SqlDbType.NVarChar).Value = storeid;
+            sql_cmnd.Parameters.AddWithValue("@posId", SqlDbType.NVarChar).Value = posId;
+            sql_cmnd.ExecuteNonQuery();
+            con.Close();
+        }
+
+
+        private void DayClosePrint(object sender, PrintPageEventArgs e)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(conString);
+                string queryTrans = "select Count(tran_id)as Counts,sum(convert(decimal(10,2),GrossAmount))as Sales,sum(convert(decimal(10,2),TaxAmount))as Tax,sum(convert(decimal(10,2),grandAmount))as Total,min(convert(datetime,createon))as SDate,Max(convert(datetime,createon))as EDate from transactions where Dayclose is null and (void !=1 or void is Null)";
+                SqlCommand cmdTrans = new SqlCommand(queryTrans, con);
+                SqlDataAdapter sdaTrans = new SqlDataAdapter(cmdTrans);
+                DataTable dtTrans = new DataTable();
+                sdaTrans.Fill(dtTrans);
+
+                string queryDept = "select Department,Sum(convert(decimal(10,2),amt)) as amt from(select Department, Sum(convert(decimal(10,2),Amount)) as amt from salesitem inner join item on salesitem.scancode = item.scancode where dayclose is null and(void != 1 or void is Null) group by Department Union all select Department,Sum(convert(decimal(10,2),Amount)) as amt from salesitem inner join Department on salesitem.Descripation = Department.Department where dayclose is null and(void != 1 or void is Null) group by Department)as x group by Department";
+                SqlCommand cmdDept = new SqlCommand(queryDept, con);
+                SqlDataAdapter sdaDept = new SqlDataAdapter(cmdDept);
+                DataTable dtDept = new DataTable();
+                sdaDept.Fill(dtDept);
+
+                string queryTender = "select tendercode,sum(convert(decimal(10,2),amount)-convert(decimal(10,2),coalesce(change,0)))as amt from tender where dayclose is null group by tendercode";
+                SqlCommand cmdTender = new SqlCommand(queryTender, con);
+                SqlDataAdapter sdaTender = new SqlDataAdapter(cmdTender);
+                DataTable dtTender = new DataTable();
+                sdaTender.Fill(dtTender);
+
+                graphics = e.Graphics;
+                Font minifont = new Font("Arial", 7);
+                Font itemfont = new Font("Arial", 8);
+                Font smallfont = new Font("Arial", 10);
+                Font mediumfont = new Font("Arial", 12);
+                Font largefont = new Font("Arial", 14);
+                Font headerfont = new Font("Arial", 16);
+                int Offset = 10;
+                int smallinc = 10, mediuminc = 12, largeinc = 15;
+                graphics.DrawString("     " + dtstr.Rows[0]["StoreName"].ToString(), headerfont,
+                new SolidBrush(Color.Black), 22 + 22, 22);
+                Offset = Offset + largeinc + 22;
+
+                DrawAtStart("            " + dtstr.Rows[0]["Address"].ToString(), Offset);
+                Offset = Offset + mediuminc;
+                DrawAtStart("            " + dtstr.Rows[0]["PhoneNumber"].ToString(), Offset);
+
+                Offset = Offset + mediuminc;
+                String underLine = "-------------------------------------";
+                DrawLine(underLine, mediumfont, Offset, 0);
+
+                Offset = Offset + mediuminc + 10;
+                DrawAtStart("       Register :" + registerid, Offset);
+                Offset = Offset + mediuminc;
+                DrawAtStart("Date From:       " + dtTrans.Rows[0]["SDate"].ToString(), Offset);
+                Offset = Offset + mediuminc;
+                DrawAtStart("Date To:           " + dtTrans.Rows[0]["EDate"].ToString(), Offset);
+                Offset = Offset + smallinc;
+                underLine = "-------------------------------------";
+                DrawLine(underLine, mediumfont, Offset, 2);
+
+                Offset = Offset + mediuminc + 10;
+
+                DrawSimpleString("            Day Close", largefont, Offset, 15);
+
+                Offset = Offset + mediuminc;
+                Offset = Offset + mediuminc;
+                Offset = Offset + mediuminc;
+                DrawAtStart("Sales:          " + "                       " + dtTrans.Rows[0]["Sales"].ToString(), Offset);
+                Offset = Offset + mediuminc;
+                DrawAtStart("Tax:            " + "                        " + dtTrans.Rows[0]["Tax"].ToString(), Offset);
+                Offset = Offset + mediuminc;
+                DrawAtStart("Total:          " + "                        " + dtTrans.Rows[0]["Total"].ToString(), Offset);
+                Offset = Offset + mediuminc;
+                DrawAtStart("# Transactions: " + "                 " + dtTrans.Rows[0]["Counts"].ToString(), Offset);
+                Offset = Offset + smallinc;
+                underLine = "-------------------------------------";
+                DrawLine(underLine, mediumfont, Offset, 2);
+
+                Offset = Offset + largeinc;
+
+                InsertHeaderStyleItem("Department Sales", "", "", Offset);
+
+                Offset = Offset + largeinc;
+                for (int i = 0; i < dtDept.Rows.Count; i++)
+                {
+                    InsertItem(dtDept.Rows[i]["Department"].ToString(), " ", dtDept.Rows[i]["amt"].ToString(), Offset);
+                    Offset = Offset + largeinc;
+                }
+
+                underLine = "-------------------------------------";
+                DrawLine(underLine, mediumfont, Offset, 2);
+
+                Offset = Offset + largeinc;
+
+                InsertHeaderStyleItem("Tender Sales. ", " ", " ", Offset);
+
+                Offset = Offset + largeinc;
+                for (int i = 0; i < dtTender.Rows.Count; i++)
+                {
+                    InsertItem(dtTender.Rows[i]["tendercode"].ToString(), " ", dtTender.Rows[i]["amt"].ToString(), Offset);
+                    Offset = Offset + largeinc;
+                }
+
+                underLine = "-------------------------------------";
+                DrawLine(underLine, mediumfont, Offset, 2);
+
+            }
+            catch (Exception ex)
+            {
+                SendErrorToText(ex, errorFileName, "DayClosePrint");
+            }
+        }
+
 
         void button_Click_Category(object sender, RoutedEventArgs e, string xyz)
         {
@@ -3521,7 +3663,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "button_Click_Category");
             }
         }
 
@@ -3554,7 +3696,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "GrandTotal_Click");
             }
         }
 
@@ -3600,7 +3742,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Plus_Click");
             }
         }
 
@@ -3683,7 +3825,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Minus_Click");
             }
         }
 
@@ -3716,7 +3858,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "CashReceive");
             }
         }
 
@@ -3759,7 +3901,7 @@ namespace POSSystem
                     con.Close();
                     if (tenderCode == "Cash")
                     {
-                        string tender = "insert into Tender(EndDate,Endtime,TenderCode,Amount,Change,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + cashRec + "','" + cashReturn + "','" + tranid + "','" + username + "','" + date + "')";
+                        string tender = "insert into Tender(EndDate,Endtime,TenderCode,Amount,Change,TransactionId,CreateBy,CreateOn,RegisterId)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + cashRec + "','" + cashReturn + "','" + tranid + "','" + username + "','" + date + "','" + registerid + "')";
                         SqlCommand cmdTender = new SqlCommand(tender, con);
                         con.Open();
                         cmdTender.ExecuteNonQuery();
@@ -3767,7 +3909,7 @@ namespace POSSystem
                     }
                     else if (tenderCode == "Card")
                     {
-                        string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + username + "','" + date + "')";
+                        string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn,RegisterId)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + username + "','" + date + "','" + registerid + "')";
                         SqlCommand cmdTender1 = new SqlCommand(tender1, con);
                         con.Open();
                         cmdTender1.ExecuteNonQuery();
@@ -3775,7 +3917,7 @@ namespace POSSystem
                     }
                     else if (tenderCode == "Customer")
                     {
-                        string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,AccountName,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + cbcustomer.Text + "','" + username + "','" + date + "')";
+                        string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,AccountName,CreateBy,CreateOn,RegisterId)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + cbcustomer.Text + "','" + username + "','" + date + "','" + registerid + "')";
                         SqlCommand cmdTender1 = new SqlCommand(tender1, con);
                         con.Open();
                         cmdTender1.ExecuteNonQuery();
@@ -3783,7 +3925,7 @@ namespace POSSystem
                     }
                     else if (tenderCode == "Check")
                     {
-                        string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CheckNo,CreateBy,CreateOn)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + TxtCheck.Text + "','" + username + "','" + date + "')";
+                        string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CheckNo,CreateBy,CreateOn,RegisterId)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + TxtCheck.Text + "','" + username + "','" + date + "','" + registerid + "')";
                         SqlCommand cmdTender1 = new SqlCommand(tender1, con);
                         con.Open();
                         cmdTender1.ExecuteNonQuery();
@@ -3797,6 +3939,7 @@ namespace POSSystem
                         dataRow[9] = username;
                         dataRow[10] = date;
                         dataRow[17] = '1';
+                        dataRow["RegisterId"] = registerid;
                     }
 
                     SqlBulkCopy objbulk = new SqlBulkCopy(con);
@@ -3813,6 +3956,7 @@ namespace POSSystem
                     objbulk.ColumnMappings.Add("CreateBy", "CreateBy");
                     objbulk.ColumnMappings.Add("CreateOn", "CreateOn");
                     objbulk.ColumnMappings.Add("Void", "Void");
+                    objbulk.ColumnMappings.Add("RegisterId", "RegisterId");
                     con.Open();
                     objbulk.WriteToServer(dt);
                     con.Close();
@@ -3842,7 +3986,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Click_VoidTransaction");
             }
         }
 
@@ -3870,7 +4014,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "OnClick_PriceCheck");
             }
         }
 
@@ -3887,7 +4031,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "TxtBarcode_KeyDown");
             }
         }
 
@@ -3960,7 +4104,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "priceCheck");
             }
         }
 
@@ -3976,7 +4120,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "JRDGrid_SelectionChanged");
             }
         }
 
@@ -4030,7 +4174,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Button_Click_VoidItem");
             }
         }
 
@@ -4073,7 +4217,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Button_Click_Receipt");
             }
         }
 
@@ -4113,7 +4257,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "DgTransaction_SelectionChanged");
             }
         }
 
@@ -4152,7 +4296,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "BtnPrint_Click");
             }
         }
 
@@ -4171,7 +4315,7 @@ namespace POSSystem
                     btnRefund.Foreground = new SolidColorBrush(Colors.DeepPink);
                 }
             }
-            catch (Exception ex) { SendErrorToText(ex, errorFileName); }
+            catch (Exception ex) { SendErrorToText(ex, errorFileName, "Button_Click_Refund"); }
         }
 
         private void Click_ClosegReceipt(object sender, RoutedEventArgs e)
@@ -4201,7 +4345,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Click_ClosegReceipt");
             }
         }
 
@@ -4271,7 +4415,7 @@ namespace POSSystem
                     loadHold();
                 }
             }
-            catch (Exception ex) { SendErrorToText(ex, errorFileName); }
+            catch (Exception ex) { SendErrorToText(ex, errorFileName, "Hold_Click"); }
         }
 
         private void loadHold()
@@ -4322,7 +4466,7 @@ namespace POSSystem
                     lblHoldTransaction.Content = "";
                 }
             }
-            catch (Exception ex) { SendErrorToText(ex, errorFileName); }
+            catch (Exception ex) { SendErrorToText(ex, errorFileName, "loadHold"); }
         }
 
         private void button_Click_Hold(object sender, RoutedEventArgs e, string abc)
@@ -4387,7 +4531,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "button_Click_Hold");
             }
         }
 
@@ -4414,7 +4558,7 @@ namespace POSSystem
                 RightArrow.Visibility = Visibility.Visible;
                 LeftArrow.Visibility = Visibility.Hidden;
             }
-            catch (Exception ex) { SendErrorToText(ex, errorFileName); }
+            catch (Exception ex) { SendErrorToText(ex, errorFileName, "LeftArrow_Click"); }
         }
 
         private void RightArrow_Click(object sender, RoutedEventArgs e)
@@ -4442,7 +4586,7 @@ namespace POSSystem
                 LeftArrow.Visibility = Visibility.Visible;
                 LeftArrow.IsEnabled = true;
             }
-            catch (Exception ex) { SendErrorToText(ex, errorFileName); }
+            catch (Exception ex) { SendErrorToText(ex, errorFileName, "RightArrow_Click"); }
         }
 
         private void GoBack_Click(object sender, RoutedEventArgs e)
@@ -4460,7 +4604,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "GoBack_Click");
             }
         }
 
@@ -4484,7 +4628,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Button_Click_Customer");
             }
 
         }
@@ -4519,7 +4663,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "CbCustomer1_SelectionChanged");
             }
         }
 
@@ -4577,7 +4721,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "button_Click_Category_Description");
             }
         }
 
@@ -4616,7 +4760,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "Button_Click_Enter");
             }
         }
 
@@ -4643,7 +4787,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "selectedCellsChanged");
             }
         }
 
@@ -4684,7 +4828,7 @@ namespace POSSystem
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName);
+                SendErrorToText(ex, errorFileName, "CellEditMethod");
             }
         }
 
@@ -4701,13 +4845,13 @@ namespace POSSystem
             }
         }
 
-        private void SendErrorToText(Exception ex, string errorFileName)
+        private void SendErrorToText(Exception ex, string errorFileName, string funName)
         {
-            var line = Environment.NewLine + Environment.NewLine;
+            var line = ex.Message; //Environment.NewLine + Environment.NewLine;
             ErrorlineNo = ex.StackTrace.Substring(ex.StackTrace.Length - 7, 7);
             Errormsg = ex.GetType().Name.ToString();
             extype = ex.GetType().ToString();
-            MessageBox.Show("line -" + line + "</br> FileName -" + errorFileName, "Error " + ex);
+            MessageBox.Show("Message : " + line + Environment.NewLine + "FileName : " + errorFileName + Environment.NewLine + "Function Name : " + funName, "Error");
             ErrorLocation = ex.Message.ToString();
             try
             {

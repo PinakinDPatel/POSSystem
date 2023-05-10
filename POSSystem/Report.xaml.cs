@@ -32,6 +32,10 @@ namespace POSSystem
         string conString = App.Current.Properties["ConString"].ToString();
         string username = App.Current.Properties["username"].ToString();
         string registerid = App.Current.Properties["RegisterId"].ToString();
+
+        string storeId = App.Current.Properties["StoreId"].ToString();
+        string posId = App.Current.Properties["POSId"].ToString();
+
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "Report.cs";
         private PrintDocument PrintDocument;
@@ -79,27 +83,28 @@ namespace POSSystem
                     sdaShift.Fill(dtShift);
                     int i = dtShift.Rows.Count;
 
-                    string tenderQ = "Update tender set shiftClose=@username Where shiftClose is null";
+                    string tenderQ = "Update tender set shiftClose=@username Where storeId = " + storeId + " and posid = " + posId + " and shiftClose is null";
                     SqlCommand tenderCMD = new SqlCommand(tenderQ, con);
                     tenderCMD.Parameters.AddWithValue("@username", i);
-                    string transQ = "Update Transactions set shiftClose=@username Where shiftClose is null";
+                    string transQ = "Update Transactions set shiftClose=@username Where storeId = " + storeId + " and posid = " + posId + " and shiftClose is null";
                     SqlCommand transCMD = new SqlCommand(transQ, con);
                     transCMD.Parameters.AddWithValue("@username", i);
-                    string itemQ = "Update SalesItem set shiftClose=@username Where shiftClose is null";
+                    string itemQ = "Update SalesItem set shiftClose=@username Where storeId = " + storeId + " and posid = " + posId + " and shiftClose is null";
                     SqlCommand itemCMD = new SqlCommand(itemQ, con);
                     itemCMD.Parameters.AddWithValue("@username", i);
-                    string expQ = "Update Expence set shiftClose=@username Where shiftClose is null";
-                    SqlCommand expCMD = new SqlCommand(expQ, con);
-                    expCMD.Parameters.AddWithValue("@username", i);
-                    string RECQ = "Update Receive set shiftClose=@username Where shiftClose is null";
-                    SqlCommand RECCMD = new SqlCommand(RECQ, con);
-                    RECCMD.Parameters.AddWithValue("@username", i);
+
+                    //string expQ = "Update Expence set shiftClose=@username Where shiftClose is null";
+                    //SqlCommand expCMD = new SqlCommand(expQ, con);
+                    //expCMD.Parameters.AddWithValue("@username", i);
+                    //string RECQ = "Update Receive set shiftClose=@username Where shiftClose is null";
+                    //SqlCommand RECCMD = new SqlCommand(RECQ, con);
+                    //RECCMD.Parameters.AddWithValue("@username", i);
                     con.Open();
                     tenderCMD.ExecuteNonQuery();
                     transCMD.ExecuteNonQuery();
                     itemCMD.ExecuteNonQuery();
-                    expCMD.ExecuteNonQuery();
-                    RECCMD.ExecuteNonQuery();
+                    //expCMD.ExecuteNonQuery();
+                    //RECCMD.ExecuteNonQuery();
                     con.Close();
                 }
                 else { MessageBox.Show("Please Clear Hold Transaction"); }
@@ -198,7 +203,7 @@ namespace POSSystem
         private void StoreDetails()
         {
             SqlConnection con = new SqlConnection(conString);
-            string query = "select * from storedetails";
+            string query = "select * from store where storeid='" + storeId + "'";
             SqlCommand cmdstore = new SqlCommand(query, con);
             SqlDataAdapter sdastore = new SqlDataAdapter(cmdstore);
             sdastore.Fill(dtstr);
@@ -239,7 +244,7 @@ namespace POSSystem
                 new SolidBrush(Color.Black), 22 + 22, 22);
                 Offset = Offset + largeinc + 22;
 
-                DrawAtStart("              " + dtstr.Rows[0]["StoreAddress"].ToString(), Offset);
+                DrawAtStart("              " + dtstr.Rows[0]["Address"].ToString(), Offset);
                 Offset = Offset + mediuminc;
                 DrawAtStart("              " + dtstr.Rows[0]["PhoneNumber"].ToString(), Offset);
 
@@ -347,7 +352,7 @@ namespace POSSystem
                 new SolidBrush(Color.Black), 22 + 22, 22);
                 Offset = Offset + largeinc + 22;
 
-                DrawAtStart("            " + dtstr.Rows[0]["StoreAddress"].ToString(), Offset);
+                DrawAtStart("            " + dtstr.Rows[0]["Address"].ToString(), Offset);
                 Offset = Offset + mediuminc;
                 DrawAtStart("            " + dtstr.Rows[0]["PhoneNumber"].ToString(), Offset);
 

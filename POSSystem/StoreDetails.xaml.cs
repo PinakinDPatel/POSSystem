@@ -36,24 +36,25 @@ namespace POSSystem
         {
             this.Close();
         }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            SqlConnection con = new SqlConnection(conString);
-            string QueryI = "";
-            if (lblStoreId.Content == null)
-            {
-                QueryI = "Insert into StoreDetails(StoreName,StoreAddress,PhoneNumber,Email)Values('" + TxtName.Text + "','" + TxtAddress.Text + "','" + TxtPhone.Text + "','" + TxtEmail.Text + "')";
-            }
-            else
-            {
-                QueryI = "Update StoreDetails Set StoreName='" + TxtName.Text + "',StoreAddress='" + TxtAddress.Text + "',PhoneNumber='" + TxtPhone.Text + "',Email='" + TxtEmail.Text + "' Where StoreId='" + lblStoreId.Content + "'";
-            }
-            SqlCommand cmdI = new SqlCommand(QueryI, con);
-            con.Open();
-            cmdI.ExecuteNonQuery();
-            con.Close();
+            //SqlConnection con = new SqlConnection(conString);
+            //string QueryI = "";
+            //if (lblStoreId.Content == null)
+            //{
+            //    QueryI = "Insert into StoreDetails(StoreName,StoreAddress,PhoneNumber,Email)Values('" + TxtName.Text + "','" + TxtAddress.Text + "','" + TxtPhone.Text + "','" + TxtEmail.Text + "')";
+            //}
+            //else
+            //{
+            //    QueryI = "Update StoreDetails Set StoreName='" + TxtName.Text + "',StoreAddress='" + TxtAddress.Text + "',PhoneNumber='" + TxtPhone.Text + "',Email='" + TxtEmail.Text + "' Where StoreId='" + lblStoreId.Content + "'";
+            //}
+            //SqlCommand cmdI = new SqlCommand(QueryI, con);
+            //con.Open();
+            //cmdI.ExecuteNonQuery();
+            //con.Close();
 
-            load();
+            //load();
         }
 
         private void load()
