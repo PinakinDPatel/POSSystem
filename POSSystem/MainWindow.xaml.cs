@@ -1542,6 +1542,65 @@ namespace POSSystem
             }
         }
 
+        private void myDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                {
+                    DataGrid grid = sender as DataGrid;
+                    if (grid != null && grid.SelectedItems != null && grid.SelectedItems.Count == 1)
+                    {
+                        DataGridRow dgr = grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem) as DataGridRow;
+                        DataRowView dr = (DataRowView)dgr.Item;
+
+                        DataRow newRow = dt.NewRow();
+                        newRow["ScanCode"] = dr["ScanCode"].ToString();
+                        newRow["Description"] = dr["Description"].ToString();
+                        if (refund == "")
+                            newRow["Quantity"] = dr["Quantity"].ToString();
+                        else
+                            newRow["Quantity"] = (Convert.ToInt32(dr["Quantity"]) * -1).ToString();
+                        newRow["UnitRetail"] = Convert.ToDecimal(dr["RetailPrice"].ToString());
+                        newRow["Amount"] = (Convert.ToInt32(newRow["Quantity"]) * Convert.ToDecimal(newRow["UnitRetail"])).ToString();
+                        newRow["OPrice"] = Convert.ToDecimal(dr["RetailPrice"].ToString());
+                        newRow["TaxRate"] = dr["TaxRate"].ToString();
+                        newRow["PromotionId"] = dr["PromotionId"].ToString();
+                        newRow["bIsTrueId"] = "";
+                        dt.Rows.Add(newRow);
+
+                        int dCount = dt.AsEnumerable().Count() - 1;
+                        if (dCount >= 0)
+                        {
+                            ScanCodeFunction();
+                            JRDGrid.ScrollIntoView(JRDGrid.Items[dCount]);
+                            JRDGrid.SelectedIndex = dCount;
+                        }
+
+                        textBox1.Text = "";
+                        if (cbCustomer1.SelectedIndex == 0 && JRDGrid.Items.Count == 1)
+                        {
+                            MessageBox.Show("Select Customer for apply loyalty");
+                            gCustomer.Visibility = Visibility.Visible;
+                            uGHold.Visibility = Visibility.Hidden;
+                            gPriceCheck.Visibility = Visibility.Hidden;
+                        }
+                    }
+                }
+                popgrid.Visibility = Visibility.Hidden;
+                ugDepartment.Visibility = Visibility.Visible;
+                ugDepartment1.Visibility = Visibility.Hidden;
+                ugAddcategory1.Visibility = Visibility.Hidden;
+                ugAddcategory2.Visibility = Visibility.Hidden;
+                ugCategory1.Visibility = Visibility.Hidden;
+                ugCategory2.Visibility = Visibility.Hidden;
+                grPayment.Visibility = Visibility.Hidden;
+                TxtBxStackPanel2.Visibility = Visibility.Hidden;
+                gReceipt.Visibility = Visibility.Hidden;
+            }
+            catch (Exception ex) { SendErrorToText(ex, errorFileName, "myDataGrid_MouseDoubleClick"); }
+        }
+
         public void BarcodeMethod()
         {
             try
@@ -1607,40 +1666,80 @@ namespace POSSystem
                               where myRow.Field<string>("ScanCode") == code
                               select myRow;
 
-                foreach (DataRow row in results)
-                {
-                    DataRow newRow = dt.NewRow();
-                    newRow["ScanCode"] = row["ScanCode"].ToString();
-                    newRow["Description"] = row["Description"].ToString();
-                    if (refund == "")
-                        newRow["Quantity"] = 1;
-                    else
-                        newRow["Quantity"] = -1;
-                    newRow["UnitRetail"] = row["UnitRetail"].ToString();
-                    newRow["Amount"] = (Convert.ToInt32(newRow["Quantity"]) * Convert.ToDecimal(row["UnitRetail"])).ToString();
-                    newRow["OPrice"] = row["UnitRetail"].ToString();
-                    newRow["TaxRate"] = row["TaxRate"].ToString();
-                    newRow["PromotionId"] = row["PromotionId"].ToString();
-                    newRow["bIsTrueId"] = "";
 
-                    dt.Rows.Add(newRow);
+                if (results.Count() > 1)
+                {
+                    DataTable objDT = new DataTable();
+                    objDT.Columns.Add("ScanCode");
+                    objDT.Columns.Add("Description");
+                    objDT.Columns.Add("Quantity");
+                    objDT.Columns.Add("RetailPrice");
+                    objDT.Columns.Add("TaxRate");
+                    objDT.Columns.Add("PromotionId");
+                    objDT.Clear();
+
+                    foreach (var itemObj in results.AsEnumerable())
+                    {
+                        DataRow dr = objDT.NewRow();
+                        dr["ScanCode"] = itemObj.Field<string>("ScanCode");
+                        dr["Description"] = itemObj.Field<string>("Description");
+                        dr["Quantity"] = itemObj.Field<int>("Quantity");
+                        dr["RetailPrice"] = itemObj.Field<string>("RetailPrice");
+                        dr["TaxRate"] = itemObj.Field<string>("TaxRate");
+                        dr["PromotionId"] = itemObj.Field<string>("PromotionId");
+                        objDT.Rows.Add(dr);
+                    }
+                    popgrid.ItemsSource = objDT.DefaultView;
+                    popgrid.Visibility = Visibility.Visible;
+
+                    ugDepartment.Visibility = Visibility.Hidden;
+                    ugDepartment1.Visibility = Visibility.Hidden;
+                    ugAddcategory1.Visibility = Visibility.Hidden;
+                    ugAddcategory2.Visibility = Visibility.Hidden;
+                    ugCategory1.Visibility = Visibility.Hidden;
+                    ugCategory2.Visibility = Visibility.Hidden;
+                    grPayment.Visibility = Visibility.Hidden;
+                    TxtBxStackPanel2.Visibility = Visibility.Hidden;
+                    gReceipt.Visibility = Visibility.Hidden;
+
                 }
-
-                int dCount = dt.AsEnumerable().Count() - 1;
-                if (dCount >= 0)
+                else
                 {
-                    ScanCodeFunction();
-                    JRDGrid.ScrollIntoView(JRDGrid.Items[dCount]);
-                    JRDGrid.SelectedIndex = dCount;
-                }
+                    foreach (DataRow row in results)
+                    {
+                        DataRow newRow = dt.NewRow();
+                        newRow["ScanCode"] = row["ScanCode"].ToString();
+                        newRow["Description"] = row["Description"].ToString();
+                        if (refund == "")
+                            newRow["Quantity"] = 1;
+                        else
+                            newRow["Quantity"] = -1;
+                        newRow["UnitRetail"] = row["UnitRetail"].ToString();
+                        newRow["Amount"] = (Convert.ToInt32(newRow["Quantity"]) * Convert.ToDecimal(row["UnitRetail"])).ToString();
+                        newRow["OPrice"] = row["UnitRetail"].ToString();
+                        newRow["TaxRate"] = row["TaxRate"].ToString();
+                        newRow["PromotionId"] = row["PromotionId"].ToString();
+                        newRow["bIsTrueId"] = "";
 
-                textBox1.Text = "";
-                if (cbCustomer1.SelectedIndex == 0 && JRDGrid.Items.Count == 1)
-                {
-                    MessageBox.Show("Select Customer for apply loyalty");
-                    gCustomer.Visibility = Visibility.Visible;
-                    uGHold.Visibility = Visibility.Hidden;
-                    gPriceCheck.Visibility = Visibility.Hidden;
+                        dt.Rows.Add(newRow);
+                    }
+
+                    int dCount = dt.AsEnumerable().Count() - 1;
+                    if (dCount >= 0)
+                    {
+                        ScanCodeFunction();
+                        JRDGrid.ScrollIntoView(JRDGrid.Items[dCount]);
+                        JRDGrid.SelectedIndex = dCount;
+                    }
+
+                    textBox1.Text = "";
+                    if (cbCustomer1.SelectedIndex == 0 && JRDGrid.Items.Count == 1)
+                    {
+                        MessageBox.Show("Select Customer for apply loyalty");
+                        gCustomer.Visibility = Visibility.Visible;
+                        uGHold.Visibility = Visibility.Hidden;
+                        gPriceCheck.Visibility = Visibility.Hidden;
+                    }
                 }
             }
 
