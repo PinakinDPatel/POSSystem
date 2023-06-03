@@ -135,7 +135,7 @@ namespace POSSystem
                 addCategory1();
                 Category();
                 StoreDetails();
-                FileTransfer();
+                //   FileTransfer();
 
                 if (dtstr.Rows.Count == 0)
                 {
@@ -200,21 +200,21 @@ namespace POSSystem
         }
 
 
-        public void FileTransfer()
-        {
-            string sourcePath = ConfigurationManager.AppSettings["sourcePath"].ToString();
-            string DestinationPath = ConfigurationManager.AppSettings["DestinationPath"].ToString();
-            foreach (string f in Directory.GetFiles(sourcePath))
-            {
-                try
-                {
-                    string files = Path.GetFileName(f);
-                    if (!File.Exists(DestinationPath + "\\" + files))
-                        File.Create(DestinationPath + "\\" + files);
-                }
-                catch (Exception ex) { SendErrorToText(ex, errorFileName, "FileTransfer"); }
-            }
-        }
+        //public void FileTransfer()
+        //{
+        //    string sourcePath = ConfigurationManager.AppSettings["sourcePath"].ToString();
+        //    string DestinationPath = ConfigurationManager.AppSettings["DestinationPath"].ToString();
+        //    foreach (string f in Directory.GetFiles(sourcePath))
+        //    {
+        //        try
+        //        {
+        //            string files = Path.GetFileName(f);
+        //            if (!File.Exists(DestinationPath + "\\" + files))
+        //                File.Create(DestinationPath + "\\" + files);
+        //        }
+        //        catch (Exception ex) { SendErrorToText(ex, errorFileName, "FileTransfer"); }
+        //    }
+        //}
 
 
 
@@ -1783,6 +1783,8 @@ namespace POSSystem
                     sp02.Visibility = Visibility.Visible;
                     customerTxtPanel.Visibility = Visibility.Hidden;
                     checkTxtPanel.Visibility = Visibility.Hidden;
+
+                    MessageBox.Show("This is card payment !");
                 }
             }
             catch (Exception ex)
@@ -2730,7 +2732,7 @@ namespace POSSystem
                 DataTable dtTrans = new DataTable();
                 sdaTrans.Fill(dtTrans);
 
-                string queryDept = "select Department,Sum(Convert(decimal(10,2),amt)) as amt from(select Department, Sum(Convert(decimal(10,2),Amount)) as amt from salesitem inner join item on salesitem.scancode = item.scancode and salesitem.storeid = item.storeid where  salesitem.storeid = " + storeid + " and salesitem.POSId = " + posId + " and ShiftClose is null and(void != 1 or void is Null) group by Department Union all select Department,Sum(Convert(decimal(10,2),Amount)) as amt from salesitem inner join Department on salesitem.Descripation = Department.Department and salesitem.storeid = item.storeid where  salesitem.storeid = " + storeid + " and salesitem.POSId = " + posId + " and ShiftClose is null and(void != 1 or void is Null) group by Department)as x group by Department";
+                string queryDept = "select Department,Sum(Convert(decimal(10,2),amt)) as amt from(select Department, Sum(Convert(decimal(10,2),Amount)) as amt from salesitem inner join item on salesitem.scancode = item.scancode and salesitem.storeid = item.storeid where  salesitem.storeid = " + storeid + " and salesitem.POSId = " + posId + " and ShiftClose is null and(void != 1 or void is Null) group by Department Union all select Department,Sum(Convert(decimal(10,2),Amount)) as amt from salesitem inner join Department on salesitem.Descripation = Department.Department and salesitem.storeid = Department.storeid where  salesitem.storeid = " + storeid + " and salesitem.POSId = " + posId + " and ShiftClose is null and(void != 1 or void is Null) group by Department)as x group by Department";
                 SqlCommand cmdDept = new SqlCommand(queryDept, con);
                 SqlDataAdapter sdaDept = new SqlDataAdapter(cmdDept);
                 DataTable dtDept = new DataTable();
@@ -3659,7 +3661,7 @@ namespace POSSystem
                 DataTable dtDept = new DataTable();
                 sdaDept.Fill(dtDept);
 
-                string queryTender = "select tendercode,sum(convert(decimal(10,2),amount)-convert(decimal(10,2),coalesce(change,0)))as amt from tender where dayclose is null group by tendercode";
+                string queryTender = "select tendercode,sum(convert(decimal(10,2),amount)-convert(decimal(10,2),(case when change='' then '0' else change end)))as amt from tender where dayclose is null group by tendercode";
                 SqlCommand cmdTender = new SqlCommand(queryTender, con);
                 SqlDataAdapter sdaTender = new SqlDataAdapter(cmdTender);
                 DataTable dtTender = new DataTable();
@@ -4783,15 +4785,16 @@ namespace POSSystem
                 var btnContent = (sender as Button);
                 string tb = Convert.ToString(btnContent.Tag);
 
-                int A = (from DataRow row in dtCategory.Rows where (string)row["Category"] == tb select row).Count();
+                //int A = (from DataRow row in dtCategory.Rows where (string)row["Category"] == tb select row).Count();
+                int A = dtCategory.AsEnumerable().Where(c => c.Field<string>("category") == tb).Count();
 
                 if (A != 0)
                     button_Click_Category(sender, e, tb);
                 else
                 {
-                    var results = from myRow in dtItem.AsEnumerable()
-                                  where myRow.Field<string>("Description") == tb
-                                  select myRow;
+                    var results = (from myRow in dtItem.AsEnumerable()
+                                   where myRow.Field<string>("Description") == tb
+                                   select myRow).AsEnumerable();
 
                     foreach (DataRow row in results)
                     {
@@ -4811,11 +4814,15 @@ namespace POSSystem
 
                         dt.Rows.Add(newRow);
                     }
-                    int dCount = dt.Rows.Count - 1;
-                    ScanCodeFunction();
-                    JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
-                    JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
-                    categorytext = "";
+
+                    if (dt.Rows.Count != 0)
+                    {
+                        int dCount = dt.Rows.Count - 1;
+                        ScanCodeFunction();
+                        JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
+                        JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
+                        categorytext = "";
+                    }
                 }
             }
             catch (Exception ex)
