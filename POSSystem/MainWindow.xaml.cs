@@ -1572,7 +1572,7 @@ namespace POSSystem
                         int dCount = dt.AsEnumerable().Count() - 1;
                         if (dCount >= 0)
                         {
-                            ScanCodeFunction();
+                            PromotionApply();
                             JRDGrid.ScrollIntoView(JRDGrid.Items[dCount]);
                             JRDGrid.SelectedIndex = dCount;
                         }
@@ -1727,7 +1727,7 @@ namespace POSSystem
                     int dCount = dt.AsEnumerable().Count() - 1;
                     if (dCount >= 0)
                     {
-                        ScanCodeFunction();
+                        PromotionApply();
                         JRDGrid.ScrollIntoView(JRDGrid.Items[dCount]);
                         JRDGrid.SelectedIndex = dCount;
                     }
@@ -2313,7 +2313,7 @@ namespace POSSystem
                                     decimal ab = qDT / qDT1;
                                     decimal decv = Convert.ToDecimal(qDT1) * Convert.ToDecimal(qDT) / Convert.ToDecimal(qDT1);
 
-                                    ScanCodeFunction();
+                                    PromotionApply();
                                 }
                                 else if (dt.Rows[rowIndex]["RPROName"].ToString() != "")
                                 {
@@ -2383,7 +2383,7 @@ namespace POSSystem
                                     decimal ab = qDT / qDT1;
                                     decimal decv = Convert.ToDecimal(qDT1) * Convert.ToDecimal(qDT) / Convert.ToDecimal(qDT1);
 
-                                    ScanCodeFunction();
+                                    PromotionApply();
                                 }
                                 else if (dt.Rows[rowIndex]["LPROName"].ToString() != "")
                                 {
@@ -2476,7 +2476,7 @@ namespace POSSystem
                                     decimal ab = qDT / qDT1;
                                     decimal decv = Convert.ToDecimal(qDT1) * Convert.ToDecimal(qDT) / Convert.ToDecimal(qDT1);
 
-                                    ScanCodeFunction();
+                                    PromotionApply();
                                 }
                                 else if (dt.Rows[rowIndex]["OPROName"].ToString() != "")
                                 {
@@ -2544,7 +2544,7 @@ namespace POSSystem
                                     decimal ab = qDT / qDT1;
                                     decimal decv = Convert.ToDecimal(qDT1) * Convert.ToDecimal(qDT) / Convert.ToDecimal(qDT1);
 
-                                    ScanCodeFunction();
+                                    PromotionApply();
                                 }
                                 else
                                 {
@@ -2964,7 +2964,7 @@ namespace POSSystem
                                 dt.Rows[i]["Amount"] = Convert.ToDecimal(dt.Rows[i]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[i]["Quantity"]);
                             }
                         }
-                        ScanCodeFunction();
+                        PromotionApply();
                     }
                 }
                 JRDGrid.ItemsSource = dt.DefaultView;
@@ -3016,15 +3016,607 @@ namespace POSSystem
             }
         }
 
-        public void ScanCodeFunction()
+        //public void ScanCodeFunction()
+        //{
+        //    try
+        //    {
+        //        if (dt.AsEnumerable().Count() > 0)
+        //        {
+        //            if (loyaltyCustomerCount <= 5)
+        //            {
+        //                foreach (var item in dt.AsEnumerable())
+        //                {
+        //                    DataTable dataTableDistr = new DataTable();
+        //                    dataTableDistr.Columns.Add("PromotionId");
+        //                    dataTableDistr.Columns.Add("PromotionName");
+        //                    dataTableDistr.Columns.Add("newprice");
+        //                    dataTableDistr.Columns.Add("Quantity");
+        //                    dataTableDistr.Columns.Add("Discount");
+        //                    dataTableDistr.Columns.Add("Type");
+
+        //                    var PromotionIdSpl = item["PromotionId"].ToString().Split(',').ToList();
+
+        //                    foreach (string itemSpl in PromotionIdSpl)
+        //                    {
+        //                        foreach (var drObj in dtPromotion.AsEnumerable().Where(z => z["PromotionId"].ToString() == itemSpl).AsEnumerable())
+        //                        {
+        //                            DataRow dr = drObj;
+        //                            dataTableDistr.Rows.Add(dr.ItemArray);
+        //                        }
+        //                    }
+
+        //                    foreach (var itemPromo in dataTableDistr.AsEnumerable())
+        //                    {
+        //                        int sumCount = dt.AsEnumerable()
+        //                            .Where(x => x["PromotionId"].ToString().Split(',').Contains(itemPromo["PromotionId"].ToString())).ToList().Sum(s => Convert.ToInt32(s.Field<string>("Quantity")));
+        //                        if (sumCount < 0)
+        //                            sumCount = sumCount * -1;
+
+        //                        foreach (var promotionspl in PromotionIdSpl.AsEnumerable())
+        //                        {
+        //                            if (promotionspl == itemPromo["PromotionId"].ToString())
+        //                            {
+        //                                if (itemPromo["Type"].ToString() == "Multy")
+        //                                {
+        //                                    int _qty = Convert.ToInt32(itemPromo["Quantity"]);
+
+        //                                    if (sumCount > _qty)
+        //                                    {
+        //                                        if ((sumCount % _qty) == 0)
+        //                                        {
+        //                                            if (sumCount != _qty)
+        //                                                _qty = sumCount;
+        //                                        }
+        //                                    }
+        //                                    if (sumCount == _qty)
+        //                                    {
+        //                                        if (item["bIsTrueId"].ToString().Split(',').ToList().Where(s => s.Contains(itemPromo["PromotionId"].ToString())).Count() == 0)
+        //                                        {
+        //                                            string price = "";
+        //                                            if (itemPromo["NewPrice"].ToString() != "" && itemPromo["NewPrice"].ToString() != "0")
+        //                                                price = (Convert.ToDecimal(itemPromo["NewPrice"]) / Convert.ToInt32(itemPromo["Quantity"])).ToString("0.00");
+        //                                            if (price == "")
+        //                                            {
+        //                                                price = (Convert.ToDecimal(item["UnitRetail"]) - Convert.ToDecimal(itemPromo["Discount"])).ToString("0.00");
+        //                                            }
+        //                                            item["UnitRetail"] = price;
+        //                                            item["Amount"] = Convert.ToDecimal(item["UnitRetail"]) * Convert.ToDecimal(item["Quantity"]);
+
+        //                                            if (item["PromotionName"].ToString() == "")
+        //                                            {
+        //                                                item["PromotionName"] = itemPromo["PromotionName"].ToString();
+        //                                                item["bIsTrueId"] = itemPromo["PromotionId"].ToString();
+        //                                            }
+        //                                            else
+        //                                            {
+        //                                                item["PromotionName"] = item["PromotionName"].ToString() + " , " + itemPromo["PromotionName"].ToString();
+        //                                                item["bIsTrueId"] = item["bIsTrueId"].ToString() + " , " + itemPromo["PromotionId"].ToString();
+        //                                            }
+        //                                        }
+        //                                    }
+        //                                }
+        //                                else
+        //                                {
+        //                                    if (sumCount == Convert.ToInt32(itemPromo["Quantity"]))
+        //                                    {
+        //                                        string price = "";
+        //                                        if (itemPromo["NewPrice"].ToString() != "" && itemPromo["NewPrice"].ToString() != "0")
+        //                                            price = (Convert.ToDecimal(itemPromo["NewPrice"]) / Convert.ToInt32(itemPromo["Quantity"])).ToString("0.00");
+        //                                        if (price == "")
+        //                                        {
+        //                                            price = (Convert.ToDecimal(item["UnitRetail"]) - Convert.ToDecimal(itemPromo["Discount"])).ToString("0.00");
+        //                                        }
+        //                                        item["UnitRetail"] = price;
+        //                                        item["Amount"] = Convert.ToDecimal(item["UnitRetail"]) * Convert.ToDecimal(item["Quantity"]);
+        //                                        if (item["PromotionName"].ToString() == "")
+        //                                            item["PromotionName"] = itemPromo["PromotionName"].ToString();
+        //                                        else
+        //                                            item["PromotionName"] = item["PromotionName"].ToString() + " , " + itemPromo["PromotionName"].ToString();
+        //                                    }
+        //                                }
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            JRDGrid.ItemsSource = dt.DefaultView;
+        //            JRDGrid.Items.Refresh();
+        //            TotalEvent();
+        //        }
+
+
+        //        //DataTable distrinctPromotionName = dt.DefaultView.ToTable(true, "PROName");
+        //        //DataTable distrinctSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "PROName", "Qty", "NewPrice", "Discount", "Type");
+        //        //DataTable distrinctRPromotionName = dt.DefaultView.ToTable(true, "RPROName");
+        //        //DataTable distrinctRSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "RPROName", "RQty", "RNewPrice", "RDiscount", "RType");
+        //        //DataTable distrinctLPromotionName = dt.DefaultView.ToTable(true, "LPROName");
+        //        //DataTable distrinctLSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "LPROName", "LQty", "LNewPrice", "LDiscount", "LType");
+        //        //DataTable distrinctOPromotionName = dt.DefaultView.ToTable(true, "OPROName");
+        //        //DataTable distrinctOSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "OPROName", "OQty", "ONewPrice", "ODiscount", "OType");
+
+        //        //foreach (DataRow distrinctRow in distrinctPromotionName.AsEnumerable())
+        //        //{
+        //        //    if (distrinctRow["PROName"].ToString() != "")
+        //        //    {
+        //        //        int sumCount = 0;
+        //        //        for (int j = 0; j < distrinctSCANCODE.AsEnumerable().Count(); j++)
+        //        //        {
+        //        //            if (distrinctSCANCODE.Rows[j]["PROName"].ToString() == distrinctRow["PROName"].ToString())
+        //        //            {
+        //        //                for (int i = 0; i < dt.Rows.Count; i++)
+        //        //                {
+        //        //                    if (distrinctSCANCODE.Rows[j]["PROName"].ToString() == dt.Rows[i]["PROName"].ToString())
+        //        //                    {
+        //        //                        //if (distrinctOSCANCODE.Rows[j]["ScanCode"].ToString() == dt.Rows[i]["ScanCode"].ToString())
+        //        //                        //{
+        //        //                        sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
+        //        //                        //for (int K = 0; K < dt.Rows.Count; K++)
+        //        //                        //{
+        //        //                        if (sumCount < 0)
+        //        //                            sumCount = sumCount * -1;
+        //        //                        foreach (DataRow itemDT1 in distrinctSCANCODE.AsEnumerable())
+        //        //                        {
+        //        //                            if (itemDT1["PROName"].ToString() == distrinctRow["PROName"].ToString())
+        //        //                            {
+        //        //                                int Y = sumCount / Convert.ToInt32(itemDT1["Qty"]);
+        //        //                                for (int x = 1; x <= Y; x++)
+        //        //                                {
+        //        //                                    if (itemDT1["Type"].ToString() == "Once")
+        //        //                                    {
+        //        //                                        if (sumCount == Convert.ToInt32(itemDT1["Qty"]))
+        //        //                                        {
+        //        //                                            for (int z = 0; z <= i; z++)
+        //        //                                            {
+        //        //                                                if (dt.Rows[z]["PROName"].ToString() == distrinctRow["PROName"].ToString())
+        //        //                                                {
+        //        //                                                    string price = "";
+        //        //                                                    if (itemDT1["NewPrice"].ToString() != "" && itemDT1["NewPrice"].ToString() != "0")
+        //        //                                                        price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString("0.00");
+        //        //                                                    if (price == "")
+        //        //                                                    {
+        //        //                                                        decimal ldisc = 0;
+        //        //                                                        decimal odisc = 0;
+        //        //                                                        decimal rdisc = 0;
+        //        //                                                        if (dt.Rows[z]["LPromotionName"].ToString() != "")
+        //        //                                                            ldisc = Convert.ToDecimal(dt.Rows[z]["LDiscount"]);
+        //        //                                                        if (dt.Rows[z]["OPromotionName"].ToString() != "")
+        //        //                                                            odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
+        //        //                                                        if (dt.Rows[z]["RPromotionName"].ToString() != "")
+        //        //                                                            rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
+        //        //                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - rdisc - Convert.ToDecimal(dt.Rows[z]["Discount"])).ToString("0.00");
+        //        //                                                    }
+        //        //                                                    dt.Rows[z]["SPromotionName"] = dt.Rows[z]["PROName"];
+        //        //                                                    dt.Rows[z]["UnitRetail"] = price;
+        //        //                                                    dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
+        //        //                                                    dt.Rows[z]["PromotionName"] = "";
+        //        //                                                    dt.Rows[z]["PromotionName"] = dt.Rows[z]["SPromotionName"].ToString() + ", " + dt.Rows[z]["RPromotionName"].ToString() + ", " + dt.Rows[z]["LPromotionName"].ToString() + ", " + dt.Rows[z]["OPromotionName"].ToString();
+        //        //                                                }
+        //        //                                            }
+        //        //                                        }
+        //        //                                    }
+        //        //                                    else
+        //        //                                    {
+        //        //                                        if (sumCount == Convert.ToInt32(itemDT1["Qty"]) * x)
+        //        //                                        {
+        //        //                                            for (int z = 0; z <= i; z++)
+        //        //                                            {
+        //        //                                                if (dt.Rows[z]["PROName"].ToString() == distrinctRow["PROName"].ToString())
+        //        //                                                {
+        //        //                                                    string price = "";
+        //        //                                                    if (itemDT1["NewPrice"].ToString() != "" && itemDT1["NewPrice"].ToString() != "0")
+        //        //                                                        price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString("0.00");
+
+        //        //                                                    if (price == "")
+        //        //                                                    {
+        //        //                                                        decimal ldisc = 0;
+        //        //                                                        decimal odisc = 0;
+        //        //                                                        decimal rdisc = 0;
+        //        //                                                        if (dt.Rows[z]["LPromotionName"].ToString() != "")
+        //        //                                                            ldisc = Convert.ToDecimal(dt.Rows[z]["LDiscount"]);
+        //        //                                                        if (dt.Rows[z]["OPromotionName"].ToString() != "")
+        //        //                                                            odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
+        //        //                                                        if (dt.Rows[z]["RPromotionName"].ToString() != "")
+        //        //                                                            rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
+        //        //                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - rdisc - Convert.ToDecimal(dt.Rows[z]["Discount"])).ToString("0.00");
+        //        //                                                    }
+        //        //                                                    dt.Rows[z]["SPromotionName"] = dt.Rows[z]["PROName"];
+        //        //                                                    dt.Rows[z]["UnitRetail"] = price;
+        //        //                                                    dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
+        //        //                                                    dt.Rows[z]["PromotionName"] = "";
+        //        //                                                    dt.Rows[z]["PromotionName"] = dt.Rows[z]["SPromotionName"].ToString() + ", " + dt.Rows[z]["RPromotionName"].ToString() + ", " + dt.Rows[z]["LPromotionName"].ToString() + ", " + dt.Rows[z]["OPromotionName"].ToString();
+        //        //                                                }
+        //        //                                            }
+        //        //                                        }
+        //        //                                    }
+        //        //                                }
+        //        //                            }
+        //        //                        }
+        //        //                        //    }
+        //        //                        //}
+        //        //                    }
+        //        //                }
+
+        //        //            }
+        //        //        }
+        //        //    }
+        //        //}
+        //        //foreach (DataRow distrinctRow in distrinctRPromotionName.AsEnumerable())
+        //        //{
+        //        //    if (distrinctRow["RPROName"].ToString() != "")
+        //        //    {
+        //        //        int sumCount = 0;
+        //        //        for (int j = 0; j < distrinctRSCANCODE.AsEnumerable().Count(); j++)
+        //        //        {
+        //        //            if (distrinctRSCANCODE.Rows[j]["RPROName"].ToString() == distrinctRow["RPROName"].ToString())
+        //        //            {
+        //        //                for (int i = 0; i < dt.Rows.Count; i++)
+        //        //                {
+        //        //                    if (distrinctRSCANCODE.Rows[j]["RPROName"].ToString() == dt.Rows[i]["RPROName"].ToString())
+        //        //                    {
+        //        //                        //if (distrinctOSCANCODE.Rows[j]["ScanCode"].ToString() == dt.Rows[i]["ScanCode"].ToString())
+        //        //                        //{
+        //        //                        sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
+        //        //                        //for (int K = 0; K < dt.Rows.Count; K++)
+        //        //                        //{
+        //        //                        if (sumCount < 0)
+        //        //                            sumCount = sumCount * -1;
+        //        //                        foreach (DataRow itemDT1 in distrinctRSCANCODE.AsEnumerable())
+        //        //                        {
+        //        //                            if (itemDT1["RPROName"].ToString() == distrinctRow["RPROName"].ToString())
+        //        //                            {
+        //        //                                int Y = sumCount / Convert.ToInt32(itemDT1["RQty"]);
+        //        //                                for (int x = 1; x <= Y; x++)
+        //        //                                {
+        //        //                                    if (itemDT1["RType"].ToString() == "Once")
+        //        //                                    {
+        //        //                                        if (sumCount == Convert.ToInt32(itemDT1["RQty"]))
+        //        //                                        {
+        //        //                                            for (int z = 0; z <= i; z++)
+        //        //                                            {
+        //        //                                                if (dt.Rows[z]["RPROName"].ToString() == distrinctRow["RPROName"].ToString())
+        //        //                                                {
+        //        //                                                    string price = "";
+        //        //                                                    if (itemDT1["RNewPrice"].ToString() != "" && itemDT1["RNewPrice"].ToString() != "0")
+        //        //                                                        price = (Convert.ToDecimal(itemDT1["RNewPrice"]) / Convert.ToInt32(itemDT1["RQty"])).ToString("0.00");
+
+        //        //                                                    if (price == "")
+        //        //                                                    {
+        //        //                                                        decimal ldisc = 0;
+        //        //                                                        decimal odisc = 0;
+        //        //                                                        decimal sdisc = 0;
+        //        //                                                        if (dt.Rows[z]["LPromotionName"].ToString() != "")
+        //        //                                                            ldisc = Convert.ToDecimal(dt.Rows[z]["LDiscount"]);
+        //        //                                                        if (dt.Rows[z]["OPromotionName"].ToString() != "")
+        //        //                                                            odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
+        //        //                                                        if (dt.Rows[z]["SPromotionName"].ToString() != "")
+        //        //                                                            sdisc = Convert.ToDecimal(dt.Rows[z]["Discount"]);
+        //        //                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - sdisc - Convert.ToDecimal(dt.Rows[z]["RDiscount"])).ToString("0.00");
+        //        //                                                    }
+        //        //                                                    dt.Rows[z]["RPromotionName"] = dt.Rows[z]["RPROName"];
+        //        //                                                    dt.Rows[z]["UnitRetail"] = price;
+        //        //                                                    dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
+
+
+        //        //                                                    dt.Rows[z]["PromotionName"] = "";
+        //        //                                                    dt.Rows[z]["PromotionName"] = dt.Rows[z]["SPromotionName"].ToString() + ", " + dt.Rows[z]["RPromotionName"].ToString() + ", " + dt.Rows[z]["LPromotionName"].ToString() + ", " + dt.Rows[z]["OPromotionName"].ToString();
+        //        //                                                }
+        //        //                                            }
+
+        //        //                                        }
+        //        //                                    }
+        //        //                                    else
+        //        //                                    {
+        //        //                                        if (sumCount == Convert.ToInt32(itemDT1["RQty"]) * x)
+        //        //                                        {
+        //        //                                            for (int z = 0; z <= i; z++)
+        //        //                                            {
+        //        //                                                if (dt.Rows[z]["RPROName"].ToString() == distrinctRow["RPROName"].ToString())
+        //        //                                                {
+        //        //                                                    string price = "";
+        //        //                                                    if (itemDT1["RNewPrice"].ToString() != "" && itemDT1["RNewPrice"].ToString() != "0")
+        //        //                                                        price = (Convert.ToDecimal(itemDT1["RNewPrice"]) / Convert.ToInt32(itemDT1["RQty"])).ToString("0.00");
+
+        //        //                                                    if (price == "")
+        //        //                                                    {
+        //        //                                                        decimal ldisc = 0;
+        //        //                                                        decimal odisc = 0;
+        //        //                                                        decimal sdisc = 0;
+        //        //                                                        if (dt.Rows[z]["LPromotionName"].ToString() != "")
+        //        //                                                            ldisc = Convert.ToDecimal(dt.Rows[z]["LDiscount"]);
+        //        //                                                        if (dt.Rows[z]["OPromotionName"].ToString() != "")
+        //        //                                                            odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
+        //        //                                                        if (dt.Rows[z]["SPromotionName"].ToString() != "")
+        //        //                                                            sdisc = Convert.ToDecimal(dt.Rows[z]["Discount"]);
+        //        //                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - sdisc - Convert.ToDecimal(dt.Rows[z]["RDiscount"])).ToString("0.00");
+        //        //                                                    }
+        //        //                                                    dt.Rows[z]["RPromotionName"] = dt.Rows[z]["RPROName"];
+        //        //                                                    dt.Rows[z]["UnitRetail"] = price;
+        //        //                                                    dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
+
+
+        //        //                                                    dt.Rows[z]["PromotionName"] = "";
+        //        //                                                    dt.Rows[z]["PromotionName"] = dt.Rows[z]["SPromotionName"].ToString() + ", " + dt.Rows[z]["RPromotionName"].ToString() + ", " + dt.Rows[z]["LPromotionName"].ToString() + ", " + dt.Rows[z]["OPromotionName"].ToString();
+        //        //                                                }
+        //        //                                            }
+
+        //        //                                        }
+        //        //                                    }
+        //        //                                }
+        //        //                            }
+        //        //                        }
+        //        //                        //    }
+        //        //                        //}
+        //        //                    }
+        //        //                }
+
+        //        //            }
+        //        //        }
+        //        //    }
+        //        //}
+        //        //foreach (DataRow distrinctRow in distrinctLPromotionName.AsEnumerable())
+        //        //{
+        //        //    if (lblLoyaltyId.Content is null)
+        //        //        lblLoyaltyId.Content = "";
+        //        //    if (distrinctRow["LPROName"].ToString() != "" && lblLoyaltyId.Content.ToString() != "")
+        //        //    {
+        //        //        if (loyaltyCustomerCount <= 5)
+        //        //        {
+        //        //            int sumCount = 0;
+        //        //            for (int j = 0; j < distrinctLSCANCODE.AsEnumerable().Count(); j++)
+        //        //            {
+        //        //                if (distrinctLSCANCODE.Rows[j]["LPROName"].ToString() != "")
+        //        //                {
+        //        //                    for (int i = 0; i < dt.Rows.Count; i++)
+        //        //                    {
+        //        //                        if (distrinctLSCANCODE.Rows[j]["LPROName"].ToString() == distrinctRow["LPROName"].ToString())
+        //        //                        {
+        //        //                            //if (distrinctLSCANCODE.Rows[j]["ScanCode"].ToString() == dt.Rows[i]["ScanCode"].ToString())
+        //        //                            //{
+        //        //                            sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
+        //        //                            //for (int K = 0; K < dt.Rows.Count; K++)
+        //        //                            //{
+        //        //                            if (sumCount < 0)
+        //        //                                sumCount = sumCount * -1;
+        //        //                            foreach (DataRow itemDT1 in distrinctLSCANCODE.AsEnumerable())
+        //        //                            {
+        //        //                                if (itemDT1["LPROName"].ToString() == distrinctRow["LPROName"].ToString())
+        //        //                                {
+        //        //                                    int Y = sumCount / Convert.ToInt32(itemDT1["LQty"]);
+        //        //                                    for (int x = 1; x <= Y; x++)
+        //        //                                    {
+        //        //                                        if (itemDT1["LType"].ToString() == "Once")
+        //        //                                        {
+        //        //                                            if (sumCount == Convert.ToInt32(itemDT1["LQty"]))
+        //        //                                            {
+        //        //                                                for (int z = 0; z <= i; z++)
+        //        //                                                {
+
+        //        //                                                    if (dt.Rows[z]["LPROName"].ToString() == distrinctRow["LPROName"].ToString())
+        //        //                                                    {
+        //        //                                                        string price = "";
+        //        //                                                        if (itemDT1["LNewPrice"].ToString() != "" && itemDT1["LNewPrice"].ToString() != "0")
+        //        //                                                            price = (Convert.ToDecimal(itemDT1["LNewPrice"]) / Convert.ToInt32(itemDT1["LQty"])).ToString("0.00");
+
+        //        //                                                        if (price == "")
+        //        //                                                        {
+        //        //                                                            decimal odisc = 0;
+        //        //                                                            decimal sdisc = 0;
+        //        //                                                            decimal rdisc = 0;
+        //        //                                                            if (dt.Rows[z]["OPromotionName"].ToString() != "")
+        //        //                                                                odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
+        //        //                                                            if (dt.Rows[z]["SPromotionName"].ToString() != "")
+        //        //                                                                sdisc = Convert.ToDecimal(dt.Rows[z]["SDiscount"]);
+        //        //                                                            if (dt.Rows[z]["RPromotionName"].ToString() != "")
+        //        //                                                                rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
+        //        //                                                            price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(dt.Rows[z]["LDiscount"]) / Convert.ToInt32(dt.Rows[z]["LQty"]))).ToString("0.00");
+        //        //                                                        }
+        //        //                                                        dt.Rows[z]["LPromotionName"] = dt.Rows[z]["LPROName"];
+        //        //                                                        dt.Rows[z]["UnitRetail"] = price;
+        //        //                                                        dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
+        //        //                                                        dt.Rows[z]["LoyaltyId"] = lblLoyaltyId.Content.ToString();
+
+        //        //                                                        dt.Rows[z]["PromotionName"] = "";
+        //        //                                                        dt.Rows[z]["PromotionName"] = dt.Rows[z]["SPromotionName"].ToString() + ", " + dt.Rows[z]["RPromotionName"].ToString() + ", " + dt.Rows[z]["LPromotionName"].ToString() + ", " + dt.Rows[z]["OPromotionName"].ToString();
+
+        //        //                                                        //dt.Rows[z]["LPromotionName"] = itemDT1["LPROName"];
+        //        //                                                        //dt.Rows[z]["UnitRetail"] = price;
+        //        //                                                        //dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
+        //        //                                                    }
+        //        //                                                }
+
+        //        //                                            }
+        //        //                                        }
+        //        //                                        else
+        //        //                                        {
+        //        //                                            if (sumCount == Convert.ToInt32(itemDT1["LQty"]) * x)
+        //        //                                            {
+        //        //                                                for (int z = 0; z <= i; z++)
+        //        //                                                {
+
+        //        //                                                    if (dt.Rows[z]["LPROName"].ToString() == distrinctRow["LPROName"].ToString())
+        //        //                                                    {
+        //        //                                                        string price = "";
+        //        //                                                        if (itemDT1["LNewPrice"].ToString() != "" && itemDT1["LNewPrice"].ToString() != "0")
+        //        //                                                            price = (Convert.ToDecimal(itemDT1["LNewPrice"]) / Convert.ToInt32(itemDT1["LQty"])).ToString("0.00");
+
+        //        //                                                        if (price == "")
+        //        //                                                        {
+        //        //                                                            decimal odisc = 0;
+        //        //                                                            decimal sdisc = 0;
+        //        //                                                            decimal rdisc = 0;
+        //        //                                                            if (dt.Rows[z]["OPromotionName"].ToString() != "")
+        //        //                                                                odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
+        //        //                                                            if (dt.Rows[z]["SPromotionName"].ToString() != "")
+        //        //                                                                sdisc = Convert.ToDecimal(dt.Rows[z]["SDiscount"]);
+        //        //                                                            if (dt.Rows[z]["RPromotionName"].ToString() != "")
+        //        //                                                                rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
+        //        //                                                            price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(dt.Rows[z]["LDiscount"]) / Convert.ToInt32(dt.Rows[z]["LQty"]))).ToString("0.00");
+        //        //                                                            //price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - odisc - sdisc - rdisc - Convert.ToDecimal(dt.Rows[z]["LDiscount"])).ToString("0.00");
+        //        //                                                            //price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["LDiscount"])).ToString("0.00");
+        //        //                                                        }
+        //        //                                                        dt.Rows[z]["LPromotionName"] = dt.Rows[z]["LPROName"];
+        //        //                                                        dt.Rows[z]["UnitRetail"] = price;
+        //        //                                                        dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
+        //        //                                                        dt.Rows[z]["LoyaltyId"] = lblLoyaltyId.Content.ToString();
+
+        //        //                                                        dt.Rows[z]["PromotionName"] = "";
+        //        //                                                        dt.Rows[z]["PromotionName"] = dt.Rows[z]["SPromotionName"].ToString() + ", " + dt.Rows[z]["RPromotionName"].ToString() + ", " + dt.Rows[z]["LPromotionName"].ToString() + ", " + dt.Rows[z]["OPromotionName"].ToString();
+
+        //        //                                                        //dt.Rows[z]["LPromotionName"] = itemDT1["LPROName"];
+        //        //                                                        //dt.Rows[z]["UnitRetail"] = price;
+        //        //                                                        //dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
+        //        //                                                    }
+        //        //                                                }
+
+        //        //                                            }
+        //        //                                        }
+        //        //                                    }
+        //        //                                }
+        //        //                            }
+        //        //                            //}
+        //        //                            //}
+        //        //                        }
+        //        //                    }
+
+        //        //                }
+        //        //            }
+        //        //        }
+        //        //    }
+        //        //}
+        //        //foreach (DataRow distrinctRow in distrinctOPromotionName.AsEnumerable())
+        //        //{
+        //        //    if (distrinctRow["OPROName"].ToString() != "")
+        //        //    {
+        //        //        int sumCount = 0;
+        //        //        for (int j = 0; j < distrinctOSCANCODE.AsEnumerable().Count(); j++)
+        //        //        {
+        //        //            if (distrinctOSCANCODE.Rows[j]["OPROName"].ToString() == distrinctRow["OPROName"].ToString())
+        //        //            {
+        //        //                for (int i = 0; i < dt.Rows.Count; i++)
+        //        //                {
+        //        //                    if (distrinctOSCANCODE.Rows[j]["OPROName"].ToString() == dt.Rows[i]["OPROName"].ToString())
+        //        //                    {
+        //        //                        //if (distrinctOSCANCODE.Rows[j]["ScanCode"].ToString() == dt.Rows[i]["ScanCode"].ToString())
+        //        //                        //{
+        //        //                        sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
+        //        //                        //for (int K = 0; K < dt.Rows.Count; K++)
+        //        //                        //{
+        //        //                        if (sumCount < 0)
+        //        //                            sumCount = sumCount * -1;
+        //        //                        foreach (DataRow itemDT1 in distrinctOSCANCODE.AsEnumerable())
+        //        //                        {
+        //        //                            if (itemDT1["OPROName"].ToString() == distrinctRow["OPROName"].ToString())
+        //        //                            {
+        //        //                                int Y = sumCount / Convert.ToInt32(itemDT1["OQty"]);
+        //        //                                for (int x = 1; x <= Y; x++)
+        //        //                                {
+        //        //                                    if (itemDT1["OType"].ToString() == "Once")
+        //        //                                    {
+        //        //                                        if (sumCount == Convert.ToInt32(itemDT1["OQty"]))
+        //        //                                        {
+        //        //                                            for (int z = 0; z <= i; z++)
+        //        //                                            {
+        //        //                                                if (dt.Rows[z]["OPROName"].ToString() == distrinctRow["OPROName"].ToString())
+        //        //                                                {
+        //        //                                                    string price = "";
+        //        //                                                    if (itemDT1["ONewPrice"].ToString() != "" && itemDT1["ONewPrice"].ToString() != "0")
+        //        //                                                        price = (Convert.ToDecimal(itemDT1["ONewPrice"]) / Convert.ToInt32(itemDT1["OQty"])).ToString("0.00");
+
+        //        //                                                    if (price == "")
+        //        //                                                    {
+        //        //                                                        decimal ldisc = 0;
+        //        //                                                        decimal sdisc = 0;
+        //        //                                                        decimal rdisc = 0;
+        //        //                                                        if (dt.Rows[z]["LPromotionName"].ToString() != "")
+        //        //                                                            ldisc = Convert.ToDecimal(dt.Rows[z]["LDiscount"]);
+        //        //                                                        if (dt.Rows[z]["SPromotionName"].ToString() != "")
+        //        //                                                            sdisc = Convert.ToDecimal(dt.Rows[z]["SDiscount"]);
+        //        //                                                        if (dt.Rows[z]["RPromotionName"].ToString() != "")
+        //        //                                                            rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
+        //        //                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(dt.Rows[z]["ODiscount"])).ToString("0.00");
+        //        //                                                    }
+        //        //                                                    dt.Rows[z]["OPromotionName"] = dt.Rows[z]["OPROName"];
+        //        //                                                    dt.Rows[z]["UnitRetail"] = price;
+        //        //                                                    dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
+        //        //                                                    dt.Rows[z]["LoyaltyId"] = lblLoyaltyId.Content.ToString();
+
+        //        //                                                    dt.Rows[z]["PromotionName"] = "";
+        //        //                                                    dt.Rows[z]["PromotionName"] = dt.Rows[z]["SPromotionName"].ToString() + ", " + dt.Rows[z]["RPromotionName"].ToString() + ", " + dt.Rows[z]["LPromotionName"].ToString() + ", " + dt.Rows[z]["OPromotionName"].ToString();
+        //        //                                                }
+        //        //                                            }
+
+        //        //                                        }
+        //        //                                    }
+        //        //                                    else
+        //        //                                    {
+        //        //                                        if (sumCount == Convert.ToInt32(itemDT1["OQty"]) * x)
+        //        //                                        {
+        //        //                                            for (int z = 0; z <= i; z++)
+        //        //                                            {
+        //        //                                                if (dt.Rows[z]["OPROName"].ToString() == distrinctRow["OPROName"].ToString())
+        //        //                                                {
+        //        //                                                    string price = "";
+        //        //                                                    if (itemDT1["ONewPrice"].ToString() != "" && itemDT1["ONewPrice"].ToString() != "0")
+        //        //                                                        price = (Convert.ToDecimal(itemDT1["ONewPrice"]) / Convert.ToInt32(itemDT1["OQty"])).ToString("0.00");
+
+        //        //                                                    if (price == "")
+        //        //                                                    {
+        //        //                                                        decimal ldisc = 0;
+        //        //                                                        decimal sdisc = 0;
+        //        //                                                        decimal rdisc = 0;
+        //        //                                                        if (dt.Rows[z]["LPromotionName"].ToString() != "")
+        //        //                                                            ldisc = Convert.ToDecimal(dt.Rows[z]["LDiscount"]);
+        //        //                                                        if (dt.Rows[z]["SPromotionName"].ToString() != "")
+        //        //                                                            sdisc = Convert.ToDecimal(dt.Rows[z]["SDiscount"]);
+        //        //                                                        if (dt.Rows[z]["RPromotionName"].ToString() != "")
+        //        //                                                            rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
+        //        //                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(dt.Rows[z]["ODiscount"])).ToString("0.00");
+        //        //                                                    }
+        //        //                                                    dt.Rows[z]["OPromotionName"] = dt.Rows[z]["OPROName"];
+        //        //                                                    dt.Rows[z]["UnitRetail"] = price;
+        //        //                                                    dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
+        //        //                                                    dt.Rows[z]["LoyaltyId"] = lblLoyaltyId.Content.ToString();
+
+        //        //                                                    dt.Rows[z]["PromotionName"] = "";
+        //        //                                                    dt.Rows[z]["PromotionName"] = dt.Rows[z]["SPromotionName"].ToString() + ", " + dt.Rows[z]["RPromotionName"].ToString() + ", " + dt.Rows[z]["LPromotionName"].ToString() + ", " + dt.Rows[z]["OPromotionName"].ToString();
+        //        //                                                }
+        //        //                                            }
+
+        //        //                                        }
+        //        //                                    }
+        //        //                                }
+        //        //                            }
+        //        //                        }
+        //        //                        //    }
+        //        //                        //}
+        //        //                    }
+        //        //                }
+
+        //        //            }
+        //        //        }
+        //        //    }
+        //        //}
+
+
+        //        // TotalEvent();
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        SendErrorToText(ex, errorFileName, "ScanCodeFunction");
+        //    }
+        //}
+
+        public void PromotionApply()
         {
             try
             {
                 if (dt.AsEnumerable().Count() > 0)
                 {
+                    int sumCount = 0;
                     if (loyaltyCustomerCount <= 5)
                     {
-                        foreach (var item in dt.AsEnumerable())
+                        for (int i = 0; i < dt.Rows.Count; i++)
                         {
                             DataTable dataTableDistr = new DataTable();
                             dataTableDistr.Columns.Add("PromotionId");
@@ -3033,9 +3625,7 @@ namespace POSSystem
                             dataTableDistr.Columns.Add("Quantity");
                             dataTableDistr.Columns.Add("Discount");
                             dataTableDistr.Columns.Add("Type");
-
-                            var PromotionIdSpl = item["PromotionId"].ToString().Split(',').ToList();
-
+                            var PromotionIdSpl = dt.Rows[i]["PromotionId"].ToString().Split(',').ToList();
                             foreach (string itemSpl in PromotionIdSpl)
                             {
                                 foreach (var drObj in dtPromotion.AsEnumerable().Where(z => z["PromotionId"].ToString() == itemSpl).AsEnumerable())
@@ -3047,8 +3637,7 @@ namespace POSSystem
 
                             foreach (var itemPromo in dataTableDistr.AsEnumerable())
                             {
-                                int sumCount = dt.AsEnumerable()
-                                    .Where(x => x["PromotionId"].ToString().Split(',').Contains(itemPromo["PromotionId"].ToString())).ToList().Sum(s => Convert.ToInt32(s.Field<string>("Quantity")));
+                                sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
                                 if (sumCount < 0)
                                     sumCount = sumCount * -1;
 
@@ -3068,51 +3657,68 @@ namespace POSSystem
                                                         _qty = sumCount;
                                                 }
                                             }
-                                            if (sumCount == _qty)
+                                            for (int x = 1; x <= _qty; x++)
                                             {
-                                                if (item["bIsTrueId"].ToString().Split(',').ToList().Where(s => s.Contains(itemPromo["PromotionId"].ToString())).Count() == 0)
+                                                if (sumCount == _qty * x)
                                                 {
-                                                    string price = "";
-                                                    if (itemPromo["NewPrice"].ToString() != "" && itemPromo["NewPrice"].ToString() != "0")
-                                                        price = (Convert.ToDecimal(itemPromo["NewPrice"]) / Convert.ToInt32(itemPromo["Quantity"])).ToString("0.00");
-                                                    if (price == "")
+                                                    for (int z = 0; z <= i; z++)
                                                     {
-                                                        price = (Convert.ToDecimal(item["UnitRetail"]) - Convert.ToDecimal(itemPromo["Discount"])).ToString("0.00");
-                                                    }
-                                                    item["UnitRetail"] = price;
-                                                    item["Amount"] = Convert.ToDecimal(item["UnitRetail"]) * Convert.ToDecimal(item["Quantity"]);
+                                                        if (dt.Rows[z]["PromotionId"].ToString().Split(',').ToList().Where(s => s.Contains(itemPromo["PromotionId"].ToString())).Count() != 0)
+                                                        {
+                                                            if (dt.Rows[i]["bIsTrueId"].ToString().Split(',').ToList().Where(s => s.Contains(itemPromo["PromotionId"].ToString())).Count() == 0)
+                                                            {
+                                                                string price = "";
+                                                                if (itemPromo["NewPrice"].ToString() != "" && itemPromo["NewPrice"].ToString() != "0")
+                                                                    price = (Convert.ToDecimal(itemPromo["NewPrice"]) / Convert.ToInt32(itemPromo["Quantity"])).ToString("0.00");
+                                                                if (price == "")
+                                                                {
+                                                                    price = (Convert.ToDecimal(dt.Rows[i]["UnitRetail"]) - Convert.ToDecimal(itemPromo["Discount"])).ToString("0.00");
+                                                                }
+                                                                dt.Rows[i]["UnitRetail"] = price;
+                                                                dt.Rows[i]["Amount"] = Convert.ToDecimal(dt.Rows[i]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[i]["Quantity"]);
 
-                                                    if (item["PromotionName"].ToString() == "")
-                                                    {
-                                                        item["PromotionName"] = itemPromo["PromotionName"].ToString();
-                                                        item["bIsTrueId"] = itemPromo["PromotionId"].ToString();
-                                                    }
-                                                    else
-                                                    {
-                                                        item["PromotionName"] = item["PromotionName"].ToString() + " , " + itemPromo["PromotionName"].ToString();
-                                                        item["bIsTrueId"] = item["bIsTrueId"].ToString() + " , " + itemPromo["PromotionId"].ToString();
+                                                                if (dt.Rows[i]["PromotionName"].ToString() == "")
+                                                                {
+                                                                    dt.Rows[i]["PromotionName"] = itemPromo["PromotionName"].ToString();
+                                                                    dt.Rows[i]["bIsTrueId"] = itemPromo["PromotionId"].ToString();
+                                                                }
+                                                                else
+                                                                {
+                                                                    dt.Rows[i]["PromotionName"] = dt.Rows[i]["PromotionName"].ToString() + " , " + itemPromo["PromotionName"].ToString();
+                                                                    dt.Rows[i]["bIsTrueId"] = dt.Rows[i]["bIsTrueId"].ToString() + " , " + itemPromo["PromotionId"].ToString();
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
                                         }
                                         else
                                         {
+
                                             if (sumCount == Convert.ToInt32(itemPromo["Quantity"]))
                                             {
-                                                string price = "";
-                                                if (itemPromo["NewPrice"].ToString() != "" && itemPromo["NewPrice"].ToString() != "0")
-                                                    price = (Convert.ToDecimal(itemPromo["NewPrice"]) / Convert.ToInt32(itemPromo["Quantity"])).ToString("0.00");
-                                                if (price == "")
+                                                for (int z = 0; z <= i; z++)
                                                 {
-                                                    price = (Convert.ToDecimal(item["UnitRetail"]) - Convert.ToDecimal(itemPromo["Discount"])).ToString("0.00");
+                                                    if (dt.Rows[z]["PromotionId"].ToString().Split(',').ToList().Where(s => s.Contains(itemPromo["PromotionId"].ToString())).Count() != 0)
+                                                    {
+                                                        string price = "";
+                                                        if (itemPromo["NewPrice"].ToString() != "" && itemPromo["NewPrice"].ToString() != "0")
+                                                            price = (Convert.ToDecimal(itemPromo["NewPrice"]) / Convert.ToInt32(itemPromo["Quantity"])).ToString("0.00");
+                                                        if (price == "")
+                                                        {
+                                                            price = (Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) - Convert.ToDecimal(itemPromo["Discount"])).ToString("0.00");
+                                                        }
+                                                        dt.Rows[z]["UnitRetail"] = price;
+                                                        dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
+                                                        if (dt.Rows[z]["PromotionName"].ToString() == "")
+                                                            dt.Rows[z]["PromotionName"] = itemPromo["PromotionName"].ToString();
+                                                        else
+                                                            dt.Rows[z]["PromotionName"] = dt.Rows[z]["PromotionName"].ToString() + " , " + itemPromo["PromotionName"].ToString();
+                                                    }
                                                 }
-                                                item["UnitRetail"] = price;
-                                                item["Amount"] = Convert.ToDecimal(item["UnitRetail"]) * Convert.ToDecimal(item["Quantity"]);
-                                                if (item["PromotionName"].ToString() == "")
-                                                    item["PromotionName"] = itemPromo["PromotionName"].ToString();
-                                                else
-                                                    item["PromotionName"] = item["PromotionName"].ToString() + " , " + itemPromo["PromotionName"].ToString();
                                             }
+
                                         }
                                     }
                                 }
@@ -3122,492 +3728,117 @@ namespace POSSystem
                     JRDGrid.ItemsSource = dt.DefaultView;
                     JRDGrid.Items.Refresh();
                     TotalEvent();
+
+                    //DataTable distrinctPromotionName = dt;
+                    //DataTable distrinctSCANCODE = dtPromotion;
+                    //foreach (DataRow distrinctRow in distrinctPromotionName.AsEnumerable())
+                    //{
+                    //    int sumCount = 0;
+                    //    for (int j = 0; j < distrinctSCANCODE.AsEnumerable().Count(); j++)
+                    //    {
+                    //        if (distrinctSCANCODE.Rows[j]["PROName"].ToString() == distrinctRow["PROName"].ToString())
+                    //        {
+                    //            for (int i = 0; i < dt.Rows.Count; i++)
+                    //            {
+                    //                if (distrinctSCANCODE.Rows[j]["PROName"].ToString() == dt.Rows[i]["PROName"].ToString())
+                    //                {
+                    //                    sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
+                    //                    if (sumCount < 0)
+                    //                        sumCount = sumCount * -1;
+                    //                    foreach (DataRow itemDT1 in distrinctSCANCODE.AsEnumerable())
+                    //                    {
+                    //                        if (itemDT1["PROName"].ToString() == distrinctRow["PROName"].ToString())
+                    //                        {
+                    //                            int Y = sumCount / Convert.ToInt32(itemDT1["Qty"]);
+                    //                            for (int x = 1; x <= Y; x++)
+                    //                            {
+                    //                                if (itemDT1["Type"].ToString() == "Once")
+                    //                                {
+                    //                                    if (sumCount == Convert.ToInt32(itemDT1["Qty"]))
+                    //                                    {
+                    //                                        for (int z = 0; z <= i; z++)
+                    //                                        {
+                    //                                            if (dt.Rows[z]["PROName"].ToString() == distrinctRow["PROName"].ToString())
+                    //                                            {
+                    //                                                string price = "";
+                    //                                                if (itemDT1["NewPrice"].ToString() != "" && itemDT1["NewPrice"].ToString() != "0")
+                    //                                                    price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString("0.00");
+                    //                                                if (price == "")
+                    //                                                {
+                    //                                                    decimal ldisc = 0;
+                    //                                                    decimal odisc = 0;
+                    //                                                    decimal rdisc = 0;
+                    //                                                    if (dt.Rows[z]["LPromotionName"].ToString() != "")
+                    //                                                        ldisc = Convert.ToDecimal(dt.Rows[z]["LDiscount"]);
+                    //                                                    if (dt.Rows[z]["OPromotionName"].ToString() != "")
+                    //                                                        odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
+                    //                                                    if (dt.Rows[z]["RPromotionName"].ToString() != "")
+                    //                                                        rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
+                    //                                                    price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - rdisc - Convert.ToDecimal(dt.Rows[z]["Discount"])).ToString("0.00");
+                    //                                                }
+                    //                                                dt.Rows[z]["SPromotionName"] = dt.Rows[z]["PROName"];
+                    //                                                dt.Rows[z]["UnitRetail"] = price;
+                    //                                                dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
+                    //                                                dt.Rows[z]["PromotionName"] = "";
+                    //                                                dt.Rows[z]["PromotionName"] = dt.Rows[z]["SPromotionName"].ToString() + ", " + dt.Rows[z]["RPromotionName"].ToString() + ", " + dt.Rows[z]["LPromotionName"].ToString() + ", " + dt.Rows[z]["OPromotionName"].ToString();
+                    //                                            }
+                    //                                        }
+                    //                                    }
+                    //                                }
+                    //                                else
+                    //                                {
+                    //                                    if (sumCount == Convert.ToInt32(itemDT1["Qty"]) * x)
+                    //                                    {
+                    //                                        for (int z = 0; z <= i; z++)
+                    //                                        {
+                    //                                            if (dt.Rows[z]["PROName"].ToString() == distrinctRow["PROName"].ToString())
+                    //                                            {
+                    //                                                string price = "";
+                    //                                                if (itemDT1["NewPrice"].ToString() != "" && itemDT1["NewPrice"].ToString() != "0")
+                    //                                                    price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString("0.00");
+
+                    //                                                if (price == "")
+                    //                                                {
+                    //                                                    decimal ldisc = 0;
+                    //                                                    decimal odisc = 0;
+                    //                                                    decimal rdisc = 0;
+                    //                                                    if (dt.Rows[z]["LPromotionName"].ToString() != "")
+                    //                                                        ldisc = Convert.ToDecimal(dt.Rows[z]["LDiscount"]);
+                    //                                                    if (dt.Rows[z]["OPromotionName"].ToString() != "")
+                    //                                                        odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
+                    //                                                    if (dt.Rows[z]["RPromotionName"].ToString() != "")
+                    //                                                        rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
+                    //                                                    price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - rdisc - Convert.ToDecimal(dt.Rows[z]["Discount"])).ToString("0.00");
+                    //                                                }
+                    //                                                dt.Rows[z]["SPromotionName"] = dt.Rows[z]["PROName"];
+                    //                                                dt.Rows[z]["UnitRetail"] = price;
+                    //                                                dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
+                    //                                                dt.Rows[z]["PromotionName"] = "";
+                    //                                                dt.Rows[z]["PromotionName"] = dt.Rows[z]["SPromotionName"].ToString() + ", " + dt.Rows[z]["RPromotionName"].ToString() + ", " + dt.Rows[z]["LPromotionName"].ToString() + ", " + dt.Rows[z]["OPromotionName"].ToString();
+                    //                                            }
+                    //                                        }
+                    //                                    }
+                    //                                }
+                    //                            }
+                    //                        }
+                    //                    }
+                    //                    //    }
+                    //                    //}
+                    //                }
+                    //            }
+
+                    //        }
+                    //    }
+                    //}
+                    //TotalEvent();
                 }
-
-
-                //DataTable distrinctPromotionName = dt.DefaultView.ToTable(true, "PROName");
-                //DataTable distrinctSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "PROName", "Qty", "NewPrice", "Discount", "Type");
-                //DataTable distrinctRPromotionName = dt.DefaultView.ToTable(true, "RPROName");
-                //DataTable distrinctRSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "RPROName", "RQty", "RNewPrice", "RDiscount", "RType");
-                //DataTable distrinctLPromotionName = dt.DefaultView.ToTable(true, "LPROName");
-                //DataTable distrinctLSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "LPROName", "LQty", "LNewPrice", "LDiscount", "LType");
-                //DataTable distrinctOPromotionName = dt.DefaultView.ToTable(true, "OPROName");
-                //DataTable distrinctOSCANCODE = dt.DefaultView.ToTable(true, "ScanCode", "OPROName", "OQty", "ONewPrice", "ODiscount", "OType");
-
-                //foreach (DataRow distrinctRow in distrinctPromotionName.AsEnumerable())
-                //{
-                //    if (distrinctRow["PROName"].ToString() != "")
-                //    {
-                //        int sumCount = 0;
-                //        for (int j = 0; j < distrinctSCANCODE.AsEnumerable().Count(); j++)
-                //        {
-                //            if (distrinctSCANCODE.Rows[j]["PROName"].ToString() == distrinctRow["PROName"].ToString())
-                //            {
-                //                for (int i = 0; i < dt.Rows.Count; i++)
-                //                {
-                //                    if (distrinctSCANCODE.Rows[j]["PROName"].ToString() == dt.Rows[i]["PROName"].ToString())
-                //                    {
-                //                        //if (distrinctOSCANCODE.Rows[j]["ScanCode"].ToString() == dt.Rows[i]["ScanCode"].ToString())
-                //                        //{
-                //                        sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
-                //                        //for (int K = 0; K < dt.Rows.Count; K++)
-                //                        //{
-                //                        if (sumCount < 0)
-                //                            sumCount = sumCount * -1;
-                //                        foreach (DataRow itemDT1 in distrinctSCANCODE.AsEnumerable())
-                //                        {
-                //                            if (itemDT1["PROName"].ToString() == distrinctRow["PROName"].ToString())
-                //                            {
-                //                                int Y = sumCount / Convert.ToInt32(itemDT1["Qty"]);
-                //                                for (int x = 1; x <= Y; x++)
-                //                                {
-                //                                    if (itemDT1["Type"].ToString() == "Once")
-                //                                    {
-                //                                        if (sumCount == Convert.ToInt32(itemDT1["Qty"]))
-                //                                        {
-                //                                            for (int z = 0; z <= i; z++)
-                //                                            {
-                //                                                if (dt.Rows[z]["PROName"].ToString() == distrinctRow["PROName"].ToString())
-                //                                                {
-                //                                                    string price = "";
-                //                                                    if (itemDT1["NewPrice"].ToString() != "" && itemDT1["NewPrice"].ToString() != "0")
-                //                                                        price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString("0.00");
-                //                                                    if (price == "")
-                //                                                    {
-                //                                                        decimal ldisc = 0;
-                //                                                        decimal odisc = 0;
-                //                                                        decimal rdisc = 0;
-                //                                                        if (dt.Rows[z]["LPromotionName"].ToString() != "")
-                //                                                            ldisc = Convert.ToDecimal(dt.Rows[z]["LDiscount"]);
-                //                                                        if (dt.Rows[z]["OPromotionName"].ToString() != "")
-                //                                                            odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
-                //                                                        if (dt.Rows[z]["RPromotionName"].ToString() != "")
-                //                                                            rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
-                //                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - rdisc - Convert.ToDecimal(dt.Rows[z]["Discount"])).ToString("0.00");
-                //                                                    }
-                //                                                    dt.Rows[z]["SPromotionName"] = dt.Rows[z]["PROName"];
-                //                                                    dt.Rows[z]["UnitRetail"] = price;
-                //                                                    dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
-                //                                                    dt.Rows[z]["PromotionName"] = "";
-                //                                                    dt.Rows[z]["PromotionName"] = dt.Rows[z]["SPromotionName"].ToString() + ", " + dt.Rows[z]["RPromotionName"].ToString() + ", " + dt.Rows[z]["LPromotionName"].ToString() + ", " + dt.Rows[z]["OPromotionName"].ToString();
-                //                                                }
-                //                                            }
-                //                                        }
-                //                                    }
-                //                                    else
-                //                                    {
-                //                                        if (sumCount == Convert.ToInt32(itemDT1["Qty"]) * x)
-                //                                        {
-                //                                            for (int z = 0; z <= i; z++)
-                //                                            {
-                //                                                if (dt.Rows[z]["PROName"].ToString() == distrinctRow["PROName"].ToString())
-                //                                                {
-                //                                                    string price = "";
-                //                                                    if (itemDT1["NewPrice"].ToString() != "" && itemDT1["NewPrice"].ToString() != "0")
-                //                                                        price = (Convert.ToDecimal(itemDT1["NewPrice"]) / Convert.ToInt32(itemDT1["Qty"])).ToString("0.00");
-
-                //                                                    if (price == "")
-                //                                                    {
-                //                                                        decimal ldisc = 0;
-                //                                                        decimal odisc = 0;
-                //                                                        decimal rdisc = 0;
-                //                                                        if (dt.Rows[z]["LPromotionName"].ToString() != "")
-                //                                                            ldisc = Convert.ToDecimal(dt.Rows[z]["LDiscount"]);
-                //                                                        if (dt.Rows[z]["OPromotionName"].ToString() != "")
-                //                                                            odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
-                //                                                        if (dt.Rows[z]["RPromotionName"].ToString() != "")
-                //                                                            rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
-                //                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - rdisc - Convert.ToDecimal(dt.Rows[z]["Discount"])).ToString("0.00");
-                //                                                    }
-                //                                                    dt.Rows[z]["SPromotionName"] = dt.Rows[z]["PROName"];
-                //                                                    dt.Rows[z]["UnitRetail"] = price;
-                //                                                    dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
-                //                                                    dt.Rows[z]["PromotionName"] = "";
-                //                                                    dt.Rows[z]["PromotionName"] = dt.Rows[z]["SPromotionName"].ToString() + ", " + dt.Rows[z]["RPromotionName"].ToString() + ", " + dt.Rows[z]["LPromotionName"].ToString() + ", " + dt.Rows[z]["OPromotionName"].ToString();
-                //                                                }
-                //                                            }
-                //                                        }
-                //                                    }
-                //                                }
-                //                            }
-                //                        }
-                //                        //    }
-                //                        //}
-                //                    }
-                //                }
-
-                //            }
-                //        }
-                //    }
-                //}
-                //foreach (DataRow distrinctRow in distrinctRPromotionName.AsEnumerable())
-                //{
-                //    if (distrinctRow["RPROName"].ToString() != "")
-                //    {
-                //        int sumCount = 0;
-                //        for (int j = 0; j < distrinctRSCANCODE.AsEnumerable().Count(); j++)
-                //        {
-                //            if (distrinctRSCANCODE.Rows[j]["RPROName"].ToString() == distrinctRow["RPROName"].ToString())
-                //            {
-                //                for (int i = 0; i < dt.Rows.Count; i++)
-                //                {
-                //                    if (distrinctRSCANCODE.Rows[j]["RPROName"].ToString() == dt.Rows[i]["RPROName"].ToString())
-                //                    {
-                //                        //if (distrinctOSCANCODE.Rows[j]["ScanCode"].ToString() == dt.Rows[i]["ScanCode"].ToString())
-                //                        //{
-                //                        sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
-                //                        //for (int K = 0; K < dt.Rows.Count; K++)
-                //                        //{
-                //                        if (sumCount < 0)
-                //                            sumCount = sumCount * -1;
-                //                        foreach (DataRow itemDT1 in distrinctRSCANCODE.AsEnumerable())
-                //                        {
-                //                            if (itemDT1["RPROName"].ToString() == distrinctRow["RPROName"].ToString())
-                //                            {
-                //                                int Y = sumCount / Convert.ToInt32(itemDT1["RQty"]);
-                //                                for (int x = 1; x <= Y; x++)
-                //                                {
-                //                                    if (itemDT1["RType"].ToString() == "Once")
-                //                                    {
-                //                                        if (sumCount == Convert.ToInt32(itemDT1["RQty"]))
-                //                                        {
-                //                                            for (int z = 0; z <= i; z++)
-                //                                            {
-                //                                                if (dt.Rows[z]["RPROName"].ToString() == distrinctRow["RPROName"].ToString())
-                //                                                {
-                //                                                    string price = "";
-                //                                                    if (itemDT1["RNewPrice"].ToString() != "" && itemDT1["RNewPrice"].ToString() != "0")
-                //                                                        price = (Convert.ToDecimal(itemDT1["RNewPrice"]) / Convert.ToInt32(itemDT1["RQty"])).ToString("0.00");
-
-                //                                                    if (price == "")
-                //                                                    {
-                //                                                        decimal ldisc = 0;
-                //                                                        decimal odisc = 0;
-                //                                                        decimal sdisc = 0;
-                //                                                        if (dt.Rows[z]["LPromotionName"].ToString() != "")
-                //                                                            ldisc = Convert.ToDecimal(dt.Rows[z]["LDiscount"]);
-                //                                                        if (dt.Rows[z]["OPromotionName"].ToString() != "")
-                //                                                            odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
-                //                                                        if (dt.Rows[z]["SPromotionName"].ToString() != "")
-                //                                                            sdisc = Convert.ToDecimal(dt.Rows[z]["Discount"]);
-                //                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - sdisc - Convert.ToDecimal(dt.Rows[z]["RDiscount"])).ToString("0.00");
-                //                                                    }
-                //                                                    dt.Rows[z]["RPromotionName"] = dt.Rows[z]["RPROName"];
-                //                                                    dt.Rows[z]["UnitRetail"] = price;
-                //                                                    dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
-
-
-                //                                                    dt.Rows[z]["PromotionName"] = "";
-                //                                                    dt.Rows[z]["PromotionName"] = dt.Rows[z]["SPromotionName"].ToString() + ", " + dt.Rows[z]["RPromotionName"].ToString() + ", " + dt.Rows[z]["LPromotionName"].ToString() + ", " + dt.Rows[z]["OPromotionName"].ToString();
-                //                                                }
-                //                                            }
-
-                //                                        }
-                //                                    }
-                //                                    else
-                //                                    {
-                //                                        if (sumCount == Convert.ToInt32(itemDT1["RQty"]) * x)
-                //                                        {
-                //                                            for (int z = 0; z <= i; z++)
-                //                                            {
-                //                                                if (dt.Rows[z]["RPROName"].ToString() == distrinctRow["RPROName"].ToString())
-                //                                                {
-                //                                                    string price = "";
-                //                                                    if (itemDT1["RNewPrice"].ToString() != "" && itemDT1["RNewPrice"].ToString() != "0")
-                //                                                        price = (Convert.ToDecimal(itemDT1["RNewPrice"]) / Convert.ToInt32(itemDT1["RQty"])).ToString("0.00");
-
-                //                                                    if (price == "")
-                //                                                    {
-                //                                                        decimal ldisc = 0;
-                //                                                        decimal odisc = 0;
-                //                                                        decimal sdisc = 0;
-                //                                                        if (dt.Rows[z]["LPromotionName"].ToString() != "")
-                //                                                            ldisc = Convert.ToDecimal(dt.Rows[z]["LDiscount"]);
-                //                                                        if (dt.Rows[z]["OPromotionName"].ToString() != "")
-                //                                                            odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
-                //                                                        if (dt.Rows[z]["SPromotionName"].ToString() != "")
-                //                                                            sdisc = Convert.ToDecimal(dt.Rows[z]["Discount"]);
-                //                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - odisc - sdisc - Convert.ToDecimal(dt.Rows[z]["RDiscount"])).ToString("0.00");
-                //                                                    }
-                //                                                    dt.Rows[z]["RPromotionName"] = dt.Rows[z]["RPROName"];
-                //                                                    dt.Rows[z]["UnitRetail"] = price;
-                //                                                    dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
-
-
-                //                                                    dt.Rows[z]["PromotionName"] = "";
-                //                                                    dt.Rows[z]["PromotionName"] = dt.Rows[z]["SPromotionName"].ToString() + ", " + dt.Rows[z]["RPromotionName"].ToString() + ", " + dt.Rows[z]["LPromotionName"].ToString() + ", " + dt.Rows[z]["OPromotionName"].ToString();
-                //                                                }
-                //                                            }
-
-                //                                        }
-                //                                    }
-                //                                }
-                //                            }
-                //                        }
-                //                        //    }
-                //                        //}
-                //                    }
-                //                }
-
-                //            }
-                //        }
-                //    }
-                //}
-                //foreach (DataRow distrinctRow in distrinctLPromotionName.AsEnumerable())
-                //{
-                //    if (lblLoyaltyId.Content is null)
-                //        lblLoyaltyId.Content = "";
-                //    if (distrinctRow["LPROName"].ToString() != "" && lblLoyaltyId.Content.ToString() != "")
-                //    {
-                //        if (loyaltyCustomerCount <= 5)
-                //        {
-                //            int sumCount = 0;
-                //            for (int j = 0; j < distrinctLSCANCODE.AsEnumerable().Count(); j++)
-                //            {
-                //                if (distrinctLSCANCODE.Rows[j]["LPROName"].ToString() != "")
-                //                {
-                //                    for (int i = 0; i < dt.Rows.Count; i++)
-                //                    {
-                //                        if (distrinctLSCANCODE.Rows[j]["LPROName"].ToString() == distrinctRow["LPROName"].ToString())
-                //                        {
-                //                            //if (distrinctLSCANCODE.Rows[j]["ScanCode"].ToString() == dt.Rows[i]["ScanCode"].ToString())
-                //                            //{
-                //                            sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
-                //                            //for (int K = 0; K < dt.Rows.Count; K++)
-                //                            //{
-                //                            if (sumCount < 0)
-                //                                sumCount = sumCount * -1;
-                //                            foreach (DataRow itemDT1 in distrinctLSCANCODE.AsEnumerable())
-                //                            {
-                //                                if (itemDT1["LPROName"].ToString() == distrinctRow["LPROName"].ToString())
-                //                                {
-                //                                    int Y = sumCount / Convert.ToInt32(itemDT1["LQty"]);
-                //                                    for (int x = 1; x <= Y; x++)
-                //                                    {
-                //                                        if (itemDT1["LType"].ToString() == "Once")
-                //                                        {
-                //                                            if (sumCount == Convert.ToInt32(itemDT1["LQty"]))
-                //                                            {
-                //                                                for (int z = 0; z <= i; z++)
-                //                                                {
-
-                //                                                    if (dt.Rows[z]["LPROName"].ToString() == distrinctRow["LPROName"].ToString())
-                //                                                    {
-                //                                                        string price = "";
-                //                                                        if (itemDT1["LNewPrice"].ToString() != "" && itemDT1["LNewPrice"].ToString() != "0")
-                //                                                            price = (Convert.ToDecimal(itemDT1["LNewPrice"]) / Convert.ToInt32(itemDT1["LQty"])).ToString("0.00");
-
-                //                                                        if (price == "")
-                //                                                        {
-                //                                                            decimal odisc = 0;
-                //                                                            decimal sdisc = 0;
-                //                                                            decimal rdisc = 0;
-                //                                                            if (dt.Rows[z]["OPromotionName"].ToString() != "")
-                //                                                                odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
-                //                                                            if (dt.Rows[z]["SPromotionName"].ToString() != "")
-                //                                                                sdisc = Convert.ToDecimal(dt.Rows[z]["SDiscount"]);
-                //                                                            if (dt.Rows[z]["RPromotionName"].ToString() != "")
-                //                                                                rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
-                //                                                            price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(dt.Rows[z]["LDiscount"]) / Convert.ToInt32(dt.Rows[z]["LQty"]))).ToString("0.00");
-                //                                                        }
-                //                                                        dt.Rows[z]["LPromotionName"] = dt.Rows[z]["LPROName"];
-                //                                                        dt.Rows[z]["UnitRetail"] = price;
-                //                                                        dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
-                //                                                        dt.Rows[z]["LoyaltyId"] = lblLoyaltyId.Content.ToString();
-
-                //                                                        dt.Rows[z]["PromotionName"] = "";
-                //                                                        dt.Rows[z]["PromotionName"] = dt.Rows[z]["SPromotionName"].ToString() + ", " + dt.Rows[z]["RPromotionName"].ToString() + ", " + dt.Rows[z]["LPromotionName"].ToString() + ", " + dt.Rows[z]["OPromotionName"].ToString();
-
-                //                                                        //dt.Rows[z]["LPromotionName"] = itemDT1["LPROName"];
-                //                                                        //dt.Rows[z]["UnitRetail"] = price;
-                //                                                        //dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
-                //                                                    }
-                //                                                }
-
-                //                                            }
-                //                                        }
-                //                                        else
-                //                                        {
-                //                                            if (sumCount == Convert.ToInt32(itemDT1["LQty"]) * x)
-                //                                            {
-                //                                                for (int z = 0; z <= i; z++)
-                //                                                {
-
-                //                                                    if (dt.Rows[z]["LPROName"].ToString() == distrinctRow["LPROName"].ToString())
-                //                                                    {
-                //                                                        string price = "";
-                //                                                        if (itemDT1["LNewPrice"].ToString() != "" && itemDT1["LNewPrice"].ToString() != "0")
-                //                                                            price = (Convert.ToDecimal(itemDT1["LNewPrice"]) / Convert.ToInt32(itemDT1["LQty"])).ToString("0.00");
-
-                //                                                        if (price == "")
-                //                                                        {
-                //                                                            decimal odisc = 0;
-                //                                                            decimal sdisc = 0;
-                //                                                            decimal rdisc = 0;
-                //                                                            if (dt.Rows[z]["OPromotionName"].ToString() != "")
-                //                                                                odisc = Convert.ToDecimal(dt.Rows[z]["ODiscount"]);
-                //                                                            if (dt.Rows[z]["SPromotionName"].ToString() != "")
-                //                                                                sdisc = Convert.ToDecimal(dt.Rows[z]["SDiscount"]);
-                //                                                            if (dt.Rows[z]["RPromotionName"].ToString() != "")
-                //                                                                rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
-                //                                                            price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - odisc - sdisc - rdisc - (Convert.ToDecimal(dt.Rows[z]["LDiscount"]) / Convert.ToInt32(dt.Rows[z]["LQty"]))).ToString("0.00");
-                //                                                            //price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - odisc - sdisc - rdisc - Convert.ToDecimal(dt.Rows[z]["LDiscount"])).ToString("0.00");
-                //                                                            //price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - Convert.ToDecimal(itemDT1["LDiscount"])).ToString("0.00");
-                //                                                        }
-                //                                                        dt.Rows[z]["LPromotionName"] = dt.Rows[z]["LPROName"];
-                //                                                        dt.Rows[z]["UnitRetail"] = price;
-                //                                                        dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
-                //                                                        dt.Rows[z]["LoyaltyId"] = lblLoyaltyId.Content.ToString();
-
-                //                                                        dt.Rows[z]["PromotionName"] = "";
-                //                                                        dt.Rows[z]["PromotionName"] = dt.Rows[z]["SPromotionName"].ToString() + ", " + dt.Rows[z]["RPromotionName"].ToString() + ", " + dt.Rows[z]["LPromotionName"].ToString() + ", " + dt.Rows[z]["OPromotionName"].ToString();
-
-                //                                                        //dt.Rows[z]["LPromotionName"] = itemDT1["LPROName"];
-                //                                                        //dt.Rows[z]["UnitRetail"] = price;
-                //                                                        //dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
-                //                                                    }
-                //                                                }
-
-                //                                            }
-                //                                        }
-                //                                    }
-                //                                }
-                //                            }
-                //                            //}
-                //                            //}
-                //                        }
-                //                    }
-
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
-                //foreach (DataRow distrinctRow in distrinctOPromotionName.AsEnumerable())
-                //{
-                //    if (distrinctRow["OPROName"].ToString() != "")
-                //    {
-                //        int sumCount = 0;
-                //        for (int j = 0; j < distrinctOSCANCODE.AsEnumerable().Count(); j++)
-                //        {
-                //            if (distrinctOSCANCODE.Rows[j]["OPROName"].ToString() == distrinctRow["OPROName"].ToString())
-                //            {
-                //                for (int i = 0; i < dt.Rows.Count; i++)
-                //                {
-                //                    if (distrinctOSCANCODE.Rows[j]["OPROName"].ToString() == dt.Rows[i]["OPROName"].ToString())
-                //                    {
-                //                        //if (distrinctOSCANCODE.Rows[j]["ScanCode"].ToString() == dt.Rows[i]["ScanCode"].ToString())
-                //                        //{
-                //                        sumCount = Convert.ToInt32(sumCount) + Convert.ToInt32(dt.Rows[i]["Quantity"]);
-                //                        //for (int K = 0; K < dt.Rows.Count; K++)
-                //                        //{
-                //                        if (sumCount < 0)
-                //                            sumCount = sumCount * -1;
-                //                        foreach (DataRow itemDT1 in distrinctOSCANCODE.AsEnumerable())
-                //                        {
-                //                            if (itemDT1["OPROName"].ToString() == distrinctRow["OPROName"].ToString())
-                //                            {
-                //                                int Y = sumCount / Convert.ToInt32(itemDT1["OQty"]);
-                //                                for (int x = 1; x <= Y; x++)
-                //                                {
-                //                                    if (itemDT1["OType"].ToString() == "Once")
-                //                                    {
-                //                                        if (sumCount == Convert.ToInt32(itemDT1["OQty"]))
-                //                                        {
-                //                                            for (int z = 0; z <= i; z++)
-                //                                            {
-                //                                                if (dt.Rows[z]["OPROName"].ToString() == distrinctRow["OPROName"].ToString())
-                //                                                {
-                //                                                    string price = "";
-                //                                                    if (itemDT1["ONewPrice"].ToString() != "" && itemDT1["ONewPrice"].ToString() != "0")
-                //                                                        price = (Convert.ToDecimal(itemDT1["ONewPrice"]) / Convert.ToInt32(itemDT1["OQty"])).ToString("0.00");
-
-                //                                                    if (price == "")
-                //                                                    {
-                //                                                        decimal ldisc = 0;
-                //                                                        decimal sdisc = 0;
-                //                                                        decimal rdisc = 0;
-                //                                                        if (dt.Rows[z]["LPromotionName"].ToString() != "")
-                //                                                            ldisc = Convert.ToDecimal(dt.Rows[z]["LDiscount"]);
-                //                                                        if (dt.Rows[z]["SPromotionName"].ToString() != "")
-                //                                                            sdisc = Convert.ToDecimal(dt.Rows[z]["SDiscount"]);
-                //                                                        if (dt.Rows[z]["RPromotionName"].ToString() != "")
-                //                                                            rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
-                //                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(dt.Rows[z]["ODiscount"])).ToString("0.00");
-                //                                                    }
-                //                                                    dt.Rows[z]["OPromotionName"] = dt.Rows[z]["OPROName"];
-                //                                                    dt.Rows[z]["UnitRetail"] = price;
-                //                                                    dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
-                //                                                    dt.Rows[z]["LoyaltyId"] = lblLoyaltyId.Content.ToString();
-
-                //                                                    dt.Rows[z]["PromotionName"] = "";
-                //                                                    dt.Rows[z]["PromotionName"] = dt.Rows[z]["SPromotionName"].ToString() + ", " + dt.Rows[z]["RPromotionName"].ToString() + ", " + dt.Rows[z]["LPromotionName"].ToString() + ", " + dt.Rows[z]["OPromotionName"].ToString();
-                //                                                }
-                //                                            }
-
-                //                                        }
-                //                                    }
-                //                                    else
-                //                                    {
-                //                                        if (sumCount == Convert.ToInt32(itemDT1["OQty"]) * x)
-                //                                        {
-                //                                            for (int z = 0; z <= i; z++)
-                //                                            {
-                //                                                if (dt.Rows[z]["OPROName"].ToString() == distrinctRow["OPROName"].ToString())
-                //                                                {
-                //                                                    string price = "";
-                //                                                    if (itemDT1["ONewPrice"].ToString() != "" && itemDT1["ONewPrice"].ToString() != "0")
-                //                                                        price = (Convert.ToDecimal(itemDT1["ONewPrice"]) / Convert.ToInt32(itemDT1["OQty"])).ToString("0.00");
-
-                //                                                    if (price == "")
-                //                                                    {
-                //                                                        decimal ldisc = 0;
-                //                                                        decimal sdisc = 0;
-                //                                                        decimal rdisc = 0;
-                //                                                        if (dt.Rows[z]["LPromotionName"].ToString() != "")
-                //                                                            ldisc = Convert.ToDecimal(dt.Rows[z]["LDiscount"]);
-                //                                                        if (dt.Rows[z]["SPromotionName"].ToString() != "")
-                //                                                            sdisc = Convert.ToDecimal(dt.Rows[z]["SDiscount"]);
-                //                                                        if (dt.Rows[z]["RPromotionName"].ToString() != "")
-                //                                                            rdisc = Convert.ToDecimal(dt.Rows[z]["RDiscount"]);
-                //                                                        price = (Convert.ToDecimal(dt.Rows[z]["Oprice"]) - ldisc - sdisc - rdisc - Convert.ToDecimal(dt.Rows[z]["ODiscount"])).ToString("0.00");
-                //                                                    }
-                //                                                    dt.Rows[z]["OPromotionName"] = dt.Rows[z]["OPROName"];
-                //                                                    dt.Rows[z]["UnitRetail"] = price;
-                //                                                    dt.Rows[z]["Amount"] = Convert.ToDecimal(dt.Rows[z]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[z]["Quantity"]);
-                //                                                    dt.Rows[z]["LoyaltyId"] = lblLoyaltyId.Content.ToString();
-
-                //                                                    dt.Rows[z]["PromotionName"] = "";
-                //                                                    dt.Rows[z]["PromotionName"] = dt.Rows[z]["SPromotionName"].ToString() + ", " + dt.Rows[z]["RPromotionName"].ToString() + ", " + dt.Rows[z]["LPromotionName"].ToString() + ", " + dt.Rows[z]["OPromotionName"].ToString();
-                //                                                }
-                //                                            }
-
-                //                                        }
-                //                                    }
-                //                                }
-                //                            }
-                //                        }
-                //                        //    }
-                //                        //}
-                //                    }
-                //                }
-
-                //            }
-                //        }
-                //    }
-                //}
-
-
-                // TotalEvent();
-
             }
             catch (Exception ex)
             {
-                SendErrorToText(ex, errorFileName, "ScanCodeFunction");
+                MessageBox.Show("promotionfunction" + ex);
             }
+
         }
-
-
         private void Button_DayClose(object sender, RoutedEventArgs e)
         {
             try
@@ -3828,7 +4059,7 @@ namespace POSSystem
                             newRow["bIsTrueId"] = "";
                             dt.Rows.Add(newRow);
                         }
-                        ScanCodeFunction();
+                        PromotionApply();
                         JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
                         JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
                     }
@@ -4259,7 +4490,7 @@ namespace POSSystem
                                 dt.Rows[i]["UnitRetail"] = dt.Rows[i]["Oprice"];
                                 dt.Rows[i]["Amount"] = Convert.ToDecimal(dt.Rows[i]["UnitRetail"]) * Convert.ToDecimal(dt.Rows[i]["Quantity"]);
                             }
-                            ScanCodeFunction();
+                            PromotionApply();
                         }
                     }
 
@@ -4753,7 +4984,7 @@ namespace POSSystem
                         dt.Rows[i]["Customer"] = "";
                         dt.Rows[i]["UnitRetail"] = dt.Rows[i]["UnitRetail"];
                     }
-                    ScanCodeFunction();
+                    PromotionApply();
                     if (JRDGrid.Items.Count != 0)
                     {
                         JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
@@ -4818,7 +5049,7 @@ namespace POSSystem
                     if (dt.Rows.Count != 0)
                     {
                         int dCount = dt.Rows.Count - 1;
-                        ScanCodeFunction();
+                        PromotionApply();
                         JRDGrid.ScrollIntoView(JRDGrid.Items[JRDGrid.Items.Count - 1]);
                         JRDGrid.SelectedIndex = JRDGrid.Items.Count - 1;
                         categorytext = "";
@@ -4921,7 +5152,7 @@ namespace POSSystem
 
                         dt.Rows.Add(newRow);
                     }
-                    ScanCodeFunction();
+                    PromotionApply();
                 }
                 else
                 {
