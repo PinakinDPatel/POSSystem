@@ -4198,7 +4198,7 @@ namespace POSSystem
         {
             try
             {
-                if (dt.Rows.Count != 0)
+                if (dt.Rows.Count > 0 || dtVoidItem.Rows.Count > 0)
                 {
                     foreach (DataRow row in dtVoidItem.Rows)
                     {
@@ -4226,14 +4226,14 @@ namespace POSSystem
                     string cashReturn = "0";
                     string tranid = Convert.ToInt32(lblTranid.Content).ToString();
 
-                    string transaction = "insert into Transactions(Tran_id,EndDate,EndTime,GrossAmount,TaxAmount,GrandAmount,CreateBy,CreateOn,Void)Values('" + tranid + "','" + onlydate + "','" + onlytime + "','" + totalAmt + "','" + tax + "','" + grandTotalAmt + "','" + username + "','" + date + "','1')";
+                    string transaction = "insert into Transactions(Tran_id,EndDate,EndTime,GrossAmount,TaxAmount,GrandAmount,CreateBy,CreateOn,Void,storeid,posid,Register_id)Values('" + tranid + "','" + onlydate + "','" + onlytime + "','" + totalAmt + "','" + tax + "','" + grandTotalAmt + "','" + username + "','" + date + "','1','" + storeid + "','" + posId + "','" + registerid + "')";
                     SqlCommand cmd = new SqlCommand(transaction, con);
                     con.Open();
                     cmd.ExecuteNonQuery();
                     con.Close();
                     if (tenderCode == "Cash")
                     {
-                        string tender = "insert into Tender(EndDate,Endtime,TenderCode,Amount,Change,TransactionId,CreateBy,CreateOn,RegisterId)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + cashRec + "','" + cashReturn + "','" + tranid + "','" + username + "','" + date + "','" + registerid + "')";
+                        string tender = "insert into Tender(EndDate,Endtime,TenderCode,Amount,Change,TransactionId,CreateBy,CreateOn,storeid,posid,,RegisterId)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + cashRec + "','" + cashReturn + "','" + tranid + "','" + username + "','" + date + "','" + storeid + "','" + posId + "','" + registerid + "')";
                         SqlCommand cmdTender = new SqlCommand(tender, con);
                         con.Open();
                         cmdTender.ExecuteNonQuery();
@@ -4241,7 +4241,7 @@ namespace POSSystem
                     }
                     else if (tenderCode == "Card")
                     {
-                        string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn,RegisterId)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + username + "','" + date + "','" + registerid + "')";
+                        string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CreateBy,CreateOn,storeid,posid,,RegisterId)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + username + "','" + date + "','" + storeid + "','" + posId + "','" + registerid + "')";
                         SqlCommand cmdTender1 = new SqlCommand(tender1, con);
                         con.Open();
                         cmdTender1.ExecuteNonQuery();
@@ -4249,7 +4249,7 @@ namespace POSSystem
                     }
                     else if (tenderCode == "Customer")
                     {
-                        string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,AccountName,CreateBy,CreateOn,RegisterId)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + cbcustomer.Text + "','" + username + "','" + date + "','" + registerid + "')";
+                        string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,AccountName,CreateBy,CreateOn,storeid,posid,,RegisterId)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + cbcustomer.Text + "','" + username + "','" + date + "','" + storeid + "','" + posId + "','" + registerid + "')";
                         SqlCommand cmdTender1 = new SqlCommand(tender1, con);
                         con.Open();
                         cmdTender1.ExecuteNonQuery();
@@ -4257,7 +4257,7 @@ namespace POSSystem
                     }
                     else if (tenderCode == "Check")
                     {
-                        string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CheckNo,CreateBy,CreateOn,RegisterId)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + TxtCheck.Text + "','" + username + "','" + date + "','" + registerid + "')";
+                        string tender1 = "insert into Tender(EndDate,Endtime,TenderCode,Amount,TransactionId,CheckNo,CreateBy,CreateOn,storeid,posid,,RegisterId)Values('" + onlydate + "','" + onlytime + "','" + tenderCode + "','" + grandTotalAmt + "','" + tranid + "','" + TxtCheck.Text + "','" + username + "','" + date + "','" + storeid + "','" + posId + "','" + registerid + "')";
                         SqlCommand cmdTender1 = new SqlCommand(tender1, con);
                         con.Open();
                         cmdTender1.ExecuteNonQuery();
@@ -4272,6 +4272,8 @@ namespace POSSystem
                         dataRow[10] = date;
                         dataRow[17] = '1';
                         dataRow["RegisterId"] = registerid;
+                        dataRow["POSId"] = posId;
+                        dataRow["StoreId"] =storeid;
                     }
 
                     SqlBulkCopy objbulk = new SqlBulkCopy(con);
@@ -4289,6 +4291,9 @@ namespace POSSystem
                     objbulk.ColumnMappings.Add("CreateOn", "CreateOn");
                     objbulk.ColumnMappings.Add("Void", "Void");
                     objbulk.ColumnMappings.Add("RegisterId", "RegisterId");
+                    objbulk.ColumnMappings.Add("POSId", "POSId");
+                    objbulk.ColumnMappings.Add("StoreId", "StoreId");
+
                     con.Open();
                     objbulk.WriteToServer(dt);
                     con.Close();
@@ -4493,6 +4498,10 @@ namespace POSSystem
                             PromotionApply();
                         }
                     }
+                    else
+                    {
+                        TotalEvent();
+                    }
 
                     if (JRDGrid.Items.Count > 1)
                     {
@@ -4501,6 +4510,7 @@ namespace POSSystem
                     }
                     //TotalEvent();
                 }
+               
                 dataGridSelectedIndex = "";
 
             }
