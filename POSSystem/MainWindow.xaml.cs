@@ -146,8 +146,6 @@ namespace POSSystem
                     this.Close();
                     SD.Show();
                 }
-
-                // Show/Hide
                 ugAddcategory1.Visibility = Visibility.Hidden;
                 ugAddcategory2.Visibility = Visibility.Hidden;
                 ugDepartment.Visibility = Visibility.Visible;
@@ -188,7 +186,6 @@ namespace POSSystem
                         dtAddCategory = ds.Tables[4];
                         dtCategory = ds.Tables[5];
                         dttranid = ds.Tables[6];
-
                         DataRow newRow = dtAccount.NewRow();
                         newRow["Name"] = "--Select--";
                         dtAccount.Rows.InsertAt(newRow, 0);
@@ -198,26 +195,6 @@ namespace POSSystem
             }
             catch (Exception ex) { SendErrorToText(ex, errorFileName, "LoadItem"); }
         }
-
-
-        //public void FileTransfer()
-        //{
-        //    string sourcePath = ConfigurationManager.AppSettings["sourcePath"].ToString();
-        //    string DestinationPath = ConfigurationManager.AppSettings["DestinationPath"].ToString();
-        //    foreach (string f in Directory.GetFiles(sourcePath))
-        //    {
-        //        try
-        //        {
-        //            string files = Path.GetFileName(f);
-        //            if (!File.Exists(DestinationPath + "\\" + files))
-        //                File.Create(DestinationPath + "\\" + files);
-        //        }
-        //        catch (Exception ex) { SendErrorToText(ex, errorFileName, "FileTransfer"); }
-        //    }
-        //}
-
-
-
         private void loadDropdownCustomer()
         {
             try
@@ -234,12 +211,6 @@ namespace POSSystem
         {
             try
             {
-                //SqlConnection con = new SqlConnection(conString);
-                //string queryS = "Select Department,TaxRate,FilePath from Department";
-                //SqlCommand cmd1 = new SqlCommand(queryS, con);
-                //SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
-                //sda1.Fill(dtdepartment);
-
                 if (dtdepartment.Rows.Count > 19)
                 {
                     RightArrow.Visibility = Visibility.Visible;
@@ -444,11 +415,6 @@ namespace POSSystem
         {
             try
             {
-                //SqlConnection con = new SqlConnection(conString);
-                //string queryAddCat1 = "select category,CategoryImage from addcategory";
-                //SqlCommand cmdAddCat1 = new SqlCommand(queryAddCat1, con);
-                //SqlDataAdapter sdaAddCat1 = new SqlDataAdapter(cmdAddCat1);
-                //sdaAddCat1.Fill(dtAddCategory);
                 if (dtAddCategory.Rows.Count != 0)
                 {
                     for (int i = 0; i < dtAddCategory.Rows.Count; i++)
@@ -805,19 +771,12 @@ namespace POSSystem
             }
         }
 
-
         private void loadtransactionId()
         {
             try
             {
                 using (SqlConnection conn = new SqlConnection(conString))
                 {
-                    //string query1 = "select coalesce(max(convert(int,tran_id)),0)as tran_id from(SELECT tran_id FROM Transactions where EndDate='" + date + "' union all SELECT distinct TrasactionId FROM Hold)as x";
-                    //SqlCommand cmd2 = new SqlCommand(query1, conn);
-                    //SqlDataAdapter sdaT = new SqlDataAdapter(cmd2);
-                    //DataTable dttranid = new DataTable();
-                    //sdaT.Fill(dttranid);
-
                     if (dttranid.Rows.Count != 0)
                     {
                         lblTranid.Content = Convert.ToInt32(dttranid.Rows[0]["tran_id"].ToString()) + 1;
@@ -3880,19 +3839,19 @@ namespace POSSystem
             try
             {
                 SqlConnection con = new SqlConnection(conString);
-                string queryTrans = "select Count(tran_id)as Counts,sum(convert(decimal(10,2),GrossAmount))as Sales,sum(convert(decimal(10,2),TaxAmount))as Tax,sum(convert(decimal(10,2),grandAmount))as Total,min(convert(datetime,createon))as SDate,Max(convert(datetime,createon))as EDate from transactions where Dayclose is null and (void !=1 or void is Null)";
+                string queryTrans = "select Count(tran_id)as Counts,sum(convert(decimal(10,2),GrossAmount))as Sales,sum(convert(decimal(10,2),TaxAmount))as Tax,sum(convert(decimal(10,2),grandAmount))as Total,min(convert(datetime,createon))as SDate,Max(convert(datetime,createon))as EDate from transactions where Dayclose is null and (void !=1 or void is Null) and storeid=" + storeid + " and posid=" + posId + "";
                 SqlCommand cmdTrans = new SqlCommand(queryTrans, con);
                 SqlDataAdapter sdaTrans = new SqlDataAdapter(cmdTrans);
                 DataTable dtTrans = new DataTable();
                 sdaTrans.Fill(dtTrans);
 
-                string queryDept = "select Department,Sum(convert(decimal(10,2),amt)) as amt from(select Department, Sum(convert(decimal(10,2),Amount)) as amt from salesitem inner join item on salesitem.scancode = item.scancode where dayclose is null and(void != 1 or void is Null) group by Department Union all select Department,Sum(convert(decimal(10,2),Amount)) as amt from salesitem inner join Department on salesitem.Descripation = Department.Department where dayclose is null and(void != 1 or void is Null) group by Department)as x group by Department";
+                string queryDept = "select Department,Sum(convert(decimal(10,2),amt)) as amt from(select Department, Sum(convert(decimal(10,2),Amount)) as amt from salesitem inner join item on salesitem.scancode = item.scancode and salesitem.storeid = item.storeid where dayclose is null and(void != 1 or void is Null) and salesitem.storeid = " + storeid + " group by Department Union all select Department,Sum(convert(decimal(10,2),Amount)) as amt from salesitem inner join Department on salesitem.Descripation = Department.Department and salesitem.storeid = Department.storeid where dayclose is null and(void != 1 or void is Null) and salesitem.storeid =" + storeid + " group by Department)as x group by Department";
                 SqlCommand cmdDept = new SqlCommand(queryDept, con);
                 SqlDataAdapter sdaDept = new SqlDataAdapter(cmdDept);
                 DataTable dtDept = new DataTable();
                 sdaDept.Fill(dtDept);
 
-                string queryTender = "select tendercode,sum(convert(decimal(10,2),amount)-convert(decimal(10,2),(case when change='' then '0' else change end)))as amt from tender where dayclose is null group by tendercode";
+                string queryTender = "select tendercode,sum(convert(decimal(10,2),amount)-convert(decimal(10,2),(case when change='' then '0' else change end)))as amt from tender where dayclose is null and storeid =" + storeid + " group by tendercode";
                 SqlCommand cmdTender = new SqlCommand(queryTender, con);
                 SqlDataAdapter sdaTender = new SqlDataAdapter(cmdTender);
                 DataTable dtTender = new DataTable();
@@ -4273,7 +4232,7 @@ namespace POSSystem
                         dataRow[17] = '1';
                         dataRow["RegisterId"] = registerid;
                         dataRow["POSId"] = posId;
-                        dataRow["StoreId"] =storeid;
+                        dataRow["StoreId"] = storeid;
                     }
 
                     SqlBulkCopy objbulk = new SqlBulkCopy(con);
@@ -4510,7 +4469,7 @@ namespace POSSystem
                     }
                     //TotalEvent();
                 }
-               
+
                 dataGridSelectedIndex = "";
 
             }

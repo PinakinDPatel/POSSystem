@@ -26,12 +26,10 @@ namespace POSSystem
         string userConString = "Server=184.168.194.64; User ID = pspcstore; Password=Prem#12681#; Trusted_Connection=false;MultipleActiveResultSets=true";
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation, exurl, hostIp;
         string errorFileName = "Login.cs";
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
-
         public Login()
         {
             try
@@ -116,7 +114,6 @@ namespace POSSystem
         {
             try
             {
-                //var vvvv = AppCommon.Encrypt("000000");
                 ManagementObjectSearcher mos = new ManagementObjectSearcher("SELECT * FROM Win32_BaseBoard");
                 ManagementObjectCollection moc = mos.Get();
                 string motherBoard = "";
@@ -124,18 +121,14 @@ namespace POSSystem
                 {
                     motherBoard = (string)mo["SerialNumber"];
                 }
-                //   string [] str  =motherBoard.Split('/');
-                //SqlConnection con = new SqlConnection(conString);
                 SqlConnection con = new SqlConnection(userConString);
                 string query = "select FirstName+' '+LastName as UserName,UserRegistration.StoreId,Register_id,RoleId from UserRegistration inner join Store on UserRegistration.storeid=Store.storeid inner join Register on Store.storeid=register.storeid  where password=@password and SerialNumber=@serialnumber and UserRegistration.storeid = " + conStoreId + "";
-                // string query = "select UserName,userregi.StoreId,Register_id,RoleName from userregi inner join storeDetails on userregi.storeid=storeDetails.storeid inner join register on storeDetails.storeid=register.storeid where password=@password";// and SerialNumber=@serialnumber ";
                 SqlCommand cmd = new SqlCommand(query, con);
                 cmd.Parameters.AddWithValue("@password", AppCommon.Encrypt(TxtPassword.Password));
                 cmd.Parameters.AddWithValue("@serialnumber", motherBoard);
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 sda.Fill(dt);
-
                 if (dt.Rows.Count > 0)
                 {
                     App.Current.Properties["username"] = dt.Rows[0]["UserName"].ToString();
@@ -146,10 +139,7 @@ namespace POSSystem
                     App.Current.Properties["POSId"] = conPOSId;
                     if (App.Current.Properties["StoreId"].ToString() != "" || App.Current.Properties["StoreId"].ToString() != null)
                     {
-
-                        //conString = "Server=" + ServerName + ";Database=" + DBName + "; User ID=pinakin;Password=PO$123456; Trusted_Connection=false;MultipleActiveResultSets=true";
                         App.Current.Properties["ConString"] = userConString;
-
                         MainWindow frm = new MainWindow();
                         frm.Show();
                         this.Close();
@@ -169,7 +159,6 @@ namespace POSSystem
                 SendErrorToText(ex, errorFileName);
             }
         }
-
         public static void SendErrorToText(Exception ex, string errorFileName)
         {
             var line = Environment.NewLine + Environment.NewLine;
